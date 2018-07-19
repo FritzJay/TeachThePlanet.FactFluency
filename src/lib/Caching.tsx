@@ -1,6 +1,8 @@
 import { URLS } from "../App";
 
 export const saveState = (component: React.Component, state: any) => {
+  console.log('Saving the state:');
+  console.log(state);
   component.setState({...state});
   const keys = Object.getOwnPropertyNames(state);
   for (const key of keys) {
@@ -24,6 +26,7 @@ export const loadState = (component: React.Component, key: string) => {
 }
 
 export const signOut = (component: React.Component<any>) => {
+  console.log('Signing out!')
   localStorage.clear();
   component.props.history.push(URLS.signin);
 }
