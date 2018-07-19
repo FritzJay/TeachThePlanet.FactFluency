@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
-import { saveState } from './lib/Caching';
+import { saveState, signOut } from './lib/Caching';
 import { IUser } from './lib/Interfaces';
-import { signOut } from './lib/Requests';
 import { Login } from './Views/Login/Login';
 import { NewTest } from './Views/NewTest/NewTest';
 import { TakeTest } from './Views/TakeTest/TakeTest';
 import { TestResults } from './Views/TestResults/TestResults';
 
 export const URLS = {
-  newTest: 'new-test',
-  signin: '/',
-  takeTest: 'take-test',
-  testResults: 'test-results',
+  newTest: '/new-test',
+  signin: '/sign-in',
+  takeTest: '/take-test',
+  testResults: '/test-results',
 }
 
 interface IProps {
@@ -34,13 +33,13 @@ class App extends React.Component<IProps, IState> {
     this.renderLogin = this.renderLogin.bind(this);
     this.renderNewTest = this.renderNewTest.bind(this);
     this.saveUser = this.saveUser.bind(this);
-    this.signout = this.signout.bind(this);
+    this.handleSignOutClick = this.handleSignOutClick.bind(this);
   }
 
   public render() {
     return (
       <div>
-        <button onClick={this.signout}>Logout</button>
+        <button onClick={this.handleSignOutClick}>Logout</button>
         <Route
           path={URLS.signin}
           render={this.renderLogin}
@@ -81,7 +80,7 @@ class App extends React.Component<IProps, IState> {
     saveState(this, {token, user});
   }
 
-  private signout() {
+  private handleSignOutClick() {
     signOut(this);
   }
 }
