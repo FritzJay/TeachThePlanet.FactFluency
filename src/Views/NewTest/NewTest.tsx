@@ -1,4 +1,5 @@
 import * as React from "react";
+import { URLS } from "../../App";
 import { loadState, saveState } from "../../lib/Caching";
 import { IAvailableTests, ITestNumber } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
@@ -27,9 +28,20 @@ export class NewTest extends React.Component<IRequestComponentProps, IState> {
   
   public render() {
     const availableTests = this.state.availableTests.numbers.map((testNumber: ITestNumber) => {
-      const operators: string = testNumber.operators.join(', ');
+      const operators = testNumber.operators.map((operator: string) => {
+        return (
+          <div
+            key={`${testNumber.number}${operator}`}
+            onClick={this.createTest.bind(this, testNumber, operator)}
+          >
+            {operator}
+          </div>
+        );
+      });
       return (
-        <p key={testNumber.number}>{testNumber.number}: {operators}</p>
+        <div key={testNumber.number}>
+          {operators}
+        </div>
       )
     });
     return (
@@ -39,11 +51,15 @@ export class NewTest extends React.Component<IRequestComponentProps, IState> {
       </div>
     );
   }
+
+  private createTest(testNumber: ITestNumber) {
+    this.props.history.push(URLS.takeTest);
+  }
   
   private getAvailableTests() {
     const request: IRequest = {
       method: "GET",
-      token: this.props.token,
+      token: this.state.token,
     };
     jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, request)
     .then((availableTests: IAvailableTests) => {
