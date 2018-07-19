@@ -55,7 +55,7 @@ export class Login extends React.Component<IProps, IState> {
       method: "POST",
       token: this.state.token,
     };
-    jsonFetch(`${process.env.REACT_APP_API_URL}/students/`, request)
+    jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
     .then((response) => {
       this.props.saveUser(response.token, response.user);
       this.props.history.push(URLS.newTest);
