@@ -6,20 +6,24 @@ export const saveState = (component: React.Component, state: any) => {
   component.setState({...state});
   const keys = Object.getOwnPropertyNames(state);
   for (const key of keys) {
-    localStorage.setItem(key, state[key]);
+    const json = JSON.stringify(state[key])
+    localStorage.setItem(key, json);
   }
+  console.log(localStorage);
 }
 
 export const loadState = (component: React.Component, key: string) => {
   console.log('Loading State: ' + key);
   return new Promise((resolve, reject) => {
-    const state = localStorage.getItem(key);
-    if (state) {
+    const json = localStorage.getItem(key);
+    if (json) {
+      const state = JSON.parse(`{"${key}": ${json}}`);
       console.log('Success');
-      component.setState(state);
-      resolve();
+      console.log(state);
+      component.setState(state, () => {
+        resolve();
+      });
     } else {
-      console.log('Failed to load state')
       reject('Local Storage does not contain ' + key);
     }
   });

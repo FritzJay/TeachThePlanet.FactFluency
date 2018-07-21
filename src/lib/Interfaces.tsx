@@ -10,6 +10,11 @@ export interface IQuestion {
   end?: Date;
 }
 
+export interface ITestParameters {
+  number: number;
+  operator: string;
+}
+
 export interface ITest {
   duration?: number;
   start?: Date;

@@ -3,8 +3,13 @@ import { URLS } from "../../App";
 import { IUser } from "../../lib/Interfaces";
 import { IRequest, jsonFetch, setTokenToStateOrSignOut } from '../../lib/Requests';
 
+interface IResponse {
+  token: string;
+  user: IUser;
+}
+
 interface IProps {
-  saveUser: (token:string, user: IUser) => void; 
+  saveUser: (response: IResponse) => Promise<void>; 
   token?: string,
   history: any,
 }
@@ -57,8 +62,11 @@ export class Login extends React.Component<IProps, IState> {
     };
     jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
     .then((response) => {
-      this.props.saveUser(response.token, response.user);
-      this.props.history.push(URLS.newTest);
+       this.props.saveUser({
+        token: response.token,
+        user: response.user,
+      })
+      .then(this.props.history.push(URLS.newTest))
     })
     .catch((error: Error) => {
       this.setState({error: error.toString()});

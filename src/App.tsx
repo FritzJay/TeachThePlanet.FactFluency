@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { saveState, signOut } from './lib/Caching';
-import { IUser } from './lib/Interfaces';
+import { ITest, IUser } from './lib/Interfaces';
 import { Login } from './Views/Login/Login';
 import { NewTest } from './Views/NewTest/NewTest';
 import { TakeTest } from './Views/TakeTest/TakeTest';
@@ -22,6 +22,11 @@ interface IProps {
 interface IState {
   token: string;
   user?: IUser;
+  testParameters?: {
+    number: number;
+    operator: string;
+  };
+  test?: ITest;
 };
 
 class App extends React.Component<IProps, IState> {
@@ -32,8 +37,10 @@ class App extends React.Component<IProps, IState> {
     }
     this.renderLogin = this.renderLogin.bind(this);
     this.renderNewTest = this.renderNewTest.bind(this);
-    this.saveUser = this.saveUser.bind(this);
+    this.renderTakeTest = this.renderTakeTest.bind(this);
+    this.renderTestResults = this.renderTestResults.bind(this);
     this.handleSignOutClick = this.handleSignOutClick.bind(this);
+    this.saveStateFromChild = this.saveStateFromChild.bind(this);
   }
 
   public render() {
@@ -59,29 +66,55 @@ class App extends React.Component<IProps, IState> {
       </div>
     );
   }
-  
-  private renderLogin(props: any) {
-    return <Login {...props} saveUser={this.saveUser} />;
-  }
 
-  private renderNewTest(props: any) {
-    return <NewTest {...props} token={this.state.token} />
-  }
-
-  private renderTakeTest(props: any) {
-    return <TakeTest {...props} token={this.state.token} />
-  }
-
-  private renderTestResults(props: any) {
-    return <TestResults {...props} token={this.state.token} />
-  }
-
-  private saveUser(token: string, user: IUser) {
-    saveState(this, {token, user});
+  private saveStateFromChild(state: any): Promise<void> {
+    return new Promise((resolve) => {
+      saveState(this, state);
+      resolve();
+    });
   }
 
   private handleSignOutClick() {
     signOut(this);
+  }
+  
+  private renderLogin(props: any) {
+    return (
+      <Login {...props}
+        saveUser={this.saveStateFromChild}
+      />
+    );
+  }
+
+  private renderNewTest(props: any) {
+    return (
+      <NewTest
+        {...props}
+        token={this.state.token}
+        saveTestParameters={this.saveStateFromChild}
+      />
+    );
+  }
+
+  private renderTakeTest(props: any) {
+    return (
+      <TakeTest
+        {...props}
+        token={this.state.token}
+        testParameters={this.state.testParameters}
+        saveTest={this.saveStateFromChild}
+      />
+    );
+  }
+
+  private renderTestResults(props: any) {
+    return (
+      <TestResults
+        {...props}
+        token={this.state.token}
+        test={this.state.test}
+      />
+    );
   }
 }
 
