@@ -3,6 +3,8 @@ import { URLS } from "../../App";
 import { loadState, saveState } from "../../lib/Caching";
 import { ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
+import { StartTestConfirmation } from "./StartTestConfirmation";
+import { Test } from "./Test";
 
 interface IProps extends IRequestComponentProps {
   saveTest: (test: ITest) => Promise<void>;
@@ -12,14 +14,18 @@ interface IProps extends IRequestComponentProps {
 interface IState {
   test?: ITest;
   token?: string;
+  started: boolean;
 }
 
 export class TakeTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
-    this.state = {}
+    this.state = {
+      started: false,
+    }
     this.getNewTest = this.getNewTest.bind(this);
-    this.handleSubmitClick = this.handleSubmitClick.bind(this);
+    this.startTest = this.startTest.bind(this);
+    this.submitTest = this.submitTest.bind(this);
   }
 
   public componentDidMount() {
@@ -37,13 +43,16 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const message = (this.state.test) ? "Success!" : "Error";
-    return (
-      <div>
-        {message}
-        <button onClick={this.handleSubmitClick}>Submit</button>
-      </div>
-    );
+    if (this.state.test && this.state.started) {
+      return (
+        <Test
+          test={this.state.test}
+          submitTest={this.submitTest}
+        />
+      );
+    } else {
+      return <StartTestConfirmation startTest={this.startTest} />
+    }
   }
 
   private getNewTest(testParameters: ITestParameters) {
@@ -58,12 +67,21 @@ export class TakeTest extends React.Component<IProps, IState> {
     });
   }
 
-  private handleSubmitClick() {
-    if (this.state.test) {
-      this.props.saveTest(this.state.test)
-      .then(this.props.history.push(URLS.testResults));
+  private startTest() {
+    const test = this.state.test;
+    if (test) {
+      test.start = new Date();
+      this.setState({
+        started: true,
+        test,
+      });
     } else {
-      console.log('There is no test to submit!');
+      throw new Error('A test was started when this.state.test is undefined!');
     }
+  }
+
+  private submitTest(test: ITest) {
+    this.props.saveTest(test)
+    .then(this.props.history.push(URLS.testResults));
   }
 }

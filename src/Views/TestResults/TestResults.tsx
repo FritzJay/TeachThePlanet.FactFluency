@@ -33,6 +33,7 @@ export class TestResults extends React.Component<IProps, IState> {
   }
 
   private submitTest(test: ITest) {
+    console.log(test);
     const request: IRequest = {
       body: test,
       method: "POST",
