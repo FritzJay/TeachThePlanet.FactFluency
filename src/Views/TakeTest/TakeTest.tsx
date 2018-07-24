@@ -1,6 +1,6 @@
 import * as React from "react";
 import { URLS } from "../../App";
-import { loadState, saveState } from "../../lib/Caching";
+import { saveState } from "../../lib/Caching";
 import { ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { StartTestConfirmation } from "./StartTestConfirmation";
@@ -31,15 +31,12 @@ export class TakeTest extends React.Component<IProps, IState> {
   public componentDidMount() {
     setTokenToStateOrSignOut(this)
     .then(() => {
-      loadState(this, 'test')
-      .catch(() => {
-        if (this.props.testParameters) {
-          this.getNewTest(this.props.testParameters);
-        } else {
-          this.props.history.push(URLS.newTest);
-        }
-      });
-    })
+      if (this.props.testParameters) {
+        this.getNewTest(this.props.testParameters);
+      } else {
+        this.props.history.push(URLS.newTest);
+      }
+    });
   }
 
   public render() {
