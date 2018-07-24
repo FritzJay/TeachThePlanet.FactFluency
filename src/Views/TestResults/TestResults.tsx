@@ -42,6 +42,7 @@ export class TestResults extends React.Component<IProps, IState> {
     jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, request)
     .then((testResults: ITestResults) => {
       saveState(this, testResults);
+      localStorage.removeItem('test');
     })
     .catch((error) => {
       this.setState({error});
