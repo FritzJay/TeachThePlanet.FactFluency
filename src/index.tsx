@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import * as WebFont from 'webfontloader';
 import App from './App';
-import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 WebFont.load({
