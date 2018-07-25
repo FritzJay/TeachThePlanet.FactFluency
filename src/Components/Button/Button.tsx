@@ -8,9 +8,10 @@ export interface IButtonProps {
 }
 
 export const Button = (props: IButtonProps) => {
+  const color = (props.color) ? props.color : 'rgba(1, 0, 0, 0.5)';
   const style = {
-    borderColor: props.color,
-    color: props.color,
+    borderColor: color,
+    color,
   };
   return (
     <button
