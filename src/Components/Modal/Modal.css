@@ -25,6 +25,14 @@
 }
 
 @media (max-width: 25em) {
+  .modal {
+    box-shadow: none;
+  }
+
+  .modal .header {
+    border-radius: 0;
+  }
+
   .modal .hss {
     display: none;
   }
