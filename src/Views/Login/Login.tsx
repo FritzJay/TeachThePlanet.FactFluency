@@ -1,7 +1,10 @@
 import * as React from "react";
 import { URLS } from "../../App";
+import { Button } from '../../Components/Button/Button';
+import { Modal, ModalContent, ModalHeader } from '../../Components/Modal/Modal';
 import { IUser } from "../../lib/Interfaces";
 import { IRequest, jsonFetch, setTokenToStateOrSignOut } from '../../lib/Requests';
+import './Login.css';
 
 interface IResponse {
   token: string;
@@ -41,16 +44,24 @@ export class Login extends React.Component<IProps, IState> {
   
   public render() {
     return (
-      <div>
-        <label>Name:</label>
-        <input onChange={this.handleNameChange} value={this.state.name} />
-        <label>Class Code:</label>
-        <input onChange={this.handleClassCodeChange} value={this.state.classCode} />
-        <button onClick={this.handleSubmitClick}>
-          Submit
-        </button>
-        <p>{this.state.error}</p>
-      </div>
+      <Modal>
+        <ModalHeader color="#A8C75A">
+          <a><img alt="Home" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" /></a>
+          <h2 className="hss">Welcome one, welcome all.</h2>
+          <h2 className="hss">Already in a class?</h2>
+        </ModalHeader>
+        <ModalContent>
+          <label className="login label">Name</label>
+          <input className="login input" onChange={this.handleNameChange} value={this.state.name} />
+          <label className="login label">Class Code</label>
+          <input className="login input" onChange={this.handleClassCodeChange} value={this.state.classCode} type="number" />
+          <p>No code, no worries you can still get started.</p>
+        </ModalContent>
+        <ModalContent>
+          <Button color="#3a93e1" onClick={this.handleSubmitClick}>Submit</Button>
+          <p className="error">{this.state.error}</p>
+        </ModalContent>
+      </Modal>
     );
   }
   

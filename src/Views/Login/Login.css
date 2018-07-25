@@ -1,0 +1,20 @@
+.login.input {
+  font-size: 1em;
+  font-weight: 900;
+  width: 95%;
+  background-color: #FFFFFF;
+  border: none;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+  color: rgba(128, 128, 128, 0.8);
+}
+
+.login.label {
+  margin: 3px 0;
+  display: block;
+  justify-self: flex-start;
+  font-weight: 900;
+}
+
+.error {
+  color: red;
+}
