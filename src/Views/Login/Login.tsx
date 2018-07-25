@@ -48,7 +48,7 @@ export class Login extends React.Component<IProps, IState> {
         <ModalHeader color="#A8C75A">
           <a><img alt="Home" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" /></a>
           <h2 className="hss">Welcome one, welcome all.</h2>
-          <h2 className="hss">Already in a class?</h2>
+          <h2>Already in a class?</h2>
         </ModalHeader>
         <ModalContent>
           <label className="login label">Name</label>
