@@ -29,7 +29,6 @@ export class NewTest extends React.Component<IProps, IState> {
     setTokenToStateOrSignOut(this)
     .then(() => {
       loadState(this, 'availableTests')
-      .then(() => console.log(this.state))
       .catch(() => this.getAvailableTests());
     });
   }
