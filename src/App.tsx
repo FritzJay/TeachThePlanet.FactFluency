@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './Components/Navbar/Navbar';
-import { saveState, signOut } from './lib/Caching';
+import { loadState, saveState, signOut } from './lib/Caching';
 import { ITest, IUser } from './lib/Interfaces';
 import { Login } from './Views/Login/Login';
 import { NewTest } from './Views/NewTest/NewTest';
@@ -44,6 +44,10 @@ class App extends React.Component<IProps, IState> {
     this.renderTestResults = this.renderTestResults.bind(this);
     this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.saveStateFromChild = this.saveStateFromChild.bind(this);
+  }
+
+  public componentDidMount() {
+    loadState(this, 'user');
   }
 
   public render() {
@@ -95,6 +99,7 @@ class App extends React.Component<IProps, IState> {
   private renderNavbar(props: any) {
     return(
       <Navbar {...props}
+        user={this.state.user}
         signout={this.handleSignOutClick}
       />
     )
