@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
+import { Navbar } from './Components/Navbar/Navbar';
 import { saveState, signOut } from './lib/Caching';
 import { ITest, IUser } from './lib/Interfaces';
 import { Login } from './Views/Login/Login';
@@ -9,10 +10,11 @@ import { TakeTest } from './Views/TakeTest/TakeTest';
 import { TestResults } from './Views/TestResults/TestResults';
 
 export const URLS = {
-  newTest: '/new-test',
+  newTest: '/tests/new',
   signin: '/sign-in',
-  takeTest: '/take-test',
-  testResults: '/test-results',
+  takeTest: '/tests/take',
+  testResults: '/tests/results',
+  tests: '/tests',
 }
 
 interface IProps {
@@ -36,6 +38,7 @@ class App extends React.Component<IProps, IState> {
       token: ''
     }
     this.renderLogin = this.renderLogin.bind(this);
+    this.renderNavbar = this.renderNavbar.bind(this);
     this.renderNewTest = this.renderNewTest.bind(this);
     this.renderTakeTest = this.renderTakeTest.bind(this);
     this.renderTestResults = this.renderTestResults.bind(this);
@@ -46,10 +49,13 @@ class App extends React.Component<IProps, IState> {
   public render() {
     return (
       <div>
-        <button onClick={this.handleSignOutClick}>Logout</button>
         <Route
           path={URLS.signin}
           render={this.renderLogin}
+        />
+        <Route
+          path={URLS.tests}
+          render={this.renderNavbar}
         />
         <Route
           path={URLS.newTest}
@@ -84,6 +90,14 @@ class App extends React.Component<IProps, IState> {
         saveUser={this.saveStateFromChild}
       />
     );
+  }
+
+  private renderNavbar(props: any) {
+    return(
+      <Navbar {...props}
+        signout={this.handleSignOutClick}
+      />
+    )
   }
 
   private renderNewTest(props: any) {
