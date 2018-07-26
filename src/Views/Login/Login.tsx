@@ -44,24 +44,26 @@ export class Login extends React.Component<IProps, IState> {
   
   public render() {
     return (
-      <Modal>
-        <ModalHeader color="#A8C75A">
-          <a><img alt="Home" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" /></a>
-          <h2 className="hss">Welcome one, welcome all.</h2>
-          <h2>Already in a class?</h2>
-        </ModalHeader>
-        <ModalContent>
-          <label className="login label">Name</label>
-          <input className="login input" onChange={this.handleNameChange} value={this.state.name} />
-          <label className="login label">Class Code</label>
-          <input className="login input" onChange={this.handleClassCodeChange} value={this.state.classCode} type="number" />
-          <p>No code, no worries you can still get started.</p>
-        </ModalContent>
-        <ModalContent>
-          <Button color="#3a93e1" onClick={this.handleSubmitClick}>Submit</Button>
-          <p className="error">{this.state.error}</p>
-        </ModalContent>
-      </Modal>
+      <div className="login-margin-top">
+        <Modal>
+          <ModalHeader color="#A8C75A">
+            <a><img alt="Home" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" /></a>
+            <h2 className="hss">Welcome one, welcome all.</h2>
+            <h2>Already in a class?</h2>
+          </ModalHeader>
+          <ModalContent>
+            <label className="login label">Name</label>
+            <input className="login input" onChange={this.handleNameChange} value={this.state.name} />
+            <label className="login label">Class Code</label>
+            <input className="login input" onChange={this.handleClassCodeChange} value={this.state.classCode} type="number" />
+            <p>No code, no worries you can still get started.</p>
+          </ModalContent>
+          <ModalContent>
+            <Button color="#3a93e1" onClick={this.handleSubmitClick}>Submit</Button>
+            <p className="error">{this.state.error}</p>
+          </ModalContent>
+        </Modal>
+      </div>
     );
   }
   
