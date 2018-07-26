@@ -8,18 +8,37 @@ interface IProps {
 }
 
 export const Navbar = (props: IProps) => {
-  const userInfo = (props.user) ? (
-    <p>{props.user.name}</p>
-  ) : (
-    <p>Sign Up</p>
-  );
   return (
     <div className="navbar-margin-top">
       <div className="navbar">
-        <button onClick={props.signout}>Logout</button>
+        {logoutButton(props.signout, props.user)}
         <img src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
-        {userInfo}
+        {userInfo(props.user)}
       </div>
     </div>
   );
+}
+
+const userInfo = (user?: IUser) => {
+  if (user) {
+    return (
+      <p>{user.name}</p>
+    );
+  } else {
+    return (
+      <p>Sign Up</p>
+    );
+  }
+}
+
+const logoutButton = (signout: () => void, user?: IUser) => {
+  if (user) {
+    return (
+      <button onClick={signout}>Logout</button>
+    );
+  } else {
+    return (
+      <div />
+    );
+   }
 }
