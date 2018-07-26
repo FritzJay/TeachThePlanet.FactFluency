@@ -9,7 +9,7 @@
   background-color: #FFFFFF;
   border: none;
   border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-  color: rgba(128, 128, 128, 0.8);
+  color: rgb(80, 80, 80);
 }
 
 .login.label {
