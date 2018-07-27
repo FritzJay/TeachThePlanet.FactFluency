@@ -34,7 +34,7 @@ const userInfo = (user?: IUser) => {
 const logoutButton = (signout: () => void, user?: IUser) => {
   if (user) {
     return (
-      <button onClick={signout}>Logout</button>
+      <a onClick={signout}>Logout</a>
     );
   } else {
     return (
