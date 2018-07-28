@@ -22,3 +22,6 @@ yarn-error.log*
 
 # SASS
 src/**/*.css
+
+# VSCode Live Share
+*/**/slnx.*
