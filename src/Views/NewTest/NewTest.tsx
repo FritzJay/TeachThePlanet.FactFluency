@@ -1,8 +1,10 @@
 import * as React from "react";
 import { URLS } from "../../App";
 import { loadState, saveState } from "../../lib/Caching";
-import { IAvailableTests, ITestNumber, ITestParameters } from "../../lib/Interfaces";
+import { IAvailableTests, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
+import './NewTest.css';
+import { Number } from './Number/Number';
 
 interface IProps extends IRequestComponentProps {
   saveTestParameters: (testParameters: any) => Promise<void>;
@@ -34,29 +36,20 @@ export class NewTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const availableTests = this.state.availableTests.numbers.map((testNumber: ITestNumber) => {
-      const operators = testNumber.operators.map((operator: string) => {
-        return (
-          <div
-            key={`${testNumber.number}${operator}`}
-            onClick={this.handleOperatorClick.bind(this, testNumber.number, operator)}
-          >
-            {testNumber.number + ' ' + operator}
-          </div>
-        );
-      });
-      return (
-        <div key={testNumber.number}>
-          {operators}
-        </div>
-      )
-    });
+    const colors = ["#F7C940", "#FF0000", "#3A93E1", "A8C75A"];
+    const currentColor = 0;
+    const testNumbers: any = [];
+    for (const testNumber of this.state.availableTests.numbers) {
+      const color = colors[currentColor % colors.length];
+      testNumbers.push(
+        <Number number={testNumber} color={color} />
+      );
+    }
     return (
-      <div>
-        <h1>Tests:</h1>
-        <div>{availableTests}</div>
+      <div className="numbers">
+        {testNumbers}
       </div>
-    );
+    )
   }
 
   private handleOperatorClick(testNumber: number, operator: string) {

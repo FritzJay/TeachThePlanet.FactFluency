@@ -1,0 +1,20 @@
+.number {
+  display: grid;
+  box-shadow: 0 0px 2px 0px rgba(0,0,0,0.14), 0 2px 2px 0px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  border-radius: 0.5em;
+  justify-items: center;
+  padding: 6px;
+}
+
+.number:hover {
+  box-shadow: 0 9px 12px 1px rgba(0,0,0,0.14), 0 3px 16px 2px rgba(0,0,0,0.12), 0 5px 6px 0 rgba(0,0,0,0.20);
+}
+
+.number-operators {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-content: center;
+  justify-items: center;
+  justify-self: stretch;
+}
