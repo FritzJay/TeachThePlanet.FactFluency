@@ -1,14 +1,25 @@
 .login-margin-top {
   margin-top: 5vh; }
 
+h2 {
+  margin: 0;
+  padding: 0;
+  color: white; }
+
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
 .login.input {
+  font-family: 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 900;
-  width: 95%;
   background-color: #FFFFFF;
   border: none;
   border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-  color: #505050; }
+  color: #505050;
+  width: 100%; }
 
 .login.label {
   margin: 3px 0;

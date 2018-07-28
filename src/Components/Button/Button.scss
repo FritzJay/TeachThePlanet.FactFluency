@@ -1,26 +1,43 @@
+/*  Universal Styles    */
+* {box-sizing: border-box;}
+
+/* Colors Need To Be Dynamic */
 .pill-button {
-  text-decoration: none;
-  padding: 1em 3em;
-  border: solid 3px rgba(0, 0, 0, 0.5);
-  border-radius: 2em;
+    text-decoration: none;
 
-  background-color: transparent;
+    padding: 1em 3em;
+    border: solid 3px rgba(0, 0, 0, 0.5);
+    border-radius: 2em;
 
-  color: rgba(0,0,0,0.5);
-  font-size: 1em;
-  font-weight: 700;
+    background-color: transparent;
+
+    color: rgba(0,0,0,0.5);
+    font-size: 1em;
+    font-weight: 700;
+
 }
 
 .pill-button:focus {
-  outline: none;
+    outline: none;
 }
 
 .pill-button:hover {
-  opacity: 1.0;
+    opacity: 1.0;
 
-  /* Sets background color to fill in */
-  background-color: #000000;
+    /* Sets background color to fill in */
+    background-color: #000000;
 
-  /* Sets font to switch to white */
-  color: #FFFFFF;
+    /* Sets font to switch to white */
+    color: #FFFFFF;
 }
+
+
+/*  Mobile  */
+@media only screen and (max-width: 399px) {}
+
+/*  Tablet  */
+@media only screen and (min-width: 400px) {}
+
+
+/*  Desktop  */
+@media only screen and (min-width: 1200px) {}

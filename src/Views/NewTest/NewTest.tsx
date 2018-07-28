@@ -65,7 +65,7 @@ export class NewTest extends React.Component<IProps, IState> {
         />
         {testNumbers}
       </div>
-    )
+    );
   }
 
   private renderSelectTest() {

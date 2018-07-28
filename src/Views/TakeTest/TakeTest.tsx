@@ -1,9 +1,9 @@
 import * as React from "react";
 import { URLS } from "../../App";
+import { StartTestConfirmation } from "../../Components/StartTestConfirmation/StartTestConfirmation";
 import { saveState } from "../../lib/Caching";
 import { ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
-import { StartTestConfirmation } from "./StartTestConfirmation";
 import { Test } from "./Test";
 
 interface IProps extends IRequestComponentProps {

@@ -1,0 +1,22 @@
+.start-test-confirmation {
+  margin: 0 auto 0 auto;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr 1fr;
+  max-width: 50rem;
+  padding: 5rem;
+
+  .buttons {
+    display: grid;
+    grid-gap: 1rem;
+  }
+}
+
+@media (max-width: 399px) {
+  .start-test-confirmation {
+    padding: 1rem;
+  }
+}
