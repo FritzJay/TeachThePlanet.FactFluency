@@ -1,7 +1,9 @@
 .numbers {
   display: grid;
   grid-column-start: 2;
-  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(250px, auto));
   grid-auto-rows: repeat(auto-fit, minmax(auto, auto));
   grid-gap: 16px;
-  padding: 24px 24px 0px 24px; }
+  padding: 24px 24px 0px 24px;
+  max-width: 50rem;
+  margin: 0 auto 0 auto; }

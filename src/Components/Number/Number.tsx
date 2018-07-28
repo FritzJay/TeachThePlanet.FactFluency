@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { ITestNumber } from '../../lib/Interfaces';
+import { themeColors } from '../../lib/Themes';
+import { Card } from '../Card/Card';
 import { Operator } from '../Operator/Operator';
 import './Number.css';
 
@@ -23,15 +25,18 @@ export class Number extends React.Component <IProps, IState>{
 
   public render() {
     const operators = this.props.number.operators.map((operator, i) => {
-      return <Operator key={i} operator={operator} />
+      const color = themeColors[i % themeColors.length];
+      return <Operator key={i} operator={operator} color={color} />
     });
     return (
-      <div className="number" onClick={this.expand}>
-        <h1 className="number-header">{this.props.number.number}</h1>
+      <Card onClick={this.expand}>
+        <div className="header">
+          <p className="text" style={{color: this.props.color}}>{this.props.number.number}</p>
+        </div>
         <div className="number-operators">
             {operators}
         </div>
-      </div>
+      </Card>
     );
   }
 

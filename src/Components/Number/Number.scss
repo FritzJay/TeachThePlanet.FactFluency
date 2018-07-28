@@ -1,22 +1,22 @@
 @import '../../shared';
 
-.number {
-  display: grid;
-  box-shadow: $dp-one;
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  border-radius: 0.5em;
-  justify-items: center;
-  padding: 6px;
-}
-
-.number:hover {
-  box-shadow: $dp-nine;
-}
-
 .number-operators {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   align-content: center;
   justify-items: center;
   justify-self: stretch;
+  padding: 0 1rem 1rem 1rem;
+  font-size: 2.5rem; 
+}
+
+@media (max-width: 565px) {
+  .card {
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+  }
+
+  .number-operators {
+    padding: 0 1rem 0 0;
+  }
 }

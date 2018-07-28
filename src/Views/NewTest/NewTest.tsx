@@ -4,6 +4,7 @@ import { Number } from '../../Components/Number/Number';
 import { loadState, saveState } from "../../lib/Caching";
 import { IAvailableTests, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
+import { themeColors } from "../../lib/Themes";
 import './NewTest.css';
 
 interface IProps extends IRequestComponentProps {
@@ -36,14 +37,14 @@ export class NewTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const colors = ["#F7C940", "#FF0000", "#3A93E1", "A8C75A"];
-    const currentColor = 0;
+    let currentColor = 0;
     const testNumbers: any = [];
     for (const testNumber of this.state.availableTests.numbers) {
-      const color = colors[currentColor % colors.length];
+      const color = themeColors[currentColor % themeColors.length];
       testNumbers.push(
         <Number number={testNumber} color={color} />
       );
+      currentColor++;
     }
     return (
       <div className="numbers">

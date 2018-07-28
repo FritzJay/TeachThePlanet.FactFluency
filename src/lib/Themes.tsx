@@ -1,0 +1,1 @@
+export const themeColors = ["#FF0000", "#3A93E1", "#F7C940", "#A8C75A"];
