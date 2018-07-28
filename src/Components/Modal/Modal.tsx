@@ -3,34 +3,38 @@ import * as tinycolor from 'tinycolor2';
 import './Modal.css';
 
 export interface IModalProps {
-  children: any,
+  className?: string;
+  children: any;
   color?: string;
 }
 
 export const Modal = (props: IModalProps) => {
+  const className = combineClassName('modal', props.className);
   return (
-    <div className="modal">
+    <div className={className}>
       {props.children}
     </div>
   );
 }
 
 export const ModalHeader = (props: IModalProps) => {
+  const className = combineClassName('header', props.className);
   const color = getReadableFontColor(props.color);
   const style = {
       backgroundColor: props.color,
       color,
   }
   return (
-    <div className="header" style={style}>
+    <div className={className} style={style}>
       {props.children}
     </div>
   );
 }
 
 export const ModalContent = (props: IModalProps) => {
+  const className = combineClassName('content', props.className);
   return (
-    <div className="content">
+    <div className={className}>
       {props.children}
     </div>
   );
@@ -47,4 +51,15 @@ const getReadableFontColor = (background: string | undefined): string => {
   } else {
     return defaultColor;
   }
+}
+
+const combineClassName = (className?: string, propsClassName?: string): string => {
+  let combinedClassNames = '';
+  if (className) {
+    combinedClassNames += ` ${className}`;
+  }
+  if (propsClassName) {
+    combinedClassNames += ` ${propsClassName}`;
+  }
+  return combinedClassNames;
 }
