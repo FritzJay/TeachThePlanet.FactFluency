@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as tinycolor from 'tinycolor2';
+import { combineClassName } from '../../lib/Themes';
 import './Modal.css';
 
 export interface IModalProps {
@@ -51,15 +52,4 @@ const getReadableFontColor = (background: string | undefined): string => {
   } else {
     return defaultColor;
   }
-}
-
-const combineClassName = (className?: string, propsClassName?: string): string => {
-  let combinedClassNames = '';
-  if (className) {
-    combinedClassNames += ` ${className}`;
-  }
-  if (propsClassName) {
-    combinedClassNames += ` ${propsClassName}`;
-  }
-  return combinedClassNames;
 }
