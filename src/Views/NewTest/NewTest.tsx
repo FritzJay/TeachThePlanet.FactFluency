@@ -69,13 +69,18 @@ export class NewTest extends React.Component<IProps, IState> {
   }
 
   private renderSelectTest() {
-    return (
-      <SelectTest
-        onSubmit={this.handleSubmit}
-        testNumber={this.state.selectedNumber}
-        history={this.props.history}
-      />
-    );
+    if (!this.state.selectedNumber) {
+      this.props.history.replace(URLS.newTest);
+      return <div />
+    } else {
+      return (
+        <SelectTest
+          onSubmit={this.handleSubmit}
+          testNumber={this.state.selectedNumber}
+          history={this.props.history}
+        />
+      );
+    }
   }
 
   private handleCardClick(selectedNumber: ITestNumber) {
