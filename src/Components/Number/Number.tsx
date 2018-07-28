@@ -8,28 +8,29 @@ import './Number.css';
 interface IProps {
   color: string;
   number: ITestNumber;
+  onCardClick: (testNumber: ITestNumber) => void;
+  onOperatorClick: (testNumber: number, operator: string) => void;
 }
 
-interface IState {
-  expanded: boolean;
-}
-
-export class Number extends React.Component <IProps, IState>{
+export class Number extends React.Component <IProps>{
   public constructor(props: IProps) {
     super(props);
-    this.state = {
-      expanded: false,
-    }
-    this.expand = this.expand.bind(this);
+    this.handleCardClick = this.handleCardClick.bind(this);
   }
 
   public render() {
     const operators = this.props.number.operators.map((operator, i) => {
       const color = themeColors[i % themeColors.length];
-      return <Operator key={i} operator={operator} color={color} />
+      return (
+        <Operator
+          key={i}
+          operator={operator}
+          color={color}
+        />
+      );
     });
     return (
-      <Card onClick={this.expand}>
+      <Card onClick={this.handleCardClick}>
         <div className="header">
           <p className="text" style={{color: this.props.color}}>{this.props.number.number}</p>
         </div>
@@ -40,7 +41,7 @@ export class Number extends React.Component <IProps, IState>{
     );
   }
 
-  private expand() {
-    return false;
+  private handleCardClick() {
+    this.props.onCardClick(this.props.number);
   }
 }

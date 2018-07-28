@@ -1,8 +1,10 @@
 import * as React from "react";
+import { Route } from "react-router-dom";
 import { URLS } from "../../App";
 import { Number } from '../../Components/Number/Number';
+import { SelectTest } from "../../Components/SelectTest/SelectTest";
 import { loadState, saveState } from "../../lib/Caching";
-import { IAvailableTests, ITestParameters } from "../../lib/Interfaces";
+import { IAvailableTests, ITestNumber, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { themeColors } from "../../lib/Themes";
 import './NewTest.css';
@@ -13,6 +15,7 @@ interface IProps extends IRequestComponentProps {
 
 interface IState {
   availableTests: IAvailableTests;
+  selectedNumber?: ITestNumber;
   token?: string;
 }
 
@@ -22,10 +25,12 @@ export class NewTest extends React.Component<IProps, IState> {
     this.state = {
       availableTests: {
         numbers: []
-      }
+      },
     }
     this.getAvailableTests = this.getAvailableTests.bind(this);
-    this.handleOperatorClick = this.handleOperatorClick.bind(this);
+    this.renderSelectTest = this.renderSelectTest.bind(this);
+    this.handleCardClick = this.handleCardClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   public componentDidMount() {
@@ -42,18 +47,44 @@ export class NewTest extends React.Component<IProps, IState> {
     for (const testNumber of this.state.availableTests.numbers) {
       const color = themeColors[currentColor % themeColors.length];
       testNumbers.push(
-        <Number number={testNumber} color={color} />
+        <Number
+          key={currentColor}
+          number={testNumber}
+          color={color}
+          onCardClick={this.handleCardClick}
+          onOperatorClick={this.handleSubmit}
+        />
       );
       currentColor++;
     }
     return (
       <div className="numbers">
+        <Route
+          path={URLS.selectTest}
+          render={this.renderSelectTest}
+        />
         {testNumbers}
       </div>
     )
   }
 
-  private handleOperatorClick(testNumber: number, operator: string) {
+  private renderSelectTest() {
+    return (
+      <SelectTest
+        onSubmit={this.handleSubmit}
+        testNumber={this.state.selectedNumber}
+        history={this.props.history}
+      />
+    );
+  }
+
+  private handleCardClick(selectedNumber: ITestNumber) {
+    this.setState({selectedNumber}, () => {
+      this.props.history.push(URLS.selectTest);
+    });
+  }
+
+  private handleSubmit(testNumber: number, operator: string) {
     const testParameters: ITestParameters = {
       number: testNumber,
       operator,

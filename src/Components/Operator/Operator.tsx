@@ -3,18 +3,39 @@ import * as React from 'react';
 interface IProps {
   operator: string;
   color: string;
+  onClick?: (operator: string) => void;
 }
 
-export const Operator = (props: IProps) => {
-  const style={color: props.color};
-  switch(props.operator) {
-    case '*':
-      return <span style={style}>×</span>
-    case '/':
-      return <span style={style}>&divide;</span>
-    case '-':
-      return <span style={style}>&#8722;</span>
-    default:
-      return <span style={style}>{props.operator}</span>
+export class Operator extends React.Component<IProps> {
+  public constructor(props: IProps) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+  public render() {
+    let symbol;
+    switch(this.props.operator) {
+      case '*':
+        symbol = '×';
+        break;
+      case '/':
+        symbol = '÷';
+        break;
+       case '-':
+        symbol = '−';
+        break;
+      default:
+        symbol = this.props.operator;
+        break;
+    }
+    const style={color: this.props.color};
+    return (
+      <a onClick={this.handleClick} style={style}>{symbol}</a>
+    );
+  }
+
+  private handleClick() {
+    if (this.props.onClick) {
+      this.props.onClick(this.props.operator);
+    }
   }
 }

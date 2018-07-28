@@ -11,6 +11,7 @@ import { TestResults } from './Views/TestResults/TestResults';
 
 export const URLS = {
   newTest: '/tests/new',
+  selectTest: '/tests/new/select',
   signin: '/sign-in',
   takeTest: '/tests/take',
   testResults: '/tests/results',

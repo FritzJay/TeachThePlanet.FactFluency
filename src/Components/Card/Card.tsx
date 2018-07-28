@@ -9,7 +9,7 @@ interface IProps {
 export const Card = (props: IProps) => {
   const className = (props.onClick) ? "card hover" : "card";
   return (
-    <div className={className}>
+    <div className={className} onClick={props.onClick}>
       {props.children}
     </div>
   );
