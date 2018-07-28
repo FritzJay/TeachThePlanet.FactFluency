@@ -1,10 +1,10 @@
 import * as React from "react";
 import { URLS } from "../../App";
+import { Number } from '../../Components/Number/Number';
 import { loadState, saveState } from "../../lib/Caching";
 import { IAvailableTests, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import './NewTest.css';
-import { Number } from './Number/Number';
 
 interface IProps extends IRequestComponentProps {
   saveTestParameters: (testParameters: any) => Promise<void>;

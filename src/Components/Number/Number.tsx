@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ITestNumber } from '../../../lib/Interfaces';
+import { ITestNumber } from '../../lib/Interfaces';
+import { Operator } from '../Operator/Operator';
 import './Number.css';
-import { Operator } from './Operator/Operator';
 
 interface IProps {
   color: string;

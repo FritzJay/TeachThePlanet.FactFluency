@@ -10,14 +10,20 @@
   justify-items: center;
   align-items: center;
   background-color: #FFFFFF;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
 
 .navbar-margin-top {
-  margin-top: 104px; }
+  margin-top: 104px;
+}
 
 @media (max-width: 399px) {
   .navbar {
     grid-template-columns: 1fr 1f;
-    justify-items: center; }
+    justify-items: center;
+  }
+
   .navbar-margin-top {
-    margin-top: 80px; } }
+    margin-top: 80px;
+  }
+}

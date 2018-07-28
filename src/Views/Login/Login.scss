@@ -1,5 +1,6 @@
 .login-margin-top {
-  margin-top: 5vh; }
+  margin-top: 5vh;
+}
 
 .login.input {
   font-size: 1em;
@@ -8,17 +9,22 @@
   background-color: #FFFFFF;
   border: none;
   border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-  color: #505050; }
+  color: rgb(80, 80, 80);
+}
 
 .login.label {
   margin: 3px 0;
   display: block;
   justify-self: flex-start;
-  font-weight: 900; }
+  font-weight: 900;
+}
 
 .error {
-  color: red; }
+  color: red;
+}
 
 @media (max-width: 399px) {
   .login-margin-top {
-    margin-top: 0; } }
+    margin-top: 0;
+  }
+}

@@ -15,7 +15,7 @@ export const Button = (props: IButtonProps) => {
   };
   return (
     <button
-      className="button"
+      className="pill-button"
       onClick={props.onClick}
       style={style}
     >
