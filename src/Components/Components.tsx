@@ -9,5 +9,5 @@ export const Button = _Button;
 export const Card = _Card;
 export const Modal = _Modal;
 export const Navbar = _Navbar;
-export const TestNumber = _TestNumber;
 export const Operator = _Operator;
+export const TestNumber = _TestNumber;
