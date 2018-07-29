@@ -43,10 +43,10 @@ export class Login extends React.Component<IProps, IState> {
   
   public render() {
     return (
-      <div className="login-margin-top">
+      <div className="login margin-top">
         <Modal>
           <ModalHeader color="#4CAF50">
-            <h2 className="hss">Math Facts Practice</h2>
+            <h2>Math Facts Practice</h2>
           </ModalHeader>
           <ModalContent>
           <h2>Already in a class?</h2>
