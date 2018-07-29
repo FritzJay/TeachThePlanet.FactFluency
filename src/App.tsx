@@ -122,7 +122,7 @@ class App extends React.Component<IProps, IState> {
     if (token) {
       return (
         <SelectTestNumber {...props}
-          token={this.state.token}
+          token={token}
           onSubmit={this.handleSelectTestNumberSubmit}
         />
       );
@@ -140,7 +140,7 @@ class App extends React.Component<IProps, IState> {
   }
   
   private renderSelectTestOperator(props: any) {
-    const testNumber = this.state.token || getCached('testNumber');
+    const testNumber = this.state.testNumber || getCached('testNumber');
     if (testNumber) {
       return (
         <SelectTestOperator {...props}
@@ -167,7 +167,7 @@ class App extends React.Component<IProps, IState> {
   }
   
   private renderStartTest(props: any) {
-    const testParameters = this.state.token || getCached('testParameters');
+    const testParameters = this.state.testParameters || getCached('testParameters');
     if (testParameters) {
       return (
         <StartTest {...props}
@@ -185,11 +185,11 @@ class App extends React.Component<IProps, IState> {
   }
   
   private renderTakeTest(props: any) {
-    const testParameters = this.state.token || getCached('testParameters');
+    const testParameters = this.state.testParameters || getCached('testParameters');
     if (testParameters) {
       return (
         <TakeTest {...props}
-          token={this.state.token}
+          token={testParameters}
           testParameters={testParameters}
           onSubmit={this.handleTakeTestSubmit}
         />
@@ -207,11 +207,11 @@ class App extends React.Component<IProps, IState> {
   }
   
   private renderTestResults(props: any) {
-    const test = this.state.token || getCached('test');
+    const test = this.state.test || getCached('test');
     if (test) {
       return (
         <TestResults {...props}
-          token={this.state.token}
+          token={test}
           test={test}
           onSubmit={this.saveStateFromChild}
         />
