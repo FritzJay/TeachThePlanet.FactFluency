@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as tinycolor from 'tinycolor2';
 import { combineClassName } from '../../lib/Themes';
 import './Modal.css';
 
@@ -20,13 +19,8 @@ export const Modal = (props: IModalProps) => {
 
 export const ModalHeader = (props: IModalProps) => {
   const className = combineClassName('header', props.className);
-  const color = getReadableFontColor(props.color);
-  const style = {
-      backgroundColor: props.color,
-      color,
-  }
   return (
-    <div className={className} style={style}>
+    <div className={className}>
       {props.children}
     </div>
   );
@@ -39,17 +33,4 @@ export const ModalContent = (props: IModalProps) => {
       {props.children}
     </div>
   );
-}
-
-const getReadableFontColor = (background: string | undefined): string => {
-  const defaultColor = 'rgba(1, 0, 0, .5)';
-  if (background) {
-    return tinycolor.mostReadable(
-      background,
-      [defaultColor, '#FFFFFF'],
-      { includeFallbackColors: false },
-    ).toRgbString();
-  } else {
-    return defaultColor;
-  }
 }
