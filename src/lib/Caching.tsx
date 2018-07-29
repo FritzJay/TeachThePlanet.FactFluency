@@ -38,3 +38,10 @@ export const signOut = (component: React.Component<any>) => {
   localStorage.clear();
   component.props.history.push(URLS.signin);
 }
+
+export const getCached = (key: string) => {
+  const value = localStorage.getItem(key);
+  if (value) {
+    return JSON.parse(value);
+  }
+}
