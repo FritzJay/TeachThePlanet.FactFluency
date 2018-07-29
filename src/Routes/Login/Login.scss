@@ -1,3 +1,5 @@
+@import "../../Stylesheets/all";
+
 .login.margin-top {
   margin-top: 5vh;
 }
@@ -5,7 +7,7 @@
 .login {
   .modal {
     .header {
-      background-color: #4CAF50;
+      background-color: $green;
       
       h2 {
         margin: 0;
