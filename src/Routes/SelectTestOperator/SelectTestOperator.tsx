@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Modal, Operator } from '../../Components/Components';
+import { getCached } from '../../lib/Caching';
 import { ITestNumber } from '../../lib/Interfaces';
 import { themeColors } from '../../lib/Themes';
 import './SelectTestOperator.css';
@@ -17,7 +18,7 @@ export class SelectTestOperator extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {
-      testNumber: props.testNumber || localStorage.getItem('testNumber'),
+      testNumber: props.testNumber || getCached('testNumber'),
     }
   }
 
