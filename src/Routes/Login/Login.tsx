@@ -1,27 +1,18 @@
 import * as React from "react";
-import { URLS } from "../../App";
 import { Button } from '../../Components/Button/Button';
 import { Modal, ModalContent, ModalHeader } from '../../Components/Modal/Modal';
 import { IUser } from "../../lib/Interfaces";
-import { IRequest, jsonFetch, setTokenToStateOrSignOut } from '../../lib/Requests';
+import { IRequest, jsonFetch } from '../../lib/Requests';
 import './Login.css';
 
-interface IResponse {
-  token: string;
-  user: IUser;
-}
-
 interface IProps {
-  onSubmit: (response: IResponse) => Promise<void>; 
-  token?: string,
-  history: any,
+  onSubmit: (token: string, user: IUser) => void; 
 }
 
 interface IState {
   classCode: string;
   error: string;
   name: string;
-  token?: string;
 }
 
 export class Login extends React.Component<IProps, IState> {
@@ -39,7 +30,15 @@ export class Login extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    setTokenToStateOrSignOut(this);
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    if (!token) {
+      console.log('Local storage does not contain token.')
+    } else if (!user) {
+      console.log('Local storage does not contain user.')
+    } else {
+      this.props.onSubmit(token, JSON.parse(user));
+    }
   }
   
   public render() {
@@ -69,25 +68,6 @@ export class Login extends React.Component<IProps, IState> {
     );
   }
   
-  private signin(name: string, classCode: string) {
-    const request: IRequest = {
-      body: {name, classCode},
-      method: "POST",
-      token: this.state.token,
-    };
-    jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
-    .then((response) => {
-       this.props.onSubmit({
-        token: response.token,
-        user: response.user,
-      })
-      .then(this.props.history.push(URLS.selectTestNumber))
-    })
-    .catch((error: Error) => {
-      this.setState({error: error.toString()});
-    });
-  }
-  
   private handleNameChange(event: any) {
     this.setState({name: event.target.value});
   }
@@ -98,5 +78,19 @@ export class Login extends React.Component<IProps, IState> {
   
   private handleSubmitClick() {
     this.signin(this.state.name, this.state.classCode);
+  }
+  
+  private signin(name: string, classCode: string) {
+    const request: IRequest = {
+      body: {name, classCode},
+      method: "POST",
+    };
+    jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
+    .then((response) => {
+      this.props.onSubmit(response.token, response.user);
+    })
+    .catch((error: Error) => {
+      this.setState({error: error.toString()});
+    });
   }
 }

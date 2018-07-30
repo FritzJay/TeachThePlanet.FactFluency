@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './Components/Components';
-import { loadState, saveState, signOut } from './lib/Caching';
+import { saveState, signOut } from './lib/Caching';
 import { ITest, ITestNumber, IUser } from './lib/Interfaces';
 import { Login, SelectTestNumber, SelectTestOperator, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
@@ -51,21 +51,17 @@ class App extends React.Component<IProps, IState> {
     this.saveStateFromChild = this.saveStateFromChild.bind(this);
   }
 
-  public componentDidMount() {
-    loadState(this, 'user');
-  }
-
   public render() {
     return (
       <div>
         <Route
+          path={URLS.tests}
+          render={this.renderNavbar}
+        />
+        <Route
           exact={true}
           path={URLS.signin}
           render={this.renderLogin}
-        />
-        <Route
-          path={URLS.tests}
-          render={this.renderNavbar}
         />
         <Route
           path={URLS.selectTestNumber}
@@ -91,21 +87,6 @@ class App extends React.Component<IProps, IState> {
     );
   }
   
-  private renderLogin(props: any) {
-    return (
-      <Login {...props}
-        onSubmit={this.handleLoginSubmit}
-      />
-    );
-  }
-
-  private handleLoginSubmit(user: IUser) {
-    saveState(this, {user})
-    .then(() => {
-      this.props.history.push(URLS.selectTestNumber);
-    });
-  }
-  
   private renderNavbar(props: any) {
     return(
       <Navbar {...props}
@@ -117,6 +98,21 @@ class App extends React.Component<IProps, IState> {
   
   private handleSignOutClick() {
     signOut(this);
+  }
+  
+  private renderLogin(props: any) {
+    return (
+      <Login {...props}
+        onSubmit={this.handleLoginSubmit}
+      />
+    );
+  }
+
+  private handleLoginSubmit(token: string, user: IUser) {
+    saveState(this, {token, user})
+    .then(() => {
+      this.props.history.push(URLS.selectTestNumber);
+    });
   }
   
   private renderSelectTestNumber(props: any) {
