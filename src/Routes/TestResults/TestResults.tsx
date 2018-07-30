@@ -17,13 +17,13 @@ export class TestResults extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {};
-    this.submitTest = this.submitTest.bind(this);
+    this.saveTest = this.saveTest.bind(this);
   }
 
   public componentDidMount() {
     setTokenToStateOrSignOut(this)
     .then(() => {
-      this.submitTest(this.props.test);
+      this.saveTest(this.props.test);
     });
   }
 
@@ -32,7 +32,7 @@ export class TestResults extends React.Component<IProps, IState> {
     return <div>{message}</div>;
   }
 
-  private submitTest(test: ITest) {
+  private saveTest(test: ITest) {
     console.log(test);
     const request: IRequest = {
       body: test,

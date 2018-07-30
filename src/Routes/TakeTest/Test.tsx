@@ -3,9 +3,8 @@ import { IDisplayQuestion, IQuestion, ITest } from '../../lib/Interfaces';
 import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing';
 
 interface IProps {
-  history?: any;
   test: ITest;
-  onSubmit: (test: any) => void;
+  onSubmit: (test: ITest) => void;
 }
 
 interface IState {
@@ -85,6 +84,6 @@ export class Test extends React.Component<IProps, IState> {
     const test = this.state.test;
     test.questions = questions;
     test.end = new Date();
-    this.props.onSubmit({test});
+    this.props.onSubmit(test);
   }
 }

@@ -81,7 +81,7 @@ export class Login extends React.Component<IProps, IState> {
         token: response.token,
         user: response.user,
       })
-      .then(this.props.history.push(URLS.newTest))
+      .then(this.props.history.push(URLS.selectTestNumber))
     })
     .catch((error: Error) => {
       this.setState({error: error.toString()});

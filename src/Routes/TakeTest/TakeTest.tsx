@@ -6,8 +6,8 @@ import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut }
 import { Test } from "./Test";
 
 interface IProps extends IRequestComponentProps {
-  onSubmit: (test: ITest) => void;
   testParameters?: ITestParameters;
+  onSubmit: (test: ITest) => void;
 }
 
 interface IState {

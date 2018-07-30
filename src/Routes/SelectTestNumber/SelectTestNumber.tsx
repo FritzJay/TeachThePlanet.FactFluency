@@ -1,10 +1,10 @@
 import * as React from "react";
 import { TestNumber } from '../../Components/Components';
 import { loadState, saveState } from "../../lib/Caching";
-import { IAvailableTests, ITestNumber, ITestParameters } from "../../lib/Interfaces";
+import { IAvailableTests, ITestNumber } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { themeColors } from "../../lib/Themes";
-import './NewTest.css';
+import './SelectTestNumber.css';
 
 interface IProps extends IRequestComponentProps {
   onSubmit: (testNumber: ITestNumber) => void;
@@ -16,7 +16,7 @@ interface IState {
   token?: string;
 }
 
-export class NewTest extends React.Component<IProps, IState> {
+export class SelectTestNumber extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {

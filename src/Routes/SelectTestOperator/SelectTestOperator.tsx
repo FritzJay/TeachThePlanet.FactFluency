@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Modal, Operator } from '../../Components/Components';
 import { ITestNumber } from '../../lib/Interfaces';
 import { themeColors } from '../../lib/Themes';
-import './SelectTest.css';
+import './SelectTestOperator.css';
 
 interface IProps {
   onSubmit: (operator: string) => void;
   testNumber: ITestNumber;
 }
 
-export class SelectTest extends React.Component<IProps> {
+export class SelectTestOperator extends React.Component<IProps> {
   public constructor(props: IProps) {
     super(props);
   }
