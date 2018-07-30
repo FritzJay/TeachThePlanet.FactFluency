@@ -19,6 +19,13 @@ export const Navbar = (props: IProps) => {
   );
 }
 
+/*
+
+https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0
+https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0
+
+*/
+
 const userInfo = (user?: IUser) => {
   if (user) {
     return (
@@ -26,7 +33,7 @@ const userInfo = (user?: IUser) => {
     );
   } else {
     return (
-      <p>Sign Up</p>
+      <p />
     );
   }
 }

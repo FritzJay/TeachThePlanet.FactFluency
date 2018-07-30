@@ -13,7 +13,7 @@ export const URLS = {
   startTest: '/tests/start',
   takeTest: '/tests/take',
   testResults: '/tests/results',
-  tests: '/tests',
+  tests: '/',
 }
 
 interface IProps {
@@ -60,31 +60,33 @@ class App extends React.Component<IProps, IState> {
           path={URLS.tests}
           render={this.renderNavbar}
         />
-        <Route
-          exact={true}
-          path={URLS.signin}
-          render={this.renderLogin}
-        />
-        <Route
-          path={URLS.selectTestNumber}
-          render={this.renderSelectTestNumber}
-        />
-        <Route
-          path={URLS.selectTestOperator}
-          render={this.renderSelectTestOperator}
-        />
-        <Route
-          path={URLS.startTest}
-          render={this.renderStartTest}
-        />
-        <Route
-          path={URLS.takeTest}
-          render={this.renderTakeTest}
-        />
-        <Route
-          path={URLS.testResults}
-          render={this.renderTestResults}
-        />
+        <div className="app-content">
+          <Route
+            exact={true}
+            path={URLS.signin}
+            render={this.renderLogin}
+          />
+          <Route
+            path={URLS.selectTestNumber}
+            render={this.renderSelectTestNumber}
+          />
+          <Route
+            path={URLS.selectTestOperator}
+            render={this.renderSelectTestOperator}
+          />
+          <Route
+            path={URLS.startTest}
+            render={this.renderStartTest}
+          />
+          <Route
+            path={URLS.takeTest}
+            render={this.renderTakeTest}
+          />
+          <Route
+            path={URLS.testResults}
+            render={this.renderTestResults}
+          />
+        </div>
       </div>
     );
   }

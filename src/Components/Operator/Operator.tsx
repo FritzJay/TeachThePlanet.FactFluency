@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './Operator.css';
 
 interface IProps {
   operator: string;
@@ -27,9 +28,10 @@ export class Operator extends React.Component<IProps> {
         symbol = this.props.operator;
         break;
     }
-    const style={color: this.props.color};
     return (
-      <a onClick={this.handleClick} style={style}>{symbol}</a>
+      <div className="operator-div">
+        <a className="operator" onClick={this.handleClick}>{symbol}</a>
+      </div>
     );
   }
 

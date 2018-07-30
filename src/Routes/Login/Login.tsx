@@ -45,20 +45,19 @@ export class Login extends React.Component<IProps, IState> {
     return (
       <div className="login margin-top">
         <Modal>
-          <ModalHeader color="#4CAF50">
-            <h2>Math Facts Practice</h2>
+          <ModalHeader>
+            <h2>Practice Your Math Facts</h2>
           </ModalHeader>
           <ModalContent>
-          <h2>Already in a class?</h2>
-            <label className="login label">Name</label>
-            <input className="login input" onChange={this.handleNameChange} value={this.state.name} />
-            <label className="login label">Class Code</label>
-            <input className="login input" onChange={this.handleClassCodeChange} value={this.state.classCode} type="number" />
-            <p>No code, no worries you can still get started, just click Submit.</p>
+            <label className="label">Name</label>
+            <input className="input" onChange={this.handleNameChange} value={this.state.name} />
+            <label className="label">Class Code</label>
+            <input className="input" onChange={this.handleClassCodeChange} value={this.state.classCode} type="number" />
+            <p className="reminder">No code, no worries you can still get started.</p>
           </ModalContent>
           <ModalContent>
-            <Button onClick={this.handleSubmitClick}>
-              <span className="btn-text">Get Started</span>
+            <Button className="button" onClick={this.handleSubmitClick}>
+              Get Started
             </Button>
             <p className="error">{this.state.error}</p>
           </ModalContent>

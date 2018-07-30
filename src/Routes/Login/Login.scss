@@ -5,6 +5,8 @@
 }
 
 .login {
+  grid-column: 1 / -1;
+  
   .modal {
     .header {
       background-color: $green;
@@ -16,42 +18,54 @@
         color:white;
       }
     }
-  }
 
-  .sub-head {
-    color:  rgb(80, 80, 80);
-  }
+    .content {
+      .button {
+        border-color: $blue;
+        color: $blue;
+      }
+  
+      .button:hover {
+        color: $white;
+        background-color: $blue;
+      }
 
-  /* Hide HTML5 Up and Down arrows. */
-  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+      /* Hide HTML5 Up and Down arrows. */
+      input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
 
-  .login.input {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1em;
-    font-weight: 900;
+      .input {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1em;
+        font-weight: 900;
 
-    background-color: #FFFFFF;
-    
-    border: none;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-    
-    color: rgb(80, 80, 80);
+        background-color: #FFFFFF;
+        
+        border: none;
+        border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+        
+        color: rgb(80, 80, 80);
 
-    width: 100%;
-  }
+        width: 100%;
+      }
 
-  .login.label {
-    margin: 3px 0;
-    display: block;
-    justify-self: flex-start;
-    font-weight: 900;
-  }
+      .label {
+        margin-top: 1em;
+        display: block;
+        justify-self: flex-start;
+        font-weight: 900;
+      }
 
-  .error {
-    color: red;
+      .reminder {
+        margin-top: 2em;
+      }
+
+      .error {
+        color: red;
+      }
+    }
   }
 }
 

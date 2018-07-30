@@ -1,10 +1,17 @@
-.numbers {
+.select-test-numbers {
+  grid-column: 2 / 2;
+  
   display: grid;
-  grid-column-start: 2;
-  grid-template-columns: repeat(auto-fit, minmax(250px, auto));
-  grid-auto-rows: repeat(auto-fit, minmax(auto, auto));
-  grid-gap: 16px;
-  padding: 24px 24px 0px 24px;
-  max-width: 50rem;
-  margin: 0 auto 0 auto;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: minmax(auto, auto);
+  grid-gap: 1em;
 }
+
+/* Mobile */ 
+@media only screen and (max-width: 399px) {}
+
+/* Tablet */ 
+@media only screen and (min-width: 400px) {}
+
+/* Desktop */ 
+@media only screen and (min-width: 1200px) {}
