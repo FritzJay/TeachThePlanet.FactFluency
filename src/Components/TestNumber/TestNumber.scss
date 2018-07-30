@@ -1,6 +1,6 @@
 @import '../../shared';
 
-.number-operators {
+.test-number-operators {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   align-content: center;
@@ -16,7 +16,7 @@
     grid-template-columns: 2fr 4fr;
   }
 
-  .number-operators {
+  .test-number-operators {
     padding: 0 1rem 0 0;
   }
 }

@@ -3,16 +3,15 @@ import { ITestNumber } from '../../lib/Interfaces';
 import { themeColors } from '../../lib/Themes';
 import { Card } from '../Card/Card';
 import { Operator } from '../Operator/Operator';
-import './Number.css';
+import './TestNumber.css';
 
 interface IProps {
   color: string;
   number: ITestNumber;
   onCardClick: (testNumber: ITestNumber) => void;
-  onOperatorClick: (testNumber: number, operator: string) => void;
 }
 
-export class Number extends React.Component <IProps>{
+export class TestNumber extends React.Component <IProps>{
   public constructor(props: IProps) {
     super(props);
     this.handleCardClick = this.handleCardClick.bind(this);

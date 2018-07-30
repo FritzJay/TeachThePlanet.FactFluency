@@ -1,20 +1,17 @@
 import * as React from 'react';
+import { Modal, Operator } from '../../Components/Components';
 import { ITestNumber } from '../../lib/Interfaces';
 import { themeColors } from '../../lib/Themes';
-import { Modal } from '../Modal/Modal';
-import { Operator } from '../Operator/Operator';
 import './SelectTest.css';
 
 interface IProps {
-  history?: any;
-  onSubmit: (testNumber: number, operator: string) => void;
+  onSubmit: (operator: string) => void;
   testNumber: ITestNumber;
 }
 
 export class SelectTest extends React.Component<IProps> {
   public constructor(props: IProps) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   public render() {
@@ -25,7 +22,7 @@ export class SelectTest extends React.Component<IProps> {
           key={i}
           operator={operator}
           color={color}
-          onClick={this.handleClick}
+          onClick={this.props.onSubmit}
         />
       );
     });
@@ -41,11 +38,5 @@ export class SelectTest extends React.Component<IProps> {
         </Modal>
       </div>
     );
-  }
-
-  private handleClick(operator: string) {
-    if (this.props.onSubmit && this.props.testNumber) {
-      this.props.onSubmit(this.props.testNumber.number, operator)
-    }
   }
 }

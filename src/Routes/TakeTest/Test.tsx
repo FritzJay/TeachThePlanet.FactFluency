@@ -5,7 +5,7 @@ import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Test
 interface IProps {
   history?: any;
   test: ITest;
-  submitTest: (test: any) => void;
+  onSubmit: (test: any) => void;
 }
 
 interface IState {
@@ -63,7 +63,7 @@ export class Test extends React.Component<IProps, IState> {
       const nextQuestion = startQuestion(this.state.questions[nextQuestionIndex]);
       this.setState({question: nextQuestion});
     } else {
-      this.submitTest();
+      this.onSubmit();
     }
   }
 
@@ -80,11 +80,11 @@ export class Test extends React.Component<IProps, IState> {
     });
   }
 
-  private submitTest() {
+  private onSubmit() {
     const questions = sortQuestions(this.state.questions);
     const test = this.state.test;
     test.questions = questions;
     test.end = new Date();
-    this.props.submitTest({test});
+    this.props.onSubmit({test});
   }
 }

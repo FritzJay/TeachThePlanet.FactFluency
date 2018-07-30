@@ -12,7 +12,7 @@ interface IResponse {
 }
 
 interface IProps {
-  saveUser: (response: IResponse) => Promise<void>; 
+  onSubmit: (response: IResponse) => Promise<void>; 
   token?: string,
   history: any,
 }
@@ -77,7 +77,7 @@ export class Login extends React.Component<IProps, IState> {
     };
     jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
     .then((response) => {
-       this.props.saveUser({
+       this.props.onSubmit({
         token: response.token,
         user: response.user,
       })

@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { Button } from '../Button/Button';
-import { Card } from '../Card/Card';
-import './StartTestConfirmation.css';
+import { Button, Card } from '../../Components/Components';
+import './StartTest.css';
 
 interface IProps {
-  startTest: () => void;
+  onSubmit: () => void;
 }
 
-export class StartTestConfirmation extends React.Component<IProps> {
+export class StartTest extends React.Component<IProps> {
   public constructor(props: IProps) {
     super(props);
     this.handleStartTestClick = this.handleStartTestClick.bind(this);
@@ -15,7 +14,7 @@ export class StartTestConfirmation extends React.Component<IProps> {
 
   public render() {
     return (
-      <Card className="start-test-confirmation">
+      <Card className="start-test">
         <h1>We know you got this!</h1>
         <p>You practiced right?</p>
         <div className="buttons">
@@ -28,7 +27,7 @@ export class StartTestConfirmation extends React.Component<IProps> {
 
   private handleStartTestClick() {
     this.setState({hidden: true}, () => {
-      this.props.startTest();
+      this.props.onSubmit();
     });
   }
 

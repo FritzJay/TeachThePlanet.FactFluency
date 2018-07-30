@@ -1,15 +1,19 @@
 import { URLS } from "../App";
 
-export const saveState = (component: React.Component, state: any) => {
+export const saveState = (component: React.Component, state: any): Promise<any> => {
   console.log('Saving the state:');
   console.log(state);
-  component.setState({...state});
-  const keys = Object.getOwnPropertyNames(state);
-  for (const key of keys) {
-    const json = JSON.stringify(state[key])
-    localStorage.setItem(key, json);
-  }
-  console.log(localStorage);
+  return new Promise<any>((resolve) => {
+    component.setState({...state}, () => {
+      const keys = Object.getOwnPropertyNames(state);
+      for (const key of keys) {
+        const json = JSON.stringify(state[key])
+        localStorage.setItem(key, json);
+      }
+      console.log(localStorage);
+      resolve();
+    });
+  });
 }
 
 export const loadState = (component: React.Component, key: string) => {
