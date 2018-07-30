@@ -46,6 +46,7 @@ class App extends React.Component<IProps, IState> {
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
+    this.handleStartTestCancel = this.handleStartTestCancel.bind(this);
     this.handleTakeTestSubmit = this.handleTakeTestSubmit.bind(this);
     this.saveStateFromChild = this.saveStateFromChild.bind(this);
   }
@@ -115,8 +116,8 @@ class App extends React.Component<IProps, IState> {
     if (token) {
       return (
         <SelectTest {...props}
-          token={token}
-          onSubmit={this.handleSelectTestSubmit}
+        token={token}
+        onSubmit={this.handleSelectTestSubmit}
         />
       );
     } else {
@@ -124,7 +125,7 @@ class App extends React.Component<IProps, IState> {
       return <div />;
     }
   }
-
+  
   private handleSelectTestSubmit(testNumber: ITestNumber, operator: string) {
     const testParameters = {
       number: testNumber.number,
@@ -141,7 +142,8 @@ class App extends React.Component<IProps, IState> {
     if (testParameters) {
       return (
         <StartTest {...props}
-          onSubmit={this.handleStartTestSubmit}
+        onSubmit={this.handleStartTestSubmit}
+        onCancel={this.handleStartTestCancel}
         />
       );
     } else {
@@ -149,9 +151,13 @@ class App extends React.Component<IProps, IState> {
       return <div />;
     }
   }
-
+  
   private handleStartTestSubmit() {
     this.props.history.push(URLS.takeTest);
+  }
+  
+  private handleStartTestCancel() {
+    this.props.history.goBack();
   }
   
   private renderTakeTest(props: any) {
@@ -159,8 +165,8 @@ class App extends React.Component<IProps, IState> {
     if (testParameters) {
       return (
         <TakeTest {...props}
-          token={testParameters}
-          testParameters={testParameters}
+        token={testParameters}
+        testParameters={testParameters}
           onSubmit={this.handleTakeTestSubmit}
         />
       );
