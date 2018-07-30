@@ -51,7 +51,7 @@ export class SelectTest extends React.Component<IProps, IState> {
       currentColor++;
     }
     return (
-      <div className="numbers">
+      <div className="select-test-numbers">
         {testNumbers}
       </div>
     );

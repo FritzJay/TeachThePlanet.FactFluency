@@ -12,7 +12,7 @@ export const URLS = {
   startTest: '/tests/start',
   takeTest: '/tests/take',
   testResults: '/tests/results',
-  tests: '/tests',
+  tests: '/',
 }
 
 interface IProps {

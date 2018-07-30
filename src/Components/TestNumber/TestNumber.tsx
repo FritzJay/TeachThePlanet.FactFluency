@@ -30,11 +30,11 @@ export class TestNumber extends React.Component <IProps>{
       );
     });
     return (
-      <Card>
+      <Card className="test-number">
         <div className="header">
           <p className="text" style={{color: this.props.color}}>{this.props.number.number}</p>
         </div>
-        <div className="number-operators">
+        <div className="operators-container">
             {operators}
         </div>
       </Card>
