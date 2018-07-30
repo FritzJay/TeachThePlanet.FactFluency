@@ -4,11 +4,10 @@ import './App.css';
 import { Navbar } from './Components/Components';
 import { getCached, saveState, signOut } from './lib/Caching';
 import { ITest, ITestNumber, IUser } from './lib/Interfaces';
-import { Login, SelectTestNumber, SelectTestOperator, StartTest, TakeTest, TestResults } from './Routes/Routes';
+import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
-  selectTestNumber: '/tests/select/number',
-  selectTestOperator: '/tests/select/operator',
+  selectTest: '/tests/select',
   signin: '/',
   startTest: '/tests/start',
   takeTest: '/tests/take',
@@ -39,15 +38,13 @@ class App extends React.Component<IProps, IState> {
     }
     this.renderLogin = this.renderLogin.bind(this);
     this.renderNavbar = this.renderNavbar.bind(this);
-    this.renderSelectTestNumber = this.renderSelectTestNumber.bind(this);
-    this.renderSelectTestOperator = this.renderSelectTestOperator.bind(this);
+    this.renderSelectTest = this.renderSelectTest.bind(this);
     this.renderStartTest = this.renderStartTest.bind(this);
     this.renderTakeTest = this.renderTakeTest.bind(this);
     this.renderTestResults = this.renderTestResults.bind(this);
     this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-    this.handleSelectTestNumberSubmit = this.handleSelectTestNumberSubmit.bind(this);
-    this.handleSelectTestOperatorSubmit = this.handleSelectTestOperatorSubmit.bind(this);
+    this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
     this.handleTakeTestSubmit = this.handleTakeTestSubmit.bind(this);
     this.saveStateFromChild = this.saveStateFromChild.bind(this);
@@ -66,12 +63,8 @@ class App extends React.Component<IProps, IState> {
           render={this.renderLogin}
         />
         <Route
-          path={URLS.selectTestNumber}
-          render={this.renderSelectTestNumber}
-        />
-        <Route
-          path={URLS.selectTestOperator}
-          render={this.renderSelectTestOperator}
+          path={URLS.selectTest}
+          render={this.renderSelectTest}
         />
         <Route
           path={URLS.startTest}
@@ -113,17 +106,17 @@ class App extends React.Component<IProps, IState> {
   private handleLoginSubmit(token: string, user: IUser) {
     saveState(this, {token, user})
     .then(() => {
-      this.props.history.push(URLS.selectTestNumber);
+      this.props.history.push(URLS.selectTest);
     });
   }
   
-  private renderSelectTestNumber(props: any) {
+  private renderSelectTest(props: any) {
     const token = this.state.token || getCached('token');
     if (token) {
       return (
-        <SelectTestNumber {...props}
+        <SelectTest {...props}
           token={token}
-          onSubmit={this.handleSelectTestNumberSubmit}
+          onSubmit={this.handleSelectTestSubmit}
         />
       );
     } else {
@@ -132,35 +125,12 @@ class App extends React.Component<IProps, IState> {
     }
   }
 
-  private handleSelectTestNumberSubmit(testNumber: ITestNumber) {
-    saveState(this, {testNumber})
-    .then(() => {
-      this.props.history.push(URLS.selectTestOperator);
-    });
-  }
-  
-  private renderSelectTestOperator(props: any) {
-    const testNumber = this.state.testNumber || getCached('testNumber');
-    if (testNumber) {
-      return (
-        <SelectTestOperator {...props}
-          onSubmit={this.handleSelectTestOperatorSubmit}
-          testNumber={testNumber}
-        />
-      );
-    } else {
-      this.props.history.goBack();
-      return <div />;
+  private handleSelectTestSubmit(testNumber: ITestNumber, operator: string) {
+    const testParameters = {
+      number: testNumber.number,
+      operator,
     }
-  }
-
-  private handleSelectTestOperatorSubmit(operator: string) {
-    saveState(this, {
-      testParameters: {
-        number: this.state.testNumber && this.state.testNumber.number,
-        operator,
-      }
-    })
+    saveState(this, {testParameters})
     .then(() => {
       this.props.history.push(URLS.startTest);
     });

@@ -4,7 +4,7 @@ import { loadState, saveState } from "../../lib/Caching";
 import { IAvailableTests, ITestNumber } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { themeColors } from "../../lib/Themes";
-import './SelectTestNumber.css';
+import './SelectTest.css';
 
 interface IProps extends IRequestComponentProps {
   onSubmit: (testNumber: ITestNumber) => void;
@@ -16,7 +16,7 @@ interface IState {
   token?: string;
 }
 
-export class SelectTestNumber extends React.Component<IProps, IState> {
+export class SelectTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {
@@ -45,7 +45,7 @@ export class SelectTestNumber extends React.Component<IProps, IState> {
           key={currentColor}
           number={testNumber}
           color={color}
-          onCardClick={this.props.onSubmit}
+          onSubmit={this.props.onSubmit}
         />
       );
       currentColor++;

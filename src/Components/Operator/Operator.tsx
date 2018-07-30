@@ -3,7 +3,7 @@ import * as React from 'react';
 interface IProps {
   operator: string;
   color: string;
-  onClick?: (operator: string) => void;
+  onClick: (operator: string) => void;
 }
 
 export class Operator extends React.Component<IProps> {
@@ -34,8 +34,6 @@ export class Operator extends React.Component<IProps> {
   }
 
   private handleClick() {
-    if (this.props.onClick) {
-      this.props.onClick(this.props.operator);
-    }
+    this.props.onClick(this.props.operator);
   }
 }

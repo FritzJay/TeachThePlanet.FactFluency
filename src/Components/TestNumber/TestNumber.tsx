@@ -8,13 +8,13 @@ import './TestNumber.css';
 interface IProps {
   color: string;
   number: ITestNumber;
-  onCardClick: (testNumber: ITestNumber) => void;
+  onSubmit: (testNumber: ITestNumber, operator: string) => void;
 }
 
 export class TestNumber extends React.Component <IProps>{
   public constructor(props: IProps) {
     super(props);
-    this.handleCardClick = this.handleCardClick.bind(this);
+    this.handleOperatorClick = this.handleOperatorClick.bind(this);
   }
 
   public render() {
@@ -25,11 +25,12 @@ export class TestNumber extends React.Component <IProps>{
           key={i}
           operator={operator}
           color={color}
+          onClick={this.handleOperatorClick}
         />
       );
     });
     return (
-      <Card onClick={this.handleCardClick}>
+      <Card>
         <div className="header">
           <p className="text" style={{color: this.props.color}}>{this.props.number.number}</p>
         </div>
@@ -40,7 +41,7 @@ export class TestNumber extends React.Component <IProps>{
     );
   }
 
-  private handleCardClick() {
-    this.props.onCardClick(this.props.number);
+  private handleOperatorClick(operator: string) {
+    this.props.onSubmit(this.props.number, operator);
   }
 }

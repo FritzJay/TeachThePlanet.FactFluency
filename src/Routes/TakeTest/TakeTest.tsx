@@ -31,7 +31,7 @@ export class TakeTest extends React.Component<IProps, IState> {
       if (this.props.testParameters) {
         this.getNewTest(this.props.testParameters);
       } else {
-        this.props.history.push(URLS.selectTestNumber);
+        this.props.history.push(URLS.selectTest);
       }
     });
   }
