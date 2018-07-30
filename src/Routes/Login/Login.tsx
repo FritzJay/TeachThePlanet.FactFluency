@@ -50,7 +50,6 @@ export class Login extends React.Component<IProps, IState> {
           </ModalHeader>
           <ModalContent>
           <h2>Already in a class?</h2>
-
             <label className="login label">Name</label>
             <input className="login input" onChange={this.handleNameChange} value={this.state.name} />
             <label className="login label">Class Code</label>
