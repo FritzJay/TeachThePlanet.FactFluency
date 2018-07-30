@@ -9,7 +9,7 @@ import { Login, SelectTestNumber, SelectTestOperator, StartTest, TakeTest, TestR
 export const URLS = {
   selectTestNumber: '/tests/select/number',
   selectTestOperator: '/tests/select/operator',
-  signin: '/sign-in',
+  signin: '/',
   startTest: '/tests/start',
   takeTest: '/tests/take',
   testResults: '/tests/results',
@@ -59,6 +59,7 @@ class App extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
+          exact={true}
           path={URLS.signin}
           render={this.renderLogin}
         />
