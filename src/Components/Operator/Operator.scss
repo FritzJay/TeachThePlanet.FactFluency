@@ -1,21 +1,20 @@
 .operator-div {
     display: grid;
-
 }
 
 .operator {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-
-    justify-self: center;
-    align-self: center;
 
     width: 48px;
     height: 48px;
+
+    padding: 0;
+    margin: 0;
+
+    user-select: none;
 }
 
 .operator:hover {
-    border-bottom: solid 3px rgba(0, 0, 0);
+    border-bottom: solid 3px rgb(0, 0, 0);
     border-radius: 50%;
 }

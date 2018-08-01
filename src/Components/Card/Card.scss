@@ -24,11 +24,3 @@
     }
   }
 }
-
-.card.hover {
-  transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
-}
-
-.card.hover:hover {
-  box-shadow: $dp-eight;
-}
