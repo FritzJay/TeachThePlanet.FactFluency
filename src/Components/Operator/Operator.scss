@@ -4,6 +4,9 @@
 
 .operator {
     display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-content: center;
 
     width: 48px;
     height: 48px;
