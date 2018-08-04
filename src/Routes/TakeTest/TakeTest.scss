@@ -1,0 +1,88 @@
+.take-test {
+    grid-column: 2 / 2;
+    justify-self: center;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+
+    p {
+        font-size: 4em;
+        font-weight: 700;
+
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.question-problem{
+    grid-row: 1 / 1;
+
+    display: grid;
+    grid-template-columns: 25% auto;
+    grid-template-rows: repeat(2, 1fr);
+
+    .number-top {
+        grid-column: 2 / 2;
+        grid-row: 1 / 1;
+
+        direction: rtl;
+
+        color: red;
+    }
+
+    .operator {
+        grid-column: 1 / 1;
+        grid-row: 2 / 2;
+    }    
+
+    .number-bottom {
+        grid-column: 2 / 2;
+        grid-row: 2 / 2;
+
+        direction: rtl;
+    }
+}
+
+.line-break {
+    padding: 0;
+    margin: 0;
+
+    border-top: 3px solid black; 
+}
+
+.input-answer {
+    width: 100%;
+
+    font-size: 4em;
+    font-weight: 700;
+
+    border: none;
+    outline: none;
+}
+
+.btn-row {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    .pill-button {
+        grid-column: 2 / 2;
+        margin: 1em;
+    }
+}
+
+/*  Mobile  */
+@media only screen and (max-width: 399px) {}
+/*  Tablet  */
+@media only screen and (min-width: 400px) {
+    .take-test {
+        max-width: 600px;
+        width: 100%;
+
+        padding: 2em 4em;
+    }
+}
+/*  Desktop  */
+@media only screen and (min-width: 1200px) {}

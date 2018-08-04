@@ -168,7 +168,7 @@ class App extends React.Component<IProps, IState> {
     if (testParameters) {
       return (
         <TakeTest {...props}
-        token={testParameters}
+        token={this.state.token}
         testParameters={testParameters}
           onSubmit={this.handleTakeTestSubmit}
         />

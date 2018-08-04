@@ -5,6 +5,7 @@ import { saveState } from "../../lib/Caching";
 import { IDisplayQuestion, IQuestion, ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing';
+import './TakeTest.css';
 
 interface IProps extends IRequestComponentProps {
   testParameters?: ITestParameters;
@@ -43,14 +44,16 @@ export class TakeTest extends React.Component<IProps, IState> {
       return (
           <Card className="take-test">
             <div>
-              <p>{question.top}</p>
-              <p>{question.operator}</p>
-              <p>{question.bottom}</p>
-              <hr  className="line-break"/>
-              <input type="text" onChange={this.handleAnswerChange} value={this.state.answer}/>
+              <div className="question-problem">
+                <p className="number-top">{question.top}</p>
+                <p className="operator">{question.operator}</p>
+                <p className="number-bottom">{question.bottom}</p>
+              </div>
+              <div className="line-break"/>
+                <input type="text" dir="rtl" className="input-answer" onChange={this.handleAnswerChange} value={this.state.answer}/>
           </div>
   
-          <div>
+          <div className="btn-row">
               <Button onClick={this.handleSubmitClick}>Submit</Button>
           </div>
         </Card>
@@ -98,6 +101,7 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private getNewTest(testParameters: ITestParameters) {
+    console.log(this.state.token)
     const request: IRequest = {
       body: testParameters,
       method: "POST",
