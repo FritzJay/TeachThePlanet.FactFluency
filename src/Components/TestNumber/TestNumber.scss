@@ -23,7 +23,7 @@
     justify-items: center;
     justify-self: stretch;
     padding: 0 1rem 1rem 1rem;
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     
     // Change on active
     transition: opacity 0.3s;
@@ -125,14 +125,20 @@
   box-shadow: $dp-eight;
 }
 
-@media (max-width: 300px) {
+@media (max-width: 399px) {
   .test-number {
-    display: grid;
     grid-template-columns: 2fr 4fr;
   
     .operators-container {
       padding: 0 1rem 0 0;
-      font-size: 3.5rem;
+    }
+  }
+}
+
+@media (max-width: 300px) {
+  .test-number {
+    .header {
+      padding-right: 0px;
     }
   }
 }

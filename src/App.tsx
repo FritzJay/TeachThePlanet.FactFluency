@@ -53,7 +53,7 @@ class App extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <div>
+      <div className="app-content">
         <Route
           path={URLS.tests}
           render={this.renderNavbar}
