@@ -12,6 +12,36 @@
     padding: 0 1rem 1rem 1rem;
     font-size: 2.5rem;
   }
+  
+  .button-container {
+    visibility: hidden;
+    height: 0px;
+  }
+
+  .button-container.active {
+    visibility: visible;
+    display: grid;
+    grid-column: 1/-1;
+    justify-items: center;
+    padding: 1em;
+    margin: 0 1em;
+    border-top: 2px solid rgba(0, 0, 0, 0.15);
+    height: 70px;
+
+    .button {
+      color: $green;
+      border-color: $green;
+    }
+
+    .button:hover {
+      color: $white;
+      background-color: $green;
+    }
+  }
+}
+
+.test-number:hover {
+  box-shadow: $dp-eight;
 }
 
 @media (max-width: 536px) {
