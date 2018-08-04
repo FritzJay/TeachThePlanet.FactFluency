@@ -3,12 +3,16 @@
   top: 0px;
   left: 0px;
   z-index: 1;
+
   height: 80px;
   width: 100%;
+  padding: 15px;
+  
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
-  justify-items: center;
+  justify-items: stretch;
   align-items: center;
+  
   background-color: #FFFFFF;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
 }
@@ -21,6 +25,5 @@
 @media (max-width: 399px) {
   .navbar {
     grid-template-columns: 1fr 1f;
-    justify-items: center;
   }
 }
