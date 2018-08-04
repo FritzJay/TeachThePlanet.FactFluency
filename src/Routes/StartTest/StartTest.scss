@@ -2,12 +2,16 @@
 
 .start-test {
   grid-column: 2;
+
   display: grid;
+  grid-template-columns: 1fr;
   justify-content: center;
   justify-items: center;
   text-align: center;
   
   .header {
+    justify-self: stretch;
+
     padding: 3em;
     background-color: $blue;
 
