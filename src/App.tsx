@@ -24,7 +24,6 @@ interface IProps {
 interface IState {
   token?: string;
   user?: IUser;
-  testNumber?: ITestNumber;
   testParameters?: {
     number: number;
     operator: string;

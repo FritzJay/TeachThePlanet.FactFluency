@@ -20,6 +20,15 @@ export class SelectTest extends React.Component<IProps, IState> {
       selectedNumber: undefined,
     }
     this.handleTestNumberClick = this.handleTestNumberClick.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+  }
+
+  public componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
   }
   
   public render() {
@@ -48,5 +57,11 @@ export class SelectTest extends React.Component<IProps, IState> {
 
   private handleTestNumberClick(selectedNumber: number) {
     this.setState({selectedNumber});
+  }
+
+  private handleScroll() {
+    if (this.state.selectedNumber !== undefined) {
+      this.setState({selectedNumber: undefined});
+    }
   }
 }
