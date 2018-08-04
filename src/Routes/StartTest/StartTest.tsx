@@ -17,11 +17,13 @@ export class StartTest extends React.Component<IProps> {
   public render() {
     return (
       <Card className="start-test">
-        <h1>We know you got this!</h1>
-        <p>You practiced right?</p>
+        <div className="header">
+          <h1>We know you got this!</h1>
+          <p>You practiced right?</p>
+        </div>
         <div className="buttons">
-          <Button onClick={this.handleStartTestClick}>Start</Button>
-          <Button onClick={this.handleCancelClick}>Cancel</Button>
+          <Button className="start-button" onClick={this.handleStartTestClick}>Start</Button>
+          <Button className="cancel-button" onClick={this.handleCancelClick}>Cancel</Button>
         </div>
       </Card>
     );

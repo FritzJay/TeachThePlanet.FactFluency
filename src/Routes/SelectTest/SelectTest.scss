@@ -15,16 +15,6 @@
   height: 100%;
 } 
 
-@media (max-width: 399px) {
-  .select-test {
-    position: fixed;
-    top: 80px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-  }
-}
-
 /* Mobile */ 
 @media only screen and (max-width: 399px) {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
