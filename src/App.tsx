@@ -53,32 +53,34 @@ class App extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <div className="app-content">
+      <div>
         <Route
           path={URLS.tests}
           render={this.renderNavbar}
         />
-        <Route
-          exact={true}
-          path={URLS.signin}
-          render={this.renderLogin}
-        />
-        <Route
-          path={URLS.selectTest}
-          render={this.renderSelectTest}
-        />
-        <Route
-          path={URLS.startTest}
-          render={this.renderStartTest}
-        />
-        <Route
-          path={URLS.takeTest}
-          render={this.renderTakeTest}
-        />
-        <Route
-          path={URLS.testResults}
-          render={this.renderTestResults}
-        />
+        <div className="app-content">
+          <Route
+            exact={true}
+            path={URLS.signin}
+            render={this.renderLogin}
+          />
+          <Route
+            path={URLS.selectTest}
+            render={this.renderSelectTest}
+          />
+          <Route
+            path={URLS.startTest}
+            render={this.renderStartTest}
+          />
+          <Route
+            path={URLS.takeTest}
+            render={this.renderTakeTest}
+          />
+          <Route
+            path={URLS.testResults}
+            render={this.renderTestResults}
+          />
+        </div>
       </div>
     );
   }
