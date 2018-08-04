@@ -12,13 +12,17 @@ interface IProps {
 
 interface IState {
   active: boolean;
+  operator?: string;
 }
 
 export class TestNumber extends React.Component <IProps, IState>{
   public constructor(props: IProps) {
     super(props);
+    this.state = {
+      active: false,
+    }
+    this.handleStartClick = this.handleStartClick.bind(this);
     this.handleOperatorClick = this.handleOperatorClick.bind(this);
-
   }
 
   public render() {
@@ -50,6 +54,12 @@ export class TestNumber extends React.Component <IProps, IState>{
   }
 
   private handleOperatorClick(operator: string) {
-    this.props.onSubmit(this.props.number, operator);
+    this.setState({operator});
+  }
+
+  private handleStartClick() {
+    if (this.state.operator) {
+      this.props.onSubmit(this.props.number, this.state.operator);
+    }
   }
 }
