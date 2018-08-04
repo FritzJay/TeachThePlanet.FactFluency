@@ -2,6 +2,15 @@
 
 .test-number {
   display: grid;
+  transition: max-height 0.3s;
+
+  // change on active
+  max-height: 150px;
+
+  .header {
+    // change on active
+    opacity: 0.8;
+  }
 
   .operators-container {
     display: grid;
@@ -14,7 +23,7 @@
     
     // Change on active
     transition: opacity 0.3s;
-    opacity: 0.15;
+    opacity: 0.3;
   }
   
   .button-container {
@@ -26,9 +35,13 @@
     // Change on active
     transition: height 0.3s 0.1s,
                 border-top 0.3s 0.1s,
-                padding 0.3s 0.1s;
+                padding 0.3s 0.1s,
+                opacity 0s 0.1s;
+    opacity: 0;
     height: 0px;
     border-top: 2px solid white;
+
+    // Change on error
   }
 
   .button {
@@ -49,14 +62,22 @@
 }
 
 .test-number.active {
+  max-height: 250px;
+
+  .header {
+    opacity: 1;
+  }
+
   .operators-container {
-    opacity: 0.8;
+    opacity: 1;
   }
 
   .button-container {
+    opacity: 1; 
     transition: border-top 0.3s,
                 padding 0.3s,
-                height 0.3s;
+                height 0.3s,
+                opacity 0s 0.1s;
     border-top: 2px solid rgb(184, 184, 184);
     padding: 1em;
     height: 70px;

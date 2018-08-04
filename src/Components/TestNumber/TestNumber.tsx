@@ -19,6 +19,7 @@ interface IState {
 export class TestNumber extends React.Component <IProps, IState>{
   public constructor(props: IProps) {
     super(props);
+    this.state = {}
     this.activateCard = this.activateCard.bind(this);
     this.handleStartClick = this.handleStartClick.bind(this);
     this.handleOperatorClick = this.handleOperatorClick.bind(this);
@@ -28,8 +29,11 @@ export class TestNumber extends React.Component <IProps, IState>{
     const className = this.props.active ? 'test-number active' : 'test-number';
     const operators = this.props.number.operators.map((operator, i) => {
       const color = themeColors[i % themeColors.length];
+      const selected = (this.props.active && this.state.operator === operator);
       return (
         <Operator
+          active={this.props.active}
+          selected={selected}
           key={i}
           operator={operator}
           color={color}
@@ -54,6 +58,9 @@ export class TestNumber extends React.Component <IProps, IState>{
 
   private activateCard() {
     this.props.onClick(this.props.number.number);
+    if (!this.props.active) {
+      this.setState({operator: undefined});
+    }
   }
 
   private handleOperatorClick(operator: string) {

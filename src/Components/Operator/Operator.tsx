@@ -2,6 +2,8 @@ import * as React from 'react';
 import './Operator.css';
 
 interface IProps {
+  active: boolean;
+  selected: boolean;
   operator: string;
   color: string;
   onClick: (operator: string) => void;
@@ -28,10 +30,11 @@ export class Operator extends React.Component<IProps> {
         symbol = this.props.operator;
         break;
     }
+    const className = `operator ${this.props.color} ${this.props.active && 'active'} ${this.props.selected && 'selected'}`;
     return (
       <div className="operator-div">
         <a 
-          className={`operator ${this.props.color}`}
+          className={className}
           onClick={this.handleClick}
         >
           {symbol}
@@ -41,6 +44,8 @@ export class Operator extends React.Component<IProps> {
   }
 
   private handleClick() {
-    this.props.onClick(this.props.operator);
+    if (this.props.active) {
+      this.props.onClick(this.props.operator);
+    }
   }
 }

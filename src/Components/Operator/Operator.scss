@@ -13,11 +13,19 @@
 
     padding: 0;
     margin: 0;
-
+    
+    border-radius: 5px;
     user-select: none;
 }
 
-.operator:hover {
-    border-bottom: solid 3px rgb(0, 0, 0);
-    border-radius: 50%;
+.operator.active:hover {
+    background-color: rgba(1, 1, 1, 0.05);
+}
+
+.operator.active:active {
+  background-color: rgba(1, 1, 1, 0.15);
+}
+
+.operator.active.selected {
+  background-color: rgba(1, 1, 1, 0.1);
 }
