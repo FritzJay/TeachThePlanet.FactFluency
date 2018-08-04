@@ -1,5 +1,4 @@
 import { URLS } from "../App";
-import { loadState } from "./Caching";
 
 export interface IRequest {
   body?: object;
@@ -44,25 +43,6 @@ const createJsonRequestObject = (request: IRequest) => {
       body: JSON.stringify({...request.body}),
     },
   );
-}
-
-export const setTokenToStateOrSignOut = (component: React.Component<IRequestComponentProps>): Promise<void> => {
-  return new Promise((resolve) => {
-    if (component.props.token) {
-      component.setState({token: component.props.token}, () => {
-        resolve();
-      });
-    } else {
-      loadState(component, 'token')
-      .then(() => resolve())
-      .catch((error: string) => {
-        console.log(error);
-        console.log(localStorage);
-        signOut(component);
-        resolve();
-      });
-    }
-  });
 }
 
 export const signOut = (component: React.Component<IRequestComponentProps>) => {

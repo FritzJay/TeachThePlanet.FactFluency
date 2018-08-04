@@ -16,6 +16,7 @@ interface IState {
 export class SelectTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
+    console.log(props);
     this.state = {
       selectedNumber: undefined,
     }
@@ -23,7 +24,7 @@ export class SelectTest extends React.Component<IProps, IState> {
     this.handleScroll = this.handleScroll.bind(this);
   }
 
-  public componentDidMount() {
+  public componentWillMount() {
     window.addEventListener('scroll', this.handleScroll);
   }
 

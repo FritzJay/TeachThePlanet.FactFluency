@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { saveState } from '../../lib/Caching';
 import { ITest, ITestResults } from '../../lib/Interfaces';
-import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from '../../lib/Requests';
+import { IRequest, IRequestComponentProps, jsonFetch } from '../../lib/Requests';
 
 interface IProps extends IRequestComponentProps {
   test: ITest;
@@ -20,13 +19,6 @@ export class TestResults extends React.Component<IProps, IState> {
     this.saveTest = this.saveTest.bind(this);
   }
 
-  public componentDidMount() {
-    setTokenToStateOrSignOut(this)
-    .then(() => {
-      this.saveTest(this.props.test);
-    });
-  }
-
   public render() {
     const message = (this.state.testResults) ? 'Success!' : this.state.error;
     return <div>{message}</div>;
@@ -41,7 +33,7 @@ export class TestResults extends React.Component<IProps, IState> {
     };
     jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, request)
     .then((testResults: ITestResults) => {
-      saveState(this, testResults);
+      // saveState(this, testResults);
       localStorage.removeItem('test');
     })
     .catch((error) => {

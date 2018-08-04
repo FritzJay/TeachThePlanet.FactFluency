@@ -3,8 +3,8 @@ import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './Components/Components';
 import { RequestComponent } from './Components/RequestComponent/RequestComponent';
-import { getCached, saveState } from './lib/Caching';
-import { IAvailableTests, ITest, ITestNumber, IUser } from './lib/Interfaces';
+import { getCached, setCached } from './lib/Caching';
+import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
 import { IRequest, jsonFetch } from './lib/Requests';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
@@ -24,6 +24,7 @@ interface IProps {
 interface IState {
   token?: string;
   user?: IUser;
+  availableTests?: IAvailableTests;
   testParameters?: {
     number: number;
     operator: string;
@@ -46,13 +47,14 @@ class App extends React.Component<IProps, IState> {
     this.renderTestResults = this.renderTestResults.bind(this);
     this.requestSelectTest = this.requestSelectTest.bind(this);
     this.requestStartTest = this.requestStartTest.bind(this);
+    this.handleSelectTestResolve = this.handleSelectTestResolve.bind(this);
     this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
     this.handleStartTestCancel = this.handleStartTestCancel.bind(this);
     this.handleTakeTestSubmit = this.handleTakeTestSubmit.bind(this);
-    this.saveStateFromChild = this.saveStateFromChild.bind(this);
+    this.handleTestResultsSubmit = this.handleTestResultsSubmit.bind(this);
   }
 
   public render() {
@@ -118,6 +120,7 @@ class App extends React.Component<IProps, IState> {
     const user = this.state.user || getCached('user');
     if (token && user) {
       this.props.history.push(URLS.selectTest);
+      return <div />
     }
     return (
       <Login {...props} onSubmit={this.handleLoginSubmit} />
@@ -125,8 +128,9 @@ class App extends React.Component<IProps, IState> {
   }
 
   private handleLoginSubmit(token: string, user: IUser) {
-    saveState(this, {token, user})
-    .then(() => {
+    setCached('token', token);
+    setCached('user', user);
+    this.setState({token, user}, () => {
       this.props.history.push(URLS.selectTest);
     });
   }
@@ -134,7 +138,8 @@ class App extends React.Component<IProps, IState> {
   /****** Select Test ******/
 
   private renderSelectTest(props: any) {
-    const availableTests = getCached('availableTests');
+    console.log(this.state);
+    const availableTests = this.state.availableTests || getCached('availableTests');
     if (availableTests) {
       return (
         <SelectTest {...props}
@@ -145,7 +150,8 @@ class App extends React.Component<IProps, IState> {
     }
     return (
       <RequestComponent
-        request={this.requestSelectTest()}
+        request={this.requestSelectTest}
+        onResolve={this.handleSelectTestResolve}
         component={SelectTest}
         props={{onSubmit: this.handleSelectTestSubmit}}
       />
@@ -164,10 +170,14 @@ class App extends React.Component<IProps, IState> {
     return new Promise<IAvailableTests>((resolve) => {
       jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
       .then((availableTests: IAvailableTests) => {
-        saveState(this, availableTests);
         resolve(availableTests);
       });
     }); 
+  }
+
+  private handleSelectTestResolve(results: {availableTests: IAvailableTests}) {
+    setCached('availableTests', results.availableTests);
+    this.setState.bind(this)({availableTests: results.availableTests});
   }
   
   private handleSelectTestSubmit(testNumber: ITestNumber, operator: string) {
@@ -175,8 +185,8 @@ class App extends React.Component<IProps, IState> {
       number: testNumber.number,
       operator,
     }
-    saveState(this, {testParameters})
-    .then(() => {
+    setCached('testParameters', testParameters);
+    this.setState.bind(this)({testParameters}, () => {
       this.props.history.push(URLS.startTest);
     });
   }
@@ -198,7 +208,8 @@ class App extends React.Component<IProps, IState> {
     }
     return (
       <RequestComponent
-        request={this.requestStartTest()}
+        request={this.requestStartTest}
+        onResolve={this.handleStartTestResolve}
         component={StartTest}
         props={{
           onCancel: this.handleStartTestCancel,
@@ -225,10 +236,14 @@ class App extends React.Component<IProps, IState> {
     return new Promise<ITest>((resolve) => {
       jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
       .then((test: ITest) => {
-        saveState(this, test);
         resolve(test);
       });
     });
+  }
+
+  private handleStartTestResolve(test: ITest) {
+    setCached('test', test);
+    this.setState.bind(this)({test});
   }
   
   private handleStartTestSubmit() {
@@ -256,8 +271,8 @@ class App extends React.Component<IProps, IState> {
   }
 
   private handleTakeTestSubmit(test: ITest) {
-    saveState(this, {test})
-    .then(() => {
+    setCached('test', test);
+    this.setState.bind(this)({test}, () => {
       this.props.history.push(URLS.testResults);
     });
   }
@@ -273,17 +288,15 @@ class App extends React.Component<IProps, IState> {
       <TestResults {...props}
         token={test}
         test={test}
-        onSubmit={this.saveStateFromChild}
+        onSubmit={this.handleTestResultsSubmit}
       />
     );
   }
 
-  /****** Helpers ******/
-  
-  private saveStateFromChild(state: any): Promise<void> {
-    return new Promise((resolve) => {
-      saveState(this, state);
-      resolve();
+  private handleTestResultsSubmit(testResults: ITestResults) {
+    setCached('testResults', testResults);
+    this.setState.bind(this)({testResults}, () => {
+      console.log('DO SOMETHING!');
     });
   }
 }

@@ -66,6 +66,8 @@ export class Login extends React.Component<IProps, IState> {
     this.signin(this.state.name, this.state.classCode);
   }
   
+  // Leaving the request inside the component because this component will be removed
+  // once a home page is setup.
   private signin(name: string, classCode: string) {
     const request: IRequest = {
       body: {name, classCode},
