@@ -34,7 +34,8 @@ class App extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     this.state = {
-      token: ''
+      token: getCached('token') || '',
+      user: getCached('user'),
     }
     this.renderLogin = this.renderLogin.bind(this);
     this.renderNavbar = this.renderNavbar.bind(this);
