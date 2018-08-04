@@ -112,6 +112,8 @@ class App extends React.Component<IProps, IState> {
       this.props.history.replace(URLS.signin);
     });
   }
+
+  /****** ENd Navbar ******/
   
   /****** Login ******/
 
@@ -134,6 +136,8 @@ class App extends React.Component<IProps, IState> {
       this.props.history.push(URLS.selectTest);
     });
   }
+
+  /****** END Login ******/
   
   /****** Select Test ******/
 
@@ -241,9 +245,9 @@ class App extends React.Component<IProps, IState> {
     });
   }
 
-  private handleStartTestResolve(test: ITest) {
-    setCached('test', test);
-    this.setState.bind(this)({test});
+  private handleStartTestResolve(results: { test: ITest }) {
+    setCached('test', results.test);
+    this.setState.bind(this)({test: results.test});
   }
   
   private handleStartTestSubmit() {
@@ -253,6 +257,8 @@ class App extends React.Component<IProps, IState> {
   private handleStartTestCancel() {
     this.props.history.goBack();
   }
+
+  /****** END Start Test ******/
 
   /****** Take Test ******/
   
@@ -277,6 +283,8 @@ class App extends React.Component<IProps, IState> {
     });
   }
 
+  /****** END Take Test ******/
+
   /****** Test Results ******/
   
   private renderTestResults(props: any) {
@@ -299,6 +307,8 @@ class App extends React.Component<IProps, IState> {
       console.log('DO SOMETHING!');
     });
   }
+
+  /****** END Test Results ******/
 }
 
 export default withRouter(App);
