@@ -38,14 +38,14 @@
     margin: 0 1em;
 
     // Change on active
-    transition: height 0.3s 0.1s,
-                border-top 0.3s 0.1s,
-                padding 0.3s 0.1s,
-                opacity 0s 0.1s,
-                grid-template-columns 0s 0.1s;
-    opacity: 0;
+    transition: height 0.3s,
+                border-top 0.3s,
+                padding 0.3s,
+                opacity 0s 0.15s;
     height: 0px;
     border-top: 2px solid white;
+    padding: 0px;
+    opacity: 0;
   }
 
   .button {
@@ -53,7 +53,7 @@
     border-color: $green;
 
     // Change on active
-    transition: transform 0.3s 0.1s;
+    transition: transform 0.3s;
     transform: scaleY(0);
   }
 
@@ -87,14 +87,13 @@
 
   .button-container {
     opacity: 1; 
-    transition: border-top 0.3s,
+    transition: height 0.3s,
+                border-top 0.3s,
                 padding 0.3s,
-                height 0.3s,
-                opacity 0s 0.1s;
+                opacity 0s 0.05s;
+                
     border-top: 2px solid rgb(184, 184, 184);
     padding: 1em;
-
-    // change on active
     height: 70px;
   }
 
