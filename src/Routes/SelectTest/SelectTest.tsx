@@ -1,44 +1,30 @@
 import * as React from "react";
 import { TestNumber } from '../../Components/Components';
-import { loadState, saveState } from "../../lib/Caching";
 import { IAvailableTests, ITestNumber } from "../../lib/Interfaces";
-import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { themeColors } from "../../lib/Themes";
 import './SelectTest.css';
 
-interface IProps extends IRequestComponentProps {
+interface IProps  {
   onSubmit: (testNumber: ITestNumber) => void;
+  availableTests: IAvailableTests;
 }
 
 interface IState {
-  availableTests: IAvailableTests;
   selectedNumber?: number;
-  token?: string;
 }
 
 export class SelectTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {
-      availableTests: {
-        numbers: []
-      },
+      selectedNumber: undefined,
     }
-    this.getAvailableTests = this.getAvailableTests.bind(this);
     this.handleTestNumberClick = this.handleTestNumberClick.bind(this);
-  }
-
-  public componentDidMount() {
-    setTokenToStateOrSignOut(this)
-    .then(() => {
-      loadState(this, 'availableTests')
-      .catch(() => this.getAvailableTests());
-    });
   }
   
   public render() {
     const testNumbers: any = [];
-    for (const testNumber of this.state.availableTests.numbers) {
+    for (const testNumber of this.props.availableTests.numbers) {
       const colorIndex = testNumbers.length;
       const color = themeColors[colorIndex % themeColors.length];
       const active = (testNumber.number === this.state.selectedNumber);
@@ -62,16 +48,5 @@ export class SelectTest extends React.Component<IProps, IState> {
 
   private handleTestNumberClick(selectedNumber: number) {
     this.setState({selectedNumber});
-  }
-  
-  private getAvailableTests() {
-    const request: IRequest = {
-      method: "GET",
-      token: this.state.token,
-    };
-    jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, request)
-    .then((availableTests: IAvailableTests) => {
-      saveState(this, availableTests);
-    });
   }
 }

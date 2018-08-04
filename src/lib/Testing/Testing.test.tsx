@@ -1,4 +1,4 @@
-import { IQuestion } from "./Interfaces";
+import { IQuestion } from "../Interfaces";
 import { randomizeQuestions, sortQuestions } from "./Testing";
 
 const questions: IQuestion[] = [];

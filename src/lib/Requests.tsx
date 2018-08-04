@@ -67,5 +67,7 @@ export const setTokenToStateOrSignOut = (component: React.Component<IRequestComp
 
 export const signOut = (component: React.Component<IRequestComponentProps>) => {
   localStorage.clear();
-  component.props.history.push(URLS.signin);
+  component.setState({user: undefined, token: undefined}, () => {
+    component.props.history.push(URLS.signin);
+  });
 }

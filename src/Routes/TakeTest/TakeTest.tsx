@@ -3,7 +3,7 @@ import { URLS } from "../../App";
 import { saveState } from "../../lib/Caching";
 import { IDisplayQuestion, IQuestion, ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
-import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing';
+import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing/Testing';
 
 interface IProps extends IRequestComponentProps {
   testParameters?: ITestParameters;

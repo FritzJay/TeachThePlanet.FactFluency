@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IQuestion } from '../../lib/Interfaces';
+import { IQuestion, ITest } from '../../lib/Interfaces';
 import { TakeTest } from './TakeTest';
 
 const questions: IQuestion[] = [];
@@ -13,12 +13,12 @@ for (let i = 0; i < 10; i++) {
   });
 };
 
-const submitTest = (t: any) => {
-  return t;
+const submitTest = (test: ITest) => {
+  return test;
 }
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<TakeTest onSubmit={submitTest} history={null} />, div);
+  ReactDOM.render(<TakeTest onSubmit={submitTest} history={undefined} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

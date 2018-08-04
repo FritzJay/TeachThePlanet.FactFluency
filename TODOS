@@ -3,6 +3,7 @@
 - Change layout to include the icon and display name only
 
 // Select Test
+- Close the expansion of number cards on click anywhere outside of the card
 - Close the expansion of number cards on scroll
 - Dont select an operator on initial number card click
 

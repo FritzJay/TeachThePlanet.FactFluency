@@ -2,8 +2,10 @@ import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './Components/Components';
-import { getCached, saveState, signOut } from './lib/Caching';
+import { RequestComponent } from './Components/RequestComponent/RequestComponent';
+import { getCached, saveState } from './lib/Caching';
 import { ITest, ITestNumber, IUser } from './lib/Interfaces';
+import { IRequest, jsonFetch } from './lib/Requests';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
@@ -20,7 +22,7 @@ interface IProps {
 };
 
 interface IState {
-  token: string;
+  token?: string;
   user?: IUser;
   testNumber?: ITestNumber;
   testParameters?: {
@@ -34,7 +36,7 @@ class App extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     this.state = {
-      token: getCached('token') || '',
+      token: getCached('token'),
       user: getCached('user'),
     }
     this.renderLogin = this.renderLogin.bind(this);
@@ -87,23 +89,33 @@ class App extends React.Component<IProps, IState> {
   }
   
   private renderNavbar(props: any) {
+    const user = this.state.user || localStorage.getItem('user');
     return(
       <Navbar {...props}
-        user={this.state.user}
+        user={user}
         signout={this.handleSignOutClick}
       />
     );
   }
   
   private handleSignOutClick() {
-    signOut(this);
+    localStorage.clear();
+    this.setState({
+      token: undefined,
+      user: undefined,
+    }, () => {
+      this.props.history.replace(URLS.signin);
+    });
   }
   
   private renderLogin(props: any) {
+    const token = this.state.token || getCached('token');
+    const user = this.state.user || getCached('user');
+    if (token && user) {
+      this.props.history.push(URLS.selectTest);
+    }
     return (
-      <Login {...props}
-        onSubmit={this.handleLoginSubmit}
-      />
+      <Login {...props} onSubmit={this.handleLoginSubmit} />
     );
   }
 
@@ -115,18 +127,31 @@ class App extends React.Component<IProps, IState> {
   }
   
   private renderSelectTest(props: any) {
-    const token = this.state.token || getCached('token');
-    if (token) {
+    const availableTests = getCached('availableTests');
+    if (availableTests) {
       return (
         <SelectTest {...props}
-        token={token}
-        onSubmit={this.handleSelectTestSubmit}
+          availableTests={availableTests}
+          onSubmit={this.handleSelectTestSubmit}
         />
       );
-    } else {
-      this.props.history.goBack();
-      return <div />;
     }
+    const token = this.state.token || getCached('token');
+    if (!token) {
+      this.props.history.replace(URLS.signin);
+    }
+    const requestParams: IRequest = {
+      method: "GET",
+      token,
+    };
+    const request = jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams); 
+    return (
+      <RequestComponent
+        request={request}
+        component={SelectTest}
+        props={{onSubmit: this.handleSelectTestSubmit}}
+      />
+    );
   }
   
   private handleSelectTestSubmit(testNumber: ITestNumber, operator: string) {

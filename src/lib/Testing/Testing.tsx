@@ -1,4 +1,4 @@
-import { IDisplayQuestion, IQuestion } from "./Interfaces";
+import { IDisplayQuestion, IQuestion } from "../Interfaces";
 
 export const randomizeQuestions = (questions: IQuestion[]): IQuestion[] => {
   return JSON.parse(JSON.stringify(questions))    // Deep Copy

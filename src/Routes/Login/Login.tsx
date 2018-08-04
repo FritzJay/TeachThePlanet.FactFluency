@@ -28,18 +28,6 @@ export class Login extends React.Component<IProps, IState> {
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.signin = this.signin.bind(this);
   }
-
-  public componentDidMount() {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (!token) {
-      console.log('Local storage does not contain token.')
-    } else if (!user) {
-      console.log('Local storage does not contain user.')
-    } else {
-      this.props.onSubmit(token, JSON.parse(user));
-    }
-  }
   
   public render() {
     return (
