@@ -5,28 +5,27 @@ import { Button, Card, Operator } from '../Components';
 import './TestNumber.css';
 
 interface IProps {
+  active: boolean;
   color: string;
   number: ITestNumber;
   onSubmit: (testNumber: ITestNumber, operator: string) => void;
+  onClick: (selectedNumber: number) => void;
 }
 
 interface IState {
-  active: boolean;
   operator?: string;
 }
 
 export class TestNumber extends React.Component <IProps, IState>{
   public constructor(props: IProps) {
     super(props);
-    this.state = {
-      active: false,
-    }
+    this.activateCard = this.activateCard.bind(this);
     this.handleStartClick = this.handleStartClick.bind(this);
     this.handleOperatorClick = this.handleOperatorClick.bind(this);
   }
 
   public render() {
-    const buttonContainerClassName = this.state.active ? 'button-container active' : 'button-container';
+    const className = this.props.active ? 'test-number active' : 'test-number';
     const operators = this.props.number.operators.map((operator, i) => {
       const color = themeColors[i % themeColors.length];
       return (
@@ -39,18 +38,22 @@ export class TestNumber extends React.Component <IProps, IState>{
       );
     });
     return (
-      <Card className="test-number">
+      <Card onClick={this.activateCard} className={className}>
         <div className="header">
-          <p className="text" style={{color: this.props.color}}>{this.props.number.number}</p>
+          <p className={`text ${this.props.color}`}>{this.props.number.number}</p>
         </div>
         <div className="operators-container">
             {operators}
         </div>
-        <div className={buttonContainerClassName}>
+        <div className="button-container">
           <Button className="button" onClick={this.handleStartClick}>Create Test</Button>
         </div>
       </Card>
     );
+  }
+
+  private activateCard() {
+    this.props.onClick(this.props.number.number);
   }
 
   private handleOperatorClick(operator: string) {

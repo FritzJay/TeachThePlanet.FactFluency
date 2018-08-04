@@ -4,12 +4,14 @@ import './StartTest.css';
 
 interface IProps {
   onSubmit: () => void;
+  onCancel: () => void;
 }
 
 export class StartTest extends React.Component<IProps> {
   public constructor(props: IProps) {
     super(props);
     this.handleStartTestClick = this.handleStartTestClick.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
   }
 
   public render() {
@@ -32,6 +34,6 @@ export class StartTest extends React.Component<IProps> {
   }
 
   private handleCancelClick() {
-    console.log('Cancelled!');
+    this.props.onCancel();
   }
 }

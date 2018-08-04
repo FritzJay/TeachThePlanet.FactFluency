@@ -1,4 +1,4 @@
-export const themeColors = ["#FF0000", "#3A93E1", "#F7C940", "#A8C75A"];
+export const themeColors = ["red", "blue", "yellow", "green"];
 
 export const combineClassName = (className?: string, propsClassName?: string): string => {
   let combinedClassNames = '';

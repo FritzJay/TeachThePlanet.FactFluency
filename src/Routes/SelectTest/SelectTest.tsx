@@ -12,7 +12,7 @@ interface IProps extends IRequestComponentProps {
 
 interface IState {
   availableTests: IAvailableTests;
-  selectedNumber?: ITestNumber;
+  selectedNumber?: number;
   token?: string;
 }
 
@@ -25,6 +25,7 @@ export class SelectTest extends React.Component<IProps, IState> {
       },
     }
     this.getAvailableTests = this.getAvailableTests.bind(this);
+    this.handleTestNumberClick = this.handleTestNumberClick.bind(this);
   }
 
   public componentDidMount() {
@@ -36,25 +37,31 @@ export class SelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    let currentColor = 0;
     const testNumbers: any = [];
     for (const testNumber of this.state.availableTests.numbers) {
-      const color = themeColors[currentColor % themeColors.length];
+      const colorIndex = testNumbers.length;
+      const color = themeColors[colorIndex % themeColors.length];
+      const active = (testNumber.number === this.state.selectedNumber);
       testNumbers.push(
         <TestNumber
-          key={currentColor}
+          active={active}
+          key={colorIndex}
           number={testNumber}
           color={color}
           onSubmit={this.props.onSubmit}
+          onClick={this.handleTestNumberClick}
         />
       );
-      currentColor++;
     }
     return (
       <div className="select-test-numbers">
         {testNumbers}
       </div>
     );
+  }
+
+  private handleTestNumberClick(selectedNumber: number) {
+    this.setState({selectedNumber});
   }
   
   private getAvailableTests() {

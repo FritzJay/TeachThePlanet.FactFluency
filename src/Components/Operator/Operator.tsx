@@ -30,7 +30,12 @@ export class Operator extends React.Component<IProps> {
     }
     return (
       <div className="operator-div">
-        <a className="operator" onClick={this.handleClick}>{symbol}</a>
+        <a 
+          className={`operator ${this.props.color}`}
+          onClick={this.handleClick}
+        >
+          {symbol}
+        </a>
       </div>
     );
   }
