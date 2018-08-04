@@ -1,8 +1,8 @@
 @import "../../Stylesheets/all";
 
-.login.margin-top {
-  margin-top: 5vh;
-}
+  .login.margin-top {
+    margin-top: 5vh;
+  }
 
 .login {
   grid-column: 1 / -1;
@@ -12,9 +12,7 @@
       background-color: $green;
       
       h2 {
-        margin: 0;
-        padding: 0;
-  
+        margin: 2em;  
         color:white;
       }
     }
@@ -58,21 +56,33 @@
         font-weight: 900;
       }
 
+      .button {
+        padding: 1em;
+      }
+
       .reminder {
         margin-top: 2em;
       }
 
       .error {
-        color: red;
+        color: $red;
       }
     }
   }
 }
 
 @media (max-width: 399px) {
+  .login.margin-top {
+    margin-top: -30px;
+  }
+
   .login {
-    .margin-top {
-      margin-top: 0;
+    .modal {
+      .header {
+        h2 {
+          margin: 1em;
+        }
+      }
     }
   }
 }
