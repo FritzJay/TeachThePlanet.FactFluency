@@ -1,5 +1,6 @@
 import * as React from "react";
 import { URLS } from "../../App";
+import { Button, Card } from "../../Components/Components";
 import { saveState } from "../../lib/Caching";
 import { IDisplayQuestion, IQuestion, ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
@@ -37,14 +38,27 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const question = this.state.question;
-    return (
-      <div>
-        <p>{question.top} {question.operator} {question.bottom}</p>
-        <input value={this.state.answer} onChange={this.handleAnswerChange} />
-        <button onClick={this.handleSubmitClick}>Submit</button>
-      </div>
-    )
+    if (this.state && this.state.question) {
+      const question = this.state.question;
+      return (
+          <Card className="take-test">
+            <div>
+              <p>{question.top}</p>
+              <p>{question.operator}</p>
+              <p>{question.bottom}</p>
+              <hr  className="line-break"/>
+              <input type="text" onChange={this.handleAnswerChange} value={this.state.answer}/>
+          </div>
+  
+          <div>
+              <Button onClick={this.handleSubmitClick}>Submit</Button>
+          </div>
+        </Card>
+      )
+    } else {
+      return <div/>
+    }
+    // <p>{question.top} {question.operator} {question.bottom}</p>
   }
 
   private handleAnswerChange(event: any) {
