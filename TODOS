@@ -1,10 +1,2 @@
-// Navbar
-- Center the logo on the navbar (toggle to an icon for small screens?)
-- Change layout to include the icon and display name only
-
 // Select Test
 - Close the expansion of number cards on click anywhere outside of the card
-- Dont select an operator on initial number card click
-
-// Start Test
-- Make header width 100%?

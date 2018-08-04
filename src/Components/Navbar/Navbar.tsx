@@ -41,11 +41,11 @@ const userInfo = (user?: IUser) => {
 const logoutButton = (signout: () => void, user?: IUser) => {
   if (user) {
     return (
-      <a onClick={signout}>Logout</a>
+      <a className="logout-link" onClick={signout}>Logout</a>
     );
   } else {
     return (
-      <div />
+      <div className="logout-link" />
     );
    }
 }
