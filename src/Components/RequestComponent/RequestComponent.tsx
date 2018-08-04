@@ -27,7 +27,6 @@ export class RequestComponent extends React.Component<IProps, IState> {
 
   public render() {
     if (this.state.resolvedRequest) {
-      console.log(this.state);
       return React.createElement(this.props.component, {
         ...this.state.resolvedRequest,
         ...this.props.props,

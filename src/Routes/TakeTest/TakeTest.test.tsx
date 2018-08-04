@@ -19,6 +19,6 @@ const submitTest = (test: ITest) => {
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<TakeTest onSubmit={submitTest} history={undefined} />, div);
+  ReactDOM.render(<TakeTest test={{questions}} onSubmit={submitTest} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

@@ -4,7 +4,7 @@ import './App.css';
 import { Navbar } from './Components/Components';
 import { RequestComponent } from './Components/RequestComponent/RequestComponent';
 import { getCached, saveState } from './lib/Caching';
-import { ITest, ITestNumber, IUser } from './lib/Interfaces';
+import { IAvailableTests, ITest, ITestNumber, IUser } from './lib/Interfaces';
 import { IRequest, jsonFetch } from './lib/Requests';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
@@ -45,6 +45,8 @@ class App extends React.Component<IProps, IState> {
     this.renderStartTest = this.renderStartTest.bind(this);
     this.renderTakeTest = this.renderTakeTest.bind(this);
     this.renderTestResults = this.renderTestResults.bind(this);
+    this.requestSelectTest = this.requestSelectTest.bind(this);
+    this.requestStartTest = this.requestStartTest.bind(this);
     this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
@@ -87,6 +89,8 @@ class App extends React.Component<IProps, IState> {
       </div>
     );
   }
+
+  /****** Navbar ******/
   
   private renderNavbar(props: any) {
     const user = this.state.user || localStorage.getItem('user');
@@ -108,6 +112,8 @@ class App extends React.Component<IProps, IState> {
     });
   }
   
+  /****** Login ******/
+
   private renderLogin(props: any) {
     const token = this.state.token || getCached('token');
     const user = this.state.user || getCached('user');
@@ -126,6 +132,8 @@ class App extends React.Component<IProps, IState> {
     });
   }
   
+  /****** Select Test ******/
+
   private renderSelectTest(props: any) {
     const availableTests = getCached('availableTests');
     if (availableTests) {
@@ -136,6 +144,16 @@ class App extends React.Component<IProps, IState> {
         />
       );
     }
+    return (
+      <RequestComponent
+        request={this.requestSelectTest()}
+        component={SelectTest}
+        props={{onSubmit: this.handleSelectTestSubmit}}
+      />
+    );
+  }
+
+  private requestSelectTest(): Promise<IAvailableTests> {
     const token = this.state.token || getCached('token');
     if (!token) {
       this.props.history.replace(URLS.signin);
@@ -144,14 +162,13 @@ class App extends React.Component<IProps, IState> {
       method: "GET",
       token,
     };
-    const request = jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams); 
-    return (
-      <RequestComponent
-        request={request}
-        component={SelectTest}
-        props={{onSubmit: this.handleSelectTestSubmit}}
-      />
-    );
+    return new Promise<IAvailableTests>((resolve) => {
+      jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
+      .then((availableTests: IAvailableTests) => {
+        saveState(this, availableTests);
+        resolve(availableTests);
+      });
+    }); 
   }
   
   private handleSelectTestSubmit(testNumber: ITestNumber, operator: string) {
@@ -164,20 +181,55 @@ class App extends React.Component<IProps, IState> {
       this.props.history.push(URLS.startTest);
     });
   }
+
+  /****** END Select Test ******/
+
+  /****** Start Test ******/
   
   private renderStartTest(props: any) {
-    const testParameters = this.state.testParameters || getCached('testParameters');
-    if (testParameters) {
+    const test = this.state.test || getCached('test');
+    if (test) {
       return (
         <StartTest {...props}
-        onSubmit={this.handleStartTestSubmit}
-        onCancel={this.handleStartTestCancel}
+          test={test}
+          onCancel={this.handleStartTestCancel}
+          onSubmit={this.handleStartTestSubmit}
         />
       );
-    } else {
-      this.props.history.goBack();
-      return <div />;
     }
+    return (
+      <RequestComponent
+        request={this.requestStartTest()}
+        component={StartTest}
+        props={{
+          onCancel: this.handleStartTestCancel,
+          onSubmit: this.handleStartTestSubmit,
+        }}
+      />
+    );
+  }
+
+  private requestStartTest(): Promise<ITest> {
+    const testParameters = this.state.testParameters || getCached('testParameters');
+    if (!testParameters) {
+      this.props.history.goBack();
+    }
+    const token = this.state.token || getCached('test');
+    if (!token) {
+      this.props.history.goBack();
+    }
+    const request: IRequest = {
+      body: testParameters,
+      method: "POST",
+      token,
+    };
+    return new Promise<ITest>((resolve) => {
+      jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
+      .then((test: ITest) => {
+        saveState(this, test);
+        resolve(test);
+      });
+    });
   }
   
   private handleStartTestSubmit() {
@@ -187,20 +239,21 @@ class App extends React.Component<IProps, IState> {
   private handleStartTestCancel() {
     this.props.history.goBack();
   }
+
+  /****** Take Test ******/
   
   private renderTakeTest(props: any) {
-    const testParameters = this.state.testParameters || getCached('testParameters');
-    if (testParameters) {
-      return (
-        <TakeTest {...props}
-        token={this.state.token}
-        testParameters={testParameters}
-          onSubmit={this.handleTakeTestSubmit}
-        />
-      );
-    } else {
+    const test = this.state.test || getCached('test');
+    if (!test) {
+      this.props.history.replace(URLS.startTest);
       return <div />;
     }
+    return (
+      <TakeTest {...props}
+        test={test}
+        onSubmit={this.handleTakeTestSubmit}
+      />
+    );
   }
 
   private handleTakeTestSubmit(test: ITest) {
@@ -209,22 +262,24 @@ class App extends React.Component<IProps, IState> {
       this.props.history.push(URLS.testResults);
     });
   }
+
+  /****** Test Results ******/
   
   private renderTestResults(props: any) {
     const test = this.state.test || getCached('test');
-    if (test) {
-      return (
-        <TestResults {...props}
-          token={test}
-          test={test}
-          onSubmit={this.saveStateFromChild}
-        />
-      );
-    } else {
-      this.props.history.goBack();
-      return <div />;
+    if (!test) {
+      this.props.history.replace(URLS.startTest);
     }
+    return (
+      <TestResults {...props}
+        token={test}
+        test={test}
+        onSubmit={this.saveStateFromChild}
+      />
+    );
   }
+
+  /****** Helpers ******/
   
   private saveStateFromChild(state: any): Promise<void> {
     return new Promise((resolve) => {
