@@ -1,9 +1,11 @@
 import * as React from "react";
 import { URLS } from "../../App";
+import { Button, Card } from "../../Components/Components";
 import { saveState } from "../../lib/Caching";
 import { IDisplayQuestion, IQuestion, ITest, ITestParameters } from "../../lib/Interfaces";
 import { IRequest, IRequestComponentProps, jsonFetch, setTokenToStateOrSignOut } from "../../lib/Requests";
 import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing/Testing';
+import './TakeTest.css';
 
 interface IProps extends IRequestComponentProps {
   testParameters?: ITestParameters;
@@ -37,14 +39,29 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const question = this.state.question;
-    return (
-      <div>
-        <p>{question.top} {question.operator} {question.bottom}</p>
-        <input value={this.state.answer} onChange={this.handleAnswerChange} />
-        <button onClick={this.handleSubmitClick}>Submit</button>
-      </div>
-    )
+    if (this.state && this.state.question) {
+      const question = this.state.question;
+      return (
+          <Card className="take-test">
+            <div>
+              <div className="question-problem">
+                <p className="number-top">{question.top}</p>
+                <p className="operator">{question.operator}</p>
+                <p className="number-bottom">{question.bottom}</p>
+              </div>
+              <div className="line-break"/>
+                <input type="text" dir="rtl" className="input-answer" onChange={this.handleAnswerChange} value={this.state.answer}/>
+          </div>
+  
+          <div className="btn-row">
+              <Button onClick={this.handleSubmitClick}>Submit</Button>
+          </div>
+        </Card>
+      )
+    } else {
+      return <div/>
+    }
+    // <p>{question.top} {question.operator} {question.bottom}</p>
   }
 
   private handleAnswerChange(event: any) {
@@ -84,6 +101,7 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private getNewTest(testParameters: ITestParameters) {
+    console.log(this.state.token)
     const request: IRequest = {
       body: testParameters,
       method: "POST",
