@@ -40,11 +40,11 @@ export class SelectTest extends React.Component<IProps, IState> {
       testNumbers.push(
         <TestNumber
           active={active}
+          color={color}
           key={colorIndex}
           number={testNumber}
-          color={color}
-          onSubmit={this.props.onSubmit}
           onClick={this.handleTestNumberClick}
+          onSubmit={this.props.onSubmit}
         />
       );
     }
@@ -58,7 +58,7 @@ export class SelectTest extends React.Component<IProps, IState> {
   private handleTestNumberClick(selectedNumber: number) {
     this.setState({selectedNumber});
   }
-
+  
   private handleScroll() {
     if (this.state.selectedNumber !== undefined) {
       this.setState({selectedNumber: undefined});
