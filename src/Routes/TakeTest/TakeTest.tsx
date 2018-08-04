@@ -101,7 +101,6 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private getNewTest(testParameters: ITestParameters) {
-    console.log(this.state.token)
     const request: IRequest = {
       body: testParameters,
       method: "POST",
