@@ -29,11 +29,19 @@ export class TakeTest extends React.Component<IProps, IState> {
       questionIndex: 0,
       questions,
     }
-    this.handleAnswerChange = this.handleAnswerChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleNumberClick = this.handleNumberClick.bind(this);
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleKeyboardToggle = this.handleKeyboardToggle.bind(this);
+  }
+
+  public componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   public render() {
@@ -47,7 +55,7 @@ export class TakeTest extends React.Component<IProps, IState> {
             <p className="number-bottom">{question.bottom}</p>
             <p className="equals">=</p>
           </div>
-          <input type="text" dir="rtl" className="input-answer" onChange={this.handleAnswerChange} value={this.state.answer}/>
+          <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
 
           <div className="btn-row">
               <Button onClick={this.handleSubmitClick}>Submit</Button>
@@ -65,8 +73,22 @@ export class TakeTest extends React.Component<IProps, IState> {
     }
   }
 
-  private handleAnswerChange(event: any) {
-    this.setState({answer: event.target.value});
+  private handleKeyDown(event: any) {
+    switch (event.key) {
+      case 'Backspace':
+      case 'Delete':
+        this.handleDeleteClick();
+        return;
+      case 'Enter':
+        this.handleSubmitClick();
+        return;
+      default:
+        break;
+    }
+    const num = parseInt(event.key, 10);
+    if (!isNaN(num)) {
+      this.handleNumberClick(num);
+    }
   }
 
   private handleKeyboardToggle() {
@@ -81,8 +103,7 @@ export class TakeTest extends React.Component<IProps, IState> {
     });
   }
 
-  private handleNumberClick(event: any) {
-    const num = parseInt(event.target.innerText, 10);
+  private handleNumberClick(num: number) {
     this.setState((prevState) => {
       return {answer: prevState.answer + num}
     });

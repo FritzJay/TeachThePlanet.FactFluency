@@ -20,6 +20,7 @@ export class Keyboard extends React.Component<IProps, IState> {
     };
     this.getOnClick = this.getOnClick.bind(this);
     this.handleToggleClick = this.handleToggleClick.bind(this);
+    this.handleNumberClick = this.handleNumberClick.bind(this);
   }
 
   public render() {
@@ -61,7 +62,7 @@ export class Keyboard extends React.Component<IProps, IState> {
       case 'Submit':
         return this.props.onSubmitClick;
       default:
-        return this.props.onNumberClick;
+        return this.handleNumberClick;
     }
   }
 
@@ -72,5 +73,12 @@ export class Keyboard extends React.Component<IProps, IState> {
       }
       return {active: !prevState.active};
     });
+  }
+
+  private handleNumberClick(event: any) {
+    const num = parseInt(event.target.innerText, 10);
+    if (!isNaN(num)) {
+      this.props.onNumberClick(num);
+    }
   }
 }
