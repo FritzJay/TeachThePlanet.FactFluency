@@ -1,2 +1,63 @@
 // Select Test
 - Close the expansion of number cards on click anywhere outside of the card
+
+
+// Navbar
+- Add Account circle to username (right hand side)
+- Drawer on mobile with hamburger menu 
+- hamburger menu contains username and logout link
+- on hover links highlight blue
+- Also has hr at 2px solid black with 0.05 opacity
+
+//Select Test cards
+- Full opacity for test number
+- gray for operator unless a test is passed
+- hr line at 0.05 opacity
+- hover as circle? 
+- possibly color of operator with inverted color white text onfocus 
+- ripple effect on click few examples
+    https://codepen.io/OlgaFandikova/pen/zZbLMa
+    https://codepen.io/finnhvman/pen/jLXKJw
+    https://codepen.io/lehollandaisvolant/pen/dMQXYX
+
+// Get Started card
+- same size as test card (it has to feel like its just changing cards)
+- get rid of "you practiced right?"
+- header text should be able to be switched out with different encouraging text
+- start should have the same padding as other pills/ its too fat
+- green start button
+- start button text "Start Test"
+- cancel needs to be 0.75 opacity
+- cancel needs less margin and no hover inversion just hover text opacity increase to 1.0
+- eventually a practice button to run through a few questions before they start
+
+// Test Card 
+- padding needs to have the equation look less like the numbers and the operator are miles from each other
+- submit button should be green on inversion 
+- get rid of flashing cursor line
+- Eventually have vertical and horizonal problems randomly in que of problems
+
+// Keyboard
+- desktop layout vertical 2 rows vs 1 
+- flat rounded corner (12px) 
+- reduce shadow to 6 dp
+- remove graybar
+- on click button numbers should sligtly increase in size but not enough to move div
+- center submit
+- switch numbers to 
+ - 1 2 3
+ - 4 5 6
+ - 7 8 9 
+     0 
+
+- on moblie switch submit and delete to icons 
+- take up only 50% of the screen then test for the mobile thumb zone and comfort
+    https://www.smashingmagazine.com/2016/09/the-thumb-zone-designing-for-mobile-users/
+- (In App) Keyboard has no keyboard button, keyboard should be there automatically
+- keyboard should fill out available space 
+- No shadow? full div background? Test!
+- remove gray background
+- test on mobile the problem orientation and whether it is big enough on an actual mobile screen or if it needs to be vertical
+
+
+
