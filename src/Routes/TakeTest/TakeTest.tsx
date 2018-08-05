@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Card } from "../../Components/Components";
+import { Button, Card, Keyboard } from "../../Components/Components";
 import { IDisplayQuestion, IQuestion, ITest } from "../../lib/Interfaces";
 import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing/Testing';
 import './TakeTest.css';
@@ -41,6 +41,7 @@ export class TakeTest extends React.Component<IProps, IState> {
           <div className="btn-row">
               <Button onClick={this.handleSubmitClick}>Submit</Button>
           </div>
+          <Keyboard onDeleteClick={this.handleDeleteClick} onSubmitClick={this.handleSubmitClick} onNumberClick={this.handleNumberClick} />
         </Card>
       )
     } else {
@@ -50,6 +51,19 @@ export class TakeTest extends React.Component<IProps, IState> {
 
   private handleAnswerChange(event: any) {
     this.setState({answer: event.target.value});
+  }
+
+  private handleDeleteClick() {
+    this.setState((prevState: IState) => {
+      return {answer: prevState.answer.slice(0, -1)};
+    });
+  }
+
+  private handleNumberClick(event: any) {
+    const num = parseInt(event.target.innerText, 10);
+    this.setState((prevState) => {
+      return {answer: prevState.answer + num}
+    });
   }
 
   private handleSubmitClick() {

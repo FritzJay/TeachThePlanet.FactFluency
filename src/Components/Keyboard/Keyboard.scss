@@ -1,0 +1,49 @@
+@import '../../Stylesheets/all';
+
+.keyboard {
+  display: grid;
+  justify-items: center;
+  position: fixed;
+  left: 0px;
+  width: 100%;
+  background-color: $white;
+
+  transition: bottom 0.3s;
+  bottom: -270px;
+  
+  .toggle-bar {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+
+    width: 100%;
+    padding: 1em;
+    z-index: 1;
+
+    box-shadow: 0 -6px 10px 0 rgba(0,0,0,0.20);
+    background-color: rgb(215, 215, 215);
+
+    .toggle-button {
+      width: 2em;
+      height: 2em;
+    }
+  }
+
+  .keys {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 0.5em;
+
+    margin: 1em;
+  }
+
+  .key {
+    width: 4em;
+    height: 4em;
+  }
+}
+
+.keyboard.active {
+  bottom: 0px;
+}
