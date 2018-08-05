@@ -10,6 +10,7 @@ WebFont.load({
     families: [
       'Oswald:300, 400, 700, 900', 'sans-serif',
       'Roboto:300, 400, 700, 900', 'sans-serif',
+      'Material Icons: 400, normal',
     ],
   },
 });
