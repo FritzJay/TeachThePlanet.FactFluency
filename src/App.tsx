@@ -30,6 +30,7 @@ interface IState {
     operator: string;
   };
   test?: ITest;
+  testResults?: ITestResults;
 };
 
 class App extends React.Component<IProps, IState> {
@@ -181,7 +182,7 @@ class App extends React.Component<IProps, IState> {
 
   private handleSelectTestResolve(results: {availableTests: IAvailableTests}) {
     setCached('availableTests', results.availableTests);
-    this.setState.bind(this)({availableTests: results.availableTests});
+    this.setState({availableTests: results.availableTests});
   }
   
   private handleSelectTestSubmit(testNumber: ITestNumber, operator: string) {
@@ -189,8 +190,7 @@ class App extends React.Component<IProps, IState> {
       number: testNumber.number,
       operator,
     }
-    setCached('testParameters', testParameters);
-    this.setState.bind(this)({testParameters}, () => {
+    this.setState({testParameters}, () => {
       this.props.history.push(URLS.startTest);
     });
   }
@@ -200,16 +200,6 @@ class App extends React.Component<IProps, IState> {
   /****** Start Test ******/
   
   private renderStartTest(props: any) {
-    const test = this.state.test || getCached('test');
-    if (test) {
-      return (
-        <StartTest {...props}
-          test={test}
-          onCancel={this.handleStartTestCancel}
-          onSubmit={this.handleStartTestSubmit}
-        />
-      );
-    }
     return (
       <RequestComponent
         request={this.requestStartTest}
@@ -224,7 +214,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   private requestStartTest(): Promise<ITest> {
-    const testParameters = this.state.testParameters || getCached('testParameters');
+    const testParameters = this.state.testParameters;
     if (!testParameters) {
       this.props.history.goBack();
     }
@@ -247,7 +237,7 @@ class App extends React.Component<IProps, IState> {
 
   private handleStartTestResolve(results: { test: ITest }) {
     setCached('test', results.test);
-    this.setState.bind(this)({test: results.test});
+    this.setState({test: results.test});
   }
   
   private handleStartTestSubmit() {
@@ -278,7 +268,7 @@ class App extends React.Component<IProps, IState> {
 
   private handleTakeTestSubmit(test: ITest) {
     setCached('test', test);
-    this.setState.bind(this)({test}, () => {
+    this.setState({test}, () => {
       this.props.history.push(URLS.testResults);
     });
   }
@@ -303,7 +293,7 @@ class App extends React.Component<IProps, IState> {
 
   private handleTestResultsSubmit(testResults: ITestResults) {
     setCached('testResults', testResults);
-    this.setState.bind(this)({testResults}, () => {
+    this.setState({testResults}, () => {
       console.log('DO SOMETHING!');
     });
   }
