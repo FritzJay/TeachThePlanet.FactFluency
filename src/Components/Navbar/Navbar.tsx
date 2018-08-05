@@ -12,7 +12,7 @@ export const Navbar = (props: IProps) => {
     <div className="navbar-margin-top">
       <div className="navbar">
         {logoutButton(props.signout, props.user)}
-        <img src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
+        <img className="logo" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
         {userInfo(props.user)}
       </div>
     </div>
@@ -22,7 +22,7 @@ export const Navbar = (props: IProps) => {
 const userInfo = (user?: IUser) => {
   if (user) {
     return (
-      <p>{user.name}</p>
+      <p className="username">{user.name}</p>
     );
   } else {
     return (
