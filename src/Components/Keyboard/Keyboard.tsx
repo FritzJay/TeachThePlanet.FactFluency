@@ -5,6 +5,7 @@ interface IProps {
   onNumberClick: (event: any) => void;
   onDeleteClick: (event: any) => void;
   onSubmitClick: (event: any) => void;
+  onToggle?: (active: boolean) => void;
 }
 
 interface IState {
@@ -66,6 +67,9 @@ export class Keyboard extends React.Component<IProps, IState> {
 
   private handleToggleClick() {
     this.setState((prevState: IState) => {
+      if (this.props.onToggle) {
+        this.props.onToggle(!prevState.active);
+      }
       return {active: !prevState.active};
     });
   }

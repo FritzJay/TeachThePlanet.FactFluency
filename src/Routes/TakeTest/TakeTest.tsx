@@ -11,37 +11,53 @@ interface IProps {
 
 interface IState {
   answer: string;
+  keyboard: boolean;
   question: IDisplayQuestion;
   questionIndex: number;
   questions: IQuestion[];
 }
 
 export class TakeTest extends React.Component<IProps, IState> {
-  public componentDidMount() {
+  public constructor(props: IProps) {
+    super(props);
     const questions = randomizeQuestions(this.props.test.questions);
     const question = startQuestion(questions[0]);
-    this.setState({question, questions});
+    this.state = {
+      answer: '',
+      keyboard: false,
+      question,
+      questionIndex: 0,
+      questions,
+    }
+    this.handleAnswerChange = this.handleAnswerChange.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleNumberClick = this.handleNumberClick.bind(this);
+    this.handleSubmitClick = this.handleSubmitClick.bind(this);
+    this.handleKeyboardToggle = this.handleKeyboardToggle.bind(this);
   }
 
   public render() {
     if (this.state && this.state.question) {
       const question = this.state.question;
       return (
-          <Card className="take-test">
-            <div>
-              <div className="question-problem">
-                <p className="number-top">{question.top}</p>
-                <p className="operator">{question.operator}</p>
-                <p className="number-bottom">{question.bottom}</p>
-              </div>
-              <div className="line-break"/>
-                <input type="text" dir="rtl" className="input-answer" onChange={this.handleAnswerChange} value={this.state.answer}/>
+        <Card className={`take-test ${this.state.keyboard && 'small'}`}>
+          <div className="question-problem">
+            <p className="number-top">{question.top}</p>
+            <p className="operator">{question.operator}</p>
+            <p className="number-bottom">{question.bottom}</p>
+            <p className="equals">=</p>
           </div>
-  
+          <input type="text" dir="rtl" className="input-answer" onChange={this.handleAnswerChange} value={this.state.answer}/>
+
           <div className="btn-row">
               <Button onClick={this.handleSubmitClick}>Submit</Button>
           </div>
-          <Keyboard onDeleteClick={this.handleDeleteClick} onSubmitClick={this.handleSubmitClick} onNumberClick={this.handleNumberClick} />
+          <Keyboard
+            onDeleteClick={this.handleDeleteClick}
+            onSubmitClick={this.handleSubmitClick}
+            onNumberClick={this.handleNumberClick}
+            onToggle={this.handleKeyboardToggle}
+          />
         </Card>
       )
     } else {
@@ -51,6 +67,12 @@ export class TakeTest extends React.Component<IProps, IState> {
 
   private handleAnswerChange(event: any) {
     this.setState({answer: event.target.value});
+  }
+
+  private handleKeyboardToggle() {
+    this.setState((prevState: IState) => {
+      return {keyboard: !prevState.keyboard}
+    });
   }
 
   private handleDeleteClick() {

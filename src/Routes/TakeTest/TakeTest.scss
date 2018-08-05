@@ -6,6 +6,8 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto;
 
+    padding: 1em 2em;
+
     p {
         font-size: 4em;
         font-weight: 700;
@@ -13,68 +15,104 @@
         padding: 0;
         margin: 0;
     }
-}
 
-.question-problem{
-    grid-row: 1 / 1;
-
-    display: grid;
-    grid-template-columns: 25% auto;
-    grid-template-rows: repeat(2, 1fr);
-
-    .number-top {
-        grid-column: 2 / 2;
+    .equals {
+        display: none;
+    }
+    
+    .question-problem {
         grid-row: 1 / 1;
 
-        direction: rtl;
+        display: grid;
+        grid-template-columns: 25% auto;
+        grid-template-rows: repeat(2, 1fr);
 
-        color: red;
+        border-bottom: 3px solid black;
+
+        .number-top {
+            grid-column: 2 / 2;
+            grid-row: 1 / 1;
+
+            direction: rtl;
+
+            color: red;
+        }
+
+        .operator {
+            grid-column: 1 / 1;
+            grid-row: 2 / 2;
+        }    
+
+        .number-bottom {
+            grid-column: 2 / 2;
+            grid-row: 2 / 2;
+
+            direction: rtl;
+        }
+    }
+    
+    .line-break {
+        padding: 0;
+        margin: 0;
+
+        border-bottom: 3px solid black;
     }
 
-    .operator {
-        grid-column: 1 / 1;
-        grid-row: 2 / 2;
-    }    
+    .input-answer {
+        width: 100%;
 
-    .number-bottom {
-        grid-column: 2 / 2;
-        grid-row: 2 / 2;
+        font-size: 4em;
+        font-weight: 700;
 
-        direction: rtl;
+        border: none;
+        outline: none;
     }
-}
 
-.line-break {
-    padding: 0;
-    margin: 0;
+    .btn-row {
+        grid-column: 1 / -1;
 
-    border-top: 3px solid black; 
-}
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
 
-.input-answer {
-    width: 100%;
-
-    font-size: 4em;
-    font-weight: 700;
-
-    border: none;
-    outline: none;
-}
-
-.btn-row {
-    grid-column: 1 / -1;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-
-    .pill-button {
-        grid-column: 2 / 2;
-        margin: 1em;
+        .pill-button {
+            grid-column: 2 / 2;
+            margin: 1em;
+        }
     }
 }
 
 /*  Mobile  */
-@media only screen and (max-width: 399px) {}
+@media only screen and (max-width: 399px) and (max-height: 775px) {
+    .take-test.small {
+        grid-template-columns: 3fr 2fr;
+        grid-template-rows: 1fr;
+    
+        padding: 1em;
+    
+        p {
+            font-size: 3em;
+        }
+    
+        .question-problem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: none;
+    
+            .equals {
+                display: block;
+            }
+        }
+    
+        .input-answer {
+            font-size: 3em;
+        }
+    
+        .btn-row {
+            display: none;
+        }
+    }
+}
 /*  Tablet  */
 @media only screen and (min-width: 400px) {
     .take-test {
