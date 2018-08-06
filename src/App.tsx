@@ -49,13 +49,13 @@ class App extends React.Component<IProps, IState> {
     this.requestSelectTest = this.requestSelectTest.bind(this);
     this.requestStartTest = this.requestStartTest.bind(this);
     this.handleSelectTestResolve = this.handleSelectTestResolve.bind(this);
-    this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
     this.handleStartTestCancel = this.handleStartTestCancel.bind(this);
     this.handleTakeTestSubmit = this.handleTakeTestSubmit.bind(this);
     this.handleTestResultsSubmit = this.handleTestResultsSubmit.bind(this);
+    this.signOut = this.signOut.bind(this);
   }
 
   public render() {
@@ -99,12 +99,12 @@ class App extends React.Component<IProps, IState> {
     return(
       <Navbar {...props}
         user={user}
-        signout={this.handleSignOutClick}
+        signout={this.signOut}
       />
     );
   }
-  
-  private handleSignOutClick() {
+
+  private signOut() {
     localStorage.clear();
     this.setState({
       token: undefined,
@@ -176,6 +176,12 @@ class App extends React.Component<IProps, IState> {
       jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
       .then((availableTests: IAvailableTests) => {
         resolve(availableTests);
+      })
+      .catch((error: Error) => {
+        console.log('Request failed with error: ' + error.message);
+        if (error.message.includes('401')) {
+          this.signOut();
+        }
       });
     }); 
   }
@@ -231,6 +237,12 @@ class App extends React.Component<IProps, IState> {
       jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
       .then((test: ITest) => {
         resolve(test);
+      })
+      .catch((error: Error) => {
+        console.log('Request failed with error: ' + error.message);
+        if (error.message.includes('401')) {
+          this.signOut();
+        }
       });
     });
   }
