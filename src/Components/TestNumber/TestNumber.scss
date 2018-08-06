@@ -8,9 +8,6 @@
   max-height: 150px;
   
   .header {
-    // change on active
-    opacity: 0.8;
-
     .text {
       font-size: 3.25rem;
     }
@@ -92,7 +89,7 @@
                 padding 0.3s,
                 opacity 0s 0.05s;
                 
-    border-top: 2px solid rgb(184, 184, 184);
+    border-top: 2px solid rgba(1, 1, 1, 0.15);
     padding: 1em;
     height: 70px;
   }
