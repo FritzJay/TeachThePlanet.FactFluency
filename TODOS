@@ -1,7 +1,6 @@
 // Select Test
 - Close the expansion of number cards on click anywhere outside of the card
 
-<<<<<<< HEAD
 
 // Navbar
 - Add Account circle to username (right hand side)
@@ -60,8 +59,5 @@
 - remove gray background
 - test on mobile the problem orientation and whether it is big enough on an actual mobile screen or if it needs to be vertical
 
+log out user on 401
 
-
-=======
-// Log out user on 401
->>>>>>> 8958895182678d66939ab3bafb99625e475ad340
