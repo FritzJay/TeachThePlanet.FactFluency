@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
-import { Navbar } from './Components/Components';
-import { RequestComponent } from './Components/RequestComponent/RequestComponent';
+import { Navbar, RequestComponent } from './Components/Components';
 import { getCached, setCached } from './lib/Caching';
 import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
 import { IRequest, jsonFetch } from './lib/Requests';
