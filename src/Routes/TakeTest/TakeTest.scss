@@ -5,6 +5,8 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
+    justify-items: center;
+    justify-content: center;
 
     padding: 1em 2em;
 
@@ -24,10 +26,12 @@
         grid-row: 1 / 1;
 
         display: grid;
-        grid-template-columns: 25% auto;
-        grid-template-rows: repeat(2, 1fr);
+        justify-content: center;
+        grid-template-columns: 1fr 3fr;
+        grid-template-rows: repeat(3, 1fr);
+        grid-column-gap: 2em;
 
-        border-bottom: 3px solid black;
+        max-width: 50%;
 
         .number-top {
             grid-column: 2 / 2;
@@ -49,6 +53,19 @@
 
             direction: rtl;
         }
+
+        .input-answer {
+            grid-column: 1 / -1;
+            grid-row: 3 / 3;
+    
+            font-size: 4em;
+            font-weight: 700;
+    
+            border: none;
+            outline: none;
+            
+            border-top: 3px solid black;
+        }
     }
     
     .line-break {
@@ -56,16 +73,6 @@
         margin: 0;
 
         border-bottom: 3px solid black;
-    }
-
-    .input-answer {
-        width: 100%;
-
-        font-size: 4em;
-        font-weight: 700;
-
-        border: none;
-        outline: none;
     }
 
     .btn-row {

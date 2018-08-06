@@ -54,9 +54,8 @@ export class TakeTest extends React.Component<IProps, IState> {
             <p className="operator">{question.operator}</p>
             <p className="number-bottom">{question.bottom}</p>
             <p className="equals">=</p>
+            <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
           </div>
-          <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
-
           <div className="btn-row">
               <Button onClick={this.handleSubmitClick}>Submit</Button>
           </div>
