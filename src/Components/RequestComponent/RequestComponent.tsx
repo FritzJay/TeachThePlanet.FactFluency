@@ -1,4 +1,5 @@
 import * as React from "react";
+import './RequestComponent.css';
 
 interface IProps {
   component: React.ComponentType;
@@ -45,7 +46,7 @@ export class RequestComponent extends React.Component<IProps, IState> {
         ...this.props.props,
       });
     } else {
-      return <div>Loading...</div>
+      return <div className="loading">Loading...</div>
     }
   }
 }
