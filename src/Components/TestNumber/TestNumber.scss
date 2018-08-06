@@ -68,7 +68,23 @@
     height: 0;
     margin: 0;
     transform: scaleY(0);
-  } 
+  }
+
+  .red {
+    color: $red;
+  }
+
+  .blue {
+    color: $blue;
+  }
+
+  .yellow {
+    color: $yellow;
+  }
+
+  .green {
+    color: $green;
+  }
 }
 
 .test-number.active {

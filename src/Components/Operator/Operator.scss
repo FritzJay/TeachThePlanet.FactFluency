@@ -1,31 +1,89 @@
+@import '../../Stylesheets/all';
+
 .operator-div {
-    display: grid;
-}
+  display: grid;
+  
+  .operator {
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      align-content: center;
+  
+      width: 48px;
+      height: 48px;
+  
+      padding: 0;
+      margin: 0;
+      
+      border-radius: 5px;
+      user-select: none;
+  }
+  
+  .operator.active:hover {
+    background-color: rgba(1, 1, 1, 0.05);
+  }
+  
+  .operator.active:active {
+    background-color: rgba(1, 1, 1, 0.15);
+  }
+  
+  .operator.active.selected {
+    background-color: rgba(1, 1, 1, 0.1);
+  }
 
-.operator {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    align-content: center;
+  .red {
+    color: $red;
 
-    width: 48px;
-    height: 48px;
+    &.active {
+      &:hover {
+        background-color: $very-light-red;
+      }
+      &.selected {
+        color: $white;
+        background-color: $red;
+      }
+    }
+  }
 
-    padding: 0;
-    margin: 0;
+  .blue {
+    color: $blue;
+
+    &.active {
+      &:hover {
+        background-color: $very-light-blue;
+      }
+      &.selected {
+        color: $white;
+        background-color: $blue;
+      }
+    }
+  }
+
+  .yellow {
+    color: $yellow;
     
-    border-radius: 5px;
-    user-select: none;
-}
+    &.active {
+      &:hover {
+        background-color: $very-light-yellow;
+      }
+      &.selected {
+        color: $white;
+        background-color: $yellow;
+      }
+    }
+  }
 
-.operator.active:hover {
-  background-color: rgba(1, 1, 1, 0.05);
-}
-
-.operator.active:active {
-  background-color: rgba(1, 1, 1, 0.15);
-}
-
-.operator.active.selected {
-  background-color: rgba(1, 1, 1, 0.1);
+  .green {
+    color: $green;
+    
+    &.active {
+      &:hover {
+        background-color: $very-light-green;
+      }
+      &.selected {
+        color: $white;
+        background-color: $green;
+      }
+    }
+  }
 }

@@ -14,22 +14,6 @@ body {
     grid-template-rows: auto;
 }
 
-.red {
-  color: $red;
-}
-
-.blue {
-  color: $blue;
-}
-
-.yellow {
-  color: $yellow;
-}
-
-.green {
-  color: $green;
-}
-
 /*  Mobile  */
 @media only screen and (max-width: 399px) {
     .app-content {
