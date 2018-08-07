@@ -1,5 +1,5 @@
 import { IQuestion } from "../Interfaces";
-import { randomizeQuestions, sortQuestions } from "./Testing";
+import { randomizeQuestions, randomlyFlipQuestion, sortQuestions } from "./Testing";
 
 const questions: IQuestion[] = [];
 for (let i = 0; i < 10; i++) {
@@ -45,5 +45,34 @@ describe('sortQuestions', () => {
       return q.question;
     });
     expect(orderedQuestionStrings).toEqual(questionStrings);
+  });
+});
+
+describe('randomlyFlipQuestion', () => {
+  it('does not flip division and minus test questions', () => {
+    const divisionQuestion: IQuestion = {
+      end: undefined,
+      question: '1 / 2',
+      start: undefined,
+      studentAnswer: undefined,
+    }
+    const subtractionQuestion: IQuestion = {
+      end: undefined,
+      question: '1 - 2',
+      start: undefined,
+      studentAnswer: undefined,
+    }
+    for (let i = 0; i < 15; i++) {
+      expect(randomlyFlipQuestion(divisionQuestion)).toEqual({
+        bottom: '2',
+        operator: '/',
+        top: '1',
+      });
+      expect(randomlyFlipQuestion(subtractionQuestion)).toEqual({
+        bottom: '2',
+        operator: '-',
+        top: '1',
+      });
+    }
   });
 });

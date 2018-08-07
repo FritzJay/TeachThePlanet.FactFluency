@@ -48,11 +48,12 @@ export class TakeTest extends React.Component<IProps, IState> {
   public render() {
     if (this.state && this.state.question) {
       const question = this.state.question;
+      const operator = this.getOperatorSymbol(question.operator);
       return (
         <Card className={`take-test ${this.state.keyboard && 'small'}`}>
           <div className="question-problem">
             <p className="number-top">{question.top}</p>
-            <p className="operator">{question.operator}</p>
+            <p className="operator">{operator}</p>
             <p className="number-bottom">{question.bottom}</p>
             <p className="equals">=</p>
             <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
@@ -70,6 +71,19 @@ export class TakeTest extends React.Component<IProps, IState> {
       )
     } else {
       return <div/>
+    }
+  }
+
+  private getOperatorSymbol(operator: string) {
+    switch (operator) {
+      case '*':
+        return '×';
+      case '/':
+        return '÷';
+       case '-':
+        return '−';
+      default:
+        return operator;
     }
   }
 
