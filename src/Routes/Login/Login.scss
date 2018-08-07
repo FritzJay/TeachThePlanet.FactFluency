@@ -1,11 +1,11 @@
 @import "../../Stylesheets/all";
 
-  .login.margin-top {
-    margin-top: 5vh;
-  }
-
 .login {
   grid-column: 1 / -1;
+
+  &.margin-top {
+    margin-top: 5vh;
+  }
   
   .modal {
     .header {
@@ -21,11 +21,11 @@
       .button {
         border-color: $blue;
         color: $blue;
-      }
-  
-      .button:hover {
-        color: $white;
-        background-color: $blue;
+
+        &:hover {
+          color: $white;
+          background-color: $blue;
+        }
       }
 
       /* Hide HTML5 Up and Down arrows. */
@@ -67,17 +67,21 @@
       .error {
         display: none;
         color: $red;
+
+        &.active {
+          display: inline;
+        }
       }
     }
   }
 }
 
-@media (max-width: 399px) {
-  .login.margin-top {
-    margin-top: -30px;
-  }
-
+@media (max-width: 399px) {  
   .login {
+    &.margin-top {
+      margin-top: -30px;
+    }
+
     .modal {
       .header {
         h2 {
