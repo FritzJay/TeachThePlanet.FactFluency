@@ -18,63 +18,59 @@
     border-radius: 50%;
     user-select: none;
 
-    &.active {
-      &.red {
-        color: $red;
+    &.red {
+      color: $red;
 
-        &:hover {
+      &.active {
+          &:hover {
           background-color: $very-light-red;
         }
-
-    &.active {
-      &:hover {
-        background-color: $very-light-blue;
-
         &.selected {
           color: $white;
           background-color: $red;
         }
       }
+    }
 
-      &.blue {
-        color: $blue;
-  
-        &.active {
-          &:hover {
-            background-color: $very-light-blue;
-          }
-          &.selected {
-            color: $white;
-            background-color: $blue;
-          }
+    &.blue {
+      color: $blue;
+
+      &.active {
+        &:hover {
+          background-color: $very-light-blue;
+        }
+
+        &.selected {
+          color: $white;
+          background-color: $blue;
         }
       }
+    }
 
-      &.yellow {
-        color: $yellow;
-        
-        &.active {
-          &:hover {
-            background-color: $very-light-yellow;
-          }
-          &.selected {
-            color: $white;
-            background-color: $yellow;
-          }
+    &.yellow {
+      color: $yellow;
+      
+      &.active {
+        &:hover {
+          background-color: $very-light-yellow;
+        }
+        &.selected {
+          color: $white;
+          background-color: $yellow;
         }
       }
+    }
 
-      &.green {
-        color: $green;
-        
-        &.active {
-          &:hover {
-            background-color: $very-light-green;
-          }
-          &.selected {
-            color: $white;
-            background-color: $green;
-          }
+    &.green {
+      color: $green;
+      
+      &.active {
+        &:hover {
+          background-color: $very-light-green;
+        }
+        &.selected {
+          color: $white;
+          background-color: $green;
         }
       }
     }
