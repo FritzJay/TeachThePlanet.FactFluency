@@ -30,7 +30,7 @@ export class Operator extends React.Component<IProps> {
         symbol = this.props.operator;
         break;
     }
-    const className = `operator ${this.props.color} ${this.props.active && 'active'} ${this.props.selected && 'selected'}`;
+    const className = `operator ${this.props.color} ${this.props.active ? 'active' : 'inactive'} ${this.props.selected ? 'selected' : ''}`;
     return (
       <div className="operator-div">
         <a 

@@ -4,102 +4,79 @@
   display: grid;
   
   .operator {
-      display: grid;
-      grid-template-columns: 1fr;
-      justify-items: center;
-      align-content: center;
-  
-      width: 48px;
-      height: 48px;
-  
-      padding: 0;
-      margin: 0;
-      
-      border-radius: 5px;
-      user-select: none;
-  }
-  
-  .operator.active:hover {
-    background-color: rgba(1, 1, 1, 0.05);
-  }
-  
-  .operator.active:active {
-    background-color: rgba(1, 1, 1, 0.15);
-  }
-  
-  .operator.active.selected {
-    background-color: rgba(1, 1, 1, 0.1);
-  }
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-content: center;
 
-  .red {
-    color: $red;
+    width: 48px;
+    height: 48px;
+
+    padding: 0;
+    margin: 0;
+    
+    border-radius: 50%;
+    user-select: none;
 
     &.active {
-      &:hover {
-        background-color: $very-light-red;
-      }
-      &.selected {
-        color: $white;
-        background-color: $red;
-      }
-    }
-  }
+      &.red {
+        color: $red;
 
-  .blue {
-    color: $blue;
+        &:hover {
+          background-color: $very-light-red;
+        }
 
-<<<<<<< HEAD
-.operator.active:hover {
-  background-color: rgba(1, 1, 1, 0.05);
-  border-radius: 50%;
-}
-
-.operator.active:active {
-  background-color: rgba(1, 1, 1, 0.15);
-  border-radius: 50%;
-}
-
-.operator.active.selected {
-  background-color: rgba(1, 1, 1, 0.1);
-  border-radius: 50%;
-=======
     &.active {
       &:hover {
         background-color: $very-light-blue;
-      }
-      &.selected {
-        color: $white;
-        background-color: $blue;
-      }
-    }
-  }
 
-  .yellow {
-    color: $yellow;
-    
-    &.active {
-      &:hover {
-        background-color: $very-light-yellow;
+        &.selected {
+          color: $white;
+          background-color: $red;
+        }
       }
-      &.selected {
-        color: $white;
-        background-color: $yellow;
-      }
-    }
-  }
 
-  .green {
-    color: $green;
-    
-    &.active {
-      &:hover {
-        background-color: $very-light-green;
+      &.blue {
+        color: $blue;
+  
+        &.active {
+          &:hover {
+            background-color: $very-light-blue;
+          }
+          &.selected {
+            color: $white;
+            background-color: $blue;
+          }
+        }
       }
-      &.selected {
-        color: $white;
-        background-color: $green;
+
+      &.yellow {
+        color: $yellow;
+        
+        &.active {
+          &:hover {
+            background-color: $very-light-yellow;
+          }
+          &.selected {
+            color: $white;
+            background-color: $yellow;
+          }
+        }
+      }
+
+      &.green {
+        color: $green;
+        
+        &.active {
+          &:hover {
+            background-color: $very-light-green;
+          }
+          &.selected {
+            color: $white;
+            background-color: $green;
+          }
+        }
       }
     }
   }
->>>>>>> 7acf21ce23cf37339f69fe9c361c8dbcebca98fc
 }
