@@ -1,8 +1,9 @@
 // Select Test
 - Close the expansion of number cards on click anywhere outside of the card
 
+
 // Navbar
-- logo size change on mobile
+- Add Account circle to username (right hand side)
 - Drawer on mobile with hamburger menu 
 - hamburger menu contains username and logout link
 - on hover links highlight blue
@@ -13,35 +14,18 @@
 - how do we take away padding for content if it is inherited/ button row may need no padding top gep is too big
 
 //Select Test cards
-- *finished* Full opacity for test number
 - gray for operator unless a test is passed
-<<<<<<< HEAD
-- hr line at 0.05 opacity
-=======
-- *finished but made it 0.15. What do you think?* hr line at 0.05 opacity
 - hover as circle? 
-- *finished* possibly color of operator with inverted color white text onfocus 
->>>>>>> 7acf21ce23cf37339f69fe9c361c8dbcebca98fc
 - ripple effect on click few examples
     https://codepen.io/OlgaFandikova/pen/zZbLMa
     https://codepen.io/finnhvman/pen/jLXKJw
     https://codepen.io/lehollandaisvolant/pen/dMQXYX
 
 // Get Started card
-- *finished* same size as test card (it has to feel like its just changing cards)
-- *finished* get rid of "you practiced right?"
 - header text should be able to be switched out with different encouraging text
-- *finished* start should have the same padding as other pills/ its too fat
-- *finished* green start button
-- *finished* start button text "Start Test"
-- *finished* cancel needs to be 0.75 opacity
-- *finished the hover effect* cancel needs less margin and no hover inversion just hover text opacity increase to 1.0
 - eventually a practice button to run through a few questions before they start
 
 // Test Card 
-- *finished* padding needs to have the equation look less like the numbers and the operator are miles from each other
-- *finished* submit button should be green on inversion 
-- *finished* get rid of flashing cursor line
 - Eventually have vertical and horizonal problems randomly in que of problems
 
 // Keyboard
@@ -67,5 +51,4 @@
 - test on mobile the problem orientation and whether it is big enough on an actual mobile screen or if it needs to be vertical
 
 // System wide
-*finished* log out user on 401
-
+log out user on 401
