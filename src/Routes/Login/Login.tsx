@@ -11,7 +11,7 @@ interface IProps {
 
 interface IState {
   classCode: string;
-  error: string;
+  error?: string;
   name: string;
 }
 
@@ -20,7 +20,6 @@ export class Login extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       classCode: '',
-      error: '',
       name: '',
     };
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -47,7 +46,7 @@ export class Login extends React.Component<IProps, IState> {
             <Button className="button" onClick={this.handleSubmitClick}>
               Get Started
             </Button>
-            <p className="error">{this.state.error}</p>
+            <p className={`error ${this.state.error ? 'active' : ''}`}>{this.state.error}</p>
           </ModalContent>
         </Modal>
       </div>
@@ -65,6 +64,15 @@ export class Login extends React.Component<IProps, IState> {
   private handleSubmitClick() {
     this.signin(this.state.name, this.state.classCode);
   }
+
+  private flashError(error: string) {
+    this.setState({error: error.toString()});
+    setTimeout(this.hideError.bind(this), 1250);
+  }
+
+  private hideError() {
+    this.setState({error: undefined});
+  }
   
   // Leaving the request inside the component because this component will be removed
   // once a home page is setup.
@@ -77,8 +85,8 @@ export class Login extends React.Component<IProps, IState> {
     .then((response) => {
       this.props.onSubmit(response.token, response.user);
     })
-    .catch((error: Error) => {
-      this.setState({error: error.toString()});
+    .catch(() => {
+      this.flashError('Incorrect Name or Class Code');
     });
   }
 }
