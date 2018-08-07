@@ -3,7 +3,6 @@
 
 
 // Navbar
-- Add Account circle to username (right hand side)
 - Drawer on mobile with hamburger menu 
 - hamburger menu contains username and logout link
 - on hover links highlight blue
@@ -35,11 +34,7 @@
 - remove graybar
 - on click button numbers should sligtly increase in size but not enough to move div
 - center submit
-- switch numbers to 
- - 1 2 3
- - 4 5 6
- - 7 8 9 
-     0 
+
 
 - on moblie switch submit and delete to icons 
 - take up only 50% of the screen then test for the mobile thumb zone and comfort

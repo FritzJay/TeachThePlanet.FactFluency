@@ -103,6 +103,8 @@
 /*  Mobile  */
 @media only screen and (max-width: 399px) and (max-height: 775px) {
     .take-test.small {
+        grid-column: 2 / 2;
+        justify-self: center;
         grid-template-columns: 3fr 2fr;
         grid-template-rows: 1fr;
     
@@ -125,6 +127,8 @@
     
         .input-answer {
             font-size: 3em;
+
+            border: none;
         }
     
         .button-container {

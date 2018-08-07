@@ -21,32 +21,58 @@
     z-index: 1;
 
     box-shadow: 0 -6px 10px 0 rgba(0,0,0,0.20);
-    background-color: rgb(215, 215, 215);
 
     .toggle-button {
-      width: 2em;
-      height: 2em;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      outline: none;
+      border: none;
+      background-color: transparent;
+
+      .keyboard-icon {
+        justify-self: center;
+        align-self: center;
+      }
     }
+  }
   }
 
   .keys {
+    grid-column: 1 / -1;
+    width: 100%;
+
     display: grid;
-    justify-items: center;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     grid-gap: 0.5em;
 
     margin: 1em;
+    padding: 1em;
   }
 
   .key {
-    width: 4em;
-    height: 4em;
+    width: 100px;
+    height: 100px;
 
-    background-color: $white;
-    border-radius: 10px;
+    justify-self: center;
+    align-self: center;
+
+    background-color: $gray;
+    border-radius: 12px;
+    border: none;
+
+    color: $white;
+    font-weight: 700;
+    font-size: 4em;
+
+    .submit {
+      font-size: 2em;
+    } 
   }
-}
 
 .keyboard.active {
   bottom: 0px;
 }
+
+@media (max-width: 399px) {}
