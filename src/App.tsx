@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
-import { Navbar } from './Components/Components';
-import { RequestComponent } from './Components/RequestComponent/RequestComponent';
+import { Navbar, RequestComponent } from './Components/Components';
 import { getCached, setCached } from './lib/Caching';
 import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
 import { IRequest, jsonFetch } from './lib/Requests';
@@ -48,14 +47,15 @@ class App extends React.Component<IProps, IState> {
     this.renderTestResults = this.renderTestResults.bind(this);
     this.requestSelectTest = this.requestSelectTest.bind(this);
     this.requestStartTest = this.requestStartTest.bind(this);
+    this.requestTestResults = this.requestTestResults.bind(this);
     this.handleSelectTestResolve = this.handleSelectTestResolve.bind(this);
-    this.handleSignOutClick = this.handleSignOutClick.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
     this.handleStartTestCancel = this.handleStartTestCancel.bind(this);
     this.handleTakeTestSubmit = this.handleTakeTestSubmit.bind(this);
     this.handleTestResultsSubmit = this.handleTestResultsSubmit.bind(this);
+    this.signOut = this.signOut.bind(this);
   }
 
   public render() {
@@ -99,12 +99,12 @@ class App extends React.Component<IProps, IState> {
     return(
       <Navbar {...props}
         user={user}
-        signout={this.handleSignOutClick}
+        signout={this.signOut}
       />
     );
   }
-  
-  private handleSignOutClick() {
+
+  private signOut() {
     localStorage.clear();
     this.setState({
       token: undefined,
@@ -158,7 +158,10 @@ class App extends React.Component<IProps, IState> {
         request={this.requestSelectTest}
         onResolve={this.handleSelectTestResolve}
         component={SelectTest}
-        props={{onSubmit: this.handleSelectTestSubmit}}
+        props={{
+          ...props,
+          onSubmit: this.handleSelectTestSubmit
+        }}
       />
     );
   }
@@ -176,6 +179,12 @@ class App extends React.Component<IProps, IState> {
       jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
       .then((availableTests: IAvailableTests) => {
         resolve(availableTests);
+      })
+      .catch((error: Error) => {
+        console.log('Request failed with error: ' + error.message);
+        if (error.message && error.message.includes('401')) {
+          this.signOut();
+        }
       });
     }); 
   }
@@ -206,6 +215,7 @@ class App extends React.Component<IProps, IState> {
         onResolve={this.handleStartTestResolve}
         component={StartTest}
         props={{
+          ...props,
           onCancel: this.handleStartTestCancel,
           onSubmit: this.handleStartTestSubmit,
         }}
@@ -218,7 +228,7 @@ class App extends React.Component<IProps, IState> {
     if (!testParameters) {
       this.props.history.goBack();
     }
-    const token = this.state.token || getCached('test');
+    const token = this.state.token || getCached('token');
     if (!token) {
       this.props.history.goBack();
     }
@@ -231,6 +241,12 @@ class App extends React.Component<IProps, IState> {
       jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
       .then((test: ITest) => {
         resolve(test);
+      })
+      .catch((error: Error) => {
+        console.log('Request failed with error: ' + error.message);
+        if (error.message && error.message.includes('401')) {
+          this.signOut();
+        }
       });
     });
   }
@@ -278,17 +294,51 @@ class App extends React.Component<IProps, IState> {
   /****** Test Results ******/
   
   private renderTestResults(props: any) {
-    const test = this.state.test || getCached('test');
-    if (!test) {
-      this.props.history.replace(URLS.startTest);
-    }
     return (
-      <TestResults {...props}
-        token={test}
-        test={test}
-        onSubmit={this.handleTestResultsSubmit}
+      <RequestComponent
+        request={this.requestTestResults}
+        onResolve={this.handleRestResultsResolve}
+        component={TestResults}
+        props={{...props}}
       />
     );
+  }
+
+  private requestTestResults() {
+    const token = this.state.token || getCached('token');
+    if (!token) {
+      this.props.history.replace(URLS.signin);
+    }
+    const test = this.state.test || getCached('test');
+    if (!test) {
+      this.props.history.replace(URLS.selectTest);
+    }
+    const requestParams: IRequest = {
+      body: test,
+      method: "POST",
+      token,
+    };
+    return new Promise<ITestResults>((resolve) => {
+      jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
+      .then((testResults: ITestResults) => {
+        resolve(testResults);
+      })
+      .catch((error: Error) => {
+        console.log('Request failed with error: ' + error.message);
+        if (error.message && error.message.includes('401')) {
+          this.signOut();
+        }
+      });
+    });
+  }
+
+  private handleRestResultsResolve(results: { testResults: ITestResults }) {
+    localStorage.removeItem('test');
+    setCached('testResults', results.testResults);
+    this.setState({
+      test: undefined,
+      testResults: results.testResults,
+    });
   }
 
   private handleTestResultsSubmit(testResults: ITestResults) {

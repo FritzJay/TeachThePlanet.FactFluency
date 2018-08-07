@@ -2,49 +2,51 @@
 
 .start-test {
   grid-column: 2;
+  justify-self: center;
 
   display: grid;
   grid-template-columns: 1fr;
   justify-content: center;
   justify-items: center;
   text-align: center;
+
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  max-height: 369px;
   
   .header {
     justify-self: stretch;
 
-    padding: 1em;
+    padding: 3em;
+    
     background-color: $blue;
-
     color: $white;
   }
 
   .buttons {
     padding: 3em;
     display: grid;
-    grid-gap: 3em;
+    grid-gap: 2em;
 
     .start-button {
-      color: $blue;
-      border-color: $blue;
+      color: $green;
+      border-color: $green;
     }
 
     .start-button:hover {
       color: $white;
-      background-color: $blue;
+      background-color: $green;
     }
 
     .cancel-button {
-      color: $red;
+      color: $light-red;
       border: none;
     }
 
     .cancel-button:hover {
-      color: $white;
-      background-color: $red;
-    }
-
-    button {
-      padding: 1em 2em;
+      color: $red;
+      background-color: transparent;
     }
   }
 }

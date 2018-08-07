@@ -34,6 +34,7 @@ export class TakeTest extends React.Component<IProps, IState> {
     this.handleNumberClick = this.handleNumberClick.bind(this);
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleKeyboardToggle = this.handleKeyboardToggle.bind(this);
+    this.submitTest = this.submitTest.bind(this);
   }
 
   public componentDidMount() {
@@ -54,11 +55,10 @@ export class TakeTest extends React.Component<IProps, IState> {
             <p className="operator">{question.operator}</p>
             <p className="number-bottom">{question.bottom}</p>
             <p className="equals">=</p>
+            <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
           </div>
-          <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
-
-          <div className="btn-row">
-              <Button onClick={this.handleSubmitClick}>Submit</Button>
+          <div className="button-container">
+              <Button className="submit-button" onClick={this.handleSubmitClick}>Submit</Button>
           </div>
           <Keyboard
             onDeleteClick={this.handleDeleteClick}
@@ -114,9 +114,12 @@ export class TakeTest extends React.Component<IProps, IState> {
     const nextQuestionIndex = this.state.questionIndex + 1;
     if (nextQuestionIndex < this.props.test.questions.length) {
       const nextQuestion = startQuestion(this.state.questions[nextQuestionIndex]);
-      this.setState({question: nextQuestion});
+      this.setState({
+        question: nextQuestion,
+        questionIndex: nextQuestionIndex,
+      });
     } else {
-      this.onSubmit();
+      this.submitTest();
     }
   }
 
@@ -133,7 +136,7 @@ export class TakeTest extends React.Component<IProps, IState> {
     });
   }
 
-  private onSubmit() {
+  private submitTest() {
     const questions = sortQuestions(this.state.questions);
     const test = this.props.test;
     test.questions = questions;
