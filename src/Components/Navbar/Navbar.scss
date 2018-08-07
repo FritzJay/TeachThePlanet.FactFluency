@@ -27,6 +27,10 @@
 .logout-link {
   grid-column: 1 / 1;
   justify-self: flex-start;
+
+  cursor: pointer;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .logout-link:hover {
@@ -43,6 +47,18 @@
 .username {
   grid-column: 3 / 3;
   justify-self: flex-end;
+
+  cursor: pointer;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.user-icon {
+  vertical-align: middle;
+  padding-right: .25em;
+  color: rgba(0, 0, 0, 0.5);
+
+  cursor: pointer;
 }
 
 @media (max-width: 399px) {
@@ -58,8 +74,6 @@
       justify-self: flex-start;
     }
 
-    .username:hover {
-      color: $blue;
-    }
+    
   }
 }

@@ -1,20 +1,21 @@
 // Select Test
 - Close the expansion of number cards on click anywhere outside of the card
 
-
 // Navbar
-- Add Account circle to username (right hand side)
+- logo size change on mobile
 - Drawer on mobile with hamburger menu 
 - hamburger menu contains username and logout link
 - on hover links highlight blue
 - Also has hr at 2px solid black with 0.05 opacity
 
+// Login card
+- display error only when error/ toggle display class (This way it doesn't have an extra div on the bottom)
+- how do we take away padding for content if it is inherited/ button row may need no padding top gep is too big
+
 //Select Test cards
 - Full opacity for test number
 - gray for operator unless a test is passed
 - hr line at 0.05 opacity
-- hover as circle? 
-- possibly color of operator with inverted color white text onfocus 
 - ripple effect on click few examples
     https://codepen.io/OlgaFandikova/pen/zZbLMa
     https://codepen.io/finnhvman/pen/jLXKJw

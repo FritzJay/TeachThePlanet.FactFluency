@@ -22,7 +22,7 @@ export const Navbar = (props: IProps) => {
 const userInfo = (user?: IUser) => {
   if (user) {
     return (
-      <p className="username">{user.name}</p>
+      <p className="username"><i className="user-icon material-icons">account_circle</i>{user.name}</p>
     );
   } else {
     return (
