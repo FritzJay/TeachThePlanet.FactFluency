@@ -1,0 +1,32 @@
+.test-results {
+  grid-column: 2 / 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-gap: 2em;
+  justify-items: center;
+
+  .card {
+    grid-gap: 4em;
+    text-align: center;
+    padding: 1em;
+  }
+
+  h1 {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  h2 {
+    margin: 0 0 1em 0;
+  }
+
+  h3 {
+    margin: 0 0 1em 0;
+  }
+
+  p {
+    margin: 0;
+    grid-column: 1 / -1;
+  }
+}
