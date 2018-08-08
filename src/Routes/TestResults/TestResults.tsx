@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Card } from '../../Components/Card/Card';
-import { ITestResults } from '../../lib/Interfaces';
+import { Button, Card } from '../../Components/Components';
+import { IQuestion, ITestResults } from '../../lib/Interfaces';
 import './TestResults.css';
 
 interface IProps {
@@ -9,10 +9,31 @@ interface IProps {
 
 export class TestResults extends React.Component<IProps> {
   public render() {
-    let quickestCard;
-    if (this.props.testResults.quickest && this.props.testResults.quickest.start && this.props.testResults.quickest.end) {
-      const quickestDurationInSeconds = (new Date(this.props.testResults.quickest.end).getTime() - new Date(this.props.testResults.quickest.start).getTime()) / 1000;
-      quickestCard = (
+    const correctClassName = (this.props.testResults.correct >= this.props.testResults.needed) ? 'pass' : 'fail';
+    return (
+      <div className="test-results">
+        <h1>You got <span className={correctClassName}>{this.props.testResults.correct}</span> out of <span className="pass">{this.props.testResults.total}</span> correct!</h1>
+        <p>Remember you need {this.props.testResults.needed}/{this.props.testResults.total} to pass.</p>
+        <div className="cards-container">
+          {this.quickestCard(this.props.testResults.quickest)}
+          {this.incorrectCard(this.props.testResults.incorrect)}
+        </div>
+        <div className="buttons-container">
+          <Button onClick={this.test}>Retry</Button>
+          <Button onClick={this.test}>Home</Button>
+        </div>
+      </div>
+    );
+  }
+
+  private test(event: any) {
+    console.log(event.target.innerText);
+  }
+
+  private quickestCard(quickest?: IQuestion): JSX.Element | undefined {
+    if (quickest && quickest.start && quickest.end) {
+      const quickestDurationInSeconds = (new Date(quickest.end).getTime() - new Date(quickest.start).getTime()) / 1000;
+      return (
         <Card className="quickest-card">
           <div className="header">
             <h2>You Rocked This Problem!</h2>
@@ -21,10 +42,14 @@ export class TestResults extends React.Component<IProps> {
           <p>It only took you {quickestDurationInSeconds} second.</p>
         </Card>
       );
+    } else {
+      return undefined;
     }
-    let incorrectCard;
-    if (this.props.testResults.incorrect) {
-      incorrectCard = (
+  }
+
+  private incorrectCard(incorrect?: IQuestion): JSX.Element | undefined {
+    if (incorrect) {
+      return (
         <Card className="incorrect-card">
           <div className="header">
             <h2>This Gave You Some Trouble</h2>
@@ -33,14 +58,8 @@ export class TestResults extends React.Component<IProps> {
           <p>Hint: It might be a good idea to practice this one.</p>
         </Card>
       );
+    } else {
+      return undefined;
     }
-    return (
-      <div className="test-results">
-        <h1>You got {this.props.testResults.correct} out of {this.props.testResults.total} correct!</h1>
-        <p>Remember you need {this.props.testResults.needed}/{this.props.testResults.total} to pass.</p>
-        {quickestCard}
-        {incorrectCard}  
-      </div>
-    );
   }
 }

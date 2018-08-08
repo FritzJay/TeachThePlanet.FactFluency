@@ -1,32 +1,91 @@
+@import '../../Stylesheets/all';
+
 .test-results {
   grid-column: 2 / 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  grid-gap: 2em;
   justify-items: center;
 
-  .card {
-    grid-gap: 4em;
-    text-align: center;
-    padding: 1em;
-  }
+  color: rgba(0, 0, 0, 0.5);
 
+  text-align: center;
+  
   h1 {
     grid-column: 1 / -1;
-    margin: 0;
-  }
+    margin: 1em;
+    line-height: 1.5em;
 
-  h2 {
-    margin: 0 0 1em 0;
-  }
+    span {
+      border-radius: 0.25em;
+      padding: 0.25em;
+      color: $white;
 
-  h3 {
-    margin: 0 0 1em 0;
+      &.pass {
+        background-color: $green;
+      }
+  
+      &.fail {
+        background-color: $yellow;
+      }
+    }
   }
-
+  
   p {
-    margin: 0;
+    margin: 1em;
     grid-column: 1 / -1;
+    font-weight: 900;
+  }
+
+  .card {
+    margin: 1em;
+
+    .header {
+      color: $white;
+    }
+  }
+
+  .cards-container {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1em;
+    justify-content: center;
+
+    padding: 1em 0 1em 0;
+    margin-top: 1em;
+
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    
+    .quickest-card {
+      .header {
+        background-color: $green;
+      }
+    }
+    
+    .incorrect-card {
+      .header {
+        background-color: $red;
+      }
+    }
+  }
+
+  .buttons-container {
+    width: 100%;
+    padding: 1em 0 1em 0;
+
+    display: flex;
+    justify-content: space-around;
+
+    .pill-button {
+      padding: 12px 32px;
+      color: $light-blue;
+      border-color: $light-blue;
+
+      &:hover {
+        color: $white;
+        background-color: $light-blue;
+      }
+    }
   }
 }
