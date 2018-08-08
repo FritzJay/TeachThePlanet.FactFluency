@@ -49,12 +49,14 @@ class App extends React.Component<IProps, IState> {
     this.requestStartTest = this.requestStartTest.bind(this);
     this.requestTestResults = this.requestTestResults.bind(this);
     this.handleSelectTestResolve = this.handleSelectTestResolve.bind(this);
+    this.handleTestResultsResolve = this.handleTestResultsResolve.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
     this.handleStartTestCancel = this.handleStartTestCancel.bind(this);
     this.handleTakeTestSubmit = this.handleTakeTestSubmit.bind(this);
     this.handleTestResultsSubmit = this.handleTestResultsSubmit.bind(this);
+    this.handleTestResultsRetry = this.handleTestResultsRetry.bind(this);
     this.signOut = this.signOut.bind(this);
   }
 
@@ -293,9 +295,13 @@ class App extends React.Component<IProps, IState> {
     return (
       <RequestComponent
         request={this.requestTestResults}
-        onResolve={this.handleRestResultsResolve}
+        onResolve={this.handleTestResultsResolve}
         component={TestResults}
-        props={{...props}}
+        props={{
+          ...props,
+          onRetry: this.handleTestResultsRetry,
+          onSubmit: this.handleTestResultsSubmit,
+        }}
       />
     );
   }
@@ -326,7 +332,7 @@ class App extends React.Component<IProps, IState> {
     });
   }
 
-  private handleRestResultsResolve(results: { testResults: ITestResults }) {
+  private handleTestResultsResolve(results: { testResults: ITestResults }) {
     localStorage.removeItem('test');
     setCached('testResults', results.testResults);
     this.setState({
@@ -338,8 +344,12 @@ class App extends React.Component<IProps, IState> {
   private handleTestResultsSubmit(testResults: ITestResults) {
     setCached('testResults', testResults);
     this.setState({testResults}, () => {
-      console.log('DO SOMETHING!');
+      this.props.history.push(URLS.selectTest);
     });
+  }
+
+  private handleTestResultsRetry() {
+    this.props.history.replace(URLS.startTest);
   }
 
   /****** END Test Results ******/

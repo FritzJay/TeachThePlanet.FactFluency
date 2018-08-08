@@ -4,6 +4,8 @@ import { IQuestion, ITestResults } from '../../lib/Interfaces';
 import './TestResults.css';
 
 interface IProps {
+  onRetry: () => void;
+  onSubmit: (testResults: ITestResults) => void;
   testResults: ITestResults;
 }
 
@@ -19,15 +21,11 @@ export class TestResults extends React.Component<IProps> {
           {this.incorrectCard(this.props.testResults.incorrect)}
         </div>
         <div className="buttons-container">
-          <Button onClick={this.test}>Retry</Button>
-          <Button onClick={this.test}>Home</Button>
+          <Button onClick={this.props.onRetry}>Retry</Button>
+          <Button onClick={this.props.onSubmit}>Home</Button>
         </div>
       </div>
     );
-  }
-
-  private test(event: any) {
-    console.log(event.target.innerText);
   }
 
   private quickestCard(quickest?: IQuestion): JSX.Element | undefined {
