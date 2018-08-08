@@ -341,11 +341,8 @@ class App extends React.Component<IProps, IState> {
     });
   }
 
-  private handleTestResultsSubmit(testResults: ITestResults) {
-    setCached('testResults', testResults);
-    this.setState({testResults}, () => {
-      this.props.history.push(URLS.selectTest);
-    });
+  private handleTestResultsSubmit() {
+    this.props.history.push(URLS.selectTest);
   }
 
   private handleTestResultsRetry() {
