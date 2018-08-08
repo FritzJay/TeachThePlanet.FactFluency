@@ -182,9 +182,7 @@ class App extends React.Component<IProps, IState> {
       })
       .catch((error: Error) => {
         console.log('Request failed with error: ' + error.message);
-        if (error.message && error.message.includes('401')) {
-          this.signOut();
-        }
+        this.signOut();
       });
     }); 
   }
@@ -244,9 +242,7 @@ class App extends React.Component<IProps, IState> {
       })
       .catch((error: Error) => {
         console.log('Request failed with error: ' + error.message);
-        if (error.message && error.message.includes('401')) {
-          this.signOut();
-        }
+        this.signOut();
       });
     });
   }
@@ -325,9 +321,7 @@ class App extends React.Component<IProps, IState> {
       })
       .catch((error: Error) => {
         console.log('Request failed with error: ' + error.message);
-        if (error.message && error.message.includes('401')) {
-          this.signOut();
-        }
+        this.signOut();
       });
     });
   }

@@ -9,15 +9,19 @@
   
   .modal {
     .header {
+      padding: 4em;
       background-color: $green;
       
-      h2 { 
+      h2 {
+        margin: 0;
         font-size: 2em;
         color:white;
       }
     }
 
     .content {
+      padding: 2em;
+
       .button {
         border-color: $blue;
         color: $blue;
@@ -38,36 +42,36 @@
         font-family: 'Roboto', sans-serif;
         font-size: 1em;
         font-weight: 900;
-
+  
         background-color: #FFFFFF;
         
         border: none;
         border-bottom: 2px solid rgba(128, 128, 128, 0.425);
         
         color: rgb(80, 80, 80);
-
+  
         width: 100%;
       }
-
+  
       .label {
         margin-top: 1em;
         display: block;
         justify-self: flex-start;
         font-weight: 900;
       }
-
+  
       .button {
         padding: 1em;
       }
-
+  
       .reminder {
         margin-top: 2em;
       }
-
+  
       .error {
         display: none;
         color: $red;
-
+  
         &.active {
           display: inline;
         }
@@ -84,9 +88,15 @@
 
     .modal {
       .header {
+        padding: 0;
+        
         h2 {
-          margin: 1em;
+          padding: 1em;
         }
+      }
+      
+      .content {
+        padding: 1em;
       }
     }
   }
