@@ -24,7 +24,7 @@ export class Keyboard extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const keys = [7, 8, 9, 4, 5, 6, 1, 2, 3, 'Delete', 0, 'Submit'].map((text) => {
+    const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'Delete', 0, 'Submit'].map((text) => {
       const className = this.getClassName(text.toString());
       const onClick = this.getOnClick(text.toString());
       return (
@@ -33,14 +33,14 @@ export class Keyboard extends React.Component<IProps, IState> {
     });
     const keyboardIcon = (this.state.active) ? 'keyboard_hide' : 'keyboard';
     return (
-      <div className={`keyboard ${this.state.active && 'active'}`}>
-        <div className="toggle-bar">
-          <button className="toggle-button" onClick={this.handleToggleClick}>
-            <i className="material-icons">{keyboardIcon}</i>
-          </button>
-        </div>
-        <div className="keys">
-          {keys}
+      <div>
+        <button className="toggle-button" onClick={this.handleToggleClick}>
+          <i className="keyboard-icon material-icons">{keyboardIcon}</i>
+        </button>
+        <div className={`keyboard ${this.state.active && 'active'}`}>
+          <div className="keys">
+            {keys}
+          </div>
         </div>
       </div>
     );
