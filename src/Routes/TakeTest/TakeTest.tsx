@@ -50,7 +50,7 @@ export class TakeTest extends React.Component<IProps, IState> {
       const question = this.state.question;
       const operator = this.getOperatorSymbol(question.operator);
       return (
-        <Card className={`take-test ${this.state.keyboard && 'small'}`}>
+        <Card className={`take-test ${this.state.keyboard ? 'small': ''}`}>
           <div className="question-problem">
             <p className="number-top">{question.top}</p>
             <p className="operator">{operator}</p>

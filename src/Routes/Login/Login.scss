@@ -8,6 +8,8 @@
   }
   
   .modal {
+    max-width: 500px;
+
     .header {
       padding: 4em;
       background-color: $green;
@@ -76,6 +78,18 @@
           display: inline;
         }
       }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .login {
+    &.margin-top {
+      margin-top: 2vh;
+    }
+
+    .modal {
+      max-width: 400px;
     }
   }
 }
