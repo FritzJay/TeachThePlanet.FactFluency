@@ -33,14 +33,14 @@ export class Keyboard extends React.Component<IProps, IState> {
     });
     const keyboardIcon = (this.state.active) ? 'keyboard_hide' : 'keyboard';
     return (
-      <div className={`keyboard ${this.state.active && 'active'}`}>
-        <div className="toggle-bar">
-          <button className="toggle-button" onClick={this.handleToggleClick}>
-            <i className="keyboard-icon material-icons">{keyboardIcon}</i>
-          </button>
-        </div>
-        <div className="keys">
-          {keys}
+      <div>
+        <button className="toggle-button" onClick={this.handleToggleClick}>
+          <i className="keyboard-icon material-icons">{keyboardIcon}</i>
+        </button>
+        <div className={`keyboard ${this.state.active && 'active'}`}>
+          <div className="keys">
+            {keys}
+          </div>
         </div>
       </div>
     );
