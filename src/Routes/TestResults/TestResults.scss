@@ -2,6 +2,7 @@
 
 .test-results {
   grid-column: 2 / 2;
+  
   display: grid;
   justify-items: center;
 
@@ -45,6 +46,7 @@
 
   .cards-container {
     width: 100%;
+    max-width: 800px;
 
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -72,6 +74,7 @@
 
   .buttons-container {
     width: 100%;
+    max-width: 800px;
     padding: 1em 0 1em 0;
 
     display: flex;
