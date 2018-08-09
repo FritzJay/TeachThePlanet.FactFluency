@@ -27,12 +27,10 @@
 - Eventually have vertical and horizonal problems randomly in que of problems
 
 // Keyboard
-- desktop layout vertical 2 rows vs 1 
-- flat rounded corner (12px) 
-- reduce shadow to 6 dp
-- remove graybar
-- on click button numbers should sligtly increase in size but not enough to move div
-- center submit
+- remove submit on keyboard.active (The normal submit)
+- transition on keyboard open
+- delete and submit changed to x and = on mobile
+- remove keyboard from card on mobile
 
 
 - on moblie switch submit and delete to icons 
