@@ -25,12 +25,18 @@
 
 // Test Card 
 - Eventually have vertical and horizonal problems randomly in que of problems
+- Subtraction has to have the biggest number on top
 
 // Keyboard
 - remove submit on keyboard.active (The normal submit)
 - transition on keyboard open
 - delete and submit changed to x and = on mobile
 - remove keyboard from card on mobile
+
+// Test Results
+- Number answered correct 18/20
+- header answer correct have two 0's (00) so the first 0 is hidden to make the background a square 
+- Cards should tell you the answer too ie. 4-2=2 not just 4-2
 
 
 - on moblie switch submit and delete to icons 
