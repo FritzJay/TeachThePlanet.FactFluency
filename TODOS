@@ -5,12 +5,11 @@
 // Navbar
 - Drawer on mobile with hamburger menu 
 - hamburger menu contains username and logout link
-- on hover links highlight blue
 - Also has hr at 2px solid black with 0.05 opacity
 
 // Login card
-- display error only when error/ toggle display class (This way it doesn't have an extra div on the bottom)
-- how do we take away padding for content if it is inherited/ button row may need no padding top gep is too big
+- error code very slow to appear? 
+- error code should stay visible until a new command is submitted 
 
 //Select Test cards
 - gray for operator unless a test is passed
@@ -24,29 +23,19 @@
 - eventually a practice button to run through a few questions before they start
 
 // Test Card 
-- Eventually have vertical and horizonal problems randomly in que of problems
+- Eventually have vertical and horizontal problems randomly in que of problems
 - Subtraction has to have the biggest number on top
 
 // Keyboard
 - remove submit on keyboard.active (The normal submit)
 - transition on keyboard open
 - delete and submit changed to x and = on mobile
-- remove keyboard from card on mobile
+- move keyboard from card on mobile it should just occupy 50% of the screen
 
 // Test Results
 - Number answered correct 18/20
 - header answer correct have two 0's (00) so the first 0 is hidden to make the background a square 
 - Cards should tell you the answer too ie. 4-2=2 not just 4-2
-
-
-- on moblie switch submit and delete to icons 
-- take up only 50% of the screen then test for the mobile thumb zone and comfort
-    https://www.smashingmagazine.com/2016/09/the-thumb-zone-designing-for-mobile-users/
-- (In App) Keyboard has no keyboard button, keyboard should be there automatically
-- keyboard should fill out available space 
-- No shadow? full div background? Test!
-- remove gray background
-- test on mobile the problem orientation and whether it is big enough on an actual mobile screen or if it needs to be vertical
 
 // System wide
 log out user on 401
