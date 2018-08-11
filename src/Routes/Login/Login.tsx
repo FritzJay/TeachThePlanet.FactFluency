@@ -37,7 +37,7 @@ export class Login extends React.Component<IProps, IState> {
           </ModalHeader>
           <ModalContent>
             <label className="label">Name</label>
-            <input className="input" onChange={this.handleNameChange} value={this.state.name} />
+            <input className="input" autoFocus={true} onChange={this.handleNameChange} value={this.state.name} />
             <label className="label">Class Code</label>
             <input className="input" onChange={this.handleClassCodeChange} value={this.state.classCode} type="number" />
             <p className="reminder">No code, no worries you can still get started.</p>

@@ -21,7 +21,7 @@ export class StartTest extends React.Component<IProps> {
           <h1>We know you got this!</h1>
         </div>
         <div className="buttons">
-          <Button className="start-button" onClick={this.handleStartTestClick}>Start Test</Button>
+          <Button className="start-button" autoFocus={true} onClick={this.handleStartTestClick}>Start Test</Button>
           <Button className="cancel-button" onClick={this.handleCancelClick}>Cancel</Button>
         </div>
       </Card>
