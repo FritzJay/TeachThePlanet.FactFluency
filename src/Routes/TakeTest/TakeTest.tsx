@@ -90,6 +90,7 @@ export class TakeTest extends React.Component<IProps, IState> {
   private handleKeyDown(event: any) {
     switch (event.key) {
       case 'Backspace':
+        event.preventDefault();
       case 'Delete':
         this.handleDeleteClick();
         return;
@@ -129,6 +130,7 @@ export class TakeTest extends React.Component<IProps, IState> {
     if (nextQuestionIndex < this.props.test.questions.length) {
       const nextQuestion = startQuestion(this.state.questions[nextQuestionIndex]);
       this.setState({
+        answer: '',
         question: nextQuestion,
         questionIndex: nextQuestionIndex,
       });
