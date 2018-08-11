@@ -63,11 +63,13 @@
       }
   
       .button {
+        margin-top: -2em;
         padding: 1em;
       }
   
       .reminder {
         margin-top: 2em;
+        margin-bottom: 0;
       }
   
       .error {
@@ -111,6 +113,10 @@
       
       .content {
         padding: 1em;
+
+        .button {
+          margin-top: 0;
+        }
       }
     }
   }
