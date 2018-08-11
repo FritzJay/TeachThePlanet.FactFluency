@@ -11,21 +11,23 @@
   text-align: center;
 
   width: 100%;
-  max-width: 600px;
   height: 100%;
-  max-height: 369px;
+  
+  // Max width/height is used to keep is the same size as TakeTest
+  max-width: 600px;
+  max-height: 440px;
   
   .header {
     justify-self: stretch;
 
-    padding: 3em;
+    padding: 4em;
     
     background-color: $blue;
     color: $white;
   }
 
   .buttons {
-    padding: 3em;
+    padding: 4em;
     display: grid;
     grid-gap: 2em;
 
