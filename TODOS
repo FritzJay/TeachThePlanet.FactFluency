@@ -8,8 +8,7 @@
 - Also has hr at 2px solid black with 0.05 opacity
 
 // Login card
-- *Can't reproduce* error code very slow to appear? 
-*Finished: Hid error on input change* - error code should stay visible until a new command is submitted 
+
 
 //Select Test cards
 - gray for operator unless a test is passed
@@ -28,12 +27,13 @@
 
 // Keyboard
 - *Finished* remove submit on keyboard.active (The normal submit)
+    -***** Every time I click enter on keyboard it opens the onscreen keyboard
+    -***** Submit doesn't come back on keyboard inactive
 - transition on keyboard open
-- *Finished* delete and submit changed to x and = on mobile
 - *Finished: I removed the box shadow so it looks like there is no more card to keep a consistent style between this and StartTest. What do you think?* move keyboard from card on mobile it should just occupy 50% of the screen
-
+    -***** The view I get is of the keyboard way on the right i'll send you a pic via text 
 // Test Results
-- *Finished* Number answered correct 18/20
+- *Finished* Number answered correct 18/20 *******Still says 16/20 *************
 - header answer correct have two 0's (00) so the first 0 is hidden to make the background a square 
 - Cards should tell you the answer too ie. 4-2=2 not just 4-2
 
