@@ -8,8 +8,8 @@
 - Also has hr at 2px solid black with 0.05 opacity
 
 // Login card
-- error code very slow to appear? 
-- error code should stay visible until a new command is submitted 
+- *Can't reproduce* error code very slow to appear? 
+*Finished: Hid error on input change* - error code should stay visible until a new command is submitted 
 
 //Select Test cards
 - gray for operator unless a test is passed
@@ -24,16 +24,16 @@
 
 // Test Card 
 - Eventually have vertical and horizontal problems randomly in que of problems
-- Subtraction has to have the biggest number on top
+- *Finished* Subtraction has to have the biggest number on top
 
 // Keyboard
-- remove submit on keyboard.active (The normal submit)
+- *Finished* remove submit on keyboard.active (The normal submit)
 - transition on keyboard open
-- delete and submit changed to x and = on mobile
-- move keyboard from card on mobile it should just occupy 50% of the screen
+- *Finished* delete and submit changed to x and = on mobile
+- *Finished: I removed the box shadow so it looks like there is no more card to keep a consistent style between this and StartTest. What do you think?* move keyboard from card on mobile it should just occupy 50% of the screen
 
 // Test Results
-- Number answered correct 18/20
+- *Finished* Number answered correct 18/20
 - header answer correct have two 0's (00) so the first 0 is hidden to make the background a square 
 - Cards should tell you the answer too ie. 4-2=2 not just 4-2
 
