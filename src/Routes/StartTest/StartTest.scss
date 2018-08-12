@@ -15,21 +15,21 @@
   
   // Max width/height is used to keep is the same size as TakeTest
   max-width: 600px;
-  max-height: 327px;
+  max-height: 399px;
   
   .header {
     justify-self: stretch;
 
-    padding: 2.5em;
+    padding: 3em;
     
     background-color: $blue;
     color: $white;
   }
 
   .buttons {
-    padding: 2em;
+    padding: 3em;
     display: grid;
-    grid-gap: 2em;
+    grid-gap: 3em;
 
     .start-button {
       color: $green;
