@@ -25,7 +25,7 @@ export class Keyboard extends React.Component<IProps, IState> {
   public render() {
     const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((text) => {
       return (
-        <button className="key" key={text} onClick={this.props.onNumberClick}>{text}</button>
+        <button className="key" key={text} onClick={this.handleNumberClick}>{text}</button>
       );
     });
     const keyboardIcon = (this.state.active) ? 'keyboard_hide' : 'keyboard';
@@ -65,6 +65,7 @@ export class Keyboard extends React.Component<IProps, IState> {
   private handleNumberClick(event: any) {
     const num = parseInt(event.target.innerText, 10);
     if (!isNaN(num)) {
+      console.log(num);
       this.props.onNumberClick(num);
     }
   }
