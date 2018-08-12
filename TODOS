@@ -3,15 +3,12 @@
 
 
 // Navbar
-- Drawer on mobile with hamburger menu 
-- hamburger menu contains username and logout link
-- Also has hr at 2px solid black with 0.05 opacity
-
-// Login card
-
+*- Drawer on mobile with hamburger menu 
+*- hamburger menu contains username and logout link
+*- Also has hr at 2px solid black with 0.05 opacity
 
 //Select Test cards
-- gray for operator unless a test is passed
+(conversation: best way to indicate a test has been passed?) - gray for operator unless a test is passed
 - ripple effect on click few examples
     https://codepen.io/OlgaFandikova/pen/zZbLMa
     https://codepen.io/finnhvman/pen/jLXKJw
@@ -20,19 +17,27 @@
 // Get Started card
 - header text should be able to be switched out with different encouraging text
 - eventually a practice button to run through a few questions before they start
+- match the size of take test
 
 // Test Card 
 - Eventually have vertical and horizontal problems randomly in que of problems
-- *Finished* Subtraction has to have the biggest number on top
 
 // Keyboard
-- *Finished* remove submit on keyboard.active (The normal submit)
-    -***** Every time I click enter on keyboard it opens the onscreen keyboard
-    -***** Submit doesn't come back on keyboard inactive
+*- prevent default on enter click (so the keyboard wont close on enter)
 - transition on keyboard open
-- *Finished: I removed the box shadow so it looks like there is no more card to keep a consistent style between this and StartTest. What do you think?* move keyboard from card on mobile it should just occupy 50% of the screen
-    -***** The view I get is of the keyboard way on the right i'll send you a pic via text 
+*- Feedback on key click (ripple affect? small translate?, darken color?)
+*- Switch to horizontal view on short screens
+
 // Test Results
-- *Finished* Number answered correct 18/20
 - header answer correct have two 0's (00) so the first 0 is hidden to make the background a square ???
-- *Finished* Cards should tell you the answer too ie. 4-2=2 not just 4-2
+
+// Finalize
+- Host the api on heroku
+- Host the react app on heroku
+- Setup Thomas's class
+
+// Home page
+- Layout for admin, students, teachers, parents(?)
+- FUTURE: Mark the location of where the test was taken (or have the student pick where they are taking the test)
+- Implement login api for admin, students, teachers and parents(?)
+- 
