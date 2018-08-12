@@ -1,5 +1,19 @@
 @import '../../Stylesheets/all';
 
+.keyboard-container {
+  .keyboard {
+    .keys {
+      .key {
+        transition: transform 0.1s;
+    
+        &:active {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 499px) {
   .keyboard-container {
     width: 100%;

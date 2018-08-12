@@ -102,10 +102,13 @@ export class TakeTest extends React.Component<IProps, IState> {
     switch (event.key) {
       case 'Backspace':
         event.preventDefault();
+        this.handleDeleteClick();
+        return;
       case 'Delete':
         this.handleDeleteClick();
         return;
       case 'Enter':
+        event.preventDefault();
         this.handleSubmitClick();
         return;
       default:
