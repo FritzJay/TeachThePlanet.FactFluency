@@ -1,19 +1,19 @@
 @import '../../Stylesheets/all';
 
 @media (max-width: 399px) {
-    .dropdown {
-      display: none;
+  .dropdown {
+    display: none;
 
-      &.active {
-        grid-column: 1 / -1;
-        width: 100%;
+    &.active {
+      grid-column: 1 / -1;
+      width: 100%;
 
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        grid-row-gap: 1em;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      grid-row-gap: 1em;
 
-        background-color: $white;
-      }
+      background-color: $white;
     }
+  }
 }

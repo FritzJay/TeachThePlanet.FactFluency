@@ -42,25 +42,29 @@
     justify-self: center;
   }
 
+  
   /* Username Styles */
   .username {
     grid-column: 3 / 3;
     justify-self: flex-end;
-
+    
     cursor: pointer;
     font-weight: 700;
     color: rgba(0, 0, 0, 0.5);
   }
-
+  
   .user-icon {
     vertical-align: middle;
     padding-right: .25em;
     color: rgba(0, 0, 0, 0.5);
-
+    
     cursor: pointer;
   }
-
+  
   .toggle-btn {
+    display: none;
+  }
+  .dropdown {
     display: none;
   }
 }
@@ -94,7 +98,7 @@
       padding: .5em;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.25);
+        background-color: rgba(0, 0, 0, 0.15);
         border-radius: 50%;
       }
     }
@@ -105,6 +109,8 @@
       }
 
       &.active {
+        display: grid;
+        
         grid-column: 1 / -1;
         margin-top: 1em;
         padding-top: 1em;

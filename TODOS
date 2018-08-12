@@ -3,9 +3,7 @@
 
 
 // Navbar
-*- Drawer on mobile with hamburger menu 
-*- hamburger menu contains username and logout link
-*- Also has hr at 2px solid black with 0.05 opacity
+- Close the dropdown when you click outside of it
 
 //Select Test cards
 (conversation: best way to indicate a test has been passed?) - gray for operator unless a test is passed
@@ -23,9 +21,8 @@
 - Eventually have vertical and horizontal problems randomly in que of problems
 
 // Keyboard
-*- prevent default on enter click (so the keyboard wont close on enter)
 - transition on keyboard open
-*- Feedback on key click (ripple affect? small translate?, darken color?)
+- Feedback on key click (ripple affect? small translate?, darken color?)
 *- Switch to horizontal view on short screens
 
 // Test Results
