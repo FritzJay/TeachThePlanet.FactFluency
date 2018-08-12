@@ -41,7 +41,7 @@ export class Keyboard extends React.Component<IProps, IState> {
             {keys}
             <button className="key delete" onClick={this.props.onDeleteClick}>
               <span className="text-large">Delete</span>
-              <span className="text-small">X</span>
+              <span className="text-small"><i className="material-icons">cancel</i></span>
             </button>
             <button className="key submit" onClick={this.props.onSubmitClick}>
               <span className="text-large">Submit</span>
