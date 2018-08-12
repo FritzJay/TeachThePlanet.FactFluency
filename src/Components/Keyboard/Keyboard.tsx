@@ -18,17 +18,14 @@ export class Keyboard extends React.Component<IProps, IState> {
     this.state = {
       active: false,
     };
-    this.getOnClick = this.getOnClick.bind(this);
     this.handleToggleClick = this.handleToggleClick.bind(this);
     this.handleNumberClick = this.handleNumberClick.bind(this);
   }
 
   public render() {
-    const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'Delete', 0, 'Submit'].map((text) => {
-      const className = this.getClassName(text.toString());
-      const onClick = this.getOnClick(text.toString());
+    const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((text) => {
       return (
-        <button className={className} key={text} onClick={onClick}>{text}</button>
+        <button className="key" key={text} onClick={this.props.onNumberClick}>{text}</button>
       );
     });
     const keyboardIcon = (this.state.active) ? 'keyboard_hide' : 'keyboard';
@@ -42,32 +39,18 @@ export class Keyboard extends React.Component<IProps, IState> {
         <div className={`keyboard ${this.state.active && 'active'}`}>
           <div className="keys">
             {keys}
+            <button className="key delete" onClick={this.props.onDeleteClick}>
+              <span className="text-large">Delete</span>
+              <span className="text-small">X</span>
+            </button>
+            <button className="key submit" onClick={this.props.onSubmitClick}>
+              <span className="text-large">Submit</span>
+              <span className="text-small">=</span>
+            </button>
           </div>
         </div>
       </div>
     );
-  }
-
-  private getClassName(text: string) {
-    switch (text) {
-      case 'Delete':
-        return 'key delete';
-      case 'Submit':
-        return 'key submit';
-      default:
-        return 'key';
-    }
-  }
-
-  private getOnClick(text: string) {
-    switch (text) {
-      case 'Delete':
-        return this.props.onDeleteClick;
-      case 'Submit':
-        return this.props.onSubmitClick;
-      default:
-        return this.handleNumberClick;
-    }
   }
 
   private handleToggleClick() {
