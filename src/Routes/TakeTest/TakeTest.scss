@@ -161,5 +161,14 @@
         }
     }
 }
+
+@media only screen and (min-width: 500px) {
+    .take-test {
+        .button-container {
+            display: grid;
+        }
+    }
+}
+
 /*  Desktop  */
 @media only screen and (min-width: 1200px) {}
