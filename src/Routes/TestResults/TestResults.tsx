@@ -37,7 +37,7 @@ export class TestResults extends React.Component<IProps> {
             <p>You Rocked This Problem!</p>
           </div>
           <div className="card-main-content">
-            <h3>{this.props.testResults.quickest.question}</h3>
+            <h3>{this.props.testResults.quickest.question} = {this.props.testResults.quickest.correctAnswer}</h3>
             <p className="breakdown-text">It only took you {quickestDurationInSeconds} second.</p>
           </div>
         </Card>
@@ -55,7 +55,7 @@ export class TestResults extends React.Component<IProps> {
             <p>This Gave You Some Trouble.</p>
           </div>
           <div className="card-main-content">
-            <h3>{this.props.testResults.incorrect.question}</h3>
+            <h3>{this.props.testResults.incorrect.question} = {this.props.testResults.incorrect.correctAnswer}</h3>
             <p className="breakdown-text">Hint: It might be a good idea to practice this one.</p>
           </div>
         </Card>

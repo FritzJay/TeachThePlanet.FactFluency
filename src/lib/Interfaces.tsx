@@ -6,6 +6,7 @@ export interface IUser {
 export interface IQuestion {
   question: string;
   studentAnswer?: number;
+  correctAnswer?: number;
   start?: Date;
   end?: Date;
 }
