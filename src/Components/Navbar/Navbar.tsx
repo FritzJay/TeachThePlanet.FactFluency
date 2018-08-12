@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Dropdown } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
 import './Navbar.css';
 
@@ -7,16 +8,41 @@ interface IProps {
   user?: IUser;
 }
 
-export const Navbar = (props: IProps) => {
-  return (
-    <div className="navbar-margin-top">
-      <div className="navbar">
-        {logoutButton(props.signout, props.user)}
-        <img className="logo" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
-        {userInfo(props.user)}
+interface IState {
+  activeDropdown: boolean;
+}
+
+export class Navbar extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      activeDropdown: false,
+    }
+    this.handleToggleButtonClick = this.handleToggleButtonClick.bind(this);
+  }
+
+  public render() {
+    return (
+      <div className="navbar-margin-top">
+        <div className="navbar">
+          {logoutButton(this.props.signout, this.props.user)}
+          <img className="logo" src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
+          {userInfo(this.props.user)}
+          <button className="toggle-btn" onClick={this.handleToggleButtonClick}><i className="material-icons">menu</i></button>
+          <Dropdown active={this.props.user ? this.state.activeDropdown : false}>
+            {userInfo(this.props.user)}
+            {logoutButton(this.props.signout, this.props.user)} 
+          </Dropdown>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  private handleToggleButtonClick() {
+    this.setState((prevState: IState) => {
+      return {activeDropdown: !prevState.activeDropdown};
+    });
+  }
 }
 
 const userInfo = (user?: IUser) => {
