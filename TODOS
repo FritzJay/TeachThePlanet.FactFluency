@@ -34,8 +34,5 @@
 
 // Test Results
 - *Finished* Number answered correct 18/20
-- header answer correct have two 0's (00) so the first 0 is hidden to make the background a square 
-- Cards should tell you the answer too ie. 4-2=2 not just 4-2
-
-// System wide
-log out user on 401
+- header answer correct have two 0's (00) so the first 0 is hidden to make the background a square ???
+- *Finished* Cards should tell you the answer too ie. 4-2=2 not just 4-2
