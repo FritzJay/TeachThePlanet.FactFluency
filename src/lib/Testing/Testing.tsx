@@ -1,5 +1,12 @@
 import { IDisplayQuestion, IQuestion } from "../Interfaces";
 
+export const initializeQuestions = (questions: IQuestion[]): void => {
+  questions.forEach((q: any) => {
+    q.start = null;
+    q.end = null;
+  });
+}
+
 export const randomizeQuestions = (questions: IQuestion[]): IQuestion[] => {
   return JSON.parse(JSON.stringify(questions))    // Deep Copy
   .map((question: any, i: number) => {

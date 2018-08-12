@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Card, Keyboard } from "../../Components/Components";
 import { IDisplayQuestion, IQuestion, ITest } from "../../lib/Interfaces";
-import { randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing/Testing';
+import { initializeQuestions, randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing/Testing';
 import './TakeTest.css';
 
 interface IProps {
@@ -15,11 +15,14 @@ interface IState {
   question: IDisplayQuestion;
   questionIndex: number;
   questions: IQuestion[];
+  submitTestOnTimeout: any;
 }
 
 export class TakeTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
+    this.props.test.start = new Date();
+    initializeQuestions(this.props.test.questions);
     const questions = randomizeQuestions(this.props.test.questions);
     const question = startQuestion(questions[0]);
     this.state = {
@@ -28,6 +31,7 @@ export class TakeTest extends React.Component<IProps, IState> {
       question,
       questionIndex: 0,
       questions,
+      submitTestOnTimeout: undefined,
     }
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
@@ -39,10 +43,17 @@ export class TakeTest extends React.Component<IProps, IState> {
 
   public componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+    if (this.props.test.duration) {
+      const submitTestOnTimeout = setTimeout(this.submitTest, this.props.test.duration * 1000);
+      this.setState({submitTestOnTimeout});
+    }
   }
 
   public componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
+    if (this.state.submitTestOnTimeout) {
+      clearTimeout(this.state.submitTestOnTimeout);
+    }
   }
 
   public render() {
