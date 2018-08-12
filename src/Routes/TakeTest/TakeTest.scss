@@ -101,48 +101,51 @@
     }
 
     &.active-keyboard {
-        .submit-button {
-            visibility: hidden;
-        }
-    }
-}
-
-/*  Mobile  */
-@media only screen and (max-width: 399px) and (max-height: 775px) {
-    .take-test.active-keyboard {
-        grid-column: 2 / 2;
-        justify-self: center;
-        grid-template-columns: 3fr 2fr;
-        grid-template-rows: 1fr;
-    
-        padding: 1em;
-    
-        p {
-            font-size: 3em;
-        }
-    
-        .question-problem {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: none;
-    
-            .equals {
-                display: block;
-            }
-        }
-    
-        .input-answer {
-            font-size: 3em;
-
-            border: none;
-        }
-    
         .button-container {
             display: none;
         }
     }
 }
+
+/*  Mobile  */
+@media only screen and (max-width: 399px) {
+    .take-test {
+        .button-container {
+            display: none;
+        }
+
+        &.active-keyboard {
+            grid-column: 2 / 2;
+            justify-self: center;
+            grid-template-columns: 3fr 2fr;
+            grid-template-rows: 1fr;
+        
+            padding: 1em;
+        
+            p {
+                font-size: 3em;
+            }
+        
+            .question-problem {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: none;
+        
+                .equals {
+                    display: block;
+                }
+            }
+        
+            .input-answer {
+                font-size: 3em;
+
+                border: none;
+            }
+        }
+    }
+}
+
 /*  Tablet  */
 @media only screen and (min-width: 400px) {
     .take-test {
@@ -150,6 +153,10 @@
         width: 100%;
 
         padding: 2em 4em;
+
+        .button-container {
+            display: none;
+        }
     }
 }
 /*  Desktop  */
