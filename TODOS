@@ -23,18 +23,16 @@
 // Keyboard
 - transition on keyboard open
 - Feedback on key click (ripple affect? small translate?, darken color?)
-*- Switch to horizontal view on short screens
 
 // Test Results
 - header answer correct have two 0's (00) so the first 0 is hidden to make the background a square ???
 
 // Finalize
-- Host the api on heroku
-- Host the react app on heroku
-- Setup Thomas's class
+*- Host the api on heroku
+*- Host the react app on heroku
+*- Setup Thomas's class
 
 // Home page
-- Layout for admin, students, teachers, parents(?)
-- FUTURE: Mark the location of where the test was taken (or have the student pick where they are taking the test)
-- Implement login api for admin, students, teachers and parents(?)
-- 
+*- Layout for admin, students, teachers, parents(?)
+*- FUTURE: Mark the location of where the test was taken (or have the student pick where they are taking the test)
+*- Implement login api for admin, students, teachers and parents(?)
