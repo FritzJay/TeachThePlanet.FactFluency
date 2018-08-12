@@ -110,6 +110,8 @@
 /*  Mobile  */
 @media only screen and (max-width: 399px) {
     .take-test {
+        box-shadow: none;
+
         .button-container {
             display: none;
         }
