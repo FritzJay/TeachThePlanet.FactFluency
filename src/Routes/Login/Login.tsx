@@ -54,24 +54,22 @@ export class Login extends React.Component<IProps, IState> {
   }
   
   private handleNameChange(event: any) {
-    this.setState({name: event.target.value});
+    this.setState({
+      error: undefined,
+      name: event.target.value,
+    });
   }
   
   private handleClassCodeChange(event: any) {
-    this.setState({classCode: event.target.value});
+    this.setState({
+      classCode: event.target.value,
+      error: undefined,
+    });
   }
   
   private handleSubmitClick() {
-    this.signin(this.state.name, this.state.classCode);
-  }
-
-  private flashError(error: string) {
-    this.setState({error: error.toString()});
-    setTimeout(this.hideError.bind(this), 1250);
-  }
-
-  private hideError() {
     this.setState({error: undefined});
+    this.signin(this.state.name, this.state.classCode);
   }
   
   // Leaving the request inside the component because this component will be removed
@@ -86,7 +84,7 @@ export class Login extends React.Component<IProps, IState> {
       this.props.onSubmit(response.token, response.user);
     })
     .catch(() => {
-      this.flashError('Incorrect Name or Class Code');
+      this.setState({error: 'Incorrect Name or Class Code'});
     });
   }
 }
