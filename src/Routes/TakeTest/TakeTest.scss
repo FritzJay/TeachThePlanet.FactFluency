@@ -99,11 +99,17 @@
             border-color: $green;
         }
     }
+
+    &.active-keyboard {
+        .submit-button {
+            visibility: hidden;
+        }
+    }
 }
 
 /*  Mobile  */
 @media only screen and (max-width: 399px) and (max-height: 775px) {
-    .take-test.small {
+    .take-test.active-keyboard {
         grid-column: 2 / 2;
         justify-self: center;
         grid-template-columns: 3fr 2fr;
