@@ -1,15 +1,42 @@
 @import '../../Stylesheets/all';
 
 .keyboard-container {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+
   .keyboard {
     .keys {
+      width: 100%;
+
+      display: grid;
+      grid-gap: 0.5em;
+
       .key {
-        background-color: rgba(0, 0, 0, 0.15);
+        justify-self: center;
+        align-self: center;
+
+        border: none;
+        outline: none;
+        background-color: rgba(0, 0, 0, 0.15);        
+        color: $white;
+        font-weight: 700;
+        font-size: 2em;
 
         transition: transform 0.1s;
 
         &:active {
           transform: scale(1.1);
+        }
+
+        &.submit {
+          background-color: $green;
+        }
+
+        &.delete {
+          background-color: $red;
         }
       }
     }
@@ -18,50 +45,19 @@
 
 @media (max-width: 499px) {
   .keyboard-container {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-
     .toggle-row {
       display: none;
     }
 
     .keyboard {
-      grid-column: 1 / -1;
-
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr;
-
       .keys {
-        grid-column: 1 / -1;
-
-        width: 100%;
-
-        display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 0.5em;
 
           .key {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr;
-        
-            justify-self: center;
-            align-self: center;
-        
             border-radius: 50%;
-            border: none;
-            outline: none;
 
             width: 48px;
             height: 48px;
-        
-            color: $white;
-            font-weight: 700;
-            font-size: 2em;
 
             .text-large {
               display: none;
@@ -76,7 +72,6 @@
               grid-column: 1 / 1;
 
               border-radius: 50%;
-              background-color: $red;
             }
 
             &.submit {
@@ -84,7 +79,6 @@
               grid-column: 3 / 3;
               
               border-radius: 50%;
-              background-color: $green;
             }
           }
         }
@@ -94,12 +88,6 @@
 
 @media (min-width: 500px) {
   .keyboard-container {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-  
     .toggle-row {
       grid-column: 1 / -1;
   
@@ -124,36 +112,18 @@
       display: none;
 
       &.active {
-        display: grid;
+        display: block;
   
         .keys {
-          grid-column: 1 / -1;
-          width: 100%;
-      
-          display: grid;
           grid-template-columns: repeat(5, 1fr);
           grid-template-rows: 1fr 1fr 1fr;
-          grid-gap: 0.5em;
 
           padding-top: 1rem;
       
           .key {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr;
-        
-            justify-self: center;
-            align-self: center;
-        
             border-radius: 12px;
-            border: none;
-            outline: none;
             width: 100%;
             height: 100%;
-        
-            color: $white;
-            font-weight: 700;
-            font-size: 2em;
             
             .text-large {
               display: block;
@@ -170,7 +140,6 @@
         
               width: 100%;
               border-radius: 12px;
-              background-color: $green;
               margin-top: 1rem;
             }
 
@@ -181,7 +150,6 @@
         
               width: 100%;
               border-radius: 12px;
-              background-color: $red;
               margin-top: 1rem;
             }
           }
