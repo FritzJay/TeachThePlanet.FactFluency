@@ -1,7 +1,6 @@
 // Select Test
 - Close the expansion of number cards on click anywhere outside of the card
 
-
 // Navbar
 - Close the dropdown when you click outside of it
 
@@ -19,6 +18,7 @@
 
 // Test Card 
 - Eventually have vertical and horizontal problems randomly in que of problems
+- Limit the amount of characters in the input to three
 
 // Keyboard
 - transition on keyboard open

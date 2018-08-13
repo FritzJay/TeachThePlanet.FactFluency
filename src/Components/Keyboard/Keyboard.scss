@@ -4,8 +4,10 @@
   .keyboard {
     .keys {
       .key {
+        background-color: rgba(0, 0, 0, 0.15);
+
         transition: transform 0.1s;
-    
+
         &:active {
           transform: scale(1.1);
         }
