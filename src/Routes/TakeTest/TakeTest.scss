@@ -6,7 +6,6 @@
 
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto;
   justify-items: center;
   justify-content: center;
 
@@ -25,6 +24,7 @@
   }
   
   .question-problem {
+    grid-column: 1 / -1;
     grid-row: 1 / 1;
 
     display: grid;
