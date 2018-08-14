@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, Card } from '../../Components/Components';
 import { IQuestion, ITestResults } from '../../lib/Interfaces';
+import { padString } from '../../lib/Utility/Utility';
 import './TestResults.css';
 
 interface IProps {
@@ -12,9 +13,11 @@ interface IProps {
 export class TestResults extends React.Component<IProps> {
   public render() {
     const correctClassName = (this.props.testResults.correct >= this.props.testResults.needed) ? 'pass' : 'fail';
+    const amountCorrect = padString(this.props.testResults.correct, 2, '\xa0');
+    const total = padString(this.props.testResults.total, 2, '\xa0');
     return (
       <div className="test-results">
-        <h1 className="amount-correct-text">You got <span className={correctClassName}>{this.props.testResults.correct}</span> out of <span className="pass">{this.props.testResults.total}</span> correct!</h1>
+        <h1 className="amount-correct-text">You got <span className={correctClassName}>{amountCorrect}</span> out of <span className="pass">{total}</span> correct!</h1>
         <p>Remember you need {this.props.testResults.needed}/{this.props.testResults.total} to pass.</p>
         <div className="cards-container">
           {this.quickestCard(this.props.testResults.quickest)}
