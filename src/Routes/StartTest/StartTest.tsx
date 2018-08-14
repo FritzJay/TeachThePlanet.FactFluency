@@ -7,6 +7,8 @@ interface IProps {
   onCancel: () => void;
 }
 
+const encouragingTexts = ['We know you got this!', 'Keep calm and rock this test!', 'You can do it!'];
+
 export class StartTest extends React.Component<IProps> {
   public constructor(props: IProps) {
     super(props);
@@ -15,10 +17,11 @@ export class StartTest extends React.Component<IProps> {
   }
 
   public render() {
+    const headerText = encouragingTexts[Math.floor(Math.random() * encouragingTexts.length)];
     return (
       <Card className="start-test">
         <div className="header">
-          <h1>We know you got this!</h1>
+          <h1>{headerText}</h1>
         </div>
         <div className="buttons">
           <Button className="start-button" autoFocus={true} onClick={this.handleStartTestClick}>Start Test</Button>
