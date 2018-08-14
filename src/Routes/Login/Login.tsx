@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Button } from '../../Components/Button/Button';
 import { Modal, ModalContent, ModalHeader } from '../../Components/Modal/Modal';
-import { IUser } from "../../lib/Interfaces";
-import { IRequest, jsonFetch } from '../../lib/Requests';
+import { IRequest, IUser } from "../../lib/Interfaces";
+import { Requests } from '../../lib/lib';
 import './Login.css';
 
 interface IProps {
@@ -79,7 +79,7 @@ export class Login extends React.Component<IProps, IState> {
       body: {name, classCode},
       method: "POST",
     };
-    jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
+    Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
     .then((response) => {
       this.props.onSubmit(response.token, response.user);
     })

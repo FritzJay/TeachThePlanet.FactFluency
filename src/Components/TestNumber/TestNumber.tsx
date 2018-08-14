@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ITestNumber } from '../../lib/Interfaces';
-import { themeColors } from '../../lib/Themes';
+import { Themes } from '../../lib/lib';
 import { Button, Card, Operator } from '../Components';
 import './TestNumber.css';
 
@@ -30,7 +30,7 @@ export class TestNumber extends React.Component <IProps, IState>{
 
   public render() {
     const operators = this.props.number.operators.map((operator, i) => {
-      const color = themeColors[i % themeColors.length];
+      const color = Themes.themeColors[i % Themes.themeColors.length];
       const selected = (this.props.active && this.state.operator === operator);
       return (
         <Operator

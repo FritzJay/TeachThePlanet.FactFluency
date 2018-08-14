@@ -1,10 +1,6 @@
-import { URLS } from "../App";
+import { URLS } from '../App';
+import { IRequest } from '../lib/Interfaces';
 
-export interface IRequest {
-  body?: object;
-  method?: string;
-  token?: string;
-}
 
 export interface IRequestComponentProps {
   history: any;

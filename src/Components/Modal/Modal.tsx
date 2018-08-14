@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { combineClassName } from '../../lib/Themes';
 import './Modal.css';
 
 export interface IModalProps {
@@ -9,27 +8,24 @@ export interface IModalProps {
 }
 
 export const Modal = (props: IModalProps) => {
-  const className = combineClassName('modal', props.className);
   return (
-    <div className={className}>
+    <div className={`modal${props.className ? ' ' + props.className : ''}`}>
       {props.children}
     </div>
   );
 }
 
 export const ModalHeader = (props: IModalProps) => {
-  const className = combineClassName('header', props.className);
   return (
-    <div className={className}>
+    <div className={`header${props.className ? ' ' + props.className : ''}`}>
       {props.children}
     </div>
   );
 }
 
 export const ModalContent = (props: IModalProps) => {
-  const className = combineClassName('content', props.className);
   return (
-    <div className={className}>
+    <div className={`content ${props.className ? ' ' + props.className : ''}`}>
       {props.children}
     </div>
   );

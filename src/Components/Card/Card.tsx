@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { combineClassName } from '../../lib/Themes';
 import './Card.css';
 
 interface IProps {
@@ -9,9 +8,8 @@ interface IProps {
 }
 
 export const Card = (props: IProps) => {
-  const className = (props.onClick) ? combineClassName("card hover", props.className) : combineClassName("card", props.className);
   return (
-    <div className={className} onClick={props.onClick}>
+    <div className={`card${props.onClick ? ' hover' : ''}${props.className ? ' ' + props.className : ''}`} onClick={props.onClick}>
       {props.children}
     </div>
   );

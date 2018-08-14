@@ -1,7 +1,7 @@
 import * as React from "react";
 import { TestNumber } from '../../Components/Components';
 import { IAvailableTests, ITestNumber } from "../../lib/Interfaces";
-import { themeColors } from "../../lib/Themes";
+import { Themes } from "../../lib/lib";
 import './SelectTest.css';
 
 interface IProps  {
@@ -36,7 +36,7 @@ export class SelectTest extends React.Component<IProps, IState> {
     const testNumbers: any = [];
     for (const testNumber of this.props.availableTests.numbers) {
       const colorIndex = testNumbers.length;
-      const color = themeColors[colorIndex % themeColors.length];
+      const color = Themes.themeColors[colorIndex % Themes.themeColors.length];
       const active = (testNumber.number === this.state.selectedNumber);
       testNumbers.push(
         <TestNumber

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { combineClassName } from '../../lib/Themes';
 import './Button.css';
 
 export interface IButtonProps {
@@ -10,11 +9,10 @@ export interface IButtonProps {
 }
 
 export const Button = (props: IButtonProps) => {
-  const className = combineClassName('pill-button', props.className);
   return (
     <button
       autoFocus={props.autoFocus}
-      className={className}
+      className={`pill-button${props.className ? ' ' + props.className : ''}`}
       onClick={props.onClick}
     >
       {props.children}

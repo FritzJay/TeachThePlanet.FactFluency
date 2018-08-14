@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Card, Keyboard } from "../../Components/Components";
 import { IDisplayQuestion, IQuestion, ITest } from "../../lib/Interfaces";
-import { initializeQuestions, randomizeQuestions, sortQuestions, startQuestion } from '../../lib/Testing/Testing';
+import { Testing } from '../../lib/lib';
 import './TakeTest.css';
 
 interface IProps {
@@ -22,9 +22,9 @@ export class TakeTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.props.test.start = new Date();
-    initializeQuestions(this.props.test.questions);
-    const questions = randomizeQuestions(this.props.test.questions);
-    const question = startQuestion(questions[0]);
+    Testing.initializeQuestions(this.props.test.questions);
+    const questions = Testing.randomizeQuestions(this.props.test.questions);
+    const question = Testing.startQuestion(questions[0]);
     this.state = {
       answer: '',
       keyboard: false,
@@ -142,7 +142,7 @@ export class TakeTest extends React.Component<IProps, IState> {
     this.answerCurrentQuestion();
     const nextQuestionIndex = this.state.questionIndex + 1;
     if (nextQuestionIndex < this.props.test.questions.length) {
-      const nextQuestion = startQuestion(this.state.questions[nextQuestionIndex]);
+      const nextQuestion = Testing.startQuestion(this.state.questions[nextQuestionIndex]);
       this.setState({
         answer: '',
         question: nextQuestion,
@@ -167,7 +167,7 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private submitTest() {
-    const questions = sortQuestions(this.state.questions);
+    const questions = Testing.sortQuestions(this.state.questions);
     const test = this.props.test;
     test.questions = questions;
     test.end = new Date();

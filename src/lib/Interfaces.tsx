@@ -18,6 +18,12 @@ export interface IDisplayQuestion {
   top: string;
 }
 
+export interface IRequest {
+  body?: object;
+  method?: string;
+  token?: string;
+}
+
 export interface ITestParameters {
   number: number;
   operator: string;

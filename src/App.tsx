@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import { Navbar, RequestComponent } from './Components/Components';
-import { getCached, setCached } from './lib/Caching';
-import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
-import { IRequest, jsonFetch } from './lib/Requests';
+import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
+import { Caching } from './lib/lib';
+import { Requests } from './lib/lib';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
@@ -36,8 +36,8 @@ class App extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     this.state = {
-      token: getCached('token'),
-      user: getCached('user'),
+      token: Caching.getCached('token'),
+      user: Caching.getCached('user'),
     }
     this.renderLogin = this.renderLogin.bind(this);
     this.renderNavbar = this.renderNavbar.bind(this);
@@ -121,8 +121,8 @@ class App extends React.Component<IProps, IState> {
   /****** Login ******/
 
   private renderLogin(props: any) {
-    const token = this.state.token || getCached('token');
-    const user = this.state.user || getCached('user');
+    const token = this.state.token || Caching.getCached('token');
+    const user = this.state.user || Caching.getCached('user');
     if (token && user) {
       this.props.history.push(URLS.selectTest);
       return <div />
@@ -133,8 +133,8 @@ class App extends React.Component<IProps, IState> {
   }
 
   private handleLoginSubmit(token: string, user: IUser) {
-    setCached('token', token);
-    setCached('user', user);
+    Caching.setCached('token', token);
+    Caching.setCached('user', user);
     this.setState({token, user}, () => {
       this.props.history.push(URLS.selectTest);
     });
@@ -146,7 +146,7 @@ class App extends React.Component<IProps, IState> {
 
   private renderSelectTest(props: any) {
     console.log(this.state);
-    const availableTests = this.state.availableTests || getCached('availableTests');
+    const availableTests = this.state.availableTests || Caching.getCached('availableTests');
     if (availableTests) {
       return (
         <SelectTest {...props}
@@ -169,7 +169,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   private requestSelectTest(): Promise<IAvailableTests> {
-    const token = this.state.token || getCached('token');
+    const token = this.state.token || Caching.getCached('token');
     if (!token) {
       this.props.history.replace(URLS.signin);
     }
@@ -178,7 +178,7 @@ class App extends React.Component<IProps, IState> {
       token,
     };
     return new Promise<IAvailableTests>((resolve) => {
-      jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
+      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
       .then((availableTests: IAvailableTests) => {
         resolve(availableTests);
       })
@@ -190,7 +190,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   private handleSelectTestResolve(results: {availableTests: IAvailableTests}) {
-    setCached('availableTests', results.availableTests);
+    Caching.setCached('availableTests', results.availableTests);
     this.setState({availableTests: results.availableTests});
   }
   
@@ -228,7 +228,7 @@ class App extends React.Component<IProps, IState> {
     if (!testParameters) {
       this.props.history.goBack();
     }
-    const token = this.state.token || getCached('token');
+    const token = this.state.token || Caching.getCached('token');
     if (!token) {
       this.props.history.goBack();
     }
@@ -238,7 +238,7 @@ class App extends React.Component<IProps, IState> {
       token,
     };
     return new Promise<ITest>((resolve) => {
-      jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
+      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
       .then((test: ITest) => {
         resolve(test);
       })
@@ -250,7 +250,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   private handleStartTestResolve(results: { test: ITest }) {
-    setCached('test', results.test);
+    Caching.setCached('test', results.test);
     this.setState({test: results.test});
   }
   
@@ -267,7 +267,7 @@ class App extends React.Component<IProps, IState> {
   /****** Take Test ******/
   
   private renderTakeTest(props: any) {
-    const test = this.state.test || getCached('test');
+    const test = this.state.test || Caching.getCached('test');
     if (!test) {
       this.props.history.replace(URLS.startTest);
       return <div />;
@@ -281,7 +281,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   private handleTakeTestSubmit(test: ITest) {
-    setCached('test', test);
+    Caching.setCached('test', test);
     this.setState({test}, () => {
       this.props.history.push(URLS.testResults);
     });
@@ -307,11 +307,11 @@ class App extends React.Component<IProps, IState> {
   }
 
   private requestTestResults() {
-    const token = this.state.token || getCached('token');
+    const token = this.state.token || Caching.getCached('token');
     if (!token) {
       this.props.history.replace(URLS.signin);
     }
-    const test = this.state.test || getCached('test');
+    const test = this.state.test || Caching.getCached('test');
     if (!test) {
       this.props.history.replace(URLS.selectTest);
     }
@@ -321,7 +321,7 @@ class App extends React.Component<IProps, IState> {
       token,
     };
     return new Promise<ITestResults>((resolve) => {
-      jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
+      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
       .then((testResults: ITestResults) => {
         resolve(testResults);
       })
@@ -334,7 +334,7 @@ class App extends React.Component<IProps, IState> {
 
   private handleTestResultsResolve(results: { testResults: ITestResults }) {
     localStorage.removeItem('test');
-    setCached('testResults', results.testResults);
+    Caching.setCached('testResults', results.testResults);
     this.setState({
       test: undefined,
       testResults: results.testResults,
