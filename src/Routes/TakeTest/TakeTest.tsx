@@ -133,9 +133,11 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private handleNumberClick(num: number) {
-    this.setState((prevState) => {
-      return {answer: prevState.answer + num}
-    });
+    if (this.state.answer.length < 3) {
+      this.setState((prevState) => {
+        return {answer: prevState.answer + num}
+      });
+    }
   }
 
   private handleSubmitClick() {
