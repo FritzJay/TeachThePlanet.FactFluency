@@ -74,12 +74,11 @@
       caret-color: transparent;
     }
   }
-  
-  .line-break {
-    padding: 0;
-    margin: 0;
 
-    border-bottom: 3px solid black;
+  .keyboard-container {
+    grid-column: 1 / -1;
+    justify-content: center;
+    justify-items: center;
   }
 
   .button-container {
@@ -115,7 +114,6 @@
     max-width: 250px;
 
     grid-template-columns: 3fr 2fr;
-    grid-template-rows: 1fr;
     
     box-shadow: none;
     padding: 1em;
@@ -123,19 +121,17 @@
     p {
       font-size: 3em;
     }
-  
-    .input-answer {
-      font-size: 3em;
 
-      border: none;
+    .question-problem {
+      font-size: 0.75em;
+    
+      .input-answer {
+        font-size: 3em;
+      }
     }
 
     .button-container {
       display: none;
-    }
-
-    .question-problem {
-      font-size: 0.75em;
     }
   }
 }
