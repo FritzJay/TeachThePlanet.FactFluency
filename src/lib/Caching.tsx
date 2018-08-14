@@ -9,3 +9,7 @@ export const getCached = (key: string) => {
     return JSON.parse(value);
   }
 }
+
+export const removeCached = (key: string) => {
+  localStorage.removeItem(key);
+}

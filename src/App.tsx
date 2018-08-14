@@ -199,7 +199,11 @@ class App extends React.Component<IProps, IState> {
       number: testNumber.number,
       operator,
     }
-    this.setState({testParameters}, () => {
+    this.setState({
+      test: undefined,
+      testParameters,
+    }, () => {
+      Caching.removeCached('test');
       this.props.history.push(URLS.startTest);
     });
   }
@@ -255,7 +259,10 @@ class App extends React.Component<IProps, IState> {
   }
   
   private handleStartTestSubmit() {
-    this.props.history.push(URLS.takeTest);
+    this.setState({testResults: undefined}, () => {
+      Caching.removeCached('testResults');
+      this.props.history.push(URLS.takeTest);
+    });
   }
   
   private handleStartTestCancel() {
@@ -267,6 +274,11 @@ class App extends React.Component<IProps, IState> {
   /****** Take Test ******/
   
   private renderTakeTest(props: any) {
+    const testResults = this.state.testResults || Caching.getCached('testResults');
+    if (testResults) {
+      this.props.history.replace(URLS.testResults);
+      return <div />;
+    }
     const test = this.state.test || Caching.getCached('test');
     if (!test) {
       this.props.history.replace(URLS.startTest);
@@ -292,6 +304,16 @@ class App extends React.Component<IProps, IState> {
   /****** Test Results ******/
   
   private renderTestResults(props: any) {
+    const testResults = this.state.testResults || Caching.getCached('testResults');
+    if (testResults) {
+      return (
+        <TestResults
+          testResults={testResults}
+          onRetry={this.handleTestResultsRetry}
+          onSubmit={this.handleTestResultsSubmit}
+        />
+      );
+    }
     return (
       <RequestComponent
         request={this.requestTestResults}
