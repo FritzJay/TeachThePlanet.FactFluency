@@ -1,0 +1,50 @@
+@import '../../Stylesheets/all';
+
+@mixin login-card-color($color) {
+  .portrait {
+    border: 3px solid $color;
+  }
+
+  .pill-button {
+    color: $color;
+    border-color: $color;
+
+    &:hover {
+      color: $white;
+      background-color: $color;
+    }
+  }
+}
+
+.home {
+  @extend %app-grid;
+
+  .login {
+    grid-column: 2 / 2;
+
+    display: grid;
+    justify-content: center;
+    align-content: center;
+
+    .login-card {
+      display: grid;
+      grid-template-rows: 4fr 1fr;
+      grid-gap: 2em;
+      
+      padding: 2em;
+      
+      .portrait {
+        border: 3px solid black;
+        border-radius: 50%;
+        
+        width: 20vw;
+        height: 20vw;
+      }
+
+      &.red { @include login-card-color($red) }
+      &.blue { @include login-card-color($blue) }
+      &.green { @include login-card-color($green) }
+      &.yellow { @include login-card-color($yellow) }
+    }
+  }
+}

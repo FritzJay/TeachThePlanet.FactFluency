@@ -8,12 +8,11 @@ import './FactFluency.css';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
-  selectTest: '/tests/select',
-  signin: '/',
-  startTest: '/tests/start',
-  takeTest: '/tests/take',
-  testResults: '/tests/results',
-  tests: '/',
+  base: '/fact-fluency',
+  selectTest: '/fact-fluency/select',
+  startTest: '/fact-fluency/start',
+  takeTest: '/fact-fluency/take',
+  testResults: '/fact-fluency/results',
 }
 
 interface IProps {
@@ -64,13 +63,13 @@ class FactFluency extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
-          path={URLS.tests}
+          path={URLS.base}
           render={this.renderNavbar}
         />
-        <div className="app-content">
+        <div className="fact-fluency">
           <Route
             exact={true}
-            path={URLS.signin}
+            path={URLS.base}
             render={this.renderLogin}
           />
           <Route
@@ -112,7 +111,7 @@ class FactFluency extends React.Component<IProps, IState> {
       token: undefined,
       user: undefined,
     }, () => {
-      this.props.history.replace(URLS.signin);
+      this.props.history.replace(URLS.base);
     });
   }
 
@@ -171,7 +170,7 @@ class FactFluency extends React.Component<IProps, IState> {
   private requestSelectTest(): Promise<IAvailableTests> {
     const token = this.state.token || Caching.getCached('token');
     if (!token) {
-      this.props.history.replace(URLS.signin);
+      this.props.history.replace(URLS.base);
     }
     const requestParams: IRequest = {
       method: "GET",
@@ -331,7 +330,7 @@ class FactFluency extends React.Component<IProps, IState> {
   private requestTestResults() {
     const token = this.state.token || Caching.getCached('token');
     if (!token) {
-      this.props.history.replace(URLS.signin);
+      this.props.history.replace(URLS.base);
     }
     const test = this.state.test || Caching.getCached('test');
     if (!test) {
