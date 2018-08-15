@@ -1,6 +1,4 @@
-import { URLS } from '../App';
 import { IRequest } from '../lib/Interfaces';
-
 
 export interface IRequestComponentProps {
   history: any;
@@ -39,11 +37,4 @@ const createJsonRequestObject = (request: IRequest) => {
       body: JSON.stringify({...request.body}),
     },
   );
-}
-
-export const signOut = (component: React.Component<IRequestComponentProps>) => {
-  localStorage.clear();
-  component.setState({user: undefined, token: undefined}, () => {
-    component.props.history.push(URLS.signin);
-  });
 }
