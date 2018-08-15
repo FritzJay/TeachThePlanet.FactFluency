@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Button, Card, Keyboard } from "../../Components/Components";
-import { IDisplayQuestion, IQuestion, ITest } from "../../lib/Interfaces";
-import { Testing } from '../../lib/lib';
+import { Button, Card, Keyboard } from "../../../../Components/Components";
+import { IDisplayQuestion, IQuestion, ITest } from "../../../../lib/Interfaces";
+import { Testing } from '../../../../lib/lib';
 import './TakeTest.css';
 
 interface IProps {

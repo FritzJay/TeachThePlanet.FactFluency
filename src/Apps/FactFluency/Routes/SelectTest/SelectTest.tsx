@@ -1,7 +1,7 @@
 import * as React from "react";
-import { TestNumber } from '../../Components/Components';
-import { IAvailableTests, ITestNumber } from "../../lib/Interfaces";
-import { Themes } from "../../lib/lib";
+import { TestNumber } from '../../../../Components/Components';
+import { IAvailableTests, ITestNumber } from "../../../../lib/Interfaces";
+import { Themes } from "../../../../lib/lib";
 import './SelectTest.css';
 
 interface IProps  {

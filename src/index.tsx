@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import * as WebFont from 'webfontloader';
-import App from './App';
+import FactFluency from './Apps/FactFluency/FactFluency';
 import registerServiceWorker from './registerServiceWorker';
 
 WebFont.load({
@@ -18,7 +18,7 @@ WebFont.load({
 ReactDOM.render(
   (
     <BrowserRouter>
-      <App />
+      <FactFluency />
     </BrowserRouter>
   ), document.getElementById('root') as HTMLElement
 );

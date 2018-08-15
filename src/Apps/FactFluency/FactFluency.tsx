@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import './App.css';
-import { Navbar, RequestComponent } from './Components/Components';
-import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
-import { Caching } from './lib/lib';
-import { Requests } from './lib/lib';
+import { Navbar, RequestComponent } from '../../Components/Components';
+import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces';
+import { Caching } from '../../lib/lib';
+import { Requests } from '../../lib/lib';
+import './FactFluency.css';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
@@ -32,7 +32,7 @@ interface IState {
   testResults?: ITestResults;
 };
 
-class App extends React.Component<IProps, IState> {
+class FactFluency extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     this.state = {
@@ -374,4 +374,4 @@ class App extends React.Component<IProps, IState> {
   /****** END Test Results ******/
 }
 
-export default withRouter(App);
+export default withRouter(FactFluency);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Card } from '../../Components/Components';
+import { Button, Card } from '../../../../Components/Components';
 import './StartTest.css';
 
 interface IProps {

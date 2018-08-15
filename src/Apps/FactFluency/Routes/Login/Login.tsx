@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Button } from '../../Components/Button/Button';
-import { Modal, ModalContent, ModalHeader } from '../../Components/Modal/Modal';
-import { IRequest, IUser } from "../../lib/Interfaces";
-import { Requests } from '../../lib/lib';
+import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
+import { IRequest, IUser } from "../../../../lib/Interfaces";
+import { Requests } from '../../../../lib/lib';
 import './Login.css';
 
 interface IProps {

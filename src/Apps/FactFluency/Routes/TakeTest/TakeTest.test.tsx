@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IQuestion, ITest } from '../../lib/Interfaces';
+import { IQuestion, ITest } from '../../../../lib/Interfaces';
 import { TakeTest } from './TakeTest';
 
 const questions: IQuestion[] = [];
