@@ -1,11 +1,15 @@
 @import '../../Stylesheets/all';
 
 @mixin login-card-color($color) {
+  .header {
+    background-color: $color;
+  }
+
   .portrait {
     border: 3px solid $color;
   }
 
-  .pill-button {
+  .button {
     color: $color;
     border-color: $color;
 
@@ -22,44 +26,32 @@
   .login {
     grid-column: 2 / 2;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 225px);
-    grid-gap: 1em;
+    display: flex;
+    flex-flow: row wrap;
     justify-content: center;
     align-content: center;
 
     .login-card {
+      width: 225px;
+      transition: width .25s;
+
       display: grid;
-      grid-template-areas:
-        "portrait"
-        "portrait"
-        "portrait"
-        "portrait"
-        "button  ";
+      grid-template-rows: 4fr 1fr;
       grid-gap: 2em;
-      
+
       padding: 2em;
+      margin: 0.5em;
       height: 300px;
       
       .portrait {
-        grid-area: portrait;
         border: 3px solid black;
         border-radius: 50%;
-      }
-
-      .pill-button {
-        grid-area: button;
       }
 
       &.red { @include login-card-color($red) }
       &.blue { @include login-card-color($blue) }
       &.green { @include login-card-color($green) }
       &.yellow { @include login-card-color($yellow) }
-    }
-
-    .form {
-      grid-area: form;
-      width: 0px;
     }
   }
 }

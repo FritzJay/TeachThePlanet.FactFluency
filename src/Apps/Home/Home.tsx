@@ -24,10 +24,7 @@ export class Home extends React.Component<IProps, IState> {
       return (
         <Card key={i} className={`login-card ${color}`}>
           <div className="portrait" />
-          <Button onClick={this.handleParentClick}>{name}</Button>
-          <div className="form">
-            <span />
-          </div>
+          <Button className="button" onClick={this.handleParentClick}>{name}</Button>
         </Card>
       );
     });
