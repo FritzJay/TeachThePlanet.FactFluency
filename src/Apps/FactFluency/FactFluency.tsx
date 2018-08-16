@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { Navbar, RequestComponent } from '../../Components/Components';
 import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces';
 import { Caching } from '../../lib/lib';
@@ -31,7 +31,7 @@ interface IState {
   testResults?: ITestResults;
 };
 
-class FactFluency extends React.Component<IProps, IState> {
+export class FactFluency extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     this.state = {
@@ -115,7 +115,7 @@ class FactFluency extends React.Component<IProps, IState> {
     });
   }
 
-  /****** ENd Navbar ******/
+  /****** END Navbar ******/
   
   /****** Login ******/
 
@@ -123,8 +123,7 @@ class FactFluency extends React.Component<IProps, IState> {
     const token = this.state.token || Caching.getCached('token');
     const user = this.state.user || Caching.getCached('user');
     if (token && user) {
-      this.props.history.push(URLS.selectTest);
-      return <div />
+      return <Redirect to={URLS.selectTest} />;
     }
     return (
       <Login {...props} onSubmit={this.handleLoginSubmit} />
@@ -275,13 +274,11 @@ class FactFluency extends React.Component<IProps, IState> {
   private renderTakeTest(props: any) {
     const testResults = this.state.testResults || Caching.getCached('testResults');
     if (testResults) {
-      this.props.history.replace(URLS.testResults);
-      return <div />;
+      return <Redirect to={URLS.testResults} />;
     }
     const test = this.state.test || Caching.getCached('test');
     if (!test) {
-      this.props.history.replace(URLS.startTest);
-      return <div />;
+      return <Redirect to={URLS.startTest} />;
     }
     return (
       <TakeTest {...props}
@@ -372,5 +369,3 @@ class FactFluency extends React.Component<IProps, IState> {
 
   /****** END Test Results ******/
 }
-
-export default withRouter(FactFluency);

@@ -1,19 +1,18 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, RouteComponentProps, withRouter } from 'react-router-dom';
 import * as WebFont from 'webfontloader';
-import FactFluency from './Apps/FactFluency/FactFluency';
+import { FactFluency } from './Apps/FactFluency/FactFluency';
 import { Home } from './Apps/Home/Home';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 const URLS = {
+  factFluency: '/fact-fluency',
   home: '/home',
 }
 
-interface IProps {
-  history?: any;
-}
+interface IProps extends RouteComponentProps<{}> {}
 
 interface IState {
   token?: string;
@@ -34,7 +33,7 @@ class Index extends React.Component<IProps, IState> {
           render={this.renderHome}
         />
         <Route
-          path="/fact-fluency"
+          path={URLS.factFluency}
           render={this.renderFactFluency}
         />
       </div>
@@ -64,11 +63,14 @@ WebFont.load({
   },
 });
 
-ReactDOM.render(
-  (
-    <BrowserRouter>
-      <Index />
-    </BrowserRouter>
-  ), document.getElementById('root') as HTMLElement
+const indexWithRouter = withRouter(Index);
+
+ReactDOM.render((
+  <BrowserRouter>
+    <Route path="/">
+      {indexWithRouter}
+    </Route>
+  </BrowserRouter>
+), document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
