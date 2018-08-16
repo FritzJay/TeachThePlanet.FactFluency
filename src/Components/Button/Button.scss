@@ -15,7 +15,7 @@
     font-size: 1em;
     font-weight: 700;
     
-    transition: transform 0.1s;
+    transition: transform 0.05s;
 
     &:focus {
         outline: none;
@@ -28,7 +28,7 @@
     }
 
     &:active {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 }
 
