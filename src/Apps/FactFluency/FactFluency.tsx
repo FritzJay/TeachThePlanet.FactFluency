@@ -1,19 +1,18 @@
 import * as React from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import './App.css';
-import { Navbar, RequestComponent } from './Components/Components';
-import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from './lib/Interfaces';
-import { Caching } from './lib/lib';
-import { Requests } from './lib/lib';
+import { Navbar, RequestComponent } from '../../Components/Components';
+import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces';
+import { Caching } from '../../lib/lib';
+import { Requests } from '../../lib/lib';
+import './FactFluency.css';
 import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
-  selectTest: '/tests/select',
-  signin: '/',
-  startTest: '/tests/start',
-  takeTest: '/tests/take',
-  testResults: '/tests/results',
-  tests: '/',
+  base: '/fact-fluency',
+  selectTest: '/fact-fluency/select',
+  startTest: '/fact-fluency/start',
+  takeTest: '/fact-fluency/take',
+  testResults: '/fact-fluency/results',
 }
 
 interface IProps {
@@ -32,7 +31,7 @@ interface IState {
   testResults?: ITestResults;
 };
 
-class App extends React.Component<IProps, IState> {
+class FactFluency extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     this.state = {
@@ -64,13 +63,13 @@ class App extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
-          path={URLS.tests}
+          path={URLS.base}
           render={this.renderNavbar}
         />
-        <div className="app-content">
+        <div className="fact-fluency">
           <Route
             exact={true}
-            path={URLS.signin}
+            path={URLS.base}
             render={this.renderLogin}
           />
           <Route
@@ -112,7 +111,7 @@ class App extends React.Component<IProps, IState> {
       token: undefined,
       user: undefined,
     }, () => {
-      this.props.history.replace(URLS.signin);
+      this.props.history.replace(URLS.base);
     });
   }
 
@@ -171,7 +170,7 @@ class App extends React.Component<IProps, IState> {
   private requestSelectTest(): Promise<IAvailableTests> {
     const token = this.state.token || Caching.getCached('token');
     if (!token) {
-      this.props.history.replace(URLS.signin);
+      this.props.history.replace(URLS.base);
     }
     const requestParams: IRequest = {
       method: "GET",
@@ -331,7 +330,7 @@ class App extends React.Component<IProps, IState> {
   private requestTestResults() {
     const token = this.state.token || Caching.getCached('token');
     if (!token) {
-      this.props.history.replace(URLS.signin);
+      this.props.history.replace(URLS.base);
     }
     const test = this.state.test || Caching.getCached('test');
     if (!test) {
@@ -374,4 +373,4 @@ class App extends React.Component<IProps, IState> {
   /****** END Test Results ******/
 }
 
-export default withRouter(App);
+export default withRouter(FactFluency);

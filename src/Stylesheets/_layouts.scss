@@ -1,0 +1,48 @@
+@mixin app-grid-normal {
+  display: grid; 
+  grid-template-columns: 12.5% 75% 12.5%;
+  grid-template-rows: auto;
+}
+%app-grid-normal {
+  @include app-grid-normal;
+}
+
+@mixin app-grid-mobile {
+  grid-template-columns: 5% 90% 5%;
+}
+%app-grid-mobile {
+  @include app-grid-mobile;
+}
+
+@mixin app-grid-tablet {
+  grid-template-columns: 10% 80% 10%;
+}
+%app-grid-tablet {
+  @include app-grid-tablet;
+}
+
+@mixin app-grid-desktop {
+  grid-template-columns: 20% 60% 20%;
+}
+%app-grid-desktop {
+  @include app-grid-desktop;
+}
+
+%app-grid {
+  @include app-grid-normal;
+
+  /*  Mobile  */
+  @media only screen and (max-width: 399px) {
+    @include app-grid-mobile;
+  }
+
+  /*  Tablet  */
+  @media only screen and (min-width: 400px) {
+    @include app-grid-tablet;
+  }
+
+  /*  Desktop  */
+  @media only screen and (min-width: 1200px) {
+    @include app-grid-desktop;
+  }
+}

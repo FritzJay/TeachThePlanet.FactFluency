@@ -14,21 +14,22 @@
     color: rgba(0,0,0,0.5);
     font-size: 1em;
     font-weight: 700;
+    
+    transition: transform 0.05s;
 
-}
+    &:focus {
+        outline: none;
+    }
 
-.pill-button:focus {
-    outline: none;
-}
+    &:hover {
+        opacity: 1.0;
+        background-color: #000000;
+        color: #FFFFFF;
+    }
 
-.pill-button:hover {
-    opacity: 1.0;
-
-    /* Sets background color to fill in */
-    background-color: #000000;
-
-    /* Sets font to switch to white */
-    color: #FFFFFF;
+    &:active {
+        transform: scale(1.05);
+    }
 }
 
 
