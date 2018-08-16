@@ -1,57 +1,5 @@
 @import '../../Stylesheets/all';
 
-@mixin login-card-color($color) {
-  .header {
-    background-color: $color;
-  }
-
-  .portrait {
-    border: 3px solid $color;
-  }
-
-  .button {
-    color: $color;
-    border-color: $color;
-
-    &:hover {
-      color: $white;
-      background-color: $color;
-    }
-  }
-}
-
 .home {
   @extend %app-grid;
-
-  .login {
-    grid-column: 2 / 2;
-
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-content: center;
-
-    .login-card {
-      width: 225px;
-      transition: width .25s;
-
-      display: grid;
-      grid-template-rows: 4fr 1fr;
-      grid-gap: 2em;
-
-      padding: 2em;
-      margin: 0.5em;
-      height: 300px;
-      
-      .portrait {
-        border: 3px solid black;
-        border-radius: 50%;
-      }
-
-      &.red { @include login-card-color($red) }
-      &.blue { @include login-card-color($blue) }
-      &.green { @include login-card-color($green) }
-      &.yellow { @include login-card-color($yellow) }
-    }
-  }
 }

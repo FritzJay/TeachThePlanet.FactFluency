@@ -9,7 +9,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const URLS = {
   factFluency: '/fact-fluency',
-  home: '/home',
+  home: '/',
 }
 
 interface IProps extends RouteComponentProps<{}> {}

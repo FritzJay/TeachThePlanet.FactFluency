@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { Button, Card, Navbar } from '../../Components/Components';
+import { Navbar } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
-import { Themes } from '../../lib/lib';
 import './Home.css';
+import { Login } from './Routes/Routes';
 
 const URLS = {
-  base: '/home',
-  login: '/home/login',
-  loginParent: '/home/login/parent',
+  base: '/',
+  login: '/login',
+  loginParent: '/login/parent',
 }
 
 interface IProps {
@@ -24,8 +24,6 @@ export class Home extends React.Component<IProps, IState> {
     super(props);
     this.state = {}
     this.renderNavbar = this.renderNavbar.bind(this);
-    this.renderLogin = this.renderLogin.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   public render() {
@@ -38,9 +36,9 @@ export class Home extends React.Component<IProps, IState> {
         <div className="home">
           <Route
             path={URLS.login}
-            render={this.renderLogin}
+            component={Login}
           />
-          
+
           <Route
             path={URLS.loginParent}
             render={this.renderLoginParent}
@@ -67,33 +65,6 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Navbar ******/
-
-  /****** Login SHOULD BE MOVED TO ITS OWN COMPONENT ******/
-
-  private renderLogin(props: any) {
-    const portaitCards = ['Parent', 'Student', 'Teacher', 'Administrator'].map((name: string, i: number) => {
-      const color = Themes.themeColors[i % Themes.themeColors.length];
-      return (
-        <Card key={i} className={`login-card ${color}`}>
-          <div className="portrait" />
-          <Button className="button" onClick={this.handleClick}>{name}</Button>
-        </Card>
-      );
-    });
-    return (
-      <div className="login">
-        {portaitCards}
-      </div>
-    );
-  }
-
-  private handleClick(event: any) {
-    const buttonText = event.target.innerText.toLowerCase();
-    const url = `${URLS.login}/${buttonText}`; 
-    this.props.history.push(url);
-  }
-
-  /****** END Login SHOULD BE MOVED TO ITS OWN COMPONENT ******/
 
   private renderLoginParent(props: any) {
     return <div />
