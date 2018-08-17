@@ -1,6 +1,6 @@
 @import '../../../../Stylesheets/all';
 
-@mixin login-card-color($color) {
+@mixin portrait-card-color($color) {
   .header {
     background-color: $color;
   }
@@ -28,7 +28,7 @@
   justify-content: center;
   align-content: center;
 
-  .login-card {
+  .portrait-card {
     width: 225px;
     transition: width .25s;
 
@@ -45,9 +45,9 @@
       border-radius: 50%;
     }
 
-    &.red { @include login-card-color($red) }
-    &.blue { @include login-card-color($blue) }
-    &.green { @include login-card-color($green) }
-    &.yellow { @include login-card-color($yellow) }
+    &.red { @include portrait-card-color($red) }
+    &.blue { @include portrait-card-color($blue) }
+    &.green { @include portrait-card-color($green) }
+    &.yellow { @include portrait-card-color($yellow) }
   }
 }

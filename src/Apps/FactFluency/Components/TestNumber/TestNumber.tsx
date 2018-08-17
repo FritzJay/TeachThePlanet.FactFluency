@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { ITestNumber } from '../../lib/Interfaces';
-import { Themes } from '../../lib/lib';
-import { Button, Card, Operator } from '../Components';
+import { Button, Card } from '../../../../Components/Components';
+import { ITestNumber } from '../../../../lib/Interfaces';
+import { Themes } from '../../../../lib/lib';
+import { Operator } from '../Components';
 import './TestNumber.css';
 
 interface IProps {
