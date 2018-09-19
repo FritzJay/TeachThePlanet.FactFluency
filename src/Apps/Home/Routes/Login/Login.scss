@@ -1,0 +1,53 @@
+@import '../../../../Stylesheets/all';
+
+@mixin portrait-card-color($color) {
+  .header {
+    background-color: $color;
+  }
+
+  .portrait {
+    border: 3px solid $color;
+  }
+
+  .button {
+    color: $color;
+    border-color: $color;
+
+    &:hover {
+      color: $white;
+      background-color: $color;
+    }
+  }
+}
+
+.login {
+  grid-column: 2 / 2;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+
+  .portrait-card {
+    width: 225px;
+    transition: width .25s;
+
+    display: grid;
+    grid-template-rows: 4fr 1fr;
+    grid-gap: 2em;
+
+    padding: 2em;
+    margin: 0.5em;
+    height: 300px;
+    
+    .portrait {
+      border: 3px solid black;
+      border-radius: 50%;
+    }
+
+    &.red { @include portrait-card-color($red) }
+    &.blue { @include portrait-card-color($blue) }
+    &.green { @include portrait-card-color($green) }
+    &.yellow { @include portrait-card-color($yellow) }
+  }
+}

@@ -1,0 +1,147 @@
+@import '../../../../Stylesheets/all';
+
+@mixin login-modal-color($color) {
+  .header {
+    background-color: $color;
+  }
+
+  .left {
+    .small-portrait {
+      border: 3px solid $color;
+    }
+
+    .portrait-title {
+      border: 3px solid $color;
+    }
+  }
+
+  button {
+    border-color: $color;
+
+    &:hover {
+      background-color: $color;
+      color: $white;
+    }
+  }
+}
+
+.login-form {
+  z-index: $overlay;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $very-light-black;
+
+  display: grid;
+  justify-items: center;
+  align-items: center;
+
+  .form {
+    background-color: $white;
+
+    &.modal {
+      max-width: min-max(460px, 90%);
+      min-width: 460px;
+    }
+
+    .cancel-button {
+      justify-self: flex-end;
+      padding: 0;
+      margin: 0;
+      color: $white;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1fr 10px;
+      color: $white;
+      padding: 1em;
+      
+      h1 {
+        margin: 0 0 0 10px;
+      }
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      align-content: stretch;
+      padding: 1em;
+      font-weight: 600;
+
+      .left {
+        display: grid;
+        grid-gap: 1em;
+        justify-items: center;
+        padding: 1em 2em 1em 1em;
+        border-right: 1px solid $very-light-black;
+
+        .small-portrait {
+          padding: 4em;
+          border-radius: 50%;
+        }
+  
+        .portrait-title {
+          /* I'd like to change the styling of this so it is obvious it's not a button */
+          padding: .5em 1em;
+          border-radius: 2em;
+          color: rgba(0,0,0,0.5);
+          font-size: 1em;
+          font-weight: 700;
+        }
+      }
+
+      .right {
+        display: grid;
+        grid-template-rows: 2fr 1fr;
+        grid-gap: 1em;
+        justify-self: stretch;
+        align-self: stretch;
+        padding: 1em 1em 1em 2em;
+
+        label {
+          display: block;
+        }
+
+        .inputs {
+          display: grid;
+          align-items: stretch;
+          grid-gap: 0.25em;
+          border: none;
+
+          label {
+            border-bottom: 1px solid $very-light-black;
+          }
+
+          input {
+            border: none;
+          }
+        }
+
+        .buttons {
+          display: grid;
+          grid-template-columns: 2fr 1fr 2fr;
+          justify-items: center;
+          align-items: flex-end;
+          width: 100%;
+
+          button {
+            max-height: 41px;
+            white-space: nowrap;
+          }
+
+          p {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+    
+    &.red { @include login-modal-color($red) }
+    &.blue { @include login-modal-color($blue) }
+    &.green { @include login-modal-color($green) }
+    &.yellow { @include login-modal-color($yellow) }
+  }
+}

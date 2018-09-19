@@ -1,0 +1,5 @@
+@import '../../Stylesheets/all';
+
+.fact-fluency {
+  @extend %app-grid;
+}

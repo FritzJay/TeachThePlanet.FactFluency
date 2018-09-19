@@ -1,0 +1,156 @@
+@import '../../../../Stylesheets/all';
+
+.test-number {
+  display: grid;
+  
+  // change on active
+  transition: max-height 0.3s;
+  max-height: 150px;
+  
+  .header {
+    .text {
+      font-size: 3.25rem;
+    }
+  }
+  
+  .operators-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-content: center;
+    justify-items: center;
+    justify-self: stretch;
+    padding: 0 1rem 1rem 1rem;
+    font-size: 2.75rem;
+    
+    // Change on active
+    transition: opacity 0.3s;
+    opacity: 0.3;
+  }
+  
+  .button-container {
+    grid-column: 1/-1;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    margin: 0 1em;
+
+    // Change on active
+    transition: height 0.3s,
+                border-top 0.3s,
+                padding 0.3s,
+                opacity 0s 0.15s;
+    height: 0px;
+    border-top: 2px solid white;
+    padding: 0px;
+    opacity: 0;
+  }
+
+  .button {
+    color: $green;
+    border-color: $green;
+
+    // Change on active
+    transition: transform 0.3s;
+    transform: scaleY(0);
+  }
+
+  .button:hover {
+    color: $white;
+    background-color: $green;
+  }
+
+  .error-message {
+    color: $red;
+
+    // Change on error
+    transition: all 0.3s;
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    transform: scaleY(0);
+  }
+
+  .red {
+    color: $red;
+  }
+
+  .blue {
+    color: $blue;
+  }
+
+  .yellow {
+    color: $yellow;
+  }
+
+  .green {
+    color: $green;
+  }
+}
+
+.test-number.active {
+  max-height: 250px;
+
+  .header {
+    opacity: 1;
+  }
+
+  .operators-container {
+    opacity: 1;
+  }
+
+  .button-container {
+    opacity: 1; 
+    transition: height 0.3s,
+                border-top 0.3s,
+                padding 0.3s,
+                opacity 0s 0.05s;
+                
+    border-top: 2px solid rgba(1, 1, 1, 0.15);
+    padding: 1em;
+    height: 70px;
+  }
+
+  .button {
+    transition: transform 0.3s;
+    transform: scaleY(1);
+  }
+}
+
+.test-number.active.error {
+  max-height: 300px;
+
+  .button-container {
+    height: 97px;
+  }
+  
+  .error-message {
+    display: block;
+
+    opacity: 1;
+    height: 15px;
+    margin: 11px 0 0 0;
+    transform: scaleY(1);
+  }
+}
+
+.test-number:hover {
+  box-shadow: $dp-eight;
+}
+
+@media (max-width: 399px) {
+  .test-number {
+    grid-template-columns: 2fr 4fr;
+  
+    .operators-container {
+      padding: 0 1rem 0 0;
+    }
+  }
+}
+
+@media (max-width: 300px) {
+  .test-number {
+    .header {
+      padding-right: 0px;
+    }
+  }
+}

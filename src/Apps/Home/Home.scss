@@ -1,0 +1,5 @@
+@import '../../Stylesheets/all';
+
+.home {
+  @extend %app-grid;
+}
