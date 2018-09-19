@@ -5,11 +5,11 @@ import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } fr
 import { Caching } from '../../lib/lib';
 import { Requests } from '../../lib/lib';
 import './FactFluency.css';
-import { Login, SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
+import { SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes';
 
 export const URLS = {
-  base: '/fact-fluency',
-  selectTest: '/fact-fluency/select',
+  base: '/', // Temporary change from '/fact-fluency' to '/'
+  selectTest: '/', // Temporary change from '/fact-fluency/select' to '/'
   startTest: '/fact-fluency/start',
   takeTest: '/fact-fluency/take',
   testResults: '/fact-fluency/results',
@@ -38,7 +38,6 @@ export class FactFluency extends React.Component<IProps, IState> {
       token: Caching.getCached('token'),
       user: Caching.getCached('user'),
     }
-    this.renderLogin = this.renderLogin.bind(this);
     this.renderNavbar = this.renderNavbar.bind(this);
     this.renderSelectTest = this.renderSelectTest.bind(this);
     this.renderStartTest = this.renderStartTest.bind(this);
@@ -49,7 +48,6 @@ export class FactFluency extends React.Component<IProps, IState> {
     this.requestTestResults = this.requestTestResults.bind(this);
     this.handleSelectTestResolve = this.handleSelectTestResolve.bind(this);
     this.handleTestResultsResolve = this.handleTestResultsResolve.bind(this);
-    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSelectTestSubmit = this.handleSelectTestSubmit.bind(this);
     this.handleStartTestSubmit = this.handleStartTestSubmit.bind(this);
     this.handleStartTestCancel = this.handleStartTestCancel.bind(this);
@@ -57,6 +55,8 @@ export class FactFluency extends React.Component<IProps, IState> {
     this.handleTestResultsSubmit = this.handleTestResultsSubmit.bind(this);
     this.handleTestResultsRetry = this.handleTestResultsRetry.bind(this);
     this.signOut = this.signOut.bind(this);
+    
+    this.tempGetTokenAndUser = this.tempGetTokenAndUser.bind(this);
   }
 
   public render() {
@@ -69,10 +69,6 @@ export class FactFluency extends React.Component<IProps, IState> {
         <div className="fact-fluency">
           <Route
             exact={true}
-            path={URLS.base}
-            render={this.renderLogin}
-          />
-          <Route
             path={URLS.selectTest}
             render={this.renderSelectTest}
           />
@@ -106,6 +102,7 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
 
   private signOut() {
+    /* Temporary comment
     localStorage.clear();
     this.setState({
       token: undefined,
@@ -113,28 +110,37 @@ export class FactFluency extends React.Component<IProps, IState> {
     }, () => {
       this.props.history.replace(URLS.base);
     });
+    */
+    this.props.history.replace(URLS.base);
   }
 
   /****** END Navbar ******/
   
   /****** Login ******/
 
-  private renderLogin(props: any) {
-    const token = this.state.token || Caching.getCached('token');
-    const user = this.state.user || Caching.getCached('user');
-    if (token && user) {
-      return <Redirect to={URLS.selectTest} />;
-    }
-    return (
-      <Login {...props} onSubmit={this.handleLoginSubmit} />
-    );
-  }
-
-  private handleLoginSubmit(token: string, user: IUser) {
-    Caching.setCached('token', token);
-    Caching.setCached('user', user);
-    this.setState({token, user}, () => {
-      this.props.history.push(URLS.selectTest);
+  private tempGetTokenAndUser(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const request: IRequest = {
+        body: {
+          classCode: '123',
+          name: 'DisplayName',
+        },
+        method: "POST",
+      };
+      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/students/signin`, request)
+      .then((response) => {
+        Caching.setCached('token', response.token);
+        Caching.setCached('user', response.user);
+        this.setState({
+          token: response.token,
+          user: response.user
+        }, () => {
+          resolve();
+        });
+      })
+      .catch((err) => {
+        reject(err);
+      })
     });
   }
 
@@ -167,24 +173,27 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
 
   private requestSelectTest(): Promise<IAvailableTests> {
-    const token = this.state.token || Caching.getCached('token');
-    if (!token) {
-      this.props.history.replace(URLS.base);
-    }
-    const requestParams: IRequest = {
-      method: "GET",
-      token,
-    };
-    return new Promise<IAvailableTests>((resolve) => {
-      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
-      .then((availableTests: IAvailableTests) => {
-        resolve(availableTests);
-      })
-      .catch((error: Error) => {
-        console.log('Request failed with error: ' + error.message);
-        this.signOut();
+    return this.tempGetTokenAndUser()
+    .then(() => {
+      const token = this.state.token || Caching.getCached('token');
+      if (!token) {
+        this.props.history.replace(URLS.base);
+      }
+      const requestParams: IRequest = {
+        method: "GET",
+        token,
+      };
+      return new Promise<IAvailableTests>((resolve) => {
+        Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
+        .then((availableTests: IAvailableTests) => {
+          resolve(availableTests);
+        })
+        .catch((error: Error) => {
+          console.log('Request failed with error: ' + error.message);
+          this.signOut();
+        });
       });
-    }); 
+    });
   }
 
   private handleSelectTestResolve(results: {availableTests: IAvailableTests}) {
