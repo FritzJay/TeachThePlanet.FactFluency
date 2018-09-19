@@ -60,7 +60,7 @@ const userInfo = (user?: IUser) => {
 const logoutButton = (signout: () => void, user?: IUser) => {
   if (user) {
     return (
-      <a className="logout-link" onClick={signout}>Logout</a>
+      <a className="logout-link" onClick={signout}>Home</a> // Temporary change from Logout to Home
     );
   } else {
     return (
