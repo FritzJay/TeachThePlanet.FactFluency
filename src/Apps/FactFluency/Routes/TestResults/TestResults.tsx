@@ -52,14 +52,16 @@ export class TestResults extends React.Component<IProps> {
 
   private incorrectCard(incorrect?: IQuestion): JSX.Element | undefined {
     if (incorrect) {
+      const youAnsweredMessage = incorrect.studentAnswer ? `You answered ${this.props.testResults.incorrect.studentAnswer}` : 'You didn\'t answer this question';
       return (
         <Card className="incorrect-card">
           <div className="header">
             <p>This Gave You Some Trouble.</p>
           </div>
           <div className="card-main-content">
-            <h3>{this.props.testResults.incorrect.question} = {this.props.testResults.incorrect.correctAnswer}</h3>
-            <p className="breakdown-text">Hint: It might be a good idea to practice this one.</p>
+              <h3>{this.props.testResults.incorrect.question} = {this.props.testResults.incorrect.correctAnswer}</h3>
+              <h3>{youAnsweredMessage}</h3>
+              <p className="breakdown-text">Hint: It might be a good idea to practice this one.</p>
           </div>
         </Card>
       );
