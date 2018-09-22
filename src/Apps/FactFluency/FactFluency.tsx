@@ -102,16 +102,17 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
 
   private signOut() {
-    /* Temporary comment
     localStorage.clear();
     this.setState({
+      availableTests: undefined,
+      test: undefined,
+      testParameters: undefined,
+      testResults: undefined,
       token: undefined,
       user: undefined,
     }, () => {
-      this.props.history.replace(URLS.base);
+      this.props.history.replace(URLS.selectTest);
     });
-    */
-    this.props.history.replace(URLS.base);
   }
 
   /****** END Navbar ******/
