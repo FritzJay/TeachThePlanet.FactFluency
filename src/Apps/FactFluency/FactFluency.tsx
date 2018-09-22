@@ -274,7 +274,7 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
   
   private handleStartTestCancel() {
-    this.props.history.goBack();
+    this.props.history.push(URLS.selectTest);
   }
 
   /****** END Start Test ******/
