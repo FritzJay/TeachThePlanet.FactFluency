@@ -53,7 +53,7 @@ export class TestNumber extends React.Component <IProps, IState>{
             {operators}
         </div>
         <div className="button-container">
-          <Button className="button" onClick={this.handleStartClick}>Create Test</Button>
+          <Button className="green" onClick={this.handleStartClick}>Create Test</Button>
           <p className="error-message">Please select an operator</p>
         </div>
       </Card>

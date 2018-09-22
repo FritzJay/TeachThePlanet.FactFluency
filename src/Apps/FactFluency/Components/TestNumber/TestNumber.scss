@@ -45,20 +45,6 @@
     opacity: 0;
   }
 
-  .button {
-    color: $green;
-    border-color: $green;
-
-    // Change on active
-    transition: transform 0.3s;
-    transform: scaleY(0);
-  }
-
-  .button:hover {
-    color: $white;
-    background-color: $green;
-  }
-
   .error-message {
     color: $red;
 

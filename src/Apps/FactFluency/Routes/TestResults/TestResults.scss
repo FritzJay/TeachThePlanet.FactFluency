@@ -265,12 +265,10 @@
   
       .pill-button {
         padding: 12px 32px;
-        color: $light-blue;
-        border-color: $light-blue;
-  
+        opacity: 0.6;
+
         &:hover {
-          color: $white;
-          background-color: $blue;
+          opacity: 0.8;
         }
 
         .btn-icon {

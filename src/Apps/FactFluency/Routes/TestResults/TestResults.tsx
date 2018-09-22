@@ -24,8 +24,17 @@ export class TestResults extends React.Component<IProps> {
           {this.incorrectCard(this.props.testResults.incorrect)}
         </div>
         <div className="buttons-container">
-          <Button onClick={this.props.onRetry}><span className="btn-text">Retry</span><span className="btn-icon"><i className="material-icons">replay</i></span></Button>
-          <Button onClick={this.props.onSubmit}><span className="btn-text">Home</span><span className="btn-icon"><i className="material-icons">home</i></span></Button>
+          <Button className="blue" onClick={this.props.onRetry}>
+            <span className="btn-text">Retry</span>
+            <span className="btn-icon">
+              <i className="material-icons">replay</i>
+            </span>
+          </Button>
+          <Button className="blue" onClick={this.props.onSubmit}>
+            <span className="btn-text">Home</span>
+            <span className="btn-icon">
+              <i className="material-icons">home</i>
+            </span></Button>
         </div>
       </div>
     );

@@ -71,7 +71,7 @@ export class TakeTest extends React.Component<IProps, IState> {
             <input type="text" dir="rtl" className="input-answer" value={this.state.answer}/>
           </div>
           <div className="button-container">
-              <Button className="submit-button" onClick={this.handleSubmitClick}>Submit</Button>
+              <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
           </div>
           <Keyboard
             onDeleteClick={this.handleDeleteClick}

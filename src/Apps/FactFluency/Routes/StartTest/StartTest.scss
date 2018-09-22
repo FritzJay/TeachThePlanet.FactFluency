@@ -31,16 +31,6 @@
     display: grid;
     grid-gap: 3em;
 
-    .start-button {
-      color: $green;
-      border-color: $green;
-    }
-
-    .start-button:hover {
-      color: $white;
-      background-color: $green;
-    }
-
     .cancel-button {
       color: $light-red;
       border: none;

@@ -12,7 +12,7 @@ export const Button = (props: IButtonProps) => {
   return (
     <button
       autoFocus={props.autoFocus}
-      className={`pill-button${props.className ? ' ' + props.className : ''}`}
+      className={`pill-button ${props.className ? ' ' + props.className : ''}`}
       onClick={props.onClick}
     >
       {props.children}

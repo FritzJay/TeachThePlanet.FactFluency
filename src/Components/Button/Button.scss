@@ -1,21 +1,39 @@
-/*  Universal Styles    */
-* {box-sizing: border-box;}
+@import '../../Stylesheets/all';
+
+@mixin button-color($color, $light-color, $very-light-color) {
+    background-position: center;
+    border: solid 3px $color;
+    color: $color;
+    transition: background 0.25s, background-color 0s;
+
+    &:hover {
+        border: solid 3px $very-light-color;
+        background: $light-color radial-gradient(circle, transparent 1%, $light-color 1%) center / 15000%;
+        color: #FFFFFF;
+    }
+
+    &:active {
+        background-color: $light-color;
+        border: solid 3px $light-color;
+        background-size: 100%;
+        transition: background 0s;
+    }
+}
 
 /* Colors Need To Be Dynamic */
 .pill-button {
+    border: none;
+    background-color: transparent;
+
     text-decoration: none;
 
     padding: .5em 1em;
-    border: solid 3px rgba(0, 0, 0, 0.5);
     border-radius: 2em;
 
-    background-color: transparent;
+    opacity: 0.8;
 
-    color: rgba(0,0,0,0.5);
     font-size: 1em;
     font-weight: 700;
-    
-    transition: transform 0.05s;
 
     &:focus {
         outline: none;
@@ -23,22 +41,21 @@
 
     &:hover {
         opacity: 1.0;
-        background-color: #000000;
-        color: #FFFFFF;
     }
-
-    &:active {
-        transform: scale(1.05);
-    }
+    
+    &.red { @include button-color($red, $light-red, $very-light-red) }
+    &.blue { @include button-color($blue, $light-blue, $very-light-blue) }
+    &.green { @include button-color($green, $light-green, $very-light-green) }
+    &.yellow { @include button-color($yellow, $light-yellow, $very-light-yellow) }
+    &.gray { @include button-color($gray, $light-gray, $very-light-gray) }
+    &.black { @include button-color($black, $light-black, $very-light-black) }
 }
-
 
 /*  Mobile  */
 @media only screen and (max-width: 399px) {}
 
 /*  Tablet  */
 @media only screen and (min-width: 400px) {}
-
 
 /*  Desktop  */
 @media only screen and (min-width: 1200px) {}
