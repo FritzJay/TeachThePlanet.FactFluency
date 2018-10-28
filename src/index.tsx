@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter, Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, RouteComponentProps, withRouter } from 'react-router-dom';
 import * as WebFont from 'webfontloader';
 import { FactFluency } from './Apps/FactFluency/FactFluency';
 import { Home } from './Apps/Home/Home';
@@ -9,7 +9,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const URLS = {
   factFluency: '/fact-fluency',
-  home: '/',
+  home: '/index',
 }
 
 interface IProps extends RouteComponentProps<{}> {}
@@ -21,13 +21,19 @@ interface IState {
 class Index extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
+
     this.renderHome = this.renderHome.bind(this);
     this.renderFactFluency = this.renderFactFluency.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
   public render() {
     return (
       <div>
+        <Route
+          path='/'
+          render={this.renderRedirect}
+        />
         <Route
           path={URLS.home}
           render={this.renderHome}
@@ -46,6 +52,10 @@ class Index extends React.Component<IProps, IState> {
 
   private renderFactFluency() {
     return <FactFluency history={this.props.history} />
+  }
+
+  private renderRedirect() {
+    return <Redirect to={URLS.home} />
   }
 
   private handleLogin() {

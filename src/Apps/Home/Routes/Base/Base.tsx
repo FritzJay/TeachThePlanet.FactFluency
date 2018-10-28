@@ -3,30 +3,30 @@ import { Route } from 'react-router-dom';
 import { LoginModal, TitleModal } from '../../Components/Components';
 import './Base.css';
 
-interface IProps {
-  match: any;
-  history: any;
+const URLS = {
+  classes: 'index/classes',
+  login: '/index/signup',
+  title: '/index',
 }
 
 interface IState {
   loginType: string;
 }
 
-export class Base extends React.Component<IProps, IState> {
+export class Base extends React.Component<any, IState> {
   public render() {
-    console.log(this.props.match)
     return (
       <div className="base">
         Base
 
         <Route
           exact={true}
-          path={this.props.match.url}
+          path={URLS.title}
           component={TitleModal}
         />
 
         <Route
-          path={`${this.props.match.url}signup`}
+          path={URLS.login}
           component={LoginModal}
         />
       </div>

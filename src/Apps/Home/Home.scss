@@ -1,9 +1,7 @@
 @import '../../Stylesheets/all';
 
 .home {
-  display: grid;
-  grid-template-columns: 12fr;
-  grid-template-rows: auto;
+  @extend %app-grid;
 
   width: 100%;
   height: 100vh;

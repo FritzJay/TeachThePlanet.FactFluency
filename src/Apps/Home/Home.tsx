@@ -6,7 +6,7 @@ import './Home.css';
 import { Base, Classes } from './Routes/Routes';
 
 const URLS = {
-  base: '/',
+  base: '/index',
   classes: '/classes',
 }
 
@@ -34,9 +34,8 @@ export class Home extends React.Component<IProps, IState> {
         /> 
         <div className="home">
           <Route
-            exact={true}
             path={URLS.base}
-            component={Base}
+            render={this.renderBase}
           />
 
           <Route
@@ -65,4 +64,12 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Navbar ******/
+
+  /****** Base ******/
+
+  private renderBase() {
+    return <Base />
+  }
+  
+  /****** END Base ******/
 }

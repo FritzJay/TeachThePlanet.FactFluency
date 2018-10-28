@@ -29,7 +29,7 @@ export class TitleModal extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent>
-        <Link className="title-btn" to="/signup">
+        <Link className="title-btn" to="index/signup">
           <Button className="green">Get Started</Button>
         </Link>
         <p className="title-sub">Anytime. Anywhere. Always Free.</p>
