@@ -25,13 +25,14 @@ export class Base extends React.Component<IProps, IState> {
 
   
   public render() {
+    console.log(this.props.match)
     return (
       <div className="base">
-        All your base are belong to us
+        Base
 
-        <Route exact={true} path={`${this.props.match.url}/`} component={TitleModal} />
+        <Route exact={true} path={`${this.props.match.url}`} component={TitleModal} />
 
-        <Route path={`${this.props.match.url}/signup`} render={this.renderLoginModal} />
+        <Route path={`${this.props.match.url}signup`} render={this.renderLoginModal} />
       </div>
     );
   }

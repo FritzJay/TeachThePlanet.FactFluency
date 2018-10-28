@@ -20,7 +20,7 @@ export class LoginModal extends React.Component<IProps, IState> {
     
     return (
       <div className="login">
-        Build me up buttercup
+        Login Modal
       </div>
     );
   }
