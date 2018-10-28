@@ -8,8 +8,8 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 const URLS = {
-  factFluency: '/', // Temp change from '/fact-fluency' to '/'
-  home: '/home', // Temp change from '/' to '/home'
+  factFluency: '/fact-fluency',
+  home: '/',
 }
 
 interface IProps extends RouteComponentProps<{}> {}

@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { Navbar } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
 import './Home.css';
-import { Login } from './Routes/Routes';
+import { Base } from './Routes/Routes';
 
 const URLS = {
   base: '/',
@@ -35,8 +35,8 @@ export class Home extends React.Component<IProps, IState> {
         /> 
         <div className="home">
           <Route
-            path={URLS.login}
-            component={Login}
+            path={URLS.base}
+            component={Base}
           />
 
           <Route

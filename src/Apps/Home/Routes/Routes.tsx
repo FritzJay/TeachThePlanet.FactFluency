@@ -1,3 +1,3 @@
-import { Login as _Login } from './Login/Login';
+import { Base as _Base } from './Base/Base';
 
-export const Login = _Login;
+export const Base = _Base;
