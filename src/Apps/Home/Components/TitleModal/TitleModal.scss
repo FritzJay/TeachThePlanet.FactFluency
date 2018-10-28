@@ -1,3 +1,86 @@
+@import '../../../../Stylesheets/all';
+
 .title-modal {
-  
+    grid-column: 1 / -1;
+    grid-row: 2 / 2;
+
+    margin: 0;
+    justify-self: center;
+    align-self: center;
+
+  background-color: $white;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto; 
+
+  box-shadow: none;
+
+
+    .title-header {
+        grid-column: 1 / -1;
+        grid-row: 1 / 1;
+
+        justify-self: center;
+        align-self: center;
+
+        font-weight: 700;
+
+        margin: 0;
+        
+    }
+
+    .title-btn {
+        grid-column: 1 / -1;
+        grid-row: 2 / 2;
+
+        justify-self: center;
+        align-self: center;
+    }
+
+    .title-sub {
+        grid-column: 1 / -1;
+        grid-row: 3 / 3;
+
+        justify-self: center;
+        align-self: center;
+
+        font-weight: 600;
+    }
 }
+
+/*  Mobile  */
+@media only screen and (max-width: 399px) {
+
+    .title-modal {
+        width: 90vw;
+        height: auto;
+
+        .title-header {
+            font-size: 24px;
+        }
+
+        .content {
+            margin-top: 0;
+        }
+    }
+}
+
+/*  Tablet  */
+@media only screen and (min-width: 400px) {
+
+    .title-modal {
+        max-width: 600px;
+        margin: 0 1em;
+    }
+        .title-header {
+            font-size: 36px;
+        }
+
+        .content {
+            margin-top: 0;
+        }
+}
+
+/*  Desktop  */
+@media only screen and (min-width: 1200px) {}

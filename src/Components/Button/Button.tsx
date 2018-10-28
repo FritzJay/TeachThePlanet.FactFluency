@@ -5,7 +5,7 @@ export interface IButtonProps {
   autoFocus?: boolean;
   className?: string;
   children: any;
-  onClick: (event: any) => void;
+  onClick?: (event: any) => void;
 }
 
 export const Button = (props: IButtonProps) => {

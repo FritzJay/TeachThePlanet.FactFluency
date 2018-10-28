@@ -1,11 +1,12 @@
 @import '../../Stylesheets/all';
 
 .home {
-  @extend %app-grid;
+  display: grid;
+  grid-template-columns: 12fr;
+  grid-template-rows: auto;
 
-  .test-home-div {
-    width: 1000px;
-    height: 1000px;
-    background-image: url("./banner.svg");
-  }
+  width: 100%;
+  height: 100vh;
+
+  margin-top: -104px;
 }
