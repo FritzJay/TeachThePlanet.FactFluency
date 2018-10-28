@@ -1,11 +1,4 @@
 @import '../../Stylesheets/all';
 
 .home {
-  @extend %app-grid;
-
-  .test-home-div {
-    width: 1000px;
-    height: 1000px;
-    background-image: url("./banner.svg");
-  }
 }
