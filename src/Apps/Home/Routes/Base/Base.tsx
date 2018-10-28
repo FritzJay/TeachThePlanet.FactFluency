@@ -21,7 +21,7 @@ export class Base extends React.Component<IProps, IState> {
 
         <Route
           exact={true}
-          path={`${this.props.match.url}`}
+          path={this.props.match.url}
           component={TitleModal}
         />
 

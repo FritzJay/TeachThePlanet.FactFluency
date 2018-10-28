@@ -3,12 +3,11 @@ import { Route } from 'react-router-dom';
 import { Navbar } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
 import './Home.css';
-import { Base } from './Routes/Routes';
+import { Base, Classes } from './Routes/Routes';
 
 const URLS = {
   base: '/',
-  login: '/login',
-  loginParent: '/login/parent',
+  classes: '/classes',
 }
 
 interface IProps {
@@ -35,13 +34,14 @@ export class Home extends React.Component<IProps, IState> {
         /> 
         <div className="home">
           <Route
+            exact={true}
             path={URLS.base}
             component={Base}
           />
 
           <Route
-            path={URLS.loginParent}
-            render={this.renderLoginParent}
+            path={URLS.classes}
+            component={Classes}
           />
         </div>
       </div>
@@ -65,8 +65,4 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Navbar ******/
-
-  private renderLoginParent(props: any) {
-    return <div />
-  }
 }
