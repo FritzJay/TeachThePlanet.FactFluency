@@ -1,3 +1,36 @@
+@import '../../../../../../Stylesheets/all';
+
 .create-class-card {
-  
+  background: $white;
+
+  border: 3px dashed $gray;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+
+  &:hover {
+      background: rgba(0, 0, 0, 0.10);
+      transition-timing-function: ease-in;
+      transition-duration: 0.4s;
+  }
+
+  .plus {
+      justify-self: center;
+      align-self:center;
+
+      font-weight: 700;
+      font-size: 48px;
+
+      color: $gray; 
+  }
 }
+
+/*  Mobile  */
+@media only screen and (max-width: 399px) {}
+
+/*  Tablet  */
+@media only screen and (min-width: 400px) {}
+
+/*  Desktop  */
+@media only screen and (min-width: 1200px) {}

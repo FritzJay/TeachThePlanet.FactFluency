@@ -13,7 +13,7 @@ export class CreateClassCard extends React.Component<IProps, IState> {
   public render() {
     return (
       <div className="create-class-card">
-        Create Class Card
+        <p className="plus">+</p>
       </div>
     );
   }
