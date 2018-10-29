@@ -6,9 +6,9 @@ import './Home.css';
 import { Base, Classes } from './Routes/Routes';
 
 const URLS = {
-  base: '/index',
-  classes: '/classes',
-  navbar: '/',
+  base: '/home/index',
+  classes: '/home/classes',
+  home: '/home',
 }
 
 interface IProps {
@@ -29,15 +29,21 @@ export class Home extends React.Component<IProps, IState> {
     this.renderBase = this.renderBase.bind(this);
     this.renderNavbar = this.renderNavbar.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this)
   }
 
   public render() {
     return (
       <div>
         <Route
-          path={URLS.navbar}
+          path={URLS.home}
           render={this.renderNavbar}
         /> 
+        <Route
+          exact={true}
+          path={URLS.home}
+          render={this.renderRedirect}
+        />
         <div className="home">
           <Route
             path={URLS.base}
@@ -51,6 +57,10 @@ export class Home extends React.Component<IProps, IState> {
         </div>
       </div>
     );
+  }
+
+  private renderRedirect() {
+    return <Redirect to={URLS.base} />
   }
 
   /****** Navbar ******/

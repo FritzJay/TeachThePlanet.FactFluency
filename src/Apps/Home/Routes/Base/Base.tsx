@@ -5,9 +5,9 @@ import { LoginModal, TitleModal } from '../../Components/Components';
 import './Base.css';
 
 const URLS = {
-  classes: 'index/classes',
-  login: '/index/signup',
-  title: '/index',
+  classes: 'home/classes',
+  login: '/home/index/signup',
+  title: '/home/index',
 }
 
 interface IProps {
