@@ -14,7 +14,7 @@ export class Classes extends React.Component<IProps, IState> {
   public render() {
     return (
       <div className="classes">
-        Classes
+        <h2>Classes</h2>
         <ClassCard />
         <CreateClassCard />
       </div>

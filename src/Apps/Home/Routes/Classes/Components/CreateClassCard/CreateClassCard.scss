@@ -9,6 +9,8 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
 
+  border-radius: 12px;
+
   &:hover {
       background: rgba(0, 0, 0, 0.10);
       transition-timing-function: ease-in;
