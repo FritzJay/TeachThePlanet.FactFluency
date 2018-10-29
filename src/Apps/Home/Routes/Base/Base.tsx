@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
+import { IUser } from '../../../../lib/Interfaces';
 import { LoginModal, TitleModal } from '../../Components/Components';
 import './Base.css';
 
@@ -9,11 +10,21 @@ const URLS = {
   title: '/index',
 }
 
-interface IState {
-  loginType: string;
+interface IProps {
+  onLogin: (user: IUser, token: string) => void;
 }
 
-export class Base extends React.Component<any, IState> {
+interface IState {
+  error?: string;
+}
+
+export class Base extends React.Component<IProps, IState> {
+  public constructor(props: IProps) {
+    super(props);
+
+    this.renderLoginModal = this.renderLoginModal.bind(this)
+  }
+
   public render() {
     return (
       <div className="base">
@@ -27,9 +38,13 @@ export class Base extends React.Component<any, IState> {
 
         <Route
           path={URLS.login}
-          component={LoginModal}
+          render={this.renderLoginModal}
         />
       </div>
     );
+  }
+
+  private renderLoginModal() {
+    return <LoginModal onLogin={this.props.onLogin} />
   }
 }

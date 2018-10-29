@@ -31,6 +31,7 @@ class Index extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
+          exact={true}
           path='/'
           render={this.renderRedirect}
         />
