@@ -1,14 +1,22 @@
 import * as React from 'react';
 import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
+import { IUser } from '../../../../lib/Interfaces';
+import { IRequest } from '../../../../lib/Interfaces';
+import { Requests } from '../../../../lib/lib';
 import './LoginModal.css';
+
+interface IProps {
+  onLogin: (user: IUser, token: string) => void;
+}
 
 interface IState {
   email: string;
   loginType: string;
   password: string;
+  error?: string;
 }
 
-export class LoginModal extends React.Component<any, IState> {
+export class LoginModal extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     
@@ -104,11 +112,7 @@ export class LoginModal extends React.Component<any, IState> {
       </Modal>
     );
   }
-
-  private handleLoginClick() {
-    return;
-  }
-
+  
   private handleLoginTypeClick(e: any) {
     const value = e.target.innerText;
     
@@ -126,22 +130,54 @@ export class LoginModal extends React.Component<any, IState> {
       email: e.target.value
     })
   }
-
+  
   private handlePasswordChange(e: any) {
     this.setState({
       password: e.target.value
     })
   }
-
+  
   private handleSignupClick() {
     return;
   }
+  
+  private handleLoginClick() {
+    if (this.state.email === '' || this.state.password === '') {
+      return
+    }
 
+    const request: IRequest = {
+      body: {
+        email: this.state.email,
+        loginType: this.state.loginType,
+        password: this.state.password,
+      },
+      method: "POST",
+    };
+
+    let url;
+    if (this.state.loginType === 'Student') {
+      url = `${process.env.REACT_APP_API_URL}/students/signin`
+    } else if (this.state.loginType === 'Teacher') {
+      url = `${process.env.REACT_APP_API_URL}/teachers/signin`
+    } else {
+      url = `${process.env.REACT_APP_API_URL}/parents/signin`
+    }
+
+    Requests.jsonFetch(url, request)
+      .then((response) => {
+        this.props.onLogin(response.user, response.token)
+      })
+      .catch(() => {
+        this.setState({error: 'Invalid email/username or password'});
+      });
+  }
+  
   private getClassName(buttonType: string) {
     return (
       buttonType === this.state.loginType
-        ? 'gray login-modal-button active'
-        : 'gray login-modal-button'
-    )
+      ? 'gray login-modal-button active'
+      : 'gray login-modal-button'
+      )
+    }
   }
-}

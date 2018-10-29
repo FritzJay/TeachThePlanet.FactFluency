@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { Navbar } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
 import './Home.css';
@@ -15,14 +15,19 @@ interface IProps {
 }
 
 interface IState {
+  token?: string;
   user?: IUser;
 }
 
 export class Home extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
+
     this.state = {}
+
+    this.renderBase = this.renderBase.bind(this);
     this.renderNavbar = this.renderNavbar.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   public render() {
@@ -68,7 +73,14 @@ export class Home extends React.Component<IProps, IState> {
   /****** Base ******/
 
   private renderBase() {
-    return <Base />
+    return <Base onLogin={this.handleLogin} />
+  }
+
+  private handleLogin(user: IUser, token: string) {
+    this.setState({
+      token,
+      user,
+    }, () => <Redirect to={URLS.classes} />)
   }
   
   /****** END Base ******/
