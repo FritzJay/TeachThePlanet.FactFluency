@@ -96,6 +96,7 @@ export class FactFluency extends React.Component<IProps, IState> {
 
     return(
       <Navbar {...props}
+        logoLink={this.props.match.path}
         user={user}
         onLogout={this.props.onLogout}
       />

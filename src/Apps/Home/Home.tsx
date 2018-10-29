@@ -40,7 +40,7 @@ export class Home extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
-          path={`${this.props.match.path}`}
+          path={this.props.match.path}
           render={this.renderNavbar}
           />
 
@@ -78,6 +78,7 @@ export class Home extends React.Component<IProps, IState> {
 
     return (
       <Navbar {...props}
+        logoLink={this.props.match.path}
         user={user}
         onLogout={this.handleLogout}
       />

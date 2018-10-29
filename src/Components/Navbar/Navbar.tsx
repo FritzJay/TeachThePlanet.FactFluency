@@ -5,8 +5,9 @@ import { IUser } from '../../lib/Interfaces';
 import './Navbar.css';
 
 interface IProps {
-  onLogout: () => void;
+  logoLink: string;
   user?: IUser;
+  onLogout: () => void;
 }
 
 interface IState {
@@ -28,7 +29,7 @@ export class Navbar extends React.Component<IProps, IState> {
         <div className="navbar">
           {logoutButton(this.props.onLogout, this.props.user)}
 
-          <Link className="logo" to='/'>
+          <Link className="logo" to={this.props.logoLink}>
             <img src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
           </Link>
 
