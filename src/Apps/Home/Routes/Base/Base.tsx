@@ -11,14 +11,10 @@ const URLS = {
 }
 
 interface IProps {
-  onLogin: (user: IUser, token: string) => void;
+  onLogin: (user: IUser, token: string, userType: string) => void;
 }
 
-interface IState {
-  error?: string;
-}
-
-export class Base extends React.Component<IProps, IState> {
+export class Base extends React.Component<IProps, any> {
   public constructor(props: IProps) {
     super(props);
 

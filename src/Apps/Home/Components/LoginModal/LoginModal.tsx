@@ -6,7 +6,7 @@ import { Requests } from '../../../../lib/lib';
 import './LoginModal.css';
 
 interface IProps {
-  onLogin: (user: IUser, token: string) => void;
+  onLogin: (user: IUser, token: string, userType: string) => void;
 }
 
 interface IState {
@@ -80,6 +80,7 @@ export class LoginModal extends React.Component<IProps, IState> {
             onChange={this.handlePasswordChange}
             value={this.state.password}
             placeholder="Password"
+            type="password"
           />
         </ModalContent>
 
@@ -99,6 +100,8 @@ export class LoginModal extends React.Component<IProps, IState> {
               Login
             </Button>
           </div>
+
+          <p className="error">{this.state.error}</p>
         </ModalContent>
 
         <ModalContent className="bottom-content">
@@ -118,9 +121,8 @@ export class LoginModal extends React.Component<IProps, IState> {
     
     if (value !== this.state.loginType) {
       this.setState({
-        email: '',
+        error: undefined,
         loginType: value,
-        password: '',
       })
     }
   }
@@ -166,7 +168,7 @@ export class LoginModal extends React.Component<IProps, IState> {
 
     Requests.jsonFetch(url, request)
       .then((response) => {
-        this.props.onLogin(response.user, response.token)
+        this.props.onLogin(response.user, response.token, this.state.loginType)
       })
       .catch(() => {
         this.setState({error: 'Invalid email/username or password'});
