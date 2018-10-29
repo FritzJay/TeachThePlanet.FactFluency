@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Classes.css';
-import { ClassCard, CreateClassCard } from './Components/Components';
+import { ClassCard, CreateClassCard, NewClassModal, } from './Components/Components';
 
 interface IProps {
   temp?: any

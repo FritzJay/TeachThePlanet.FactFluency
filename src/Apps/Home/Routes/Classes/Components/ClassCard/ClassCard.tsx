@@ -14,7 +14,7 @@ export class ClassCard extends React.Component<IProps, IState> {
     return (
       <div className="class-card" onClick={this.handleClassCardClick}>
         <button className="settings"><i className="material-icons">settings</i></button>
-        <img className="school-icon" src="#" alt="Class Icon" />
+        <img className="school-icon" src="file:///C:/Users/Thomas/Downloads/school-icon.svg" alt="Class Icon" />
         <h3>Class Name</h3>
         <h4>Class Code:</h4>
       </div>
