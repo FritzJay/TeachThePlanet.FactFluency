@@ -18,11 +18,14 @@ export class TestResults extends React.Component<IProps> {
     return (
       <div className="test-results">
         <h1 className="amount-correct-text">You got <span className={correctClassName}>{amountCorrect}</span> out of <span className="pass">{total}</span> correct!</h1>
+
         <p>Remember you need {this.props.testResults.needed}/{this.props.testResults.total} to pass.</p>
+
         <div className="cards-container">
           {this.quickestCard(this.props.testResults.quickest)}
           {this.incorrectCard(this.props.testResults.incorrect)}
         </div>
+
         <div className="buttons-container">
           <Button className="blue" onClick={this.props.onRetry}>
             <span className="btn-text">Retry</span>
@@ -30,11 +33,13 @@ export class TestResults extends React.Component<IProps> {
               <i className="material-icons">replay</i>
             </span>
           </Button>
+
           <Button className="blue" onClick={this.props.onSubmit}>
             <span className="btn-text">Home</span>
             <span className="btn-icon">
               <i className="material-icons">home</i>
-            </span></Button>
+            </span>
+          </Button>
         </div>
       </div>
     );

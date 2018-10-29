@@ -1,19 +1,12 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components'
 
 import './TitleModal.css';
 
-interface IProps {
-  history: any;
-}
+interface IProps extends RouteComponentProps<{}> {}
 
-interface IState {
-  color?: string,
-  loginFor?: string,
-}
-
-export class TitleModal extends React.Component<IProps, IState> {
+export class TitleModal extends React.Component<IProps, any> {
   public constructor(props: IProps) {
     super(props);
     
@@ -29,7 +22,7 @@ export class TitleModal extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent>
-        <Link className="title-btn" to="index/signup">
+        <Link className="title-btn" to={`${this.props.match.url}login`}>
           <Button className="green">Get Started</Button>
         </Link>
         <p className="title-sub">Anytime. Anywhere. Always Free.</p>

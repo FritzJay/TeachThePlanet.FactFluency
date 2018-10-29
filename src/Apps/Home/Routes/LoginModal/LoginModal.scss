@@ -1,6 +1,8 @@
-@import '../../../../../../Stylesheets/all';
+@import '../../../../Stylesheets/all';
 
 .login-modal {
+  grid-column: 1 / -1;
+
   .login-modal-header {
     background-color: $blue;
     color: $white;

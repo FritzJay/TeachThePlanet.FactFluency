@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import './Classes.css';
 import {
   AddStudentModal,
@@ -8,7 +9,7 @@ import {
   NewClassModal
 } from './Components/Components';
 
-interface IProps {
+interface IProps extends RouteComponentProps<{}> {
   temp?: any
 }
 

@@ -1,60 +1,59 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { BrowserRouter, Redirect, Route, RouteComponentProps, withRouter } from 'react-router-dom';
-import * as WebFont from 'webfontloader';
-import { FactFluency } from './Apps/FactFluency/FactFluency';
-import { Home } from './Apps/Home/Home';
-import './index.css';
-import { IUser } from './lib/Interfaces';
-import { Caching } from './lib/lib';
-import registerServiceWorker from './registerServiceWorker';
-
-const URLS = {
-  classes: '/home/classes',
-  factFluency: '/fact-fluency',
-  home: '/home',
-}
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import {
+  BrowserRouter,
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter,
+} from 'react-router-dom'
+import * as WebFont from 'webfontloader'
+import { FactFluency } from './Apps/FactFluency/FactFluency'
+import { Home } from './Apps/Home/Home'
+import { PageNotFound } from './Components/PageNotFound/PageNotFound';
+import './index.css'
+import { IUser } from './lib/Interfaces'
+import { Caching } from './lib/lib'
+import registerServiceWorker from './registerServiceWorker'
 
 interface IProps extends RouteComponentProps<{}> {}
 
 interface IState {
-  token?: string;
-  user?: IUser;
+  token?: string
+  user?: IUser
 }
 
 class Index extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
-    super(props);
+    super(props)
 
     this.state = {}
 
-    this.renderHome = this.renderHome.bind(this);
-    this.renderFactFluency = this.renderFactFluency.bind(this);
-    this.renderRedirect = this.renderRedirect.bind(this);
+    this.renderHome = this.renderHome.bind(this)
+    this.renderFactFluency = this.renderFactFluency.bind(this)
 
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogin = this.handleLogin.bind(this)
+    this.handleLogout = this.handleLogout.bind(this)
   }
+
   public render() {
     return (
       <div>
-        <Route
-          exact={true}
-          path='/'
-          render={this.renderRedirect}
-        />
+        <Switch>
+          <Route
+            path={'/fact-fluency'}
+            render={this.renderFactFluency}
+          />
 
-        <Route
-          path={URLS.home}
-          render={this.renderHome}
-        />
+          <Route
+            path='/'
+            render={this.renderHome}
+          />
 
-        <Route
-          path={URLS.factFluency}
-          render={this.renderFactFluency}
-        />
+          <Route component={PageNotFound} />
+        </Switch>
       </div>
-    );
+    )
   }
 
   private renderHome(props: any) {
@@ -80,37 +79,33 @@ class Index extends React.Component<IProps, IState> {
     )
   }
 
-  private renderRedirect() {
-    return <Redirect to={URLS.home} />
-  }
-
   private handleLogin(user: IUser, token: string, userType: string) {
-    Caching.setCached('token', token);
-    Caching.setCached('user', user);
+    Caching.setCached('token', token)
+    Caching.setCached('user', user)
 
     this.setState({
       token,
       user,
     }, () => {
       if (userType === 'Student') {
-        this.props.history.push(URLS.factFluency)
+        this.props.history.push('/fact-fluency')
       } else if (userType === 'Teacher') {
-        this.props.history.push(URLS.classes)
+        this.props.history.push('/classes')
       } else {
-        this.props.history.push(URLS.home)
+        this.props.history.push('/')
       }
     })
   }
 
   private handleLogout() {
-    localStorage.clear();
+    localStorage.clear()
 
     this.setState({
       token: undefined,
       user: undefined,
     }, () => {
-      this.props.history.replace(URLS.home);
-    });
+      this.props.history.replace('/')
+    })
   }
 }
 
@@ -122,9 +117,9 @@ WebFont.load({
       'Material Icons: 400, normal',
     ],
   },
-});
+})
 
-const indexWithRouter = withRouter(Index);
+const indexWithRouter = withRouter(Index)
 
 ReactDOM.render((
   <BrowserRouter>
@@ -135,5 +130,5 @@ ReactDOM.render((
     
   </BrowserRouter>
 ), document.getElementById('root') as HTMLElement
-);
-registerServiceWorker();
+)
+registerServiceWorker()

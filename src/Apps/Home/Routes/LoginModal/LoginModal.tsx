@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Button, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components';
-import { IUser } from '../../../../../../lib/Interfaces';
-import { IRequest } from '../../../../../../lib/Interfaces';
-import { Requests } from '../../../../../../lib/lib';
+import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
+import { IUser } from '../../../../lib/Interfaces';
+import { IRequest } from '../../../../lib/Interfaces';
+import { Requests } from '../../../../lib/lib';
 import './LoginModal.css';
 
 interface IProps {

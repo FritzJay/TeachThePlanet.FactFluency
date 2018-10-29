@@ -1,23 +1,14 @@
 import * as React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
 import { Navbar, RequestComponent } from '../../Components/Components'
+import { PageNotFound } from '../../Components/PageNotFound/PageNotFound';
 import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
 import { Requests } from '../../lib/lib'
 import './FactFluency.css'
 import { SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes'
 
-export const URLS = {
-  base: '/fact-fluency',
-  home: '/home',
-  selectTest: '/fact-fluency',
-  startTest: '/fact-fluency/start',
-  takeTest: '/fact-fluency/take',
-  testResults: '/fact-fluency/results',
-}
-
-interface IProps {
-  history: any
+interface IProps extends RouteComponentProps<{}> {
   token?: string
   user?: IUser
   onLogin: (user: IUser, token: string, userType: string) => void
@@ -64,27 +55,35 @@ export class FactFluency extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
-          path={URLS.base}
+          path={this.props.match.path}
           render={this.renderNavbar}
         />
+
         <div className="fact-fluency">
-          <Route
-            exact={true}
-            path={URLS.selectTest}
-            render={this.renderSelectTest}
-          />
-          <Route
-            path={URLS.startTest}
-            render={this.renderStartTest}
-          />
-          <Route
-            path={URLS.takeTest}
-            render={this.renderTakeTest}
-          />
-          <Route
-            path={URLS.testResults}
-            render={this.renderTestResults}
-          />
+          <Switch>
+            <Route
+              exact={true}
+              path={this.props.match.path}
+              render={this.renderSelectTest}
+            />
+
+            <Route
+              path={`${this.props.match.path}/start-test`}
+              render={this.renderStartTest}
+            />
+
+            <Route
+              path={`${this.props.match.path}/take-test`}
+              render={this.renderTakeTest}
+            />
+
+            <Route
+              path={`${this.props.match.path}/test-results`}
+              render={this.renderTestResults}
+            />
+
+            <Route component={PageNotFound} />
+          </Switch>
         </div>
       </div>
     )
@@ -147,7 +146,7 @@ export class FactFluency extends React.Component<IProps, IState> {
     const token = this.props.token || Caching.getCached('token')
 
     if (token === undefined || token === null) {
-      this.props.history.replace(URLS.home)
+      this.props.history.replace('/')
     }
 
     const requestParams: IRequest = {
@@ -183,7 +182,7 @@ export class FactFluency extends React.Component<IProps, IState> {
       testParameters,
     }, () => {
       Caching.removeCached('test')
-      this.props.history.push(URLS.startTest)
+      this.props.history.push(`${this.props.match.url}/start-test`)
     })
   }
 
@@ -210,7 +209,7 @@ export class FactFluency extends React.Component<IProps, IState> {
     const token = this.props.token || Caching.getCached('token')
 
     if (token === undefined || token === null) {
-      this.props.history.replace(URLS.home)
+      this.props.history.replace('/')
     }
 
     const testParameters = this.state.testParameters || Caching.getCached('testParameters')
@@ -244,12 +243,12 @@ export class FactFluency extends React.Component<IProps, IState> {
   private handleStartTestSubmit() {
     this.setState({testResults: undefined}, () => {
       Caching.removeCached('testResults')
-      this.props.history.push(URLS.takeTest)
+      this.props.history.push(`${this.props.match.url}/take-test`)
     })
   }
   
   private handleStartTestCancel() {
-    this.props.history.push(URLS.selectTest)
+    this.props.history.push(`${this.props.match.url}/select-test`)
   }
 
   /****** END Start Test ******/
@@ -260,13 +259,13 @@ export class FactFluency extends React.Component<IProps, IState> {
     const testResults = this.state.testResults || Caching.getCached('testResults')
 
     if (testResults !== undefined && testResults !== null) {
-      return <Redirect to={URLS.testResults} />
+      return <Redirect to={`${this.props.match.url}/test-results`} />
     }
 
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
-      return <Redirect to={URLS.startTest} />
+      return <Redirect to={`${this.props.match.url}/start-test`} />
     }
 
     return (
@@ -281,7 +280,7 @@ export class FactFluency extends React.Component<IProps, IState> {
     Caching.setCached('test', test)
 
     this.setState({test}, () => {
-      this.props.history.push(URLS.testResults)
+      this.props.history.push(`${this.props.match.url}/test-results`)
     })
   }
 
@@ -320,13 +319,13 @@ export class FactFluency extends React.Component<IProps, IState> {
     const token = this.props.token || Caching.getCached('token')
 
     if (token === undefined || token === null) {
-      this.props.history.replace(URLS.home)
+      this.props.history.replace('/')
     }
 
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
-      this.props.history.replace(URLS.selectTest)
+      this.props.history.replace(`${this.props.match.url}/select-test`)
     }
 
     const requestParams: IRequest = {
@@ -359,11 +358,11 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
 
   private handleTestResultsSubmit() {
-    this.props.history.push(URLS.selectTest)
+    this.props.history.push(`${this.props.match.url}`)
   }
 
   private handleTestResultsRetry() {
-    this.props.history.replace(URLS.startTest)
+    this.props.history.replace(`${this.props.match.url}/start-test`)
   }
 
   /****** END Test Results ******/

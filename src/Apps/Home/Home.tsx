@@ -1,20 +1,14 @@
 import * as React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { PageNotFound } from 'src/Components/PageNotFound/PageNotFound';
 import { Navbar, RequestComponent } from '../../Components/Components';
 import { IRequest, IUser } from '../../lib/Interfaces';
 import { Caching, Requests } from '../../lib/lib';
 import './Home.css';
+import { LoginModal } from './Routes/LoginModal/LoginModal';
 import { Base, Classes } from './Routes/Routes';
 
-const URLS = {
-  base: '/home/index',
-  classes: '/home/classes',
-  factFluency: '/fact-fluency',
-  home: '/home',
-}
-
-interface IProps {
-  history: any;
+interface IProps extends RouteComponentProps<{}> {
   user: IUser;
   token: string;
   onLogin: (user: IUser, token: string, userType: string) => void;
@@ -32,8 +26,8 @@ export class Home extends React.Component<IProps, IState> {
     this.state = {}
 
     this.renderBase = this.renderBase.bind(this)
+    this.renderLoginModal = this.renderLoginModal.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
-    this.renderRedirect = this.renderRedirect.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
     this.requestClasses = this.requestClasses.bind(this)
     this.handleClassesResolve = this.handleClassesResolve.bind(this)
@@ -42,36 +36,39 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   public render() {
+    console.log(this.props.match)
     return (
       <div>
         <Route
-          path={URLS.home}
+          path={`${this.props.match.path}`}
           render={this.renderNavbar}
-        /> 
-
-        <Route
-          exact={true}
-          path={URLS.home}
-          render={this.renderRedirect}
-        />
-
-        <div className="home">
-          <Route
-            path={URLS.base}
-            render={this.renderBase}
           />
 
-          <Route
-            path={URLS.classes}
-            render={this.renderClasses}
-          />
+          <div className="home">
+          <Switch>
+            <Route
+              exact={true}
+              path={'/'}
+              render={this.renderBase}
+            />
+
+            <Route
+              path='/login'
+              render={this.renderLoginModal}
+            />
+
+            <Route
+              path='/classes'
+              render={this.renderClasses}
+            />
+
+            <Route
+              component={PageNotFound}
+            />
+          </Switch>
         </div>
       </div>
     );
-  }
-
-  private renderRedirect() {
-    return <Redirect to={URLS.base} />
   }
 
   /****** Navbar ******/
@@ -102,6 +99,19 @@ export class Home extends React.Component<IProps, IState> {
 
   /****** END Base ******/
 
+  /****** Login ******/
+
+  private renderLoginModal(props:any) {
+    return (
+      <LoginModal
+        {...props}
+        onLogin={this.props.onLogin}
+      />
+    )
+  }
+
+  /****** END Login ******/
+
   /****** Classes ******/
 
   private renderClasses(props: any) {
@@ -131,7 +141,7 @@ export class Home extends React.Component<IProps, IState> {
     const token = this.props.token || Caching.getCached('token');
 
     if (token === undefined || token === null) {
-      this.props.history.replace(URLS.base);
+      this.props.history.replace('/');
     }
 
     const requestParams: IRequest = {
