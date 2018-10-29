@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 import { IUser } from '../../../../lib/Interfaces';
-import { LoginModal, TitleModal } from '../../Components/Components';
 import './Base.css';
+import { LoginModal, TitleModal } from './Components/Components';
 
 const URLS = {
   classes: 'home/classes',

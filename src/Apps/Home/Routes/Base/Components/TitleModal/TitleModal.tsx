@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components'
+import { Button, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components'
 
 import './TitleModal.css';
 

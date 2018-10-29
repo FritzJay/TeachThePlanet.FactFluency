@@ -1,5 +1,11 @@
-import { ClassCard as _ClassCard } from './ClassCard/ClassCard';
-import { CreateClassCard as _CreateClassCard } from './CreateClassCard/CreateClassCard';
+import { AddStudentModal as _AddStudentModal } from './AddStudentModal/AddStudentModal'
+import { ClassCard as _ClassCard } from './ClassCard/ClassCard'
+import { CreateClassCard as _CreateClassCard } from './CreateClassCard/CreateClassCard'
+import { EditClassModal as _EditClassModal } from './EditClassModal/EditClassModal'
+import { NewClassModal as _NewClassModal } from './NewClassModal/NewClassModal'
 
-export const ClassCard = _ClassCard;
-export const CreateClassCard = _CreateClassCard;
+export const AddStudentModal = _AddStudentModal
+export const ClassCard = _ClassCard
+export const CreateClassCard = _CreateClassCard
+export const EditClassModal = _EditClassModal
+export const NewClassModal = _NewClassModal
