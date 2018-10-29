@@ -8,6 +8,7 @@ import { Base, Classes } from './Routes/Routes';
 const URLS = {
   base: '/index',
   classes: '/classes',
+  navbar: '/',
 }
 
 interface IProps {
@@ -34,7 +35,7 @@ export class Home extends React.Component<IProps, IState> {
     return (
       <div>
         <Route
-          path={URLS.base}
+          path={URLS.navbar}
           render={this.renderNavbar}
         /> 
         <div className="home">
