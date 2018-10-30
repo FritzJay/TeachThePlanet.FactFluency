@@ -1,26 +1,27 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { Dropdown } from '../../Components/Components';
-import { IUser } from '../../lib/Interfaces';
-import './Navbar.css';
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+import { Dropdown } from '../../Components/Components'
+import { IUser } from '../../lib/Interfaces'
+import Logo from './logo.svg'
+import './Navbar.css'
 
 interface IProps {
-  logoLink: string;
-  user?: IUser;
-  onLogout: () => void;
+  logoLink: string
+  user?: IUser
+  onLogout: () => void
 }
 
 interface IState {
-  activeDropdown: boolean;
+  activeDropdown: boolean
 }
 
 export class Navbar extends React.Component<IProps, IState> {
   constructor(props: IProps) {
-    super(props);
+    super(props)
     this.state = {
       activeDropdown: false,
     }
-    this.handleToggleButtonClick = this.handleToggleButtonClick.bind(this);
+    this.handleToggleButtonClick = this.handleToggleButtonClick.bind(this)
   }
 
   public render() {
@@ -30,7 +31,7 @@ export class Navbar extends React.Component<IProps, IState> {
           {logoutButton(this.props.onLogout, this.props.user)}
 
           <Link className="logo" to={this.props.logoLink}>
-            <img src="https://vectr.com/thomasisaacpeterecclesgmailcom/fnVZV3K0a.svg?width=48&height=48&select=fnVZV3K0apage0" alt="logo" />
+            <img src={Logo} alt="logo" />
           </Link>
 
           {userInfo(this.props.user)}
@@ -43,13 +44,13 @@ export class Navbar extends React.Component<IProps, IState> {
           </Dropdown>
         </div>
       </div>
-    );
+    )
   }
 
   private handleToggleButtonClick() {
     this.setState((prevState: IState) => {
-      return {activeDropdown: !prevState.activeDropdown};
-    });
+      return {activeDropdown: !prevState.activeDropdown}
+    })
   }
 }
 
@@ -57,11 +58,11 @@ const userInfo = (user?: IUser) => {
   if (user) {
     return (
       <p className="username"><i className="user-icon material-icons">account_circle</i>{user.name}</p>
-    );
+    )
   } else {
     return (
       <p />
-    );
+    )
   }
 }
 
@@ -69,10 +70,10 @@ const logoutButton = (handleLogout: () => void, user?: IUser) => {
   if (user) {
     return (
       <a className="logout-link" onClick={handleLogout}>Logout</a>
-    );
+    )
   } else {
     return (
       <div className="logout-link" />
-    );
+    )
    }
 }
