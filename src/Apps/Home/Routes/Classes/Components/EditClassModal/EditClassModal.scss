@@ -1,41 +1,64 @@
 @import '../../../../../../Stylesheets/all';
 
 .edit-class-modal {
-    .modal-header {
-        background-color: $blue;
+    min-width: 300px;
+}
 
-        color: $white;
+.modal-header {
+    background-color: $blue;
 
-        font-weight: 700;
+    color: $white;
 
-        h2 {
-            margin: 0;
-        }
+    font-weight: 700;
+
+    h2 {
+        margin: 0;
     }
+}
 
+.input-fields {
+    padding: .5em 0;
+    
     .label {
         font-weight: 700;
+    
+        font-size: 18px;
     }
-
-    .border {
-        border-top: 3px solid rgba(0, 0, 0, 0.25);
-        margin: 1em;
+    
+    input {
+        margin: .5em 0 1em 0;
+        font-weight: 500;
     }
-
-    .delete-class {
-        border: none;
-        background-color: transparent;
-
-        font-weight: 700;
-
-        color: $red;
-
-        margin: 1em 0;
-
-        .material-icons {
-            margin: 0;
-            padding: 0;
-        }
+    
+    select {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+        
+        width: 100%;
+    
+        margin: .5em 0;
+    
+        font-weight: 500;
+        font-size: 1em;
+        color: rgb(80, 80, 80);
     }
+}
 
+.button-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.delete-class {
+    color: $red;
+}
+
+.save-changes {
+    color: $green;
+}
+
+.cancel {
+    color: rgba($color: #000000, $alpha: .75);
 }
