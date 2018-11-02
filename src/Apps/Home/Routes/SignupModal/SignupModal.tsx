@@ -1,22 +1,24 @@
 import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom'
 import { Button } from '../../../../Components/Button/Button'
 import { Modal, ModalContent, ModalHeader } from '../../../../Components/Modal/Modal'
+import { IRequest } from '../../../../lib/Interfaces';
+import { Requests } from '../../../../lib/lib';
 import './SignupModal.css'
 
 interface IProps extends RouteComponentProps<any> {
-  email: string;
-  password: string;
-  loginType: string;
-  onSignup: (email: string, password: string, userType: string) => void;
+  email: string
+  password: string
+  loginType: string
+  onSignup: (email: string, password: string, userType: string) => void
 }
 
 interface IState {
-  email: string;
-  loginType: string;
-  password: string;
-  secondPassword: string;
-  error: string;
+  email: string
+  loginType: string
+  password: string
+  secondPassword: string
+  error: string
 }
 
 export class SignupModal extends React.Component<IProps, IState> {
@@ -121,7 +123,7 @@ export class SignupModal extends React.Component<IProps, IState> {
   }
 
   private handleSignupTypeClick(e: any) {
-    const value = e.target.innerText;
+    const value = e.target.innerText
     
     if (value !== this.state.loginType) {
       this.setState({
@@ -149,7 +151,7 @@ export class SignupModal extends React.Component<IProps, IState> {
     })
   }
   
-  private handleSignupClick() {
+  private async handleSignupClick() {
     if (this.state.email === '' || this.state.password === '') {
       this.setState({ error: 'Please enter an email and password' })
       return
@@ -160,7 +162,37 @@ export class SignupModal extends React.Component<IProps, IState> {
       return
     }
 
-    
+    if (this.state.password !== this.state.secondPassword) {
+      this.setState({ error: 'Passwords do not match' })
+      return
+    }
+
+    const request: IRequest = {
+      body: {
+        email: this.state.email,
+        loginType: this.state.loginType,
+        password: this.state.password,
+      },
+      method: "POST",
+    }
+
+    let url
+    if (this.state.loginType === 'Student') {
+      url = `${process.env.REACT_APP_API_URL}/students/create`
+    } else if (this.state.loginType === 'Teacher') {
+      url = `${process.env.REACT_APP_API_URL}/teachers/create`
+    } else {
+      url = `${process.env.REACT_APP_API_URL}/parents/create`
+    }
+
+    Requests.jsonFetch(url, request)
+      .then((response) => {
+        console.log(response)
+        this.props.onSignup(response.user, response.token, this.state.loginType)
+      })
+      .catch(() => {
+        this.setState({error: 'Invalid email/username or password'});
+      });
   }
 
   private handleCancelClick() {

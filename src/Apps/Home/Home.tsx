@@ -42,7 +42,6 @@ export class Home extends React.Component<IProps, IState> {
     this.handleClassesResolve = this.handleClassesResolve.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
     this.handleSignupClick = this.handleSignupClick.bind(this)
-    this.handleSignup = this.handleSignup.bind(this)
   }
 
   public render() {
@@ -157,13 +156,9 @@ export class Home extends React.Component<IProps, IState> {
         email={this.state.email}
         password={this.state.password}
         loginType={this.state.userType}
-        onSignup={this.handleSignup}
+        onSignup={this.props.onLogin}
       />
     )
-  }
-
-  private handleSignup() {
-    return
   }
   
   /****** Signup ******/
