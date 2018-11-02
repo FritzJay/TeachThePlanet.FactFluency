@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components';
+import { Button, Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components';
 import './AddStudentModal.css';
 
 interface IProps {
@@ -13,7 +13,8 @@ interface IState {
 export class AddStudentModal extends React.Component<IProps, IState> {
   public render() {
     return (
-      <Modal className="add-student-modal">
+      <div>
+      <Modal className="add-student-modal-start">
         <ModalHeader className="add-students">
           <h1>Add Students</h1>
         </ModalHeader>
@@ -39,6 +40,72 @@ export class AddStudentModal extends React.Component<IProps, IState> {
           </div>
         </ModalContent>
       </Modal>
+      
+      <Modal className="class-code">
+        <ModalContent className="add-students">
+          <h1>Add Students</h1>
+        </ModalContent>
+        <ModalContent>
+          <div className="sub-header">
+            <h3>Your class code is: <span className="code">73605C</span></h3>
+          </div>
+          <div className="code-instructions">
+            <p>Have your students sign in to their Fact Fluency account, select the join class (+), and enter the class code.</p>
+          </div>
+          <div className="btn-row">
+            <Button className="back">Back</Button>
+            <Button className="cancel">Cancel</Button>
+            <Button className="continue">Continue</Button>
+          </div>
+        </ModalContent>
+      </Modal>
+      
+      <Modal className="student-creation-question">
+        <ModalHeader className="add-students">
+            <h1>Add Students</h1>
+          </ModalHeader>
+          <ModalContent>
+            <div className="sub-header">
+              <h3>Who will create the new account?</h3>
+            </div>
+            <div className="account-create-type">
+              <div className="student-created">
+                <h4>My students will create their own accounts.</h4>
+                <p>(Better suited for older students.)</p>
+              </div>
+              <div className="teacher-created">
+                <h4>I'll create accounts for my students.</h4>
+                <p>(Better suited for younger students.)</p>
+              </div>
+            </div>
+            <div className="btn-row">
+              <Button className="back">Back</Button>
+              <Button className="cancel">Cancel</Button>
+              <Button className="continue">Continue</Button>
+            </div>
+          </ModalContent>
+      </Modal>
+
+      <Modal className="add-student-modal">
+        <ModalHeader className="add-students">
+            <h1>Add Students</h1>
+          </ModalHeader>
+          <ModalContent>
+            <div className="sub-header">
+              <h3>Type in your students' names.</h3>
+            </div>
+            <div className="account-create-type">
+              <Input className="input-student" value="Fritz J" />
+              <button className="add-student-btn">Add</button>
+                <label>Enter a first name and last initial.</label>
+            </div>
+            <div className="btn-row">
+              <Button className="back">Back</Button>
+              <Button className="create-accounts">Create Accounts</Button>
+            </div>
+          </ModalContent>
+      </Modal>
+      </div>
     );
   }
 }
