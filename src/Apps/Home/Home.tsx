@@ -5,9 +5,7 @@ import { Navbar, RequestComponent } from '../../Components/Components';
 import { IRequest, IUser } from '../../lib/Interfaces';
 import { Caching, Requests } from '../../lib/lib';
 import './Home.css';
-import { LoginModal } from './Routes/LoginModal/LoginModal';
-import { Base, ClassDetail, Classes } from './Routes/Routes';
-import { SignupModal } from './Routes/SignupModal/SignupModal';
+import { Base, ClassDetail, Classes, Login } from './Routes/Routes';
 import { TestParameters } from './Routes/TestParameters/TestParameters';
 
 interface IProps extends RouteComponentProps<{}> {
@@ -18,9 +16,6 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
-  email?: string;
-  password?: string;
-  userType?: string;
   classes?: string;
 }
 
@@ -31,8 +26,7 @@ export class Home extends React.Component<IProps, IState> {
     this.state = {}
 
     this.renderBase = this.renderBase.bind(this)
-    this.renderLoginModal = this.renderLoginModal.bind(this)
-    this.renderSignupModal = this.renderSignupModal.bind(this)
+    this.renderLogin = this.renderLogin.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
     this.requestClasses = this.requestClasses.bind(this)
@@ -41,7 +35,6 @@ export class Home extends React.Component<IProps, IState> {
 
     this.handleClassesResolve = this.handleClassesResolve.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
-    this.handleSignupClick = this.handleSignupClick.bind(this)
   }
 
   public render() {
@@ -63,12 +56,7 @@ export class Home extends React.Component<IProps, IState> {
 
               <Route
                 path='/login'
-                render={this.renderLoginModal}
-              />
-
-              <Route
-                path='/signup'
-                render={this.renderSignupModal}
+                render={this.renderLogin}
               />
 
               <Route
@@ -127,41 +115,16 @@ export class Home extends React.Component<IProps, IState> {
 
   /****** Login ******/
 
-  private renderLoginModal(props:any) {
+  private renderLogin(props:any) {
     return (
-      <LoginModal
+      <Login
         {...props}
         onLogin={this.props.onLogin}
-        onSignup={this.handleSignupClick}
       />
     )
   }
 
   /****** END Login ******/
-
-  /****** Signup ******/
-
-  private handleSignupClick(email: string, password: string, loginType: string) {
-    this.setState({
-      email,
-      password,
-      userType: loginType,
-    }, () => this.props.history.push('/signup'))
-  }
-
-  private renderSignupModal(props: any) {
-    return (
-      <SignupModal
-        {...props}
-        email={this.state.email}
-        password={this.state.password}
-        loginType={this.state.userType}
-        onSignup={this.props.onLogin}
-      />
-    )
-  }
-  
-  /****** Signup ******/
 
   /****** Classes ******/
 

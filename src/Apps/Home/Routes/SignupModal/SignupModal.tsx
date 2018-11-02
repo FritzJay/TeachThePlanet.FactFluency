@@ -1,48 +1,43 @@
 import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { signup } from 'src/lib/Api'
+import { IUser } from 'src/lib/Interfaces'
 import { Button } from '../../../../Components/Button/Button'
 import { Modal, ModalContent, ModalHeader } from '../../../../Components/Modal/Modal'
-import { signup } from '../../../../lib/Api';
-import { IUser } from '../../../../lib/Interfaces';
 import './SignupModal.css'
 
 interface IProps extends RouteComponentProps<any> {
   email: string
   password: string
-  loginType: string
-  onSignup: (user: IUser, token: string, userType: string) => void;
+  secondPassword: string
+  userType: string
+  onSignup: (user: IUser, token: string, userType: string) => void
+  onUserTypeSelect: (e: any) => void
+  onEmailChange: (e: any) => void
+  onPasswordChange: (e: any) => void
+  onSecondPasswordChange: (e: any) => void
 }
 
 interface IState {
-  email: string
-  loginType: string
-  password: string
-  secondPassword: string
   error: string
 }
 
 export class SignupModal extends React.Component<IProps, IState> {
-  constructor(props: any) {
-    console.log(props)
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
-      email: this.props.email,
-      error: 'Please confirm your password',
-      loginType: this.props.loginType,
-      password: this.props.password,
-      secondPassword: '',
+      error: ''
     }
 
-    this.handleCancelClick = this.handleCancelClick.bind(this)
-    this.handleEmailChange = this.handleEmailChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.handleSecondPasswordChange = this.handleSecondPasswordChange.bind(this)
     this.handleSignupClick = this.handleSignupClick.bind(this)
-    this.handleSignupTypeClick = this.handleSignupTypeClick.bind(this)
+    this.getClassName = this.getClassName.bind(this)
   }
 
   public render() {
+    const { email, password, secondPassword, onUserTypeSelect, onEmailChange, onPasswordChange, onSecondPasswordChange } = this.props
+    const { error } = this.state
+
     return (
       <Modal className="signup-modal">
         <ModalHeader className="signup-modal-header">
@@ -55,21 +50,21 @@ export class SignupModal extends React.Component<IProps, IState> {
           <div className="button-row">
             <Button
               className={this.getClassName('Teacher')}
-              onClick={this.handleSignupTypeClick}
+              onClick={onUserTypeSelect}
             >
               Teacher
             </Button>
 
             <Button
               className={this.getClassName('Student')}
-              onClick={this.handleSignupTypeClick}
+              onClick={onUserTypeSelect}
             >
               Student
             </Button>
 
             <Button
               className={this.getClassName('Parent')}
-              onClick={this.handleSignupTypeClick}
+              onClick={onUserTypeSelect}
             >
               Parent
             </Button>
@@ -77,27 +72,27 @@ export class SignupModal extends React.Component<IProps, IState> {
         </ModalContent>
 
         <ModalContent className="inputs">
-          {this.state.error !== '' && <p className="error">{this.state.error}</p>}
+          {error !== '' && <p className="error active">{error}</p>}
           
           <input
             className="input"
-            onChange={this.handleEmailChange}
-            value={this.state.email}
+            onChange={onEmailChange}
+            value={email}
             placeholder="Email"
           />
 
           <input
             className="input"
-            onChange={this.handlePasswordChange}
-            value={this.state.password}
+            onChange={onPasswordChange}
+            value={password}
             placeholder="Password"
             type="password"
           />
 
           <input
             className="input"
-            onChange={this.handleSecondPasswordChange}
-            value={this.state.secondPassword}
+            onChange={onSecondPasswordChange}
+            value={secondPassword}
             placeholder="Verify password"
             type="password"
           />
@@ -111,48 +106,18 @@ export class SignupModal extends React.Component<IProps, IState> {
             Sign up
           </Button>
 
-          <Button
-            className="red cancel-button"
-            onClick={this.handleCancelClick}
-          >
-            Cancel
-          </Button>
+          <Link to='/login'>
+            <Button className="red cancel-button">
+              Cancel
+            </Button>
+          </Link>
         </ModalContent>
       </Modal>
     )
   }
 
-  private handleSignupTypeClick(e: any) {
-    const value = e.target.innerText
-    
-    if (value !== this.state.loginType) {
-      this.setState({
-        error: '',
-        loginType: value,
-      })
-    }
-  }
-
-  private handleEmailChange(e: any) {
-    this.setState({
-      email: e.target.value
-    })
-  }
-  
-  private handlePasswordChange(e: any) {
-    this.setState({
-      password: e.target.value
-    })
-  }
-  
-  private handleSecondPasswordChange(e: any) {
-    this.setState({
-      secondPassword: e.target.value
-    })
-  }
-  
   private async handleSignupClick() {
-    const { email, password, secondPassword, loginType } = this.state
+    const { email, password, secondPassword, userType } = this.props
 
     if (email === '' || password === '') {
       this.setState({ error: 'Please enter an email and password' })
@@ -170,25 +135,21 @@ export class SignupModal extends React.Component<IProps, IState> {
     }
 
     try {
-      const { user, token } = await signup(email, password, loginType)
+      const { user, token } = await signup(email, password, userType)
   
-      this.props.onSignup(user, token, loginType)
+      this.props.onSignup(user, token, userType)
 
     } catch(error) {
       console.warn(error)
       this.setState({ error: 'An unexpected error ocurred. Please try again later. '})
     }
   }
-
-  private handleCancelClick() {
-    this.props.history.goBack()
-  }
   
   private getClassName(buttonType: string) {
     return (
-      buttonType === this.state.loginType
+      buttonType === this.props.userType
       ? 'gray signup-modal-button active'
       : 'gray signup-modal-button'
       )
-    }
+  }
 }

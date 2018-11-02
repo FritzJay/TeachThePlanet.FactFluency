@@ -1,43 +1,42 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
 import { login } from '../../../../lib/Api';
 import { IUser } from '../../../../lib/Interfaces';
 import './LoginModal.css';
 
 interface IProps extends RouteComponentProps<any> {
+  email: string
+  password: string
+  userType: string
   onLogin: (user: IUser, token: string, userType: string) => void;
-  onSignup: (email: string, password: string, userType: string) => void;
+  onUserTypeSelect: (e: any) => void;
+  onEmailChange: (e: any) => void;
+  onPasswordChange: (e: any) => void;
 }
 
 interface IState {
-  email: string;
-  loginType: string;
-  password: string;
-  error: string;
+  error: string
 }
 
 export class LoginModal extends React.Component<IProps, IState> {
-  public constructor(props: any) {
-    super(props);
-    
+  constructor(props: IProps) {
+    super(props)
+
     this.state = {
-      email: '',
-      error: '',
-      loginType: 'Student',
-      password: '',
+      error: ''
     }
 
-    this.handleLoginTypeClick = this.handleLoginTypeClick.bind(this)
     this.handleLoginClick = this.handleLoginClick.bind(this)
-    this.handleSignupClick = this.handleSignupClick.bind(this)
-    this.handleEmailChange = this.handleEmailChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
   }
 
   public render() {
+    const { email, password, onUserTypeSelect, onEmailChange, onPasswordChange } = this.props
+    const { error } = this.state
+
     return (
       <Modal className="login-modal">
+
         <ModalHeader className="login-modal-header">
           <h1>Sign Up or Login</h1>
         </ModalHeader>
@@ -48,21 +47,21 @@ export class LoginModal extends React.Component<IProps, IState> {
           <div className="button-row">
             <Button
               className={this.getClassName('Teacher')}
-              onClick={this.handleLoginTypeClick}
+              onClick={onUserTypeSelect}
             >
               Teacher
             </Button>
 
             <Button
               className={this.getClassName('Student')}
-              onClick={this.handleLoginTypeClick}
+              onClick={onUserTypeSelect}
             >
               Student
             </Button>
 
             <Button
               className={this.getClassName('Parent')}
-              onClick={this.handleLoginTypeClick}
+              onClick={onUserTypeSelect}
             >
               Parent
             </Button>
@@ -70,19 +69,19 @@ export class LoginModal extends React.Component<IProps, IState> {
         </ModalContent>
 
         <ModalContent className="inputs">
-          {this.state.error !== '' && <p className="error">{this.state.error}</p>}
+          {error !== '' && <p className="error active">{error}</p>}
 
           <input
             className="input"
-            onChange={this.handleEmailChange}
-            value={this.state.email}
+            onChange={onEmailChange}
+            value={email}
             placeholder="Email or Username"
           />
 
           <input
             className="input"
-            onChange={this.handlePasswordChange}
-            value={this.state.password}
+            onChange={onPasswordChange}
+            value={password}
             placeholder="Password"
             type="password"
           />
@@ -90,12 +89,14 @@ export class LoginModal extends React.Component<IProps, IState> {
 
         <ModalContent>
           <div className="button-row">
-            <Button
-              className="login-modal-button gray"
-              onClick={this.handleSignupClick}
-            >
-              Sign up
-            </Button>
+
+            <Link to={`${this.props.match.url}/signup`}>
+              <Button
+                className="login-modal-button gray"
+              >
+                Sign up
+              </Button>
+            </Link>
 
             <Button
               className="login-modal-button gray"
@@ -114,43 +115,13 @@ export class LoginModal extends React.Component<IProps, IState> {
             Practice Without an Account
           </Button>
         </ModalContent>
+
       </Modal>
     );
   }
-  
-  private handleLoginTypeClick(e: any) {
-    const value = e.target.innerText;
-    
-    if (value !== this.state.loginType) {
-      this.setState({
-        error: '',
-        loginType: value,
-      })
-    }
-  }
 
-  private handleEmailChange(e: any) {
-    this.setState({
-      email: e.target.value
-    })
-  }
-  
-  private handlePasswordChange(e: any) {
-    this.setState({
-      password: e.target.value
-    })
-  }
-  
-  private handleSignupClick() {
-    if (this.state.email === '' || this.state.password === '') {
-      return
-    }
-
-    this.props.onSignup(this.state.email, this.state.password, this.state.loginType)
-  }
-  
   private async handleLoginClick() {
-    const { email, password, loginType } = this.state
+    const { email, password, userType } = this.props
 
     if (email === '' || password === '') {
       this.setState({ error: 'Please enter an email and password' })
@@ -158,9 +129,9 @@ export class LoginModal extends React.Component<IProps, IState> {
     }
 
     try {
-      const { user, token } = await login(email, password, loginType)
+      const { user, token } = await login(email, password, userType)
   
-      this.props.onLogin(user, token, loginType)
+      this.props.onLogin(user, token, userType)
 
     } catch(error) {
       console.warn(error)
@@ -170,7 +141,7 @@ export class LoginModal extends React.Component<IProps, IState> {
   
   private getClassName(buttonType: string) {
     return (
-      buttonType === this.state.loginType
+      buttonType === this.props.userType
       ? 'gray login-modal-button active'
       : 'gray login-modal-button'
       )
