@@ -6,7 +6,7 @@ import { IRequest, IUser } from '../../lib/Interfaces';
 import { Caching, Requests } from '../../lib/lib';
 import './Home.css';
 import { LoginModal } from './Routes/LoginModal/LoginModal';
-import { Base, Classes } from './Routes/Routes';
+import { Base, ClassDetail, Classes } from './Routes/Routes';
 import { SignupModal } from './Routes/SignupModal/SignupModal';
 
 interface IProps extends RouteComponentProps<{}> {
@@ -70,8 +70,14 @@ export class Home extends React.Component<IProps, IState> {
               />
 
               <Route
+                exact={true}
                 path='/classes'
                 render={this.renderClasses}
+              />
+
+              <Route
+                path='/classes/detail'
+                render={this.renderClassDetail}
               />
 
               <Route
@@ -211,6 +217,18 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Classes ******/
+
+  /****** Class Detail ******/
+
+  private renderClassDetail(props: any) {
+    return (
+      <ClassDetail
+        {...props}
+      />
+    )
+  }
+
+  /****** END Class Detail ******/
 
   private handleLogout() {
     this.setState({
