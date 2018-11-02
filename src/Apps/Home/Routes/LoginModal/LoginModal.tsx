@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
+import { login } from '../../../../lib/Api';
 import { IUser } from '../../../../lib/Interfaces';
-import { IRequest } from '../../../../lib/Interfaces';
-import { Requests } from '../../../../lib/lib';
 import './LoginModal.css';
 
 interface IProps extends RouteComponentProps<any> {
@@ -150,37 +149,23 @@ export class LoginModal extends React.Component<IProps, IState> {
     this.props.onSignup(this.state.email, this.state.password, this.state.loginType)
   }
   
-  private handleLoginClick() {
-    if (this.state.email === '' || this.state.password === '') {
+  private async handleLoginClick() {
+    const { email, password, loginType } = this.state
+
+    if (email === '' || password === '') {
       this.setState({ error: 'Please enter an email and password' })
       return
     }
 
-    const request: IRequest = {
-      body: {
-        email: this.state.email,
-        loginType: this.state.loginType,
-        password: this.state.password,
-      },
-      method: "POST",
-    };
+    try {
+      const { user, token } = await login(email, password, loginType)
+  
+      this.props.onLogin(user, token, loginType)
 
-    let url;
-    if (this.state.loginType === 'Student') {
-      url = `${process.env.REACT_APP_API_URL}/students/signin`
-    } else if (this.state.loginType === 'Teacher') {
-      url = `${process.env.REACT_APP_API_URL}/teachers/signin`
-    } else {
-      url = `${process.env.REACT_APP_API_URL}/parents/signin`
+    } catch(error) {
+      console.warn(error)
+      this.setState({ error: 'Invalid email/username or password'})
     }
-
-    Requests.jsonFetch(url, request)
-      .then((response) => {
-        this.props.onLogin(response.user, response.token, this.state.loginType)
-      })
-      .catch(() => {
-        this.setState({error: 'Invalid email/username or password'});
-      });
   }
   
   private getClassName(buttonType: string) {
