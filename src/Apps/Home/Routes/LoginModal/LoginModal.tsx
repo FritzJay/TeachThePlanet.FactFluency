@@ -1,19 +1,21 @@
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
 import { IUser } from '../../../../lib/Interfaces';
 import { IRequest } from '../../../../lib/Interfaces';
 import { Requests } from '../../../../lib/lib';
 import './LoginModal.css';
 
-interface IProps {
+interface IProps extends RouteComponentProps<any> {
   onLogin: (user: IUser, token: string, userType: string) => void;
+  onSignup: (email: string, password: string, userType: string) => void;
 }
 
 interface IState {
   email: string;
   loginType: string;
   password: string;
-  error?: string;
+  error: string;
 }
 
 export class LoginModal extends React.Component<IProps, IState> {
@@ -22,6 +24,7 @@ export class LoginModal extends React.Component<IProps, IState> {
     
     this.state = {
       email: '',
+      error: '',
       loginType: 'Student',
       password: '',
     }
@@ -68,6 +71,8 @@ export class LoginModal extends React.Component<IProps, IState> {
         </ModalContent>
 
         <ModalContent className="inputs">
+          {this.state.error !== '' && <p className="error">{this.state.error}</p>}
+
           <input
             className="input"
             onChange={this.handleEmailChange}
@@ -100,8 +105,6 @@ export class LoginModal extends React.Component<IProps, IState> {
               Login
             </Button>
           </div>
-
-          <p className="error">{this.state.error}</p>
         </ModalContent>
 
         <ModalContent className="bottom-content">
@@ -121,7 +124,7 @@ export class LoginModal extends React.Component<IProps, IState> {
     
     if (value !== this.state.loginType) {
       this.setState({
-        error: undefined,
+        error: '',
         loginType: value,
       })
     }
@@ -140,11 +143,16 @@ export class LoginModal extends React.Component<IProps, IState> {
   }
   
   private handleSignupClick() {
-    return;
+    if (this.state.email === '' || this.state.password === '') {
+      return
+    }
+
+    this.props.onSignup(this.state.email, this.state.password, this.state.loginType)
   }
   
   private handleLoginClick() {
     if (this.state.email === '' || this.state.password === '') {
+      this.setState({ error: 'Please enter an email and password' })
       return
     }
 

@@ -7,6 +7,7 @@ import { Caching, Requests } from '../../lib/lib';
 import './Home.css';
 import { LoginModal } from './Routes/LoginModal/LoginModal';
 import { Base, Classes } from './Routes/Routes';
+import { SignupModal } from './Routes/SignupModal/SignupModal';
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser;
@@ -16,6 +17,9 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
+  email?: string;
+  password?: string;
+  userType?: string;
   classes?: string;
 }
 
@@ -27,12 +31,15 @@ export class Home extends React.Component<IProps, IState> {
 
     this.renderBase = this.renderBase.bind(this)
     this.renderLoginModal = this.renderLoginModal.bind(this)
+    this.renderSignupModal = this.renderSignupModal.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
     this.requestClasses = this.requestClasses.bind(this)
-    this.handleClassesResolve = this.handleClassesResolve.bind(this)
 
+    this.handleClassesResolve = this.handleClassesResolve.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
+    this.handleSignupClick = this.handleSignupClick.bind(this)
+    this.handleSignup = this.handleSignup.bind(this)
   }
 
   public render() {
@@ -45,27 +52,32 @@ export class Home extends React.Component<IProps, IState> {
           />
 
           <div className="home">
-          <Switch>
-            <Route
-              exact={true}
-              path={'/'}
-              render={this.renderBase}
-            />
+            <Switch>
+              <Route
+                exact={true}
+                path={'/'}
+                render={this.renderBase}
+              />
 
-            <Route
-              path='/login'
-              render={this.renderLoginModal}
-            />
+              <Route
+                path='/login'
+                render={this.renderLoginModal}
+              />
 
-            <Route
-              path='/classes'
-              render={this.renderClasses}
-            />
+              <Route
+                path='/signup'
+                render={this.renderSignupModal}
+              />
 
-            <Route
-              component={PageNotFound}
-            />
-          </Switch>
+              <Route
+                path='/classes'
+                render={this.renderClasses}
+              />
+
+              <Route
+                component={PageNotFound}
+              />
+            </Switch>
         </div>
       </div>
     );
@@ -107,11 +119,40 @@ export class Home extends React.Component<IProps, IState> {
       <LoginModal
         {...props}
         onLogin={this.props.onLogin}
+        onSignup={this.handleSignupClick}
       />
     )
   }
 
   /****** END Login ******/
+
+  /****** Signup ******/
+
+  private handleSignupClick(email: string, password: string, loginType: string) {
+    this.setState({
+      email,
+      password,
+      userType: loginType,
+    }, () => this.props.history.push('/signup'))
+  }
+
+  private renderSignupModal(props: any) {
+    return (
+      <SignupModal
+        {...props}
+        email={this.state.email}
+        password={this.state.password}
+        loginType={this.state.userType}
+        onSignup={this.handleSignup}
+      />
+    )
+  }
+
+  private handleSignup() {
+    return
+  }
+  
+  /****** Signup ******/
 
   /****** Classes ******/
 

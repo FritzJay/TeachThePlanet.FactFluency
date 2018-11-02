@@ -1,0 +1,67 @@
+@import '../../../../Stylesheets/all';
+
+.signup-modal {
+  grid-column: 1 / -1;
+
+  .signup-modal-header {
+    background-color: $blue;
+    color: $white;
+  }
+
+  .user-types {
+    padding-top: 0;
+  }
+
+  .button-row .signup-modal-button {
+    margin: 0 .5em;
+    min-width: 96px;
+
+    &.active {
+      background-color: $blue;
+      border: solid 3px $light-blue;
+      background-size: 100%;
+      color: $white;
+
+      &:hover {
+        background: none;
+        background-color: $light-blue;
+        border: solid 3px $very-light-blue;
+      }
+    }
+  }
+
+  .inputs {
+    display: grid;
+    grid-gap: 1em;
+
+    .input {
+      font-family: 'Roboto', sans-serif;
+        font-size: 1em;
+        font-weight: 900;
+  
+        background-color: #FFFFFF;
+        
+        border: none;
+        border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+        
+        color: rgb(80, 80, 80);
+  
+        width: 90%;
+    }
+  }
+
+  .error {
+    color: $red;
+    font-weight: 600;
+  }
+
+  .bottom-content {
+    width: 90%;
+    margin: auto auto;
+    border-top: solid 2px $light-gray;
+  }
+
+  .bottom-buttons {
+    grid-gap: 1em;
+  }
+}
