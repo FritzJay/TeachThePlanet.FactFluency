@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { signup } from 'src/lib/Api'
-import { IUser } from 'src/lib/Interfaces'
-import { Button } from '../../../../Components/Button/Button'
-import { Modal, ModalContent, ModalHeader } from '../../../../Components/Modal/Modal'
+import { Button } from '../../../../../../Components/Button/Button'
+import { Modal, ModalContent, ModalHeader } from '../../../../../../Components/Modal/Modal'
+import { signup } from '../../../../../../lib/Api'
+import { IUser } from '../../../../../../lib/Interfaces'
 import './SignupModal.css'
 
 interface IProps extends RouteComponentProps<any> {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
-import { login } from '../../../../lib/Api';
-import { IUser } from '../../../../lib/Interfaces';
+import { Button, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components';
+import { login } from '../../../../../../lib/Api';
+import { IUser } from '../../../../../../lib/Interfaces';
 import './LoginModal.css';
 
 interface IProps extends RouteComponentProps<any> {

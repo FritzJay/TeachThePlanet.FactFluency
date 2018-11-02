@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { IUser } from '../../../../lib/Interfaces';
-import { LoginModal } from '../LoginModal/LoginModal';
-import { SignupModal } from '../SignupModal/SignupModal';
+import { LoginModal, SignupModal } from './Components/Components';
 import './Login.css';
 
 interface IProps extends RouteComponentProps<any> {
