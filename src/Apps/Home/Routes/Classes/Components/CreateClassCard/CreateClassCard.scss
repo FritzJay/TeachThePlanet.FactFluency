@@ -11,6 +11,10 @@
 
   border-radius: 12px;
 
+  // Match the size of ClassCard
+  max-height: 149px;
+  margin-top: 1px;
+
   &:hover {
       background: rgba(0, 0, 0, 0.05);
       transition-timing-function: ease-in;
