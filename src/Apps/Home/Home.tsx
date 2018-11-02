@@ -8,6 +8,7 @@ import './Home.css';
 import { LoginModal } from './Routes/LoginModal/LoginModal';
 import { Base, ClassDetail, Classes } from './Routes/Routes';
 import { SignupModal } from './Routes/SignupModal/SignupModal';
+import { TestParameters } from './Routes/TestParameters/TestParameters';
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser;
@@ -35,6 +36,8 @@ export class Home extends React.Component<IProps, IState> {
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
     this.requestClasses = this.requestClasses.bind(this)
+    this.renderClassDetail = this.renderClassDetail.bind(this)
+    this.renderTestParameters = this.renderTestParameters.bind(this)
 
     this.handleClassesResolve = this.handleClassesResolve.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
@@ -78,6 +81,11 @@ export class Home extends React.Component<IProps, IState> {
               <Route
                 path='/classes/detail'
                 render={this.renderClassDetail}
+              />
+
+              <Route
+                path='/test-parameters'
+                render={this.renderTestParameters}
               />
 
               <Route
@@ -229,6 +237,18 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Class Detail ******/
+
+  /****** Test Parameters ******/
+
+  private renderTestParameters(props: any) {
+    return (
+      <TestParameters
+        {...props}
+      />
+    )
+  }
+
+  /****** END Test Parameters ******/
 
   private handleLogout() {
     this.setState({
