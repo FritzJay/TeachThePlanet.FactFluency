@@ -122,6 +122,13 @@ export class Home extends React.Component<IProps, IState> {
   /****** Classes ******/
 
   private renderClasses(props: any) {
+    const token = this.props.token || Caching.getCached('token')
+
+    if (token === undefined || token === null) {
+      this.handleLogout()
+      return
+    }
+
     const classes = this.state.classes || Caching.getCached('classes')
 
     if (classes === undefined || classes === null) {
@@ -140,6 +147,7 @@ export class Home extends React.Component<IProps, IState> {
       <Classes
         {...props}
         classes={classes}
+        token={token}
       />
     )
   }
@@ -148,7 +156,8 @@ export class Home extends React.Component<IProps, IState> {
     const token = this.props.token || Caching.getCached('token');
 
     if (token === undefined || token === null) {
-      this.props.history.replace('/');
+      this.handleLogout()
+      return
     }
 
     try {

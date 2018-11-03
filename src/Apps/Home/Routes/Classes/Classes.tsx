@@ -11,6 +11,7 @@ import {
 
 interface IProps extends RouteComponentProps<{}> {
   classes: IClass[]
+  token: string
 }
 
 interface IState {
@@ -107,6 +108,7 @@ export class Classes extends React.Component<IProps, IState> {
       <EditClassModal
         {...props}
         cls={selectedTask}
+        token={this.props.token}
       />
     )
   }
@@ -115,6 +117,7 @@ export class Classes extends React.Component<IProps, IState> {
     return (
       <NewClassModal
         {...props}
+        token={this.props.token}
       />
     )
   }

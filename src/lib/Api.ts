@@ -50,3 +50,17 @@ export const getClasses = async (token: string): Promise<IClass[]> => {
 
   return classes
 }
+
+export const createClass = async (token: string, grade: string, name: string) => {
+  const request: IRequest = {
+    body: { grade, name },
+    method: "PUT",
+    token,
+  }
+
+  const url = `${process.env.REACT_APP_API_URL}/classes/`
+
+  const cls = await Requests.jsonFetch(url, request)
+
+  return cls
+}
