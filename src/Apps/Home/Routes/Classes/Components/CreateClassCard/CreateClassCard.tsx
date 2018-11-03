@@ -1,8 +1,9 @@
 import * as React from 'react'
+import { Card } from '../../../../../../Components/Components'
 import './CreateClassCard.css'
 
 interface IProps {
-  temp?: any
+  onClick: () => void
 }
 
 interface IState {
@@ -12,9 +13,12 @@ interface IState {
 export class CreateClassCard extends React.Component<IProps, IState> {
   public render() {
     return (
-      <div className="create-class-card">
+      <Card
+        className="create-class-card"
+        onClick={this.props.onClick}
+      >
         <p className="plus">+</p>
-      </div>
+      </Card>
     );
   }
 }

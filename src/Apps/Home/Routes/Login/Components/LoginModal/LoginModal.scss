@@ -1,9 +1,9 @@
-@import '../../../../Stylesheets/all';
+@import '../../../../../../Stylesheets/all';
 
-.signup-modal {
+.login-modal {
   grid-column: 1 / -1;
 
-  .signup-modal-header {
+  .login-modal-header {
     background-color: $blue;
     color: $white;
   }
@@ -12,7 +12,7 @@
     padding-top: 0;
   }
 
-  .button-row .signup-modal-button {
+  .button-row .login-modal-button {
     margin: 0 .5em;
     min-width: 96px;
 
@@ -36,32 +36,34 @@
 
     .input {
       font-family: 'Roboto', sans-serif;
-        font-size: 1em;
-        font-weight: 900;
-  
-        background-color: #FFFFFF;
-        
-        border: none;
-        border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-        
-        color: rgb(80, 80, 80);
-  
-        width: 90%;
+      font-size: 1em;
+      font-weight: 900;
+
+      background-color: #FFFFFF;
+      
+      border: none;
+      border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+      
+      color: rgb(80, 80, 80);
+
+      width: 90%;
+    }
+
+    .error {
+      color: $red;
+      font-weight: 600;
     }
   }
 
-  .error {
-    color: $red;
-    font-weight: 600;
-  }
 
   .bottom-content {
     width: 90%;
     margin: auto auto;
     border-top: solid 2px $light-gray;
-  }
 
-  .bottom-buttons {
-    grid-gap: 1em;
+    .practice-button {
+      background-color: $green;
+      color: $white;
+    }
   }
 }

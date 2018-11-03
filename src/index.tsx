@@ -80,6 +80,8 @@ class Index extends React.Component<IProps, IState> {
   }
 
   private handleLogin(user: IUser, token: string, userType: string) {
+    console.log('Logging in user', user, token, userType)
+
     Caching.setCached('token', token)
     Caching.setCached('user', user)
 

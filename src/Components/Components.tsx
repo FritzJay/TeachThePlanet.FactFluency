@@ -4,6 +4,7 @@ import { Dropdown as _Dropdown } from './Dropdown/Dropdown'
 import { Input as _Input } from './Input/Input'
 import { Modal as _Modal, ModalContent as _ModalContent, ModalHeader as _ModalHeader } from './Modal/Modal'
 import { Navbar as _Navbar } from './Navbar/Navbar'
+import { PageNotFound as _PageNotFound } from './PageNotFound/PageNotFound'
 import { RequestComponent as _RequestComponent } from './RequestComponent/RequestComponent'
 
 export const Button = _Button
@@ -14,4 +15,5 @@ export const Modal = _Modal
 export const ModalContent = _ModalContent
 export const ModalHeader = _ModalHeader
 export const Navbar = _Navbar
+export const PageNotFound = _PageNotFound
 export const RequestComponent = _RequestComponent

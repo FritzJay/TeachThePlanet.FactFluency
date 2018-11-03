@@ -52,3 +52,9 @@ export interface ITestNumber {
 export interface IAvailableTests {
   numbers: ITestNumber[];
 }
+
+export interface IClass {
+  _id: string;
+  name: string;
+  classCode: string;
+}

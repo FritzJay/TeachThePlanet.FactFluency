@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { PageNotFound } from 'src/Components/PageNotFound/PageNotFound';
-import { Navbar, RequestComponent } from '../../Components/Components';
-import { IRequest, IUser } from '../../lib/Interfaces';
-import { Caching, Requests } from '../../lib/lib';
+import { Navbar, PageNotFound, RequestComponent } from '../../Components/Components';
+import { getClasses } from '../../lib/Api';
+import { IUser } from '../../lib/Interfaces';
+import { Caching } from '../../lib/lib';
 import './Home.css';
-import { LoginModal } from './Routes/LoginModal/LoginModal';
-import { Base, ClassDetail, Classes } from './Routes/Routes';
-import { SignupModal } from './Routes/SignupModal/SignupModal';
+import { Base, ClassDetail, Classes, Login, TestParameters } from './Routes/Routes';
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser;
@@ -17,9 +15,6 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
-  email?: string;
-  password?: string;
-  userType?: string;
   classes?: string;
 }
 
@@ -30,16 +25,15 @@ export class Home extends React.Component<IProps, IState> {
     this.state = {}
 
     this.renderBase = this.renderBase.bind(this)
-    this.renderLoginModal = this.renderLoginModal.bind(this)
-    this.renderSignupModal = this.renderSignupModal.bind(this)
+    this.renderLogin = this.renderLogin.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
     this.requestClasses = this.requestClasses.bind(this)
+    this.renderClassDetail = this.renderClassDetail.bind(this)
+    this.renderTestParameters = this.renderTestParameters.bind(this)
 
     this.handleClassesResolve = this.handleClassesResolve.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
-    this.handleSignupClick = this.handleSignupClick.bind(this)
-    this.handleSignup = this.handleSignup.bind(this)
   }
 
   public render() {
@@ -61,23 +55,17 @@ export class Home extends React.Component<IProps, IState> {
 
               <Route
                 path='/login'
-                render={this.renderLoginModal}
+                render={this.renderLogin}
               />
 
               <Route
-                path='/signup'
-                render={this.renderSignupModal}
-              />
-
-              <Route
-                exact={true}
                 path='/classes'
                 render={this.renderClasses}
               />
 
               <Route
-                path='/classes/detail'
-                render={this.renderClassDetail}
+                path='/test-parameters'
+                render={this.renderTestParameters}
               />
 
               <Route
@@ -120,50 +108,21 @@ export class Home extends React.Component<IProps, IState> {
 
   /****** Login ******/
 
-  private renderLoginModal(props:any) {
+  private renderLogin(props:any) {
     return (
-      <LoginModal
+      <Login
         {...props}
         onLogin={this.props.onLogin}
-        onSignup={this.handleSignupClick}
       />
     )
   }
 
   /****** END Login ******/
 
-  /****** Signup ******/
-
-  private handleSignupClick(email: string, password: string, loginType: string) {
-    this.setState({
-      email,
-      password,
-      userType: loginType,
-    }, () => this.props.history.push('/signup'))
-  }
-
-  private renderSignupModal(props: any) {
-    return (
-      <SignupModal
-        {...props}
-        email={this.state.email}
-        password={this.state.password}
-        loginType={this.state.userType}
-        onSignup={this.handleSignup}
-      />
-    )
-  }
-
-  private handleSignup() {
-    return
-  }
-  
-  /****** Signup ******/
-
   /****** Classes ******/
 
   private renderClasses(props: any) {
-    const classes = this.state.classes || localStorage.getItem('classes')
+    const classes = this.state.classes || Caching.getCached('classes')
 
     if (classes === undefined || classes === null) {
       return <RequestComponent
@@ -185,32 +144,26 @@ export class Home extends React.Component<IProps, IState> {
     )
   }
 
-  private requestClasses() {
+  private async requestClasses() {
     const token = this.props.token || Caching.getCached('token');
 
     if (token === undefined || token === null) {
       this.props.history.replace('/');
     }
 
-    const requestParams: IRequest = {
-      method: 'GET',
-      token,
-    }
+    try {
+      return getClasses(token)
 
-    return new Promise<[string]>((resolve) => {
-      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/teachers/classes`, requestParams)
-        .then((classes: [string]) => {
-          resolve(classes);
-        })
-        .catch((error: Error) => {
-          console.log('Request failed with error: ', error)
-          this.handleLogout()
-        })
-    })
+    } catch(error) {
+      console.log('requestClasses failed', error)
+      this.handleLogout()
+      return []
+    }
   }
 
   private handleClassesResolve(results: { classes: string }) {
     Caching.setCached('classes', results.classes)
+
     this.setState({
       classes: results.classes,
     })
@@ -229,6 +182,18 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Class Detail ******/
+
+  /****** Test Parameters ******/
+
+  private renderTestParameters(props: any) {
+    return (
+      <TestParameters
+        {...props}
+      />
+    )
+  }
+
+  /****** END Test Parameters ******/
 
   private handleLogout() {
     this.setState({

@@ -1,9 +1,9 @@
-@import '../../../../Stylesheets/all';
+@import '../../../../../../Stylesheets/all';
 
-.login-modal {
+.signup-modal {
   grid-column: 1 / -1;
 
-  .login-modal-header {
+  .signup-modal-header {
     background-color: $blue;
     color: $white;
   }
@@ -12,7 +12,7 @@
     padding-top: 0;
   }
 
-  .button-row .login-modal-button {
+  .button-row .signup-modal-button {
     margin: 0 .5em;
     min-width: 96px;
 
@@ -59,10 +59,9 @@
     width: 90%;
     margin: auto auto;
     border-top: solid 2px $light-gray;
+  }
 
-    .practice-button {
-      background-color: $green;
-      color: $white;
-    }
+  .bottom-buttons {
+    grid-gap: 1em;
   }
 }

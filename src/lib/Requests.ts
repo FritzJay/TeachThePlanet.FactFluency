@@ -1,4 +1,4 @@
-import { IRequest } from '../lib/Interfaces';
+import { IRequest } from './Interfaces';
 
 export interface IRequestComponentProps {
   history: any;

@@ -1,27 +1,43 @@
 import * as React from 'react'
+import { IClass } from '../../../../../..//lib/Interfaces';
+import { Card } from '../../../../../../Components/Card/Card'
 import './ClassCard.css'
 import SchoolIcon from './school-icon.svg'
 
 interface IProps {
-  temp?: any
+  cls: IClass
+  onCardClick: (cls: IClass) => void
+  onSettingsClick: (cls: IClass) => void
 }
 
-interface IState {
-  temp?: any;
-}
+export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
+  const handleCardClick = () => {
+    onCardClick(cls)
+  }
 
-export class ClassCard extends React.Component<IProps, IState> {
-  public render() {
-    return (
-      <div className="class-card" onClick={this.handleClassCardClick}>
-        <button className="settings"><i className="material-icons">settings</i></button>
-        <img src={SchoolIcon} className="school-icon" alt="school icon" />
-        <h3>Class Name</h3>
-        <h4>Class Code:</h4>
-      </div>
-    );
+  const handleSettingsClick = (e: any) => {
+    onSettingsClick(cls)
+
+    e.stopPropagation()
   }
-  private handleClassCardClick() {
-    return
-  }
+
+  return (
+    <Card
+      className="class-card"
+      onClick={handleCardClick}
+    >
+
+      <button
+        className="settings"
+        onClick={handleSettingsClick}
+      >
+        <i className="material-icons">settings</i>
+      </button>
+
+      <img src={SchoolIcon} className="school-icon" alt="school icon" />
+
+      <h3>{cls.name}</h3>
+      <h4>Class Code: {cls.classCode}</h4>
+    </Card>
+  )
 }
