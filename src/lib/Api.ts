@@ -1,4 +1,4 @@
-import { IRequest, IUser } from "./Interfaces";
+import { IClass, IRequest, IUser } from "./Interfaces";
 import { Requests } from "./lib";
 
 interface ILogin {
@@ -36,4 +36,17 @@ export const signup = async (email: string, password: string, userType: string):
   await Requests.jsonFetch(url, request)
 
   return login(email, password, userType)
+}
+
+export const getClasses = async (token: string): Promise<IClass[]> => {
+  const request: IRequest = {
+    method: "GET",
+    token,
+  }
+
+  const url = `${process.env.REACT_APP_API_URL}/teachers/classes`
+
+  const classes = await Requests.jsonFetch(url, request)
+
+  return classes
 }

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { PageNotFound } from 'src/Components/PageNotFound/PageNotFound';
-import { Navbar, RequestComponent } from '../../Components/Components';
-import { IRequest, IUser } from '../../lib/Interfaces';
-import { Caching, Requests } from '../../lib/lib';
+import { Navbar, PageNotFound, RequestComponent } from '../../Components/Components';
+import { getClasses } from '../../lib/Api';
+import { IUser } from '../../lib/Interfaces';
+import { Caching } from '../../lib/lib';
 import './Home.css';
-import { Base, ClassDetail, Classes, Login } from './Routes/Routes';
-import { TestParameters } from './Routes/TestParameters/TestParameters';
+import { Base, ClassDetail, Classes, Login, TestParameters } from './Routes/Routes';
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser;
@@ -60,14 +59,8 @@ export class Home extends React.Component<IProps, IState> {
               />
 
               <Route
-                exact={true}
                 path='/classes'
                 render={this.renderClasses}
-              />
-
-              <Route
-                path='/classes/detail'
-                render={this.renderClassDetail}
               />
 
               <Route
@@ -129,7 +122,7 @@ export class Home extends React.Component<IProps, IState> {
   /****** Classes ******/
 
   private renderClasses(props: any) {
-    const classes = this.state.classes || localStorage.getItem('classes')
+    const classes = this.state.classes || Caching.getCached('classes')
 
     if (classes === undefined || classes === null) {
       return <RequestComponent
@@ -151,32 +144,26 @@ export class Home extends React.Component<IProps, IState> {
     )
   }
 
-  private requestClasses() {
+  private async requestClasses() {
     const token = this.props.token || Caching.getCached('token');
 
     if (token === undefined || token === null) {
       this.props.history.replace('/');
     }
 
-    const requestParams: IRequest = {
-      method: 'GET',
-      token,
-    }
+    try {
+      return getClasses(token)
 
-    return new Promise<[string]>((resolve) => {
-      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/teachers/classes`, requestParams)
-        .then((classes: [string]) => {
-          resolve(classes);
-        })
-        .catch((error: Error) => {
-          console.log('Request failed with error: ', error)
-          this.handleLogout()
-        })
-    })
+    } catch(error) {
+      console.log('requestClasses failed', error)
+      this.handleLogout()
+      return []
+    }
   }
 
   private handleClassesResolve(results: { classes: string }) {
     Caching.setCached('classes', results.classes)
+
     this.setState({
       classes: results.classes,
     })

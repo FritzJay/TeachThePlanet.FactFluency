@@ -4,6 +4,7 @@
   background: $white;
 
   border: 3px dashed $gray;
+  box-shadow: none;
 
   display: grid;
   grid-template-columns: 1fr;
@@ -16,9 +17,8 @@
   margin-top: 1px;
 
   &:hover {
-      background: rgba(0, 0, 0, 0.05);
-      transition-timing-function: ease-in;
-      transition-duration: 0.2s;
+    box-shadow: $dp-eight;
+    cursor: pointer;
   }
 
   .plus {
