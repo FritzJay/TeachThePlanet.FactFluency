@@ -126,7 +126,7 @@ export class Home extends React.Component<IProps, IState> {
 
     if (token === undefined || token === null) {
       this.handleLogout()
-      return
+      return <div />
     }
 
     const classes = this.state.classes || Caching.getCached('classes')
@@ -205,6 +205,8 @@ export class Home extends React.Component<IProps, IState> {
   /****** END Test Parameters ******/
 
   private handleLogout() {
+    this.props.history.replace('/')
+
     this.setState({
       classes: undefined,
     }, () => {

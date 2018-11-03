@@ -64,3 +64,34 @@ export const createClass = async (token: string, grade: string, name: string) =>
 
   return cls
 }
+
+export const updateClass = async (token: string, { _id, ...classParams }: IClass) => {
+  const request: IRequest = {
+    body: {
+      classID: _id,
+      updates: classParams
+    },
+    method: "PATCH",
+    token
+  }
+
+  const url = `${process.env.REACT_APP_API_URL}/classes/`
+
+  const cls = await Requests.jsonFetch(url, request)
+
+  return cls
+}
+
+export const deleteClass = async (token: string, classID: string) => {
+  const request: IRequest = {
+    body: { classID },
+    method: "DELETE",
+    token
+  }
+
+  const url = `${process.env.REACT_APP_API_URL}/classes/`
+
+  const cls = await Requests.jsonFetch(url, request)
+
+  return cls
+}

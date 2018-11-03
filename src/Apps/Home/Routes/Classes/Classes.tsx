@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, RouteComponentProps } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import { IClass } from '../../../../lib/Interfaces';
 import './Classes.css';
 import {
@@ -100,8 +100,8 @@ export class Classes extends React.Component<IProps, IState> {
   private renderEditClassModal(props: any) {
     const selectedTask = this.state.selectedClass
 
-    if (selectedTask === undefined) {
-      this.props.history.goBack()
+    if (selectedTask === undefined || selectedTask === null) {
+      return <Redirect to='/classes' />
     }
 
     return (

@@ -2,14 +2,17 @@ import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button } from 'src/Components/Button/Button'
 import { Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components'
+import { deleteClass, updateClass } from '../../../../../../lib/Api';
 import { IClass } from '../../../../../../lib/Interfaces'
 import './EditClassModal.css'
 
 interface IProps extends RouteComponentProps<{}> {
   cls: IClass
+  token: string
 }
 
 interface IState {
+  error: string
   name: string
   grade: string
 }
@@ -17,13 +20,18 @@ interface IState {
 export class EditClassModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
+    
+    const { grade='', name='' } = this.props.cls
 
     this.state = {
-      grade: '',
-      name: '',
+      error: '',
+      grade,
+      name,
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleDeleteClick = this.handleDeleteClick.bind(this)
+    this.handleSaveChangesClick = this.handleSaveChangesClick.bind(this)
   }
 
   public render() {
@@ -68,26 +76,65 @@ export class EditClassModal extends React.Component<IProps, IState> {
 
           </div>
 
-          <div className="btn-row">
+          <div className="buttons">
 
-            <Button className="delete-class">Delete Class</Button>
+            <Button
+              className="delete-class"
+              onClick={this.handleDeleteClick}
+            >
+              Delete Class
+            </Button>
 
             <Link to={'/classes'}>
               <Button className="cancel">Cancel</Button>
             </Link>
 
-            <Button className="save-changes">Save Changes</Button>
+            <Button
+              className="save-changes"
+              onClick={this.handleSaveChangesClick}
+            >
+              Save Changes
+            </Button>
           </div>
 
         </ModalContent>
       </Modal>
     )
   }
+  
+  private async handleDeleteClick() {
+    const { token, history, cls } = this.props
+    
+    try {
+      await deleteClass(token, cls._id)
+      
+      history.push('/classes')
+      
+    } catch (error) {
+      console.log(error)
+      this.setState({ error: 'An unexpected error ocurred. Please try again later' })
+    }
+  }
 
+  private async handleSaveChangesClick() {
+    const { token, history, cls } = this.props
+    const { grade, name } = this.state
+
+    try {
+      await updateClass(token, { grade, name, _id: cls._id })
+
+      history.push('/classes')
+
+    } catch (error) {
+      console.log(error)
+      this.setState({ error: 'An unexpected error ocurred. Please try again later' })
+    }
+  }
+  
   private handleChange(e: any) {
     const { value, name } = e.target
 
-    const state = {}
+    const state = { error: '' }
     state[name] = value
 
     this.setState(state)

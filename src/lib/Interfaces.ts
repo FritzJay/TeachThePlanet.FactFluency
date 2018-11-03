@@ -55,6 +55,7 @@ export interface IAvailableTests {
 
 export interface IClass {
   _id: string;
-  name: string;
-  classCode: string;
+  grade?: string;
+  name?: string;
+  classCode?: string;
 }
