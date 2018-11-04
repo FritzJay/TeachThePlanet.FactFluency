@@ -28,6 +28,8 @@ export class LoginModal extends React.Component<IProps, IState> {
     }
 
     this.handleLoginClick = this.handleLoginClick.bind(this)
+    this.handlePracticeClick = this.handlePracticeClick.bind(this)
+    this.loginRequest = this.loginRequest.bind(this)
   }
 
   public render() {
@@ -110,7 +112,7 @@ export class LoginModal extends React.Component<IProps, IState> {
         <ModalContent className="bottom-content">
           <Button
             className="green practice-button"
-            onClick={this.handleLoginClick}
+            onClick={this.handlePracticeClick}
           >
             Practice Without an Account
           </Button>
@@ -127,7 +129,15 @@ export class LoginModal extends React.Component<IProps, IState> {
       this.setState({ error: 'Please enter an email and password' })
       return
     }
+    
+    this.loginRequest(email, password, userType)
+  }
+  
+  private async handlePracticeClick() {
+    this.loginRequest('empty@email.com', 'password', 'Student')
+  }
 
+  private async loginRequest(email: string, password: string, userType: string) {
     try {
       const { user, token } = await login(email, password, userType)
   
@@ -138,7 +148,7 @@ export class LoginModal extends React.Component<IProps, IState> {
       this.setState({ error: 'Invalid email/username or password'})
     }
   }
-  
+
   private getClassName(buttonType: string) {
     return (
       buttonType === this.props.userType
