@@ -8,25 +8,25 @@ export class ClassDetail extends React.Component<any> {
     return (
     <div className="class-detail">
     <div className="header-row">
-      <h1><span><a href="#">Classrooms</a></span>/Class Name</h1>
+      <h1><span><i className="material-icons big">arrow_back_ios</i><a className="classrooms" href="#"> Classrooms</a></span>/Class Name</h1>
       <div className="btn-row">
-        <button className="parent-invitations">Parent Invites</button>
-        <button className="add-student">Add Student</button>
-        <button className="remove-student">Remove Student</button>
-        <button className="test-parameters">Test Parameters</button>
-        <button className="class-settings">Class Settings</button>
+        <button className="parent-invitations detail-btn">Parent Invites</button>
+        <button className="add-student detail-btn">Add Student</button>
+        <button className="remove-student detail-btn">Remove Student</button>
+        <button className="test-parameters detail-btn">Test Settings</button>
+        <button className="class-settings detail-btn">Class Settings</button>
       </div>
     </div>
 
     <Card className="student-report">
       <div className="header-row">
-        <h3>Student Name</h3>
+        <h3 className="student-name">Student Name</h3>
         <button className="student-settings"><i className="material-icons">settings</i></button>
       </div>
 
-      <div className="operator-row">
-        <p className="operator">+</p>
-        <p className="number">0</p>
+      <div className="operator-row plus">
+        <button className="operator">+</button>
+        <button className="number disabled not-taken in-progress passed">0</button>
       </div>
     </Card>
   </div>

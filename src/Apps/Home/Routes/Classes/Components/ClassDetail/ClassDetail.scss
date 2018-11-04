@@ -1,0 +1,156 @@
+@import 'src/Stylesheets/all';
+
+.class-detail {
+    grid-column: 2 / 2;
+
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+
+    .header-row {
+        grid-column: 1 / -1;
+        grid-row: 1 / 1;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+
+        margin-bottom: 1em;
+
+        h1 {
+            grid-column: 1 / -1;
+            grid-row: 1 / 1;
+        }
+
+        .classrooms {
+            color: $gray;
+        }
+
+        .material-icons.big {
+            font-size: 1em;
+            font-weight: 700;
+
+            vertical-align: sub;
+
+        }
+
+        .btn-row {
+            grid-column: 1 / -1;
+            grid-row: 2 / 2;
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            grid-gap: 1em;
+
+            .detail-btn {
+
+                background-color: $white;
+                color: $gray;
+
+                border: 3px solid $gray;
+
+                padding: 1em .5em;
+                font-size: 1em;
+                font-weight: 600;
+                border-radius: 12px;
+
+                &:hover {
+                    background-color: $blue;
+                    color: $white;
+                    border: $blue;
+                }
+            }
+
+        }
+    }
+
+    .student-report {
+        grid-column: 1 / -1;
+        grid-row: 2 / 2;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+
+        padding: 1em;
+
+        .header-row {
+            grid-column: 1 / -1;
+            grid-row: 1 / 1;
+
+            display: grid;
+            grid-template-columns: 1fr auto;
+
+            .student-name {
+                grid-column: 1 / 1;
+
+                margin: 0;
+            }
+
+            .student-settings {
+                grid-column: 2 / 2;
+
+                border: none;
+                background-color: transparent;
+                
+                margin: 0;
+            }
+        }
+
+        .operator-row.plus {
+            grid-column: 1 / -1;
+            grid-row: 2 / 2;
+            
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            grid-template-rows: 1fr;
+
+            grid-column-gap: .5em;
+
+            border-bottom: 1px solid rgba($color: #000000, $alpha: .25);
+            padding-bottom: .5em;
+
+            .operator {
+                grid-column: 1 / 1;
+                grid-row: 1 / 1;
+
+                margin: 0;
+
+                background-color: $red;
+                color: $white;
+                border: none;
+                font-size: 24px;
+                font-weight: 500;
+
+                width: 36px;
+                height: 36px;
+
+                border-radius: 12px;
+
+                outline: none;
+            }
+
+            .number {
+                grid-column: 2 / 2;
+                grid-row: 1 / 1;
+
+                margin: 0;
+
+                background-color: $gray;
+                color: $white;
+                border: none;
+                font-size: 24px;
+                font-weight: 500;
+
+                width: 36px;
+                height: 36px;
+
+                border-radius: 50%;
+
+                outline: none;
+            }
+        }
+    }
+}
