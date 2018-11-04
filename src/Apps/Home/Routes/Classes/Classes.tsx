@@ -37,6 +37,7 @@ export class Classes extends React.Component<IProps, IState> {
     this.renderEditClassModal = this.renderEditClassModal.bind(this)
     this.renderClassesGrid = this.renderClassesGrid.bind(this)
     this.renderNewClassModal = this.renderNewClassModal.bind(this)
+    this.renderRedirect = this.renderRedirect.bind(this)
 
     this.fetchClasses = this.fetchClasses.bind(this)
   }
@@ -50,20 +51,23 @@ export class Classes extends React.Component<IProps, IState> {
 
     return (
       <div className="classes">
-        <h2>Classes</h2>
-
         <Route
           path={match.path}
+          render={this.renderRedirect}
+        />
+
+        <Route
+          path={`${match.path}/grid`}
           render={this.renderClassesGrid}
         />
 
         <Route
-          path={`${match.path}/edit`}
+          path={`${match.path}/grid/edit`}
           render={this.renderEditClassModal}
         />
 
         <Route
-          path={`${match.path}/new`}
+          path={`${match.path}/grid/new`}
           render={this.renderNewClassModal}
         />
 
@@ -73,6 +77,10 @@ export class Classes extends React.Component<IProps, IState> {
         />
       </div>
     );
+  }
+
+  private renderRedirect(props: any) {
+    return <Redirect to={`${props.match.url}/grid`} />
   }
 
   private renderClassesGrid(props: any) {
