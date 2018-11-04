@@ -1,51 +1,49 @@
 import * as React from 'react'
 import { Input, Modal, ModalContent, ModalHeader } from '../../../../Components/Components';
+import './TestParameters.css';
 
 export const TestParameters = () => (
-  <div className="test-parameters">
-    <Modal className="parameters-modal">
+    <Modal className="test-parameters-modal">
       <ModalHeader className="parameters-header">
         <h1>Test Parameters</h1>
       </ModalHeader>
       <ModalContent className="parameter-content">
         <div className="time-parameter">
-          <h3>Duration</h3>
-          <div className="minute">
-            <label>Minute</label>
-            <Input type="text" />
-          </div>
-          <p>:</p>
-          <div className="second">
-            <label>Second</label>
-            <Input type="text" />
+          <h3 className="duration-subheader">Duration</h3>
+          <div className="time-input">
+            <div className="minute">
+              <Input type="text" placeholder="Minute" />
+            </div>
+            <p>:</p>
+            <div className="second">
+              <Input type="text" placeholder="Second"/>
+            </div>
           </div>
         </div>
 
         <div className="questions-parameters">
           <div className="number-of-questions">
-            <label>Number of Questions</label>
+            <h3>Number of Questions</h3>
             <Input type="text" />
           </div>
           <div className="random-questions">
-            <label>Number of Random Questions</label>
+            <h3>Number of Random Questions</h3>
             <p>Number of questions from other multiples</p>
             <Input type="text" />
           </div>
+        </div>
 
+        <div className="number-parameters">
           <div className="operators">
-            <label>Operators</label>
-            <input type="radio">+</input>
-            <input type="radio">-</input>
-            <input type="radio">÷</input>
-            <input type="radio">×</input>
+            <h3>Operators</h3>
+            <button type="submit" className="select-operator active">+</button>
           </div>
 
           <div className="multiples">
-            <label>Multiples Available</label>
-            <input type="radio">0</input>
+            <h3>Multiples Available</h3>
+            <button type="submit" className="select-multiples active">0</button>
           </div>
         </div>
       </ModalContent>
     </Modal>
-  </div>
 )

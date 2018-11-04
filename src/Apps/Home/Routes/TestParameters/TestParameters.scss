@@ -1,0 +1,144 @@
+@import 'src/Stylesheets/all';
+
+.test-parameters-modal {
+    grid-column: 2 / 2;
+
+    max-width: 500px;
+
+    .parameters-header {
+        background-color: $blue;
+        color: $white;
+    }
+
+    .parameter-content { 
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: auto;
+
+        padding: 1em 2em;
+
+        .time-parameter {
+            grid-column: 1 / -1;
+            grid-row: 1 / 1;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+
+            width: 100%;
+
+            .duration-subheader {
+                grid-column: 1 / -1;
+                grid-row: 1 / 1;
+
+                margin-top: 0;
+            }
+
+            .time-input {
+                grid-column: 1 / -1;
+                grid-row: 2 / 2;
+
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+            }
+
+            p {
+                margin: 0 1em;
+                font-weight: 700;
+                font-size: 1.5em;
+
+                align-self: flex-end;
+            }
+        }
+
+        .questions-parameters {
+            grid-column: 1 / -1;
+            grid-row: 3 / 3;
+
+            width: 100%;
+
+            margin-top: 1em;
+
+            h3 {
+                margin: 0;
+            }
+
+            p {
+                font-size: .75em;
+                margin-top: .25em;
+            }
+
+            .random-questions {
+                margin-top: 1em;
+            }
+        }
+
+        .number-parameters {
+            grid-column: 1 / -1;
+            grid-row: 5 / 5;
+
+            width: 100%;
+
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto;
+
+            .operators {
+                grid-column: 1 / -1;
+                grid-row: 1 / 1; 
+
+                display: grid;
+                grid-template-columns: auto;
+                grid-row: auto 1fr;
+
+                .select-operator {
+                    background-color: $gray;
+                    color: $white;
+                    border: none;
+                    font-size: 24px;
+                    font-weight: 500;
+
+                    width: 36px;
+                    height: 36px;
+
+                    border-radius: 50%;
+
+                     &.active {
+                        background-color: $blue;
+                        color: white;
+                    }
+                }
+            }
+
+                .multiples {
+                    grid-column: 1 / -1;
+                    grid-row: 2 / 2; 
+    
+                    display: grid;
+                    grid-template-columns: auto;
+                    grid-row: auto 1fr;
+    
+                    .select-multiples {
+                        background-color: $gray;
+                        color: $white;
+                        border: none;
+                        font-size: 24px;
+                        font-weight: 500;
+    
+                        width: 36px;
+                        height: 36px;
+    
+                        border-radius: 50%;
+    
+                            &.active {
+                            background-color: $blue;
+                            color: white;
+                        }
+                    }
+            }
+        }
+    }
+
+}
+
+
