@@ -35,7 +35,7 @@ export class ClassesGrid extends React.Component<IProps> {
           />
           ))}
 
-        <Link to={'/classes/new'}>
+        <Link to={'/classes/grid/new'}>
           <CreateClassCard />
         </Link>
       </div>

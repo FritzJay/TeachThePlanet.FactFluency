@@ -9,6 +9,7 @@ import {
   ClassesGrid,
   EditClassModal,
   NewClassModal,
+  TestParameters,
 } from './Components/Components';
 
 interface IProps extends RouteComponentProps<{}> {
@@ -38,6 +39,7 @@ export class Classes extends React.Component<IProps, IState> {
     this.renderClassesGrid = this.renderClassesGrid.bind(this)
     this.renderNewClassModal = this.renderNewClassModal.bind(this)
     this.renderRedirect = this.renderRedirect.bind(this)
+    this.renderTestParameters = this.renderTestParameters.bind(this)
 
     this.fetchClasses = this.fetchClasses.bind(this)
   }
@@ -52,6 +54,7 @@ export class Classes extends React.Component<IProps, IState> {
     return (
       <div className="classes">
         <Route
+          exact={true}
           path={match.path}
           render={this.renderRedirect}
         />
@@ -75,8 +78,13 @@ export class Classes extends React.Component<IProps, IState> {
           path={`${match.path}/detail`}
           render={this.renderClassDetail}
         />
+
+        <Route
+          path={`${match.path}/detail/test-parameters`}
+          render={this.renderTestParameters}
+        />
       </div>
-    );
+    )
   }
 
   private renderRedirect(props: any) {
@@ -113,7 +121,7 @@ export class Classes extends React.Component<IProps, IState> {
     this.setState({
       selectedClass,
     }, () => {
-      history.push(`${match.url}/edit`)
+      history.push(`${match.url}/grid/edit`)
     })
   }
 
@@ -179,5 +187,13 @@ export class Classes extends React.Component<IProps, IState> {
         onLogout()
       }
     })
+  }
+
+  private renderTestParameters(props: any) {
+    return (
+      <TestParameters
+        {...props}
+      />
+    )
   }
 }
