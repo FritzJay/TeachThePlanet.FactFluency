@@ -38,7 +38,7 @@ export const signup = async (email: string, password: string, userType: string):
   return login(email, password, userType)
 }
 
-export const getClasses = async (token: string): Promise<IClass[]> => {
+export const getClasses = async (token: string): Promise<{ classes: IClass[] }> => {
   const request: IRequest = {
     method: "GET",
     token,
@@ -46,9 +46,7 @@ export const getClasses = async (token: string): Promise<IClass[]> => {
 
   const url = `${process.env.REACT_APP_API_URL}/teachers/classes`
 
-  const classes = await Requests.jsonFetch(url, request)
-
-  return classes
+  return await Requests.jsonFetch(url, request)
 }
 
 export const createClass = async (token: string, grade: string, name: string) => {

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Navbar, PageNotFound, RequestComponent } from '../../Components/Components';
-import { getClasses } from '../../lib/Api';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Navbar, PageNotFound } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
 import { Caching } from '../../lib/lib';
 import './Home.css';
@@ -28,11 +27,9 @@ export class Home extends React.Component<IProps, IState> {
     this.renderLogin = this.renderLogin.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
-    this.requestClasses = this.requestClasses.bind(this)
     this.renderClassDetail = this.renderClassDetail.bind(this)
     this.renderTestParameters = this.renderTestParameters.bind(this)
 
-    this.handleClassesResolve = this.handleClassesResolve.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
   }
 
@@ -126,56 +123,16 @@ export class Home extends React.Component<IProps, IState> {
 
     if (token === undefined || token === null) {
       this.handleLogout()
-      return <div />
-    }
-
-    const classes = this.state.classes || Caching.getCached('classes')
-
-    if (classes === undefined || classes === null) {
-      return <RequestComponent
-        request={this.requestClasses}
-        onResolve={this.handleClassesResolve}
-        component={Classes}
-        props={{
-          ...props,
-          classes
-        }}
-      />
+      return <Redirect to={this.props.match.url} />
     }
 
     return (
       <Classes
         {...props}
-        classes={classes}
         token={token}
+        onLogout={this.handleLogout}
       />
     )
-  }
-
-  private async requestClasses() {
-    const token = this.props.token || Caching.getCached('token');
-
-    if (token === undefined || token === null) {
-      this.handleLogout()
-      return
-    }
-
-    try {
-      return getClasses(token)
-
-    } catch(error) {
-      console.log('requestClasses failed', error)
-      this.handleLogout()
-      return []
-    }
-  }
-
-  private handleClassesResolve(results: { classes: string }) {
-    Caching.setCached('classes', results.classes)
-
-    this.setState({
-      classes: results.classes,
-    })
   }
 
   /****** END Classes ******/

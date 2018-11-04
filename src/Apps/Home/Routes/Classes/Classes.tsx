@@ -3,15 +3,14 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import { IClass } from '../../../../lib/Interfaces';
 import './Classes.css';
 import {
-  ClassCard,
-  CreateClassCard,
+  ClassesGrid,
   EditClassModal,
   NewClassModal,
 } from './Components/Components';
 
 interface IProps extends RouteComponentProps<{}> {
-  classes: IClass[]
   token: string
+  onLogout: () => void
 }
 
 interface IState {
@@ -26,7 +25,6 @@ export class Classes extends React.Component<IProps, IState> {
 
     this.handleClassCardClick = this.handleClassCardClick.bind(this)
     this.handleClassSettingsClick = this.handleClassSettingsClick.bind(this)
-    this.handleNewClassClick = this.handleNewClassClick.bind(this)
 
     this.renderEditClassModal = this.renderEditClassModal.bind(this)
     this.renderClassesGrid = this.renderClassesGrid.bind(this)
@@ -59,6 +57,18 @@ export class Classes extends React.Component<IProps, IState> {
     );
   }
 
+  private renderClassesGrid(props: any) {
+    return (
+      <ClassesGrid
+        {...props}
+        token={this.props.token}
+        onLogout={this.props.onLogout}
+        onClassCardClick={this.handleClassCardClick}
+        onClassSettingsClick={this.handleClassSettingsClick}
+      />
+    )
+  }
+
   private handleClassCardClick(selectedClass: IClass) {
     console.log('handleClassCardClick')
     return
@@ -72,29 +82,6 @@ export class Classes extends React.Component<IProps, IState> {
     }, () => {
       history.push(`${match.url}/edit`)
     })
-  }
-
-  private handleNewClassClick() {
-    const { history, match } = this.props
-
-    history.push(`${match.url}/new`)
-  }
-
-  private renderClassesGrid() {
-    return (
-      <div className="classes-grid">
-        {this.props.classes.map((cls: IClass) => (
-          <ClassCard
-            key={cls._id}
-            cls={cls}
-            onCardClick={this.handleClassCardClick}
-            onSettingsClick={this.handleClassSettingsClick}
-          />
-          ))}
-
-        <CreateClassCard onClick={this.handleNewClassClick} />
-      </div>
-    )
   }
 
   private renderEditClassModal(props: any) {
