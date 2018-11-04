@@ -14,7 +14,10 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto; 
 
-  box-shadow: none;
+  box-shadow: $dp-four;
+
+    padding: 2em;
+  
 
 
     .title-header {
