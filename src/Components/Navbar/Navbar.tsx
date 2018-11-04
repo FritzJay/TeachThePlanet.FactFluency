@@ -31,7 +31,7 @@ export class Navbar extends React.Component<IProps, IState> {
           {logoutButton(this.props.onLogout, this.props.user)}
 
           <Link className="logo" to={this.props.logoLink}>
-            <img src={Logo} alt="logo" />
+            <img src={Logo} className="logo-img" alt="logo" />
           </Link>
 
           {userInfo(this.props.user)}
