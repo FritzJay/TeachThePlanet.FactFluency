@@ -4,7 +4,7 @@ import { Navbar, PageNotFound } from '../../Components/Components';
 import { IUser } from '../../lib/Interfaces';
 import { Caching } from '../../lib/lib';
 import './Home.css';
-import { Base, ClassDetail, Classes, Login, TestParameters } from './Routes/Routes';
+import { Base, Classes, Login, TestParameters } from './Routes/Routes';
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser;
@@ -27,7 +27,6 @@ export class Home extends React.Component<IProps, IState> {
     this.renderLogin = this.renderLogin.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
-    this.renderClassDetail = this.renderClassDetail.bind(this)
     this.renderTestParameters = this.renderTestParameters.bind(this)
 
     this.handleLogout = this.handleLogout.bind(this)
@@ -136,18 +135,6 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Classes ******/
-
-  /****** Class Detail ******/
-
-  private renderClassDetail(props: any) {
-    return (
-      <ClassDetail
-        {...props}
-      />
-    )
-  }
-
-  /****** END Class Detail ******/
 
   /****** Test Parameters ******/
 

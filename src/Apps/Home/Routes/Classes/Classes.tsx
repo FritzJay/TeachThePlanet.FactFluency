@@ -3,6 +3,7 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import { IClass } from '../../../../lib/Interfaces';
 import './Classes.css';
 import {
+  ClassDetail,
   ClassesGrid,
   EditClassModal,
   NewClassModal,
@@ -53,6 +54,11 @@ export class Classes extends React.Component<IProps, IState> {
           path={`${match.path}/new`}
           render={this.renderNewClassModal}
         />
+
+        <Route
+          path={`${match.path}/detail`}
+          render={this.renderClassDetail}
+        />
       </div>
     );
   }
@@ -70,8 +76,11 @@ export class Classes extends React.Component<IProps, IState> {
   }
 
   private handleClassCardClick(selectedClass: IClass) {
-    console.log('handleClassCardClick')
-    return
+    const { history, match } = this.props
+
+    this.setState({ selectedClass }, () => {
+      history.push(`${match.url}/detail`)
+    })
   }
 
   private handleClassSettingsClick(selectedClass: IClass) {
@@ -105,6 +114,14 @@ export class Classes extends React.Component<IProps, IState> {
       <NewClassModal
         {...props}
         token={this.props.token}
+      />
+    )
+  }
+
+  private renderClassDetail(props: any) {
+    return (
+      <ClassDetail
+        {...props}
       />
     )
   }

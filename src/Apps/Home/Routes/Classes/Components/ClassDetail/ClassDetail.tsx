@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Card } from '../../../../Components/Components';
+import { Card } from '../../../../../../Components/Components';
+import './ClassDetail.css'
 
 
 export class ClassDetail extends React.Component<any> {
