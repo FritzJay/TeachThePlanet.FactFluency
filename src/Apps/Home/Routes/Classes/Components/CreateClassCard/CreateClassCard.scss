@@ -16,9 +16,17 @@
   max-height: 149px;
   margin-top: 1px;
 
+  transition:
+    box-shadow .2s,
+    border .2s;
+
   &:hover {
     box-shadow: $dp-eight;
+
     cursor: pointer;
+
+    border: 3px solid $blue;
+    
   }
 
   .plus {
