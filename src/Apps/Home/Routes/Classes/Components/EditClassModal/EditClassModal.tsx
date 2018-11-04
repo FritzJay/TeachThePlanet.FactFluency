@@ -121,7 +121,13 @@ export class EditClassModal extends React.Component<IProps, IState> {
     const { grade, name } = this.state
 
     try {
-      await updateClass(token, { grade, name, _id: cls._id })
+      await updateClass(token,
+        {
+          _id: cls._id,
+          classCode: cls.classCode,
+          grade,
+          name,
+        })
 
       history.push('/classes')
 
