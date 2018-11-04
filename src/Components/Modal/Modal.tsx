@@ -5,11 +5,12 @@ export interface IModalProps {
   className?: string;
   children: any;
   color?: string;
+  overlay?: boolean;
 }
 
 export const Modal = (props: IModalProps) => {
   return (
-    <div className={`modal${props.className ? ' ' + props.className : ''}`}>
+    <div className={`modal${props.className ? ' ' + props.className : ''}${props.overlay ? ' overlay' : ''}`}>
       {props.children}
     </div>
   );

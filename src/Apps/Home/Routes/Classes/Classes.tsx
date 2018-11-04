@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
+import { getClasses } from 'src/lib/Api';
+import { Caching } from 'src/lib/lib';
 import { IClass } from '../../../../lib/Interfaces';
 import './Classes.css';
 import {
@@ -15,14 +17,19 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
+  classes: IClass[]
   selectedClass?: IClass
+  isLoading: boolean
 }
 
 export class Classes extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      classes: [],
+      isLoading: false,
+    }
 
     this.handleClassCardClick = this.handleClassCardClick.bind(this)
     this.handleClassSettingsClick = this.handleClassSettingsClick.bind(this)
@@ -30,6 +37,12 @@ export class Classes extends React.Component<IProps, IState> {
     this.renderEditClassModal = this.renderEditClassModal.bind(this)
     this.renderClassesGrid = this.renderClassesGrid.bind(this)
     this.renderNewClassModal = this.renderNewClassModal.bind(this)
+
+    this.fetchClasses = this.fetchClasses.bind(this)
+  }
+
+  public componentDidMount() {
+    this.fetchClasses()
   }
 
   public render() {
@@ -40,7 +53,6 @@ export class Classes extends React.Component<IProps, IState> {
         <h2>Classes</h2>
 
         <Route
-          exact={true}
           path={match.path}
           render={this.renderClassesGrid}
         />
@@ -64,9 +76,13 @@ export class Classes extends React.Component<IProps, IState> {
   }
 
   private renderClassesGrid(props: any) {
+    const { classes, isLoading } = this.state
+
     return (
       <ClassesGrid
         {...props}
+        classes={classes}
+        isLoading={isLoading}
         token={this.props.token}
         onLogout={this.props.onLogout}
         onClassCardClick={this.handleClassCardClick}
@@ -104,6 +120,7 @@ export class Classes extends React.Component<IProps, IState> {
       <EditClassModal
         {...props}
         cls={selectedTask}
+        onSave={this.fetchClasses}
         token={this.props.token}
       />
     )
@@ -114,6 +131,7 @@ export class Classes extends React.Component<IProps, IState> {
       <NewClassModal
         {...props}
         token={this.props.token}
+        onSave={this.fetchClasses}
       />
     )
   }
@@ -124,5 +142,34 @@ export class Classes extends React.Component<IProps, IState> {
         {...props}
       />
     )
+  }
+
+  private fetchClasses() {
+    const { onLogout } = this.props
+    
+    const token = this.props.token || Caching.getCached('token');
+
+    if (token === undefined || token === null) {
+      onLogout()
+      return
+    }
+
+    this.setState({
+      isLoading: true
+    }, async () => {
+
+      try {
+        const results = await getClasses(token)
+
+        this.setState({
+          classes: results.classes,
+          isLoading: false
+        })
+
+      } catch(error) {
+        console.log('requestClasses failed', error)
+        onLogout()
+      }
+    })
   }
 }
