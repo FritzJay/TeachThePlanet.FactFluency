@@ -1,12 +1,4 @@
 
 .classes { 
     grid-column: 2 / 2;
-
-    .classes-grid {
-      display: grid;
-      grid-template-rows: minmax(auto, auto);
-      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-      grid-gap: 1em;
-      align-items: center;
-    }
 }

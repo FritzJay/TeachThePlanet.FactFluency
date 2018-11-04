@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Button, Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components';
-import { createClass } from '../../../../../../lib/Api';
+import { createClass } from '../../../../../../lib/Api/Classes';
 import './NewClassModal.css';
 
 interface IProps extends RouteComponentProps<{}> {
   token: string
+  onSave: () => void
 }
 
 interface IState {
@@ -33,7 +34,10 @@ export class NewClassModal extends React.Component<IProps, IState> {
     const { error, name, grade } = this.state
 
     return (
-      <Modal className="new-class-modal">
+      <Modal
+        overlay={true}
+        className="new-class-modal"
+      >
 
         <ModalHeader className="modal-header">
           <h2>New Class</h2>
@@ -94,7 +98,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
   }
 
   private async handleCreateClassClick() {
-    const { token, history } = this.props
+    const { token, history, onSave } = this.props
     const { grade, name } = this.state
     
     if (grade === '' || name === '') {
@@ -105,6 +109,8 @@ export class NewClassModal extends React.Component<IProps, IState> {
     try {
       await createClass(token, grade, name)
 
+      onSave()
+
       history.push('/classes')
 
     } catch (error) {
@@ -114,7 +120,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
   }
 
   private handleCancelClick() {
-    this.props.history.goBack()
+    this.props.history.push('/classes')
   }
 
   private handleChange(e: any) {

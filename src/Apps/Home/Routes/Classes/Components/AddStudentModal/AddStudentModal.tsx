@@ -14,7 +14,10 @@ export class AddStudentModal extends React.Component<IProps, IState> {
   public render() {
     return (
       <div>
-      <Modal className="add-student-modal-start">
+      <Modal
+        overlay={true}
+        className="add-student-modal-start"
+      >
         <ModalHeader className="add-students">
           <h1>Add Students</h1>
         </ModalHeader>

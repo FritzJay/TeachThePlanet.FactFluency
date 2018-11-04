@@ -2,13 +2,14 @@ import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button } from 'src/Components/Button/Button'
 import { Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components'
-import { deleteClass, updateClass } from '../../../../../../lib/Api';
+import { deleteClass, updateClass } from '../../../../../../lib/Api/Classes';
 import { IClass } from '../../../../../../lib/Interfaces'
 import './EditClassModal.css'
 
 interface IProps extends RouteComponentProps<{}> {
   cls: IClass
   token: string
+  onSave: () => void
 }
 
 interface IState {
@@ -39,7 +40,10 @@ export class EditClassModal extends React.Component<IProps, IState> {
     const { name, grade } = this.state
 
     return (
-      <Modal className="edit-class-modal">
+      <Modal
+        overlay={true}
+        className="edit-class-modal"
+      >
 
         <ModalHeader className="modal-header">
           <h2>Edit Class</h2>
@@ -103,10 +107,12 @@ export class EditClassModal extends React.Component<IProps, IState> {
   }
   
   private async handleDeleteClick() {
-    const { token, history, cls } = this.props
+    const { token, history, cls, onSave } = this.props
     
     try {
       await deleteClass(token, cls._id)
+
+      onSave()
       
       history.push('/classes')
       
@@ -117,18 +123,19 @@ export class EditClassModal extends React.Component<IProps, IState> {
   }
 
   private async handleSaveChangesClick() {
-    const { token, history, cls } = this.props
+    const { token, history, cls, onSave } = this.props
     const { grade, name } = this.state
 
     try {
-      await updateClass(token,
-        {
-          _id: cls._id,
-          classCode: cls.classCode,
-          grade,
-          name,
-        })
+      await updateClass(token, {
+        _id: cls._id,
+        classCode: cls.classCode,
+        grade,
+        name,
+      })
 
+      onSave()
+      
       history.push('/classes')
 
     } catch (error) {

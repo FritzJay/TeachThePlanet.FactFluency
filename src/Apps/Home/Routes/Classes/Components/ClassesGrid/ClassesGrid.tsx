@@ -1,34 +1,21 @@
 import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { getClasses } from '../../../../../../lib/Api';
 import { IClass } from '../../../../../../lib/Interfaces';
-import { Caching } from '../../../../../../lib/lib';
 import { ClassCard, CreateClassCard } from '../Components';
+import './ClassesGrid.css'
 
 interface IProps extends RouteComponentProps<{}> {
+  classes: IClass[]
   token: string
+  isLoading: boolean
   onLogout: () => void
   onClassCardClick: (selectedClass: IClass) => void
   onClassSettingsClick: (selectedClass: IClass) => void
 }
 
-interface IState {
-  classes?: IClass[]
-  isLoading: boolean
-}
-
-export class ClassesGrid extends React.Component<IProps, IState> {
-  public state: IState = {
-    isLoading: false
-  }
-
-  public componentDidMount() {
-    this.getClasses()
-  }
-
+export class ClassesGrid extends React.Component<IProps> {
   public render() {
-    const { isLoading, classes } = this.state
-    const { onClassCardClick, onClassSettingsClick } = this.props
+    const { onClassCardClick, onClassSettingsClick, isLoading, classes } = this.props
 
     if (isLoading === true || classes === undefined) {
       return <div>Loading...</div>
@@ -36,6 +23,9 @@ export class ClassesGrid extends React.Component<IProps, IState> {
 
     return (
       <div className="classes-grid">
+
+        <h2 className="title">Classes</h2>
+
         {classes.map((cls: IClass) => (
           <ClassCard
             key={cls._id}
@@ -50,34 +40,5 @@ export class ClassesGrid extends React.Component<IProps, IState> {
         </Link>
       </div>
     )
-  }
-
-  private getClasses = () => {
-    const { onLogout } = this.props
-    
-    const token = this.props.token || Caching.getCached('token');
-
-    if (token === undefined || token === null) {
-      onLogout()
-      return
-    }
-
-    this.setState({
-      isLoading: true
-    }, async () => {
-
-      try {
-        const results = await getClasses(token)
-
-        this.setState({
-          classes: results.classes,
-          isLoading: false
-        })
-
-      } catch(error) {
-        console.log('requestClasses failed', error)
-        onLogout()
-      }
-    })
   }
 }
