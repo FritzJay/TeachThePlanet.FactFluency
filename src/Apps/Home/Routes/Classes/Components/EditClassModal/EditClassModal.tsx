@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button } from 'src/Components/Button/Button'
 import { Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components'
-import { deleteClass, updateClass } from '../../../../../../lib/Api';
+import { deleteClass, updateClass } from '../../../../../../lib/Api/Classes';
 import { IClass } from '../../../../../../lib/Interfaces'
 import './EditClassModal.css'
 

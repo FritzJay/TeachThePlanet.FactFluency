@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
-import { getClasses } from 'src/lib/Api';
+import { getClasses } from 'src/lib/Api/Classes';
 import { Caching } from 'src/lib/lib';
 import { IClass } from '../../../../lib/Interfaces';
 import './Classes.css';

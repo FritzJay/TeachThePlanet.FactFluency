@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Button, Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components';
-import { createClass } from '../../../../../../lib/Api';
+import { createClass } from '../../../../../../lib/Api/Classes';
 import './NewClassModal.css';
 
 interface IProps extends RouteComponentProps<{}> {
