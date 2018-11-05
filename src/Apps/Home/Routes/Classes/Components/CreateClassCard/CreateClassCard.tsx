@@ -4,8 +4,9 @@ import './CreateClassCard.css'
 
 export const CreateClassCard = () => (
   <Card
-    className="create-class-card"
-  >
-    <p className="plus">+</p>
+    className="create-class-card active">
+      <div className="plus-container active">
+        <p className="plus">+</p>
+      </div>
   </Card>
 )
