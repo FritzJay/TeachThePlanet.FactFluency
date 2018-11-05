@@ -89,7 +89,7 @@ export class LoginModal extends React.Component<IProps, IState> {
           />
         </ModalContent>
 
-        <ModalContent>
+        <ModalContent className="sign-log">
           <div className="button-row">
 
             <Link to={`${this.props.match.url}/signup`}>
