@@ -80,7 +80,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
 
           </div>
 
-          <div className="buttons">
+          <div className="btn-row">
 
             <Button
               className="delete-class"
