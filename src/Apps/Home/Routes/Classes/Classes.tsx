@@ -40,6 +40,7 @@ export class Classes extends React.Component<IProps, IState> {
     this.renderNewClassModal = this.renderNewClassModal.bind(this)
     this.renderRedirect = this.renderRedirect.bind(this)
     this.renderTestParameters = this.renderTestParameters.bind(this)
+    this.renderClassDetail = this.renderClassDetail.bind(this)
 
     this.fetchClasses = this.fetchClasses.bind(this)
   }
@@ -153,9 +154,33 @@ export class Classes extends React.Component<IProps, IState> {
   }
 
   private renderClassDetail(props: any) {
+    const { selectedClass } = this.state
+
+    if (selectedClass === undefined) {
+      return <Redirect to="/classes" />
+    }
+
     return (
       <ClassDetail
         {...props}
+        class={selectedClass}
+      />
+    )
+  }
+
+  private renderTestParameters(props: any) {
+    const { token } = this.props
+    const { selectedClass } = this.state
+
+    if (selectedClass === undefined) {
+      return <Redirect to="/classes" />
+    }
+
+    return (
+      <TestParameters
+        {...props}
+        token={token}
+        classID={selectedClass._id}
       />
     )
   }
@@ -187,13 +212,5 @@ export class Classes extends React.Component<IProps, IState> {
         onLogout()
       }
     })
-  }
-
-  private renderTestParameters(props: any) {
-    return (
-      <TestParameters
-        {...props}
-      />
-    )
   }
 }

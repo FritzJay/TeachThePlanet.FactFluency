@@ -25,8 +25,12 @@ export interface IRequest {
 }
 
 export interface ITestParameters {
-  number: number;
-  operator: string;
+  _id: string
+  duration: number
+  numbers: number[]
+  operators: string[]
+  questions: number
+  randomQuestions: number
 }
 
 export interface ITest {

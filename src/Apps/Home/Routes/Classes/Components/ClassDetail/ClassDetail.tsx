@@ -1,10 +1,14 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom';
 import { Card } from '../../../../../../Components/Components';
 import './ClassDetail.css'
 
 
 export class ClassDetail extends React.Component<any> {
+  
   public render() {
+    const { match } = this.props 
+
     return (
     <div className="class-detail">
     <div className="header-row">
@@ -13,7 +17,9 @@ export class ClassDetail extends React.Component<any> {
         <button className="parent-invitations detail-btn">Parent Invites</button>
         <button className="add-student detail-btn">Add Student</button>
         <button className="remove-student detail-btn">Remove Student</button>
-        <button className="test-parameters detail-btn">Test Settings</button>
+        <Link to={`${match.url}/test-parameters`}>
+          <button className="test-parameters detail-btn">Test Settings</button>
+        </Link>
         <button className="class-settings detail-btn">Class Settings</button>
       </div>
     </div>
