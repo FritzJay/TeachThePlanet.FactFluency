@@ -64,7 +64,7 @@ export class TestParameters extends React.Component<IProps, IState> {
 
     if (loading) {
       return (
-        <Modal>
+        <Modal
           overlay={true}
           className="test-parameters-modal"
         >
