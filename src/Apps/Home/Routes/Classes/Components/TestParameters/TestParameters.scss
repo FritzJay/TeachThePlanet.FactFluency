@@ -91,22 +91,12 @@
                 grid-template-columns: auto;
                 grid-row: auto 1fr;
 
-                .select-operator {
-                    background-color: $gray;
-                    color: $white;
-                    border: none;
-                    font-size: 24px;
-                    font-weight: 500;
-
-                    width: 36px;
-                    height: 36px;
-
-                    border-radius: 50%;
-
-                     &.active {
-                        background-color: $blue;
-                        color: white;
-                    }
+                .operators-container {
+                    display: grid;
+                    grid-template-columns: repeat(4, auto);
+                    justify-content: flex-start;
+                    grid-gap: 0.5em;
+                    font-size: 2.75rem;
                 }
             }
 
@@ -117,18 +107,31 @@
                     display: grid;
                     grid-template-columns: auto;
                     grid-row: auto 1fr;
+
+                    .numbers-container {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        justify-content: flex-start;
+                    }
     
                     .select-multiples {
-                        background-color: $gray;
-                        color: $white;
+                        background-color: $white;
+                        color: $blue;
                         border: none;
                         font-size: 24px;
                         font-weight: 500;
     
-                        width: 36px;
-                        height: 36px;
+                        width: 42px;
+                        height: 42px;
+
+                        margin: 0 0.5em 0.25em 0;
     
                         border-radius: 50%;
+
+                            &:hover {
+                                background-color: $very-light-blue;
+                            }
     
                             &.active {
                             background-color: $blue;
