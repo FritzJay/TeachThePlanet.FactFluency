@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Input, Modal, ModalContent, ModalHeader } from '../../../../../../Components/Components'
+import { Input, Modal, ModalContent, ModalHeader } from 'src/Components/Components'
 import './TestParameters.css'
 
 export class TestParameters extends React.Component<any> {

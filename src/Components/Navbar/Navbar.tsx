@@ -26,23 +26,21 @@ export class Navbar extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <div className="navbar-margin-top">
-        <div className="navbar">
-          {logoutButton(this.props.onLogout, this.props.user)}
+      <div className="navbar">
+        {logoutButton(this.props.onLogout, this.props.user)}
 
-          <Link className="logo" to={this.props.logoLink}>
-            <img src={Logo} className="logo-img" alt="logo" />
-          </Link>
+        <Link className="logo" to={this.props.logoLink}>
+          <img src={Logo} className="logo-img" alt="logo" />
+        </Link>
 
+        {userInfo(this.props.user)}
+
+        <button className="toggle-btn" onClick={this.handleToggleButtonClick}><i className="material-icons">menu</i></button>
+
+        <Dropdown active={this.props.user ? this.state.activeDropdown : false}>
           {userInfo(this.props.user)}
-
-          <button className="toggle-btn" onClick={this.handleToggleButtonClick}><i className="material-icons">menu</i></button>
-
-          <Dropdown active={this.props.user ? this.state.activeDropdown : false}>
-            {userInfo(this.props.user)}
-            {logoutButton(this.props.onLogout, this.props.user)} 
-          </Dropdown>
-        </div>
+          {logoutButton(this.props.onLogout, this.props.user)} 
+        </Dropdown>
       </div>
     )
   }
