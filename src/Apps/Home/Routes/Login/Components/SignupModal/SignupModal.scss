@@ -3,36 +3,58 @@
 .signup-modal {
   grid-column: 1 / -1;
 
-  .signup-modal-header {
+  .header.signup-modal-header {
     background-color: $blue;
     color: $white;
+
+    padding: 1em;
   }
 
-  .user-types {
-    padding-top: 0;
-  }
+  .content.user-types {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    padding: 0 2em;
 
-  .button-row .signup-modal-button {
-    margin: 0 .5em;
-    min-width: 96px;
+    h3 {
+      grid-column: 1 / -1;
+      grid-row: 1 / 1;
+    }
+  
+    .button-row {
+      grid-column: 1 / -1;
+      grid-row: 2 / 2;
+      
+      width: 100%;
 
-    &.active {
-      background-color: $blue;
-      border: solid 3px $light-blue;
-      background-size: 100%;
-      color: $white;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+      
+      grid-gap: 1em;
+    }
 
-      &:hover {
-        background: none;
-        background-color: $light-blue;
-        border: solid 3px $very-light-blue;
+    .button-row.signup-modal-button {
+
+      &.active {
+        background-color: $blue;
+        border: solid 3px $light-blue;
+        background-size: 100%;
+        color: $white;
+
+        &:hover {
+          background: none;
+          background-color: $light-blue;
+          border: solid 3px $very-light-blue;
+        }
       }
     }
-  }
+  } 
 
-  .inputs {
+  .content.inputs {
     display: grid;
     grid-gap: 1em;
+
+    padding: 1em 2em;
 
     .input {
       font-family: 'Roboto', sans-serif;
@@ -61,7 +83,13 @@
     border-top: solid 2px $light-gray;
   }
 
-  .bottom-buttons {
-    grid-gap: 1em;
+  .content.bottom-buttons {
+
+    padding: 1em 2em;
+
+    .cancel-button {
+      padding-top: .5em;
+      border: none;
+    }
   }
 }
