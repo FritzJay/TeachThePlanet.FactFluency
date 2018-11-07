@@ -1,0 +1,26 @@
+@import 'src/Stylesheets/all';
+
+.UserTypes {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  grid-gap: 1em;
+
+  .button {
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
+
+    &.active {
+      background-color: $blue;
+      border: solid 3px $light-blue;
+      color: $white;
+
+      &:hover {
+        background: none;
+        background-color: $light-blue;
+        border: solid 3px $very-light-blue;
+      }
+    }
+  }
+}

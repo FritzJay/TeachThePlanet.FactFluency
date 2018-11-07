@@ -1,18 +1,19 @@
-import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { login } from 'src/lib/Api/Sessions';
-import { IUser } from 'src/lib/Interfaces';
-import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents';
-import './LoginModal.css';
+import * as React from 'react'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { login } from 'src/lib/Api/Sessions'
+import { IUser } from 'src/lib/Interfaces'
+import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { UserTypes } from '../UserTypes/UserTypes'
+import './LoginModal.css'
 
 interface IProps extends RouteComponentProps<any> {
   email: string
   password: string
   userType: string
-  onLogin: (user: IUser, token: string, userType: string) => void;
-  onUserTypeSelect: (e: any) => void;
-  onEmailChange: (e: any) => void;
-  onPasswordChange: (e: any) => void;
+  onLogin: (user: IUser, token: string, userType: string) => void
+  onUserTypeSelect: (e: any) => void
+  onEmailChange: (e: any) => void
+  onPasswordChange: (e: any) => void
 }
 
 interface IState {
@@ -33,7 +34,7 @@ export class LoginModal extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { email, password, onUserTypeSelect, onEmailChange, onPasswordChange } = this.props
+    const { email, password, userType, onUserTypeSelect, onEmailChange, onPasswordChange } = this.props
     const { error } = this.state
 
     return (
@@ -49,28 +50,11 @@ export class LoginModal extends React.Component<IProps, IState> {
         <ModalContent className="user-types">
           <h3>What type of user are you?</h3>
 
-          <div className="button-row">
-            <Button
-              className={this.getClassName('Teacher')}
-              onClick={onUserTypeSelect}
-            >
-              Teacher
-            </Button>
+          <UserTypes
+            currentType={userType}
+            onSelect={onUserTypeSelect}
+          />
 
-            <Button
-              className={this.getClassName('Student')}
-              onClick={onUserTypeSelect}
-            >
-              Student
-            </Button>
-
-            <Button
-              className={this.getClassName('Parent')}
-              onClick={onUserTypeSelect}
-            >
-              Parent
-            </Button>
-          </div>
         </ModalContent>
 
         <ModalContent className="inputs">
@@ -122,7 +106,7 @@ export class LoginModal extends React.Component<IProps, IState> {
         </ModalContent>
 
       </Modal>
-    );
+    )
   }
 
   private async handleLoginClick() {
@@ -151,12 +135,4 @@ export class LoginModal extends React.Component<IProps, IState> {
       this.setState({ error: 'Invalid email/username or password'})
     }
   }
-
-  private getClassName(buttonType: string) {
-    return (
-      buttonType === this.props.userType
-      ? 'gray login-modal-button active'
-      : 'gray login-modal-button'
-      )
-    }
-  }
+}

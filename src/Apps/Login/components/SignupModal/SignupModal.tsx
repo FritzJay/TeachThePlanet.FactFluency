@@ -3,6 +3,7 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { signup } from 'src/lib/Api/Sessions'
 import { IUser } from 'src/lib/Interfaces'
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { UserTypes } from '../UserTypes/UserTypes'
 import './SignupModal.css'
 
 interface IProps extends RouteComponentProps<any> {
@@ -30,11 +31,10 @@ export class SignupModal extends React.Component<IProps, IState> {
     }
 
     this.handleSignupClick = this.handleSignupClick.bind(this)
-    this.getClassName = this.getClassName.bind(this)
   }
 
   public render() {
-    const { email, password, secondPassword, onUserTypeSelect, onEmailChange, onPasswordChange, onSecondPasswordChange } = this.props
+    const { email, password, secondPassword, userType, onUserTypeSelect, onEmailChange, onPasswordChange, onSecondPasswordChange } = this.props
     const { error } = this.state
 
     return (
@@ -49,28 +49,11 @@ export class SignupModal extends React.Component<IProps, IState> {
         <ModalContent className="user-types">
           <h3>What type of user are you?</h3>
 
-          <div className="button-row">
-            <Button
-              className={this.getClassName('Teacher')}
-              onClick={onUserTypeSelect}
-            >
-              Teacher
-            </Button>
+          <UserTypes
+            currentType={userType}
+            onSelect={onUserTypeSelect}
+          />
 
-            <Button
-              className={this.getClassName('Student')}
-              onClick={onUserTypeSelect}
-            >
-              Student
-            </Button>
-
-            <Button
-              className={this.getClassName('Parent')}
-              onClick={onUserTypeSelect}
-            >
-              Parent
-            </Button>
-          </div>
         </ModalContent>
 
         <ModalContent className="inputs">
@@ -145,13 +128,5 @@ export class SignupModal extends React.Component<IProps, IState> {
       console.warn(error)
       this.setState({ error: 'An unexpected error ocurred. Please try again later. '})
     }
-  }
-  
-  private getClassName(buttonType: string) {
-    return (
-      buttonType === this.props.userType
-      ? 'gray signup-modal-button active'
-      : 'gray signup-modal-button'
-      )
   }
 }
