@@ -18,7 +18,10 @@ export class TitleModal extends React.Component<IProps, any> {
     console.log(match)
     
     return (
-      <Modal className="TitleModal">
+      <Modal
+        overlay={true}
+        className="TitleModal"
+      >
         <ModalHeader> 
           <p className="title-header">Practice Your Math Facts Here</p>
         </ModalHeader>
