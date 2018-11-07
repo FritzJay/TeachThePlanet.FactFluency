@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { fetchAvailableTests, fetchNewTest } from 'src/lib/Api/Tests';
+import { fetchAvailableTests, fetchNewTest, fetchTestResults } from 'src/lib/Api/Tests';
 import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
-import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
+import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
-import { Requests } from '../../lib/lib'
 import './FactFluency.css'
 import { SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes'
 
@@ -286,35 +285,20 @@ export class FactFluency extends React.Component<IProps, IState> {
     )
   }
 
-  private requestTestResults() {
-    const token = this.props.token || Caching.getCached('token')
-
-    if (token === undefined || token === null) {
-      this.props.history.replace('/')
-    }
-
+  private async requestTestResults(): Promise<ITestResults | undefined> {
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
       this.props.history.replace(`${this.props.match.url}/select-test`)
+      return
     }
 
-    const requestParams: IRequest = {
-      body: test,
-      method: "POST",
-      token,
+    try {
+      return await fetchTestResults(this.props.token, test)
+    } catch(error) {
+      this.handleLogout()
+      return
     }
-
-    return new Promise<ITestResults>((resolve) => {
-      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
-      .then((testResults: ITestResults) => {
-        resolve(testResults)
-      })
-      .catch((error: Error) => {
-        console.log('Request failed with error: ' + error.message)
-        this.handleLogout()
-      })
-    })
   }
 
   private handleTestResultsResolve(results: { testResults: ITestResults }) {
