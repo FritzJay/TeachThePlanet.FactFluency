@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { getAvailableTests } from 'src/lib/Api/Tests';
+import { fetchAvailableTests, fetchNewTest } from 'src/lib/Api/Tests';
 import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
 import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
@@ -145,7 +145,7 @@ export class FactFluency extends React.Component<IProps, IState> {
 
   private async requestSelectTest(): Promise<IAvailableTests | undefined> {
     try {
-      return await getAvailableTests(this.props.token)
+      return await fetchAvailableTests(this.props.token)
     } catch (error) {
       this.handleLogout()
       return
@@ -191,34 +191,19 @@ export class FactFluency extends React.Component<IProps, IState> {
     )
   }
 
-  private requestStartTest(): Promise<ITest> {
-    const token = this.props.token || Caching.getCached('token')
-
-    if (token === undefined || token === null) {
-      this.props.history.replace('/')
-    }
-
+  private async requestStartTest(): Promise<ITest | undefined> {
     const testParameters = this.state.testParameters || Caching.getCached('testParameters')
     if (testParameters === undefined || testParameters === null) {
       this.props.history.goBack()
+      return
     }
 
-    const request: IRequest = {
-      body: testParameters,
-      method: "POST",
-      token,
+    try {
+      return await fetchNewTest(this.props.token, testParameters)
+    } catch(error) {
+      this.handleLogout()
+      return
     }
-
-    return new Promise<ITest>((resolve) => {
-      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
-      .then((test: ITest) => {
-        resolve(test)
-      })
-      .catch((error: Error) => {
-        console.log('Request failed with error: ', error)
-        this.handleLogout()
-      })
-    })
   }
 
   private handleStartTestResolve(results: { test: ITest }) {
