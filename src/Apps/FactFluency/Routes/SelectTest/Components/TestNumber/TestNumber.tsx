@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Card } from 'src/Components';
+import { Button, Card } from 'src/sharedComponents';
 import { ITestNumber } from '../../../../../../lib/Interfaces';
 import { Themes } from '../../../../../../lib/lib';
 import { Operator } from '../Components';

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { Button } from '../../../../../../Components/Button/Button'
-import { Modal, ModalContent, ModalHeader } from '../../../../../../Components/Modal/Modal'
+import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { signup } from '../../../../../../lib/Api/Sessions'
 import { IUser } from '../../../../../../lib/Interfaces'
 import './SignupModal.css'

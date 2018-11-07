@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Modal, ModalContent, ModalHeader } from 'src/Components';
+import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents';
 import { IRequest, IUser } from "../../../../lib/Interfaces";
 import { Requests } from '../../../../lib/lib';
 import './Login.css';

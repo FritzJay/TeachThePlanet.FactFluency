@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { Navbar, RequestComponent } from 'src/Components'
-import { PageNotFound } from '../../Components/PageNotFound/PageNotFound';
+import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
 import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
 import { Requests } from '../../lib/lib'

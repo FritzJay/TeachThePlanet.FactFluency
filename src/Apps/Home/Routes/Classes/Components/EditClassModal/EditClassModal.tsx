@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Input, Modal, ModalContent, ModalHeader } from 'src/Components'
-import { Button } from 'src/Components/Button/Button'
+import { Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Button } from 'src/sharedComponents/Button/Button'
 import { deleteClass, updateClass } from '../../../../../../lib/Api/Classes';
 import { IClass } from '../../../../../../lib/Interfaces'
 import './EditClassModal.css'

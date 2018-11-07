@@ -7,10 +7,10 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom'
+import { PageNotFound } from 'src/sharedComponents';
 import * as WebFont from 'webfontloader'
 import { FactFluency } from './Apps/FactFluency/FactFluency'
 import { Home } from './Apps/Home/Home'
-import { PageNotFound } from './Components/PageNotFound/PageNotFound';
 import './index.css'
 import { IUser } from './lib/Interfaces'
 import { Caching } from './lib/lib'

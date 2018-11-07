@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/Components';
+import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents';
 import './AddStudentModal.css';
 
 interface IProps {

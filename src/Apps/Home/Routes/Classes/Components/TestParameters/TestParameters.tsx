@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom';
 import { Operator } from 'src/Apps/FactFluency/Routes/SelectTest/Components/Components'
-import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/Components'
 import { fetchTestParameters, updateTestParameters } from 'src/lib/Api/TestParameters';
 import { Themes } from 'src/lib/lib';
+import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {

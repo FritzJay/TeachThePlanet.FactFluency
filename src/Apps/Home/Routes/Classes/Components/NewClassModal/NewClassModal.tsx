@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/Components';
+import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents';
 import { createClass } from '../../../../../../lib/Api/Classes';
 import './NewClassModal.css';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Card } from 'src/Components';
+import { Button, Card } from 'src/sharedComponents';
 import { IQuestion, ITestResults } from '../../../../lib/Interfaces';
 import { padString } from '../../../../lib/Utility/Utility';
 import './TestResults.css';

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import { Dropdown } from '../../Components'
+import { Dropdown } from 'src/sharedComponents'
 import { IUser } from '../../lib/Interfaces'
 import Logo from './logo.svg'
 import './Navbar.css'
