@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { Dropdown } from 'src/sharedComponents'
 import { IUser } from '../../lib/Interfaces'
-import Logo from './logo.svg'
+import Logo from './logo.png'
 import './Navbar.css'
 
 interface IProps {
@@ -16,62 +16,53 @@ interface IState {
 }
 
 export class Navbar extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-    this.state = {
-      activeDropdown: false,
-    }
-    this.handleToggleButtonClick = this.handleToggleButtonClick.bind(this)
+  public state: IState = {
+    activeDropdown: false,
   }
 
   public render() {
+    const { user, logoLink, onLogout } = this.props
+    const { activeDropdown } = this.state
+
     return (
       <div className="navbar">
-        {logoutButton(this.props.onLogout, this.props.user)}
+        {user !== undefined
+          ? <a className="logout-link" onClick={onLogout}>Logout</a>
+          : null}
 
-        <Link className="logo" to={this.props.logoLink}>
+        <Link className="logo" to={logoLink}>
           <img src={Logo} className="logo-img" alt="logo" />
         </Link>
 
-        {userInfo(this.props.user)}
+        {user !== undefined && (
+          <p className="username">
+            <i className="user-icon material-icons">account_circle</i>
+            {user.name}
+          </p>
+        )}
 
         <button className="toggle-btn" onClick={this.handleToggleButtonClick}><i className="material-icons">menu</i></button>
 
-        <Dropdown active={this.props.user ? this.state.activeDropdown : false}>
-          {userInfo(this.props.user)}
-          {logoutButton(this.props.onLogout, this.props.user)} 
+        <Dropdown active={user ? activeDropdown : false}>
+          {user !== undefined
+            ? (
+              <p className="username">
+                <i className="user-icon material-icons">account_circle</i>
+                {user.name}
+              </p>
+            ) : null}
+
+          {user !== undefined
+            ? <a className="logout-link" onClick={onLogout}>Logout</a>
+            : null} 
         </Dropdown>
       </div>
     )
   }
 
-  private handleToggleButtonClick() {
-    this.setState((prevState: IState) => {
-      return {activeDropdown: !prevState.activeDropdown}
-    })
+  private handleToggleButtonClick = () => {
+    this.setState((prevState: IState) => ({
+      activeDropdown: !prevState.activeDropdown
+    }))
   }
-}
-
-const userInfo = (user?: IUser) => {
-  if (user) {
-    return (
-      <p className="username"><i className="user-icon material-icons">account_circle</i>{user.name}</p>
-    )
-  } else {
-    return (
-      <p />
-    )
-  }
-}
-
-const logoutButton = (handleLogout: () => void, user?: IUser) => {
-  if (user) {
-    return (
-      <a className="logout-link" onClick={handleLogout}>Logout</a>
-    )
-  } else {
-    return (
-      <div className="logout-link" />
-    )
-   }
 }

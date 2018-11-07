@@ -1,6 +1,8 @@
 
 export interface IUser {
+  userType: string;
   name: string;
+  email: string;
 };
 
 export interface IQuestion {
