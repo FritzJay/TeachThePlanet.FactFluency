@@ -1,17 +1,12 @@
 @import '../../Stylesheets/all';
 
-.navbar-margin-top {
-  margin-top: 104px;
-  width: 100%;
-}
-
 .navbar {
   position: fixed;
   top: 0px;
   left: 0px;
+  right: 0px;
   z-index: $navbar;
 
-  width: 100%;
   padding: 1em 2em;
   
   display: grid;
