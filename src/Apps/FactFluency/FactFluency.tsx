@@ -218,7 +218,7 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
   
   private handleStartTestCancel() {
-    this.props.history.push(`${this.props.match.url}/select-test`)
+    this.props.history.push(`${this.props.match.url}`)
   }
 
   /****** END Start Test ******/
@@ -289,7 +289,7 @@ export class FactFluency extends React.Component<IProps, IState> {
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
-      this.props.history.replace(`${this.props.match.url}/select-test`)
+      this.props.history.replace(`${this.props.match.url}`)
       return
     }
 
