@@ -39,7 +39,7 @@ export default class Login extends React.Component<IProps, IState> {
     const { match } = this.props
 
     return (
-     <div className="login">
+     <div className="Login">
 
       <Switch>
         <Route

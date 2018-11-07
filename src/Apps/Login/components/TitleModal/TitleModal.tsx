@@ -17,7 +17,7 @@ export class TitleModal extends React.Component<IProps, any> {
     const { match } = this.props
     
     return (
-      <Modal className="title-modal">
+      <Modal className="TitleModal">
         <ModalHeader> 
           <p className="title-header">Practice Your Math Facts Here</p>
         </ModalHeader>

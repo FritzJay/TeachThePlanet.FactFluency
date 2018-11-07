@@ -1,6 +1,7 @@
 @import 'src/Stylesheets/all';
 
-.title-modal {
+.TitleModal {
+    max-width: 600px;
     grid-row: 2 / 2;
 
     justify-self: center;

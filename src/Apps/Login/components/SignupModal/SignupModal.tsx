@@ -40,7 +40,7 @@ export class SignupModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
-        className="signup-modal"
+        className="SignupModal"
       >
         <ModalHeader className="signup-modal-header">
           <h1>Sign Up or Login</h1>

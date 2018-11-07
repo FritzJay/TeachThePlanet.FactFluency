@@ -40,7 +40,7 @@ export class LoginModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
-        className="login-modal"
+        className="LoginModal"
       >
 
         <ModalHeader className="login-modal-header">
