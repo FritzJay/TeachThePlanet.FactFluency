@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Card } from '../../../../../../Components/Components'
+import { Card } from 'src/Components'
 import './CreateClassCard.css'
 
 export const CreateClassCard = () => (

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as CopyToClipboard from 'react-copy-to-clipboard'
+import { Card } from 'src/Components'
 import { IClass } from '../../../../../..//lib/Interfaces';
-import { Card } from '../../../../../../Components/Components'
 import './ClassCard.css'
 import SchoolIcon from './school-icon.svg'
 

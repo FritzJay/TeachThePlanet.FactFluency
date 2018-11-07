@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Navbar, PageNotFound } from '../../Components/Components';
+import { Navbar, PageNotFound } from '../../Components';
 import { IUser } from '../../lib/Interfaces';
 import { Caching } from '../../lib/lib';
 import './Home.css';

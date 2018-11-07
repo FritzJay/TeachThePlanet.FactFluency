@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom';
-import { Card } from '../../../../../../Components/Components';
+import { Card } from 'src/Components';
 import './ClassDetail.css'
 
 
