@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Navbar, PageNotFound } from 'src/sharedComponents';
+import { Navbar } from 'src/sharedComponents';
 import { IUser } from '../../lib/Interfaces';
 import { Caching } from '../../lib/lib';
 import Login from '../Login/Login'
@@ -43,7 +43,7 @@ export class Home extends React.Component<IProps, IState> {
           <div className="home">
             <Switch>
               <Route
-                path='/'
+                path='/index'
                 render={this.renderLogin}
               />
 
@@ -53,7 +53,7 @@ export class Home extends React.Component<IProps, IState> {
               />
 
               <Route
-                component={PageNotFound}
+                render={this.renderRedirect}
               />
             </Switch>
         </div>
@@ -76,6 +76,10 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Navbar ******/
+
+  private renderRedirect() {
+    return <Redirect to="/index" />
+  }
 
   /****** Login ******/
 

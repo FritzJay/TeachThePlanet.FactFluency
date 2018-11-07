@@ -50,13 +50,13 @@ export default class Login extends React.Component<IProps, IState> {
       
         <Route
           exact={true}
-          path='/login'
+          path={`${match.path}/login`}
           render={this.renderLoginModal}
         />
 
         <Route
           exact={true}
-          path='/signup'
+          path={`${match.path}/signup`}
           render={this.renderSignupModal}
         />
 

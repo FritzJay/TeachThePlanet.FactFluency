@@ -14,6 +14,7 @@ export class TitleModal extends React.Component<IProps, any> {
   }
 
   public render() {
+    const { match } = this.props
     
     return (
       <Modal className="title-modal">
@@ -21,11 +22,12 @@ export class TitleModal extends React.Component<IProps, any> {
           <p className="title-header">Practice Your Math Facts Here</p>
         </ModalHeader>
 
-        <ModalContent>
-        <Link className="title-btn" to={`${this.props.match.url}login`}>
-          <Button className="green">Get Started</Button>
-        </Link>
-        <p className="title-sub">Anytime. Almost Anywhere. Always Free.</p>
+        <ModalContent className="title-content">
+          <Link to={`${match.url}/login`}>
+            <Button className="green">Get Started</Button>
+          </Link>
+
+          <p className="title-sub">Anytime. Almost Anywhere. Always Free.</p>
         </ModalContent>
       </Modal>
     );

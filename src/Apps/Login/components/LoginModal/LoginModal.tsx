@@ -95,7 +95,7 @@ export class LoginModal extends React.Component<IProps, IState> {
         <ModalContent className="sign-log">
           <div className="button-row">
 
-            <Link to='/signup'>
+            <Link to='/index/signup'>
               <Button
                 className="login-modal-button gray"
               >
