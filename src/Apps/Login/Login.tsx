@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Route, RouteComponentProps } from 'react-router-dom';
-import { IUser } from '../../../../lib/Interfaces';
-import { LoginModal, SignupModal } from './Components/Components';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { IUser } from '../../lib/Interfaces';
+import { LoginModal, PageNotFound, SignupModal, TitleModal } from './components';
 import './Login.css';
 
 interface IProps extends RouteComponentProps<any> {
@@ -15,7 +15,7 @@ interface IState {
   secondPassword: string;
 }
 
-export class Login extends React.Component<IProps, IState> {
+export default class Login extends React.Component<IProps, IState> {
   public constructor(props: any) {
     super(props);
     
@@ -36,19 +36,33 @@ export class Login extends React.Component<IProps, IState> {
   }
 
   public render() {
+    const { match } = this.props
+
     return (
      <div className="login">
-     
-      <Route
-        exact={true}
-        path={this.props.match.path}
-        render={this.renderLoginModal}
-      />
 
-      <Route
-        path={`${this.props.match.path}/signup`}
-        render={this.renderSignupModal}
-      />
+      <Switch>
+        <Route
+          exact={true}
+          path={match.path}
+          component={TitleModal}
+        />
+      
+        <Route
+          exact={true}
+          path='/login'
+          render={this.renderLoginModal}
+        />
+
+        <Route
+          exact={true}
+          path='/signup'
+          render={this.renderSignupModal}
+        />
+
+        <Route component={PageNotFound} />
+
+      </Switch>
      
      </div> 
     )

@@ -3,8 +3,9 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Navbar, PageNotFound } from 'src/sharedComponents';
 import { IUser } from '../../lib/Interfaces';
 import { Caching } from '../../lib/lib';
+import Login from '../Login/Login'
 import './Home.css';
-import { Base, Classes, Login } from './Routes/Routes';
+import { Classes } from './Routes/Routes';
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser;
@@ -23,7 +24,6 @@ export class Home extends React.Component<IProps, IState> {
 
     this.state = {}
 
-    this.renderBase = this.renderBase.bind(this)
     this.renderLogin = this.renderLogin.bind(this)
     this.renderNavbar = this.renderNavbar.bind(this)
     this.renderClasses = this.renderClasses.bind(this)
@@ -43,13 +43,7 @@ export class Home extends React.Component<IProps, IState> {
           <div className="home">
             <Switch>
               <Route
-                exact={true}
-                path={'/'}
-                render={this.renderBase}
-              />
-
-              <Route
-                path='/login'
+                path='/'
                 render={this.renderLogin}
               />
 
@@ -82,19 +76,6 @@ export class Home extends React.Component<IProps, IState> {
   }
 
   /****** END Navbar ******/
-
-  /****** Base ******/
-
-  private renderBase(props: any) {
-    return (
-      <Base
-        {...props}
-        onLogin={this.props.onLogin}
-      />
-    )
-  }
-
-  /****** END Base ******/
 
   /****** Login ******/
 

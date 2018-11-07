@@ -1,0 +1,84 @@
+@import 'src/Stylesheets/all';
+
+.signup-modal {
+  .signup-modal-header {
+    background-color: $blue;
+    color: $white;
+
+    padding: 1em;
+  }
+
+  .user-types {
+    
+    padding: 0 2em;
+
+    h3 {
+      grid-column: 1 / -1;
+      grid-row: 1 / 1;
+    }
+  
+    .button-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+      grid-gap: 1em;
+
+      .signup-modal-button {
+        display: flex;
+        justify-content: center;
+        white-space: nowrap;
+
+        &.active {
+          background-color: $blue;
+          border: solid 3px $light-blue;
+          color: $white;
+  
+          &:hover {
+            background: none;
+            background-color: $light-blue;
+            border: solid 3px $very-light-blue;
+          }
+        }
+      }
+    }
+  } 
+
+  .inputs {
+    display: grid;
+    grid-gap: 1em;
+
+    padding: 2em;
+
+    .input {
+      font-family: 'Roboto', sans-serif;
+        font-size: 1em;
+        font-weight: 900;
+  
+        background-color: #FFFFFF;
+        
+        border: none;
+        border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+        
+        color: rgb(80, 80, 80);
+  
+        width: 90%;
+    }
+  }
+
+  .error {
+    color: $red;
+    font-weight: 600;
+  }
+    
+  .bottom-buttons {
+    width: 90%;
+    margin: auto auto;
+    border-top: solid 2px $light-gray;
+    padding: 2em 0 1em 0;
+
+    .cancel-button {
+      margin-top: .5em;
+      border: none;
+    }
+  }
+}

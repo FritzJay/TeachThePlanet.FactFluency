@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { login } from 'src/lib/Api/Sessions';
+import { IUser } from 'src/lib/Interfaces';
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents';
-import { login } from '../../../../../../lib/Api/Sessions';
-import { IUser } from '../../../../../../lib/Interfaces';
 import './LoginModal.css';
 
 interface IProps extends RouteComponentProps<any> {
@@ -37,7 +37,10 @@ export class LoginModal extends React.Component<IProps, IState> {
     const { error } = this.state
 
     return (
-      <Modal className="login-modal">
+      <Modal
+        overlay={true}
+        className="login-modal"
+      >
 
         <ModalHeader className="login-modal-header">
           <h1>Sign Up or Login</h1>
@@ -92,7 +95,7 @@ export class LoginModal extends React.Component<IProps, IState> {
         <ModalContent className="sign-log">
           <div className="button-row">
 
-            <Link to={`${this.props.match.url}/signup`}>
+            <Link to='/signup'>
               <Button
                 className="login-modal-button gray"
               >

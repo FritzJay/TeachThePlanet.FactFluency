@@ -1,40 +1,45 @@
-@import '../../../../../../Stylesheets/all';
+@import 'src/Stylesheets/all';
 
 .login-modal {
-  grid-column: 1 / -1;
-
-  .header.login-modal-header {
+  .login-modal-header {
     padding: 1em;
     background-color: $blue;
     color: $white;
   }
 
-  .content.user-types {
-    padding: 0 0 1em 0;
+  .user-types {
+    padding: 0 2em 1em 2em;
   }
 
-  .content.inputs {
+  .inputs {
     padding: 1em 2em;
   }
 
-  .content.sign-log {
+  .sign-log {
     padding: 1em;
   }
 
-  .button-row .login-modal-button {
-    margin: 0 .5em;
-    min-width: 96px;
+  .button-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    grid-gap: 1em;
 
-    &.active {
-      background-color: $blue;
-      border: solid 3px $light-blue;
-      background-size: 100%;
-      color: $white;
+    .login-modal-button {
+      display: flex;
+      justify-content: center;
+      white-space: nowrap;
 
-      &:hover {
-        background: none;
-        background-color: $light-blue;
-        border: solid 3px $very-light-blue;
+      &.active {
+        background-color: $blue;
+        border: solid 3px $light-blue;
+        color: $white;
+
+        &:hover {
+          background: none;
+          background-color: $light-blue;
+          border: solid 3px $very-light-blue;
+        }
       }
     }
   }
@@ -54,7 +59,7 @@
       border-bottom: 2px solid rgba(128, 128, 128, 0.425);
       
       color: rgb(80, 80, 80);
-
+      
       width: 90%;
     }
 
