@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
+import { getAvailableTests } from 'src/lib/Api/Tests';
 import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
 import { IAvailableTests, IRequest, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
@@ -8,7 +9,7 @@ import './FactFluency.css'
 import { SelectTest, StartTest, TakeTest, TestResults } from './Routes/Routes'
 
 interface IProps extends RouteComponentProps<{}> {
-  token?: string
+  token: string
   user?: IUser
   onLogin: (user: IUser, token: string, userType: string) => void
   onLogout: () => void
@@ -142,28 +143,13 @@ export class FactFluency extends React.Component<IProps, IState> {
     )
   }
 
-  private requestSelectTest(): Promise<IAvailableTests> {
-    const token = this.props.token || Caching.getCached('token')
-
-    if (token === undefined || token === null) {
-      this.props.history.replace('/')
+  private async requestSelectTest(): Promise<IAvailableTests | undefined> {
+    try {
+      return await getAvailableTests(this.props.token)
+    } catch (error) {
+      this.handleLogout()
+      return
     }
-
-    const requestParams: IRequest = {
-      method: "GET",
-      token,
-    }
-
-    return new Promise<IAvailableTests>((resolve) => {
-      Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
-      .then((availableTests: IAvailableTests) => {
-        resolve(availableTests)
-      })
-      .catch((error: Error) => {
-        console.log('Request failed with error: ' + error.message)
-        this.handleLogout()
-      })
-    })
   }
 
   private handleSelectTestResolve(results: {availableTests: IAvailableTests}) {
