@@ -13,9 +13,7 @@ interface IProps extends RouteComponentProps<any> {
   userType: string
   onSignup: (user: IUser, token: string, userType: string) => void
   onUserTypeSelect: (e: any) => void
-  onEmailChange: (e: any) => void
-  onPasswordChange: (e: any) => void
-  onSecondPasswordChange: (e: any) => void
+  onChange: (e: any) => void
 }
 
 interface IState {
@@ -23,18 +21,12 @@ interface IState {
 }
 
 export class SignupModal extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      error: ''
-    }
-
-    this.handleSignupClick = this.handleSignupClick.bind(this)
+  public state = {
+    error: ''
   }
 
   public render() {
-    const { email, password, secondPassword, userType, onUserTypeSelect, onEmailChange, onPasswordChange, onSecondPasswordChange } = this.props
+    const { email, password, secondPassword, userType, onUserTypeSelect, onChange } = this.props
     const { error } = this.state
 
     return (
@@ -53,7 +45,6 @@ export class SignupModal extends React.Component<IProps, IState> {
             currentType={userType}
             onSelect={onUserTypeSelect}
           />
-
         </ModalContent>
 
         <ModalContent className="inputs">
@@ -61,23 +52,26 @@ export class SignupModal extends React.Component<IProps, IState> {
           
           <input
             className="input"
-            onChange={onEmailChange}
+            onChange={onChange}
             value={email}
+            name="email"
             placeholder="Email"
           />
 
           <input
             className="input"
-            onChange={onPasswordChange}
+            onChange={onChange}
             value={password}
+            name="password"
             placeholder="Password"
             type="password"
           />
 
           <input
             className="input"
-            onChange={onSecondPasswordChange}
+            onChange={onChange}
             value={secondPassword}
+            name="secondPassword"
             placeholder="Verify password"
             type="password"
           />
@@ -101,7 +95,7 @@ export class SignupModal extends React.Component<IProps, IState> {
     )
   }
 
-  private async handleSignupClick() {
+  private handleSignupClick = async () => {
     const { email, password, secondPassword, userType } = this.props
 
     if (email === '' || password === '') {

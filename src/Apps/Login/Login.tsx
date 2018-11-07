@@ -16,23 +16,11 @@ interface IState {
 }
 
 export default class Login extends React.Component<IProps, IState> {
-  public constructor(props: any) {
-    super(props);
-    
-    this.state = {
-      email: '',
-      password: '',
-      secondPassword: '',
-      userType: 'Student',
-    }
-
-    this.handleEmailChange = this.handleEmailChange.bind(this)
-    this.handleUserTypeSelect = this.handleUserTypeSelect.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.handleSecondPasswordChange = this.handleSecondPasswordChange.bind(this)
-
-    this.renderLoginModal = this.renderLoginModal.bind(this)
-    this.renderSignupModal = this.renderSignupModal.bind(this)
+  public state = {
+    email: '',
+    password: '',
+    secondPassword: '',
+    userType: 'Student',
   }
 
   public render() {
@@ -68,7 +56,7 @@ export default class Login extends React.Component<IProps, IState> {
     )
   }
 
-  private renderLoginModal(props: any) {
+  private renderLoginModal = (props: any) => {
     const { email, password, secondPassword, userType } = this.state
 
     return (
@@ -80,13 +68,12 @@ export default class Login extends React.Component<IProps, IState> {
         secondPassword={secondPassword}
         userType={userType}
         onUserTypeSelect={this.handleUserTypeSelect}
-        onEmailChange={this.handleEmailChange}
-        onPasswordChange={this.handlePasswordChange}
+        onChange={this.handleChange}
       />
     )
   }
 
-  private renderSignupModal(props: any) {
+  private renderSignupModal = (props: any) => {
     const { email, password, secondPassword, userType } = this.state
 
     return (
@@ -97,15 +84,13 @@ export default class Login extends React.Component<IProps, IState> {
         password={password}
         secondPassword={secondPassword}
         userType={userType}
-        onUserTypeSelect={this.handleUserTypeSelect}
-        onEmailChange={this.handleEmailChange}
-        onPasswordChange={this.handlePasswordChange}
-        onSecondPasswordChange={this.handleSecondPasswordChange}
+        onUserTypeSelect={this.handleChange}
+        onChange={this.handleChange}
       />
     )
   }
 
-  private handleUserTypeSelect(e: any) {
+  private handleUserTypeSelect = (e: any) => {
     const value = e.target.innerText;
     
     if (value !== this.state.userType) {
@@ -114,28 +99,13 @@ export default class Login extends React.Component<IProps, IState> {
       })
     }
   }
-  
-  private handleEmailChange(e: any) {
-    const value = e.target.value
 
-    this.setState({
-      email: value
-    })
-  }
-  
-  private handlePasswordChange(e: any) {
-    const value = e.target.value
+  private handleChange = (e: any) => {
+    const { name, value } = e.target
 
-    this.setState({
-      password: value
-    })
-  }
-  
-  private handleSecondPasswordChange(e: any) {
-    const value = e.target.value
+    const state = {}
+    state[name] = value
 
-    this.setState({
-      secondPassword: value
-    })
+    this.setState(state)
   }
 }

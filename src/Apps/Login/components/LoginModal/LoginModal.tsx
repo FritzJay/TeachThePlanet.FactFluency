@@ -12,8 +12,7 @@ interface IProps extends RouteComponentProps<any> {
   userType: string
   onLogin: (user: IUser, token: string, userType: string) => void
   onUserTypeSelect: (e: any) => void
-  onEmailChange: (e: any) => void
-  onPasswordChange: (e: any) => void
+  onChange: (e: any) => void
 }
 
 interface IState {
@@ -21,20 +20,12 @@ interface IState {
 }
 
 export class LoginModal extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      error: ''
-    }
-
-    this.handleLoginClick = this.handleLoginClick.bind(this)
-    this.handlePracticeClick = this.handlePracticeClick.bind(this)
-    this.loginRequest = this.loginRequest.bind(this)
+  public state = {
+    error: ''
   }
 
   public render() {
-    const { email, password, userType, onUserTypeSelect, onEmailChange, onPasswordChange } = this.props
+    const { email, password, userType, onUserTypeSelect, onChange } = this.props
     const { error } = this.state
 
     return (
@@ -62,15 +53,17 @@ export class LoginModal extends React.Component<IProps, IState> {
 
           <input
             className="input"
-            onChange={onEmailChange}
+            onChange={onChange}
             value={email}
+            name="email"
             placeholder="Email or Username"
           />
 
           <input
             className="input"
-            onChange={onPasswordChange}
+            onChange={onChange}
             value={password}
+            name="password"
             placeholder="Password"
             type="password"
           />
@@ -108,8 +101,10 @@ export class LoginModal extends React.Component<IProps, IState> {
       </Modal>
     )
   }
+  
+  private handlePracticeClick = async () =>  this.loginRequest('empty@email.com', 'password', 'Student')
 
-  private async handleLoginClick() {
+  private handleLoginClick = async () => {
     const { email, password, userType } = this.props
 
     if (email === '' || password === '') {
@@ -119,12 +114,8 @@ export class LoginModal extends React.Component<IProps, IState> {
     
     this.loginRequest(email, password, userType)
   }
-  
-  private async handlePracticeClick() {
-    this.loginRequest('empty@email.com', 'password', 'Student')
-  }
 
-  private async loginRequest(email: string, password: string, userType: string) {
+  private loginRequest = async (email: string, password: string, userType: string) => {
     try {
       const { user, token } = await login(email, password, userType)
   
