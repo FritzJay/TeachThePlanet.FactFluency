@@ -1,8 +1,9 @@
 @import 'src/Stylesheets/all';
 
 .TitleModal {
+    grid-column: 1 / -1;
+  
     max-width: 600px;
-    grid-row: 2 / 2;
 
     justify-self: center;
     align-self: center;

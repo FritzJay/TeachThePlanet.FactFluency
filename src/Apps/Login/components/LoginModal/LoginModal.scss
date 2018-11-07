@@ -1,6 +1,8 @@
 @import 'src/Stylesheets/all';
 
 .LoginModal {
+  grid-column: 1 / -1;
+
   .login-modal-header {
     padding: 1em;
     background-color: $blue;

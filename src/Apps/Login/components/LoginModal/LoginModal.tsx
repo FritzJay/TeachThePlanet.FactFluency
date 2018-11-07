@@ -20,7 +20,7 @@ interface IState {
 }
 
 export class LoginModal extends React.Component<IProps, IState> {
-  public state = {
+  public state: IState = {
     error: ''
   }
 

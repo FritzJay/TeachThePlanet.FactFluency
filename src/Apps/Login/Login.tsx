@@ -1,22 +1,24 @@
-import * as React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { IUser } from '../../lib/Interfaces';
-import { LoginModal, PageNotFound, SignupModal, TitleModal } from './components';
-import './Login.css';
+import * as React from 'react'
+import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import { IUser } from '../../lib/Interfaces'
+import { LoginModal, Navbar, PageNotFound, SignupModal, TitleModal } from './components'
+import './Login.css'
 
 interface IProps extends RouteComponentProps<any> {
-  onLogin: (user: IUser, token: string, userType: string) => void;
+  user: IUser
+  onLogin: (user: IUser, token: string, userType: string) => void
+  onLogout: () => void
 }
 
 interface IState {
-  email: string;
-  userType: string;
-  password: string;
-  secondPassword: string;
+  email: string
+  userType: string
+  password: string
+  secondPassword: string
 }
 
 export default class Login extends React.Component<IProps, IState> {
-  public state = {
+  public state: IState = {
     email: '',
     password: '',
     secondPassword: '',
@@ -24,10 +26,16 @@ export default class Login extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { match } = this.props
+    const { match, user, onLogout } = this.props
 
     return (
      <div className="Login">
+
+      <Navbar
+        logoLink={'/'}
+        user={user}
+        onLogout={onLogout}
+      />
 
       <Switch>
         <Route
@@ -49,7 +57,6 @@ export default class Login extends React.Component<IProps, IState> {
         />
 
         <Route component={PageNotFound} />
-
       </Switch>
      
      </div> 
@@ -62,11 +69,11 @@ export default class Login extends React.Component<IProps, IState> {
     return (
       <LoginModal
         {...props}
-        onLogin={this.props.onLogin}
         email={email}
         password={password}
         secondPassword={secondPassword}
         userType={userType}
+        onLogin={this.props.onLogin}
         onUserTypeSelect={this.handleUserTypeSelect}
         onChange={this.handleChange}
       />
@@ -79,11 +86,11 @@ export default class Login extends React.Component<IProps, IState> {
     return (
       <SignupModal
         {...props}
-        onSignup={this.props.onLogin}
         email={email}
         password={password}
         secondPassword={secondPassword}
         userType={userType}
+        onSignup={this.props.onLogin}
         onUserTypeSelect={this.handleChange}
         onChange={this.handleChange}
       />
@@ -91,7 +98,7 @@ export default class Login extends React.Component<IProps, IState> {
   }
 
   private handleUserTypeSelect = (e: any) => {
-    const value = e.target.innerText;
+    const value = e.target.innerText
     
     if (value !== this.state.userType) {
       this.setState({

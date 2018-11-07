@@ -2,12 +2,12 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {
   BrowserRouter,
+  Redirect,
   Route,
   RouteComponentProps,
   Switch,
-  withRouter,
 } from 'react-router-dom'
-import { PageNotFound } from 'src/sharedComponents';
+import Login from 'src/Apps/Login/Login'
 import * as WebFont from 'webfontloader'
 import { FactFluency } from './Apps/FactFluency/FactFluency'
 import { Home } from './Apps/Home/Home'
@@ -24,62 +24,63 @@ interface IState {
 }
 
 class Index extends React.Component<IProps, IState> {
-  public constructor(props: IProps) {
-    super(props)
-
-    this.state = {}
-
-    this.renderHome = this.renderHome.bind(this)
-    this.renderFactFluency = this.renderFactFluency.bind(this)
-
-    this.handleLogin = this.handleLogin.bind(this)
-    this.handleLogout = this.handleLogout.bind(this)
+  public state: IState = {
+    token: undefined,
+    user: undefined,
   }
 
   public render() {
     return (
-      <div>
+      <div className="index">
         <Switch>
           <Route
-            path={'/fact-fluency'}
+            path="/index"
+            render={this.renderLogin}
+          />
+
+          <Route
+            path="/fact-fluency"
             render={this.renderFactFluency}
           />
 
           <Route
-            path='/'
+            path="/classes"
             render={this.renderHome}
           />
 
-          <Route component={PageNotFound} />
+          <Route render={this.renderRedirect} />
         </Switch>
       </div>
     )
   }
 
-  private renderHome(props: any) {
-    return (
-      <Home
-        {...props}
-        onLogin={this.handleLogin}
-        onLogout={this.handleLogout}
-        user={this.state.user}
-        token={this.state.token}
-      />
-    )
-  }
+  private renderHome = (props: any) => (
+    <Home
+      {...props}
+      onLogin={this.handleLogin}
+      onLogout={this.handleLogout}
+      user={this.state.user}
+      token={this.state.token}
+    />
+  )
 
-  private renderFactFluency(props: any) {
-    return (
-      <FactFluency
-        {...props}
-        onLogout={this.handleLogout}
-        user={this.state.user}
-        token={this.state.token}
-      />
-    )
-  }
+  private renderLogin = (props: any) => (
+    <Login
+      {...props}
+      onLogin={this.handleLogin}
+    />
+  )
 
-  private handleLogin(user: IUser, token: string, userType: string) {
+  private renderFactFluency = (props: any) => (
+    <FactFluency
+      {...props}
+      onLogout={this.handleLogout}
+      user={this.state.user}
+      token={this.state.token}
+    />
+  )
+
+  private handleLogin = (user: IUser, token: string, userType: string) => {
     console.log('Logging in user', user, token, userType)
 
     Caching.setCached('token', token)
@@ -99,7 +100,7 @@ class Index extends React.Component<IProps, IState> {
     })
   }
 
-  private handleLogout() {
+  private handleLogout = () => {
     localStorage.clear()
 
     this.setState({
@@ -109,6 +110,8 @@ class Index extends React.Component<IProps, IState> {
       this.props.history.replace('/')
     })
   }
+
+  private renderRedirect = () => <Redirect to="/index" />
 }
 
 WebFont.load({
@@ -121,15 +124,9 @@ WebFont.load({
   },
 })
 
-const indexWithRouter = withRouter(Index)
-
 ReactDOM.render((
   <BrowserRouter>
-
-    <Route path="/">
-      {indexWithRouter}
-    </Route>
-    
+    <Route path="/" component={Index} />
   </BrowserRouter>
 ), document.getElementById('root') as HTMLElement
 )

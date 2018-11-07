@@ -21,7 +21,7 @@ interface IState {
 }
 
 export class SignupModal extends React.Component<IProps, IState> {
-  public state = {
+  public state: IState = {
     error: ''
   }
 
@@ -85,7 +85,7 @@ export class SignupModal extends React.Component<IProps, IState> {
             Sign up
           </Button>
 
-          <Link to='/login'>
+          <Link to='/index/login'>
             <Button className="red cancel-button">
               Cancel
             </Button>

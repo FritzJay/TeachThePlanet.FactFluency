@@ -1,17 +1,7 @@
 @import 'src/Stylesheets/all';
 
 .Login {
-  grid-column: 1 / -1;
-  grid-row: 1 / -1;
-
-  width: 100%;
-  min-height: 100%;
+  @extend %app-grid;
 
   background-image: url("./banner.svg");
-
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-
-  margin-top: -104px;
 }

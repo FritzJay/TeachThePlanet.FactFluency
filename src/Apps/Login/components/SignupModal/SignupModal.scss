@@ -1,6 +1,8 @@
 @import 'src/Stylesheets/all';
 
 .SignupModal {
+  grid-column: 1 / -1;
+
   .signup-modal-header {
     background-color: $blue;
     color: $white;
