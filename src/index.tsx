@@ -54,14 +54,23 @@ class Index extends React.Component<IProps, IState> {
     )
   }
 
-  private renderClasses = (props: any) => (
-    <Classes
-      {...props}
-      onLogout={this.handleLogout}
-      user={this.state.user}
-      token={this.state.token}
-    />
-  )
+  private renderClasses = (props: any) => {
+    const token = this.state.token || Caching.getCached('token')
+    const user = this.state.user || Caching.getCached('user')
+
+    if (token === undefined || token === null || user === undefined || user === null) {
+      return <Redirect to="/index" />
+    }
+
+    return (
+      <Classes
+        {...props}
+        onLogout={this.handleLogout}
+        user={this.state.user}
+        token={this.state.token}
+      />
+    )
+  }
 
   private renderLogin = (props: any) => (
     <Login
@@ -70,14 +79,23 @@ class Index extends React.Component<IProps, IState> {
     />
   )
 
-  private renderFactFluency = (props: any) => (
-    <FactFluency
-      {...props}
-      onLogout={this.handleLogout}
-      user={this.state.user}
-      token={this.state.token}
-    />
-  )
+  private renderFactFluency = (props: any) => {
+    const token = this.state.token || Caching.getCached('token')
+    const user = this.state.user || Caching.getCached('user')
+
+    if (token === undefined|| token === null || user === undefined || user === null) {
+      return <Redirect to="/index" />
+    }
+
+    return (
+      <FactFluency
+        {...props}
+        onLogout={this.handleLogout}
+        user={this.state.user}
+        token={this.state.token}
+      />
+    )
+  }
 
   private handleLogin = (user: IUser, token: string, userType: string) => {
     console.log('Logging in user', user, token, userType)
@@ -94,7 +112,7 @@ class Index extends React.Component<IProps, IState> {
       } else if (userType === 'Teacher') {
         this.props.history.push('/classes')
       } else {
-        this.props.history.push('/')
+        this.props.history.push('/index')
       }
     })
   }
@@ -106,7 +124,7 @@ class Index extends React.Component<IProps, IState> {
       token: undefined,
       user: undefined,
     }, () => {
-      this.props.history.replace('/')
+      this.props.history.replace('/index')
     })
   }
 

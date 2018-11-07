@@ -11,18 +11,17 @@
   left: 0px;
   z-index: $navbar;
 
-  min-width: 100%;
+  width: 100%;
   padding: 1em 2em;
   
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
 
-  align-items: center;  
+  align-items: center;
   background-color: #FFFFFF;
   box-shadow: $dp-six;
 
-  /* Logout Link Styles */
   .logout-link {
     grid-column: 1 / 1;
     justify-self: flex-start;
@@ -30,24 +29,22 @@
     cursor: pointer;
     font-weight: 700;
     color: rgba(0, 0, 0, 0.5);
+
+    &:hover {
+      color: $blue;
+    }
   }
 
-  .logout-link:hover {
-    color: $blue;
-  }
-
-  /* Logo Styles */
   .logo {
     grid-column: 2 / 2;
     justify-self: center;
+
+    .logo-img {
+      width: 50px;
+      height: 50px;
+    }
   }
 
-  .logo-img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  /* Username Styles */
   .username {
     grid-column: 3 / 3;
     justify-self: flex-end;
@@ -55,19 +52,21 @@
     cursor: pointer;
     font-weight: 700;
     color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .user-icon {
-    vertical-align: middle;
-    padding-right: .25em;
-    color: rgba(0, 0, 0, 0.5);
     
-    cursor: pointer;
+    .user-icon {
+      vertical-align: middle;
+      padding-right: .25em;
+      color: rgba(0, 0, 0, 0.5);
+      
+      cursor: pointer;
+    }
+
   }
   
   .toggle-btn {
     display: none;
   }
+
   .dropdown {
     display: none;
   }
