@@ -9,8 +9,8 @@ import {
 } from 'react-router-dom'
 import Login from 'src/Apps/Login/Login'
 import * as WebFont from 'webfontloader'
+import { Classes } from './Apps/Classes/Classes'
 import { FactFluency } from './Apps/FactFluency/FactFluency'
-import { Home } from './Apps/Home/Home'
 import './index.css'
 import { IUser } from './lib/Interfaces'
 import { Caching } from './lib/lib'
@@ -45,7 +45,7 @@ class Index extends React.Component<IProps, IState> {
 
           <Route
             path="/classes"
-            render={this.renderHome}
+            render={this.renderClasses}
           />
 
           <Route render={this.renderRedirect} />
@@ -54,10 +54,9 @@ class Index extends React.Component<IProps, IState> {
     )
   }
 
-  private renderHome = (props: any) => (
-    <Home
+  private renderClasses = (props: any) => (
+    <Classes
       {...props}
-      onLogin={this.handleLogin}
       onLogout={this.handleLogout}
       user={this.state.user}
       token={this.state.token}
