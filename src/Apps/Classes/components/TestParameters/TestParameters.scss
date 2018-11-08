@@ -3,141 +3,108 @@
 .TestParametersModal {
     grid-column: 2 / 2;
     justify-content: stretch;
-    margin-bottom: 2em;
-
+    margin: 2em 0;
+    max-width: 500px;
+    
     .parameters-header {
         background-color: $blue;
         color: $white;
+        
+        .header {
+            margin-bottom: 0;
+        }
     }
-
+    
     .parameter-content {
+        padding: 2em;
+
+        p, label {
+            margin-top: 0;
+            font-size: 1em;
+        }
+        
         .form {
             display: grid;
             grid-template-areas:
-                "durationheader  durationheader  durationheader  durationheader  durationheader"
-                "minuteslabel    minuteslabel      secondslabel     secondslabel    secondslabel"
-                "minutes          minutes          separator        seconds          seconds"
-                "questionsheader questionsheader questionsheader questionsheader questionsheader"
-                "questions        questions        questions        questions        questions"
-                "randomheader    randomheader    randomheader    randomheader    randomheader"
-                "randomtext      randomtext      randomtext      randomtext      randomtext"
-                "random           random           random           random           random"
-                "operatorsheader operatorsheader operatorsheader operatorsheader operatorsheader"
-                "operators        operators        operators        operators        operators"
-                "numbersheader   numbersheader   numbersheader   numbersheader   numbersheader"
-                "numbers          numbers          numbers          numbers          numbers"
-                "numbers          numbers          numbers          numbers          numbers"
-                "save             save             save             save             save"
-                "cancel           cancel           cancel           cancel           cancel";
+            "operatorsheader operatorsheader operatorsheader operatorsheader operatorsheader"
+            "operatorstext   operatorstext   operatorstext   operatorstext   operatorstext"
+            "operators        operators        operators        operators        operators"
+            "numbersheader   numbersheader   numbersheader   numbersheader   numbersheader"
+            "numberstext     numberstext     numberstext     numberstext     numberstext"
+            "numbers          numbers          numbers          numbers          numbers"
+            "numbers          numbers          numbers          numbers          numbers"
+            "questionsheader questionsheader questionsheader questionsheader questionsheader"
+            "questions        questions        questions        questions        questions"
+            "randomheader    randomheader    randomheader    randomheader    randomheader"
+            "randomtext      randomtext      randomtext      randomtext      randomtext"
+            "random           random           random           random           random"
+            "durationheader  durationheader  durationheader  durationheader  durationheader"
+            "minuteslabel    minuteslabel      minuteslabel     secondslabel    secondslabel"
+            "minutes          minutes          separator        seconds          seconds"
+            "save             save             save             save             save"
+            "cancel           cancel           cancel           cancel           cancel";
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: auto;
             
-            .duration-header {
-                grid-area: durationheader;
-
+            .operators-header {
+                grid-area: operatorsheader;
+                
                 margin: 0 0 0.5em 0;
             }
 
-            .minutes-label {
-                grid-area: minuteslabel;
+            .operators-text {
+                grid-area: operatorstext;
             }
-
-            .seconds-label {
-                grid-area: secondslabel;
-            }
-
-            .minutes {
-                grid-area: minutes;
-            }
-
-            .separator {
-                grid-area: separator;
-                margin: 0.25em 0 0 0;
-                justify-self: center;
-            }
-
-            .seconds {
-                grid-area: seconds;
-            }
-
-            .questions-header {
-                grid-area: questionsheader;
-
-                margin: 1.5em 0 0.5em 0;
-            }
-
-            .questions {
-                grid-area: questions;
-            }
-
-            .random-header {
-                grid-area: randomheader;
-
-                margin: 1.5em 0 0.25em 0;
-            }
-
-            .random-text {
-                grid-area: randomtext;
-
-                margin-top: 0;
-                font-size: .75em;
-            }
-
-            .random {
-                grid-area: random;
-            }
-
-            .operators-header {
-                grid-area: operatorsheader;
-
-                margin: 1.5em 0 0.5em 0;
-            }
-
+            
             .operators {
                 grid-area: operators;
-
+                
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: space-evenly;
-
+                
                 font-size: 2.75rem;
             }
             
             .numbers-header {
                 grid-area: numbersheader;
-
+                
                 margin: 1.5em 0 0.5em 0;
             }
 
+            .numbers-text {
+                grid-area: numberstext;
+            }
+            
             .numbers {
                 grid-area: numbers;
-
+                
                 margin: 0 auto;
-
+                
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-                justify-content: space-evenly;
-
+                justify-content: center;
+                
                 .select-multiples {
                     background-color: $white;
                     color: $blue;
                     border: none;
                     font-size: 24px;
                     font-weight: 500;
-
+                    
                     width: 42px;
                     height: 42px;
-
+                    
                     margin: 0 0.5em 0.25em 0;
-
+                    
                     border-radius: 50%;
-
+                    
                     &:hover {
                         background-color: $very-light-blue;
                     }
-
+                    
                     &.active {
                         background-color: $blue;
                         color: white;
@@ -145,13 +112,65 @@
                 }
             }
 
-            .save {
-                grid-area: save;
+            .questions-header {
+                grid-area: questionsheader;
+                
+                margin: 1.5em 0 0.5em 0;
+            }
+            
+            .questions {
+                grid-area: questions;
+            }
+            
+            .random-header {
+                grid-area: randomheader;
+                
+                margin: 1.5em 0 0.25em 0;
+            }
+            
+            .random-text {
+                grid-area: randomtext;
+            }
+            
+            .random {
+                grid-area: random;
+            }
+            
+            .duration-header {
+                grid-area: durationheader;
 
                 margin: 1.5em 0 0.5em 0;
+            }
+
+            .minutes-label {
+                grid-area: minuteslabel;
+            }
+            
+            .minutes {
+                grid-area: minutes;
+            }
+            
+            .separator {
+                grid-area: separator;
+                margin: 0.25em 0 0 0;
                 justify-self: center;
             }
 
+            .seconds-label {
+                grid-area: secondslabel;
+            }
+
+            .seconds {
+                grid-area: seconds;
+            }
+            
+            .save {
+                grid-area: save;
+                
+                margin: 1.75em 0 1em 0;
+                justify-self: center;
+            }
+            
             .cancel {
                 grid-area: cancel;
                 justify-self: center;

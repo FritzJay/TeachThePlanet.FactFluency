@@ -87,53 +87,15 @@ export class TestParameters extends React.Component<IProps, IState> {
       >
 
         <ModalHeader className="parameters-header">
-          <h1>Test Parameters</h1>
+          <h1 className="header">Test Settings</h1>
+          <p>Set the parameters of the tests which will be available for selection by the students in this class.</p>
         </ModalHeader>
 
         <ModalContent className="parameter-content">
           <form className="form">
-            <h3 className="duration-header">Duration</h3>
-
-            <label className="minutes-label" htmlFor="minute">Minute</label>
-            <Input
-              className="minutes"
-              name="minute"
-              value={minute}
-              onChange={this.handleChange}
-              type="number"
-            />
-
-            <h3 className="separator">:</h3>
-
-            <label className="seconds-label" htmlFor="second">Second</label>
-            <Input
-              className="seconds"
-              name="second"
-              value={second}
-              onChange={this.handleChange}
-              type="number"
-            />
-
-            <h3 className="questions-header">Number of Questions</h3>
-            <Input
-              className="questions"
-              name="questions"
-              value={questions}
-              onChange={this.handleChange}
-              type="number"
-            />
-
-            <h3 className="random-header">Number of Random Questions</h3>
-            <p className="random-text">Number of questions from other multiples</p>
-            <Input
-              className="random"
-              name="randomQuestions"
-              value={randomQuestions}
-              onChange={this.handleChange}
-              type="number"
-            />
 
             <h3 className="operators-header">Operators</h3>
+            <p className="operators-text">Select as many as you wish</p>
             <div className="operators">
               {['+', '-', '*', '/'].map((symbol, i) => {
                 const color = Themes.themeColors[i % Themes.themeColors.length];
@@ -150,22 +112,60 @@ export class TestParameters extends React.Component<IProps, IState> {
                 )
               })}
             </div>
-
+            
             <h3 className="numbers-header">Multiples Available</h3>
-
+            <p className="numbers-text">Select as many as you wish</p>
             <div className="numbers">
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => {
                 return (
                   <button
-                    key={num}
-                    className={`select-multiples${numbers.includes(num) ? ' active' : ''}`}
-                    onClick={this.handleNumberClick}
+                  key={num}
+                  className={`select-multiples${numbers.includes(num) ? ' active' : ''}`}
+                  onClick={this.handleNumberClick}
                   >
                     {num}
                   </button>
                 )
               })}
             </div>
+            
+            <h3 className="questions-header">Number of Questions</h3>
+            <Input
+              className="questions"
+              name="questions"
+              value={questions}
+              onChange={this.handleChange}
+              type="number"
+            />
+            
+            <h3 className="random-header">Number of Random Questions</h3>
+            <p className="random-text">Number of questions from other multiples</p>
+            <Input
+              className="random"
+              name="randomQuestions"
+              value={randomQuestions}
+              onChange={this.handleChange}
+              type="number"
+            />
+
+            <h3 className="duration-header">Duration</h3>
+            <label className="minutes-label" htmlFor="minute">Minutes</label>
+            <Input
+              className="minutes"
+              name="minute"
+              value={minute}
+              onChange={this.handleChange}
+              type="number"
+            />
+            <h3 className="separator">:</h3>
+            <label className="seconds-label" htmlFor="second">Seconds</label>
+            <Input
+              className="seconds"
+              name="second"
+              value={second}
+              onChange={this.handleChange}
+              type="number"
+            />
 
             <Button
               className="save green"
@@ -188,13 +188,13 @@ export class TestParameters extends React.Component<IProps, IState> {
       </Modal>
     )
   }
-
+  
   private handleChange = (e: any) => {
     const { value, name } = e.target
-
+    
     const state = {}
     state[name] = value
-
+    
     this.setState(state)
   }
 
