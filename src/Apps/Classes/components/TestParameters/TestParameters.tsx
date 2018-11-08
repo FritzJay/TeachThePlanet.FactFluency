@@ -169,6 +169,7 @@ export class TestParameters extends React.Component<IProps, IState> {
 
             <Button
               className="save green"
+              type="submit"
               onClick={this.handleSaveClick}
             >
               Save
@@ -176,6 +177,7 @@ export class TestParameters extends React.Component<IProps, IState> {
 
             <Button 
               className="cancel red"
+              type="button"
               onClick={this.handleCancelClick}
             >
               Cancel
@@ -207,6 +209,8 @@ export class TestParameters extends React.Component<IProps, IState> {
   }
 
   private handleNumberClick = (e: any) => {
+    e.preventDefault()
+
     const num = parseInt(e.target.innerText, 10)
     const { numbers } = this.state
 
@@ -217,7 +221,9 @@ export class TestParameters extends React.Component<IProps, IState> {
     }
   }
 
-  private handleSaveClick = async () => {
+  private handleSaveClick = async (e: any) => {
+    e.preventDefault()
+
     const { token, history } = this.props
     const { testParametersID, minute, numbers, operators, questions, randomQuestions, second } = this.state
 

@@ -1,17 +1,10 @@
 import * as React from 'react';
 import './Button.css';
 
-export interface IButtonProps {
-  autoFocus?: boolean;
-  className?: string;
-  children: any;
-  onClick?: (event: any) => void;
-}
-
-export const Button = (props: IButtonProps) => {
+export const Button = (props: any) => {
   return (
     <button
-      autoFocus={props.autoFocus}
+      {...props}
       className={`pill-button ${props.className ? ' ' + props.className : ''}`}
       onClick={props.onClick}
     >
