@@ -66,8 +66,8 @@ class Index extends React.Component<IProps, IState> {
       <Classes
         {...props}
         onLogout={this.handleLogout}
-        user={this.state.user}
-        token={this.state.token}
+        user={user}
+        token={token}
       />
     )
   }
@@ -91,15 +91,13 @@ class Index extends React.Component<IProps, IState> {
       <FactFluency
         {...props}
         onLogout={this.handleLogout}
-        user={this.state.user}
-        token={this.state.token}
+        user={user}
+        token={token}
       />
     )
   }
 
   private handleLogin = (user: IUser, token: string, userType: string) => {
-    console.log('Logging in user', user, token, userType)
-
     Caching.setCached('token', token)
     Caching.setCached('user', user)
 
