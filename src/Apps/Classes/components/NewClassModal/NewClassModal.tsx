@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { createClass } from 'src/lib/Api/Classes';
-import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents';
-import './NewClassModal.css';
+import * as React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+import { createClass } from 'src/lib/Api/Classes'
+import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import './NewClassModal.css'
 
 interface IProps extends RouteComponentProps<{}> {
   token: string
@@ -16,18 +16,10 @@ interface IState {
 }
 
 export class NewClassModal extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      error: '',
-      grade: 'kindergarten',
-      name: '',
-    }
-
-    this.handleCancelClick = this.handleCancelClick.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleCreateClassClick = this.handleCreateClassClick.bind(this)
+  public state = {
+    error: '',
+    grade: 'kindergarten',
+    name: '',
   }
 
   public render() {
@@ -36,7 +28,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
-        className="new-class-modal"
+        className="NewClassModal"
       >
 
         <ModalHeader className="modal-header">
@@ -94,10 +86,10 @@ export class NewClassModal extends React.Component<IProps, IState> {
 
         </ModalContent>
       </Modal>
-    );
+    )
   }
 
-  private async handleCreateClassClick() {
+  private handleCreateClassClick = async () => {
     const { token, history, onSave } = this.props
     const { grade, name } = this.state
     
@@ -119,11 +111,11 @@ export class NewClassModal extends React.Component<IProps, IState> {
     }
   }
 
-  private handleCancelClick() {
+  private handleCancelClick = () => {
     this.props.history.push('/classes')
   }
 
-  private handleChange(e: any) {
+  private handleChange = (e: any) => {
     const { value, name } = e.target
 
     const state = { error: '' }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as CopyToClipboard from 'react-copy-to-clipboard'
-import { IClass } from 'src/lib/Interfaces';
+import { IClass } from 'src/lib/Interfaces'
 import { Card } from 'src/sharedComponents'
 import './ClassCard.css'
 import SchoolIcon from './school-icon.svg'
@@ -28,7 +28,7 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
 
   return (
     <Card
-      className="class-card"
+      className="ClassCard"
       onClick={handleCardClick}
     >
 

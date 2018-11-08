@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom'
 import { Operator } from 'src/Apps/FactFluency/Routes/SelectTest/Components/Components'
-import { fetchTestParameters, updateTestParameters } from 'src/lib/Api/TestParameters';
-import { Themes } from 'src/lib/lib';
+import { fetchTestParameters, updateTestParameters } from 'src/lib/Api/TestParameters'
+import { Themes } from 'src/lib/lib'
 import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './TestParameters.css'
 
@@ -98,7 +98,7 @@ export class TestParameters extends React.Component<IProps, IState> {
             <p className="operators-text">Select as many as you wish</p>
             <div className="operators">
               {['+', '-', '*', '/'].map((symbol, i) => {
-                const color = Themes.themeColors[i % Themes.themeColors.length];
+                const color = Themes.themeColors[i % Themes.themeColors.length]
                 
                 return (
                   <Operator
@@ -246,7 +246,5 @@ export class TestParameters extends React.Component<IProps, IState> {
     }
   }
   
-  private handleCancelClick = () => {
-    this.props.history.push('/classes/detail')
-  }
+  private handleCancelClick = () => this.props.history.push('/classes/detail')
 }

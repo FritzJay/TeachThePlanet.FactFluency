@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { deleteClass, updateClass } from 'src/lib/Api/Classes';
+import { RouteComponentProps } from 'react-router-dom'
+import { deleteClass, updateClass } from 'src/lib/Api/Classes'
 import { IClass } from 'src/lib/Interfaces'
 import { Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
@@ -19,20 +19,10 @@ interface IState {
 }
 
 export class EditClassModal extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-    
-    const { grade='', name='' } = this.props.cls
-
-    this.state = {
-      error: '',
-      grade,
-      name,
-    }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleDeleteClick = this.handleDeleteClick.bind(this)
-    this.handleSaveChangesClick = this.handleSaveChangesClick.bind(this)
+  public state = {
+    error: '',
+    grade: this.props.cls.grade,
+    name: this.props.cls.name,
   }
 
   public render() {
@@ -42,7 +32,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
-        className="edit-class-modal"
+        className="EditClassModal"
       >
 
         <ModalHeader className="modal-header">
@@ -89,9 +79,12 @@ export class EditClassModal extends React.Component<IProps, IState> {
               Delete Class
             </Button>
 
-            <Link to={'/classes'}>
-              <Button className="cancel">Cancel</Button>
-            </Link>
+            <Button
+              className="cancel"
+              onClick={this.handleCancelClick}
+            >
+              Cancel
+            </Button>
 
             <Button
               className="save-changes"
@@ -106,7 +99,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
     )
   }
   
-  private async handleDeleteClick() {
+  private handleDeleteClick = async () => {
     const { token, history, cls, onSave } = this.props
     
     try {
@@ -122,7 +115,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
     }
   }
 
-  private async handleSaveChangesClick() {
+  private handleSaveChangesClick = async () => {
     const { token, history, cls, onSave } = this.props
     const { grade, name } = this.state
 
@@ -136,15 +129,19 @@ export class EditClassModal extends React.Component<IProps, IState> {
 
       onSave()
       
-      history.push('/classes')
+      history.goBack()
 
     } catch (error) {
       console.log(error)
       this.setState({ error: 'An unexpected error ocurred. Please try again later' })
     }
   }
+
+  private handleCancelClick = () => {
+    this.props.history.goBack()
+  }
   
-  private handleChange(e: any) {
+  private handleChange = (e: any) => {
     const { value, name } = e.target
 
     const state = { error: '' }

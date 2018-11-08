@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
-import { getClasses } from 'src/lib/Api/Classes';
-import { IClass, IUser } from 'src/lib/Interfaces';
-import { Caching } from 'src/lib/lib';
-import './Classes.css';
+import * as React from 'react'
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
+import { getClasses } from 'src/lib/Api/Classes'
+import { IClass, IUser } from 'src/lib/Interfaces'
+import { Caching } from 'src/lib/lib'
+import './Classes.css'
 import {
   ClassDetail,
   ClassesGrid,
@@ -11,7 +11,7 @@ import {
   Navbar,
   NewClassModal,
   TestParameters,
-} from './components';
+} from './components'
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser
@@ -55,7 +55,7 @@ export class Classes extends React.Component<IProps, IState> {
     const { match, onLogout, user } = this.props
 
     return (
-      <div className="classes">
+      <div className="Classes">
         <Navbar
           user={user}
           logoLink="/"
@@ -91,6 +91,11 @@ export class Classes extends React.Component<IProps, IState> {
         <Route
           path={`${match.path}/detail/test-parameters`}
           render={this.renderTestParameters}
+        />
+        
+        <Route
+          path={`${match.path}/detail/class-settings`}
+          render={this.renderEditClassModal}
         />
       </div>
     )
@@ -196,7 +201,7 @@ export class Classes extends React.Component<IProps, IState> {
   private fetchClasses() {
     const { onLogout } = this.props
     
-    const token = this.props.token || Caching.getCached('token');
+    const token = this.props.token || Caching.getCached('token')
 
     if (token === undefined || token === null) {
       onLogout()
