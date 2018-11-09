@@ -77,7 +77,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
             </Button>
 
             <Button
-              className="cancel"
+              className="red cancel"
               onClick={this.handleCancelClick}
             >
               Cancel
