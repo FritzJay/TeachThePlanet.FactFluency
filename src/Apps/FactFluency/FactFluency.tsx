@@ -2,18 +2,18 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
 import { Navbar, PageNotFound } from 'src/sharedComponents'
-import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
+import { IAvailableTests, ITest, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
 import { SelectTest, StartTest, TakeTest, TestResults } from './components'
 import './FactFluency.css'
 
 interface IProps extends RouteComponentProps<{}> {
+  availableTests?: IAvailableTests
   user: IUser
   onLogout: () => void
 }
 
 interface IState {
-  availableTests?: IAvailableTests
   testParameters?: {
     number: number
     operator: string
@@ -41,12 +41,12 @@ class DisconnectedFactFluency extends React.Component<IProps, IState> {
             <Route
               exact={true}
               path={match.path}
-              render={this.renderSelectTest}
+              component={SelectTest}
             />
 
             <Route
               path={`${match.path}/start-test`}
-              render={this.renderStartTest}
+              component={StartTest}
             />
 
             <Route
@@ -65,70 +65,8 @@ class DisconnectedFactFluency extends React.Component<IProps, IState> {
       </div>
     )
   }
-
-  /****** Navbar ******/
-
-
-  /****** END Navbar ******/
   
-  /****** Select Test ******/
-
-  private renderSelectTest = (props: any) => (
-    <SelectTest
-      {...props}
-      token={this.props.user.token}
-      onSubmit={this.handleSelectTestSubmit}
-      storeAvailableTests={this.storeAvailableTests}
-    />
-  )
-
-  private storeAvailableTests = (availableTests: IAvailableTests) => {
-    Caching.setCached('availableTests', availableTests)
-    this.setState({ availableTests })
-  }
-  
-  private handleSelectTestSubmit = (testNumber: ITestNumber, operator: string) => {
-    const testParameters = {
-      number: testNumber.number,
-      operator,
-    }
-
-    Caching.removeCached('test')
-    Caching.setCached('testParameters', testParameters)
-
-    this.setState({
-      test: undefined,
-      testParameters,
-    }, () => {
-      this.props.history.push(`${this.props.match.url}/start-test`)
-    })
-  }
-
-  /****** END Select Test ******/
-
-  /****** Start Test ******/
-  
-  private renderStartTest = (props: any) => {
-    const { user, match } = this.props
-
-    const testParameters = this.state.testParameters || Caching.getCached('testParameters')
-    if (testParameters === undefined || testParameters === null) {
-      console.warn('Error while rendering StartTest: ``testParameters`` is undefined')
-      return <Redirect to={match.url} />
-    }
-
-    return (
-      <StartTest
-        {...props}
-        token={user.token}
-        testParameters={testParameters}
-        onSubmit={this.handleStartTestSubmit}
-        onCancel={this.handleStartTestCancel}
-        storeTest={this.storeTest}
-      />
-    )
-  }
-  
+  /*
   private handleStartTestSubmit = () => {
     Caching.removeCached('testResults')
 
@@ -146,6 +84,7 @@ class DisconnectedFactFluency extends React.Component<IProps, IState> {
     Caching.setCached('test', test)
     this.setState({ test })
   }
+  */
   
   /****** END Start Test ******/
 

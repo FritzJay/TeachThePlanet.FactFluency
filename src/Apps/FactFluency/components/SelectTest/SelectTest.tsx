@@ -1,42 +1,35 @@
 import * as React from "react"
-import { fetchAvailableTests } from "src/lib/Api/Tests";
+import { connect } from 'react-redux'
+import { RouteComponentProps } from "react-router-dom";
 import { IAvailableTests, ITestNumber } from "src/lib/Interfaces"
 import { Themes } from "src/lib/lib"
+import { handleReceiveAvailableTests, setNewTestParameters } from "src/redux/actions/factFluency";
 import { Loading } from "src/sharedComponents";
 import './SelectTest.css'
 import { TestNumber } from './TestNumber/TestNumber'
 
-interface IProps  {
+interface IProps extends RouteComponentProps<{}>  {
+  availableTests?: IAvailableTests
+  dispatch: any;
   token: string
-  onSubmit: (testNumber: ITestNumber) => void
-  storeAvailableTests: (availableTests: IAvailableTests) => void
 }
 
 interface IState {
-  availableTests?: IAvailableTests
   error: string
   selectedNumber?: number
 }
 
-export class SelectTest extends React.Component<IProps, IState> {
+class DisconnectedSelectTest extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
   }
   
   public async componentDidMount() {
-    const { token, storeAvailableTests } = this.props
-
     window.addEventListener('scroll', this.handleScroll)
 
     try {
-      const availableTests = await fetchAvailableTests(token)
-      
-      storeAvailableTests(availableTests)
-
-      this.setState({
-        availableTests,
-        error: '',
-      })
+      this.props.dispatch(handleReceiveAvailableTests(this.props.token))
+      this.setState({ error: '' })
     } catch (error) {
       this.setState({ error })
     }
@@ -47,7 +40,9 @@ export class SelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    if (this.state.availableTests === undefined) {
+    const { availableTests } = this.props
+
+    if (availableTests === undefined || availableTests === null) {
       return (
         <div className="SelectTest">
           <Loading className="loading" />
@@ -57,7 +52,7 @@ export class SelectTest extends React.Component<IProps, IState> {
 
     return (
       <div className="SelectTest">
-        {this.state.availableTests.numbers.map((testNumber, i) => {
+        {availableTests.numbers.map((testNumber, i) => {
           const color = Themes.themeColors[i % Themes.themeColors.length]
           const active = (testNumber.number === this.state.selectedNumber)
 
@@ -68,12 +63,23 @@ export class SelectTest extends React.Component<IProps, IState> {
               key={testNumber.number}
               num={testNumber}
               onClick={this.handleTestNumberClick}
-              onSubmit={this.props.onSubmit}
+              onSubmit={this.handleSubmit}
             />
           )
         })}
       </div>
     )
+  }
+
+  private handleSubmit = (testNumber: ITestNumber, operator: string) => {
+    const { history, dispatch } = this.props
+
+    dispatch(setNewTestParameters({
+      testNumber,
+      operator,
+    }))
+
+    history.push('/fact-fluency/start-test')
   }
 
   private handleTestNumberClick = (selectedNumber: number) => {
@@ -86,3 +92,10 @@ export class SelectTest extends React.Component<IProps, IState> {
     }
   }
 }
+
+const mapStateToProps = ({ factFluency, user }: any) => ({
+  availableTests: factFluency.availableTests,
+  token: user.token
+})
+
+export const SelectTest = connect(mapStateToProps)(DisconnectedSelectTest)

@@ -14,7 +14,8 @@ export function receiveUser (user: IUser) {
 
 export function removeUser () {
   return {
-    type: REMOVE_USER
+    type: REMOVE_USER,
+    user: null
   }
 }
 

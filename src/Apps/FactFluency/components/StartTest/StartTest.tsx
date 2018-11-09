@@ -1,51 +1,41 @@
 import * as React from 'react'
-import { fetchNewTest } from 'src/lib/Api/Tests';
-import { ITest } from 'src/lib/Interfaces';
+import { connect } from 'react-redux';
+import { INewTestParameters, ITest } from 'src/lib/Interfaces';
+import { handleReceiveTest } from 'src/redux/actions/factFluency';
 import { Button, Card } from 'src/sharedComponents'
 import './StartTest.css'
 
 interface IProps {
-  testParameters: {
-    operator: string
-    number: number
-  }
+  dispatch: any
+  newTestParameters: INewTestParameters
+  test: ITest
   token: string
-  onSubmit: () => void
-  onCancel: () => void
-  storeTest: (test: ITest) => void
 }
 
 interface IState {
   error: string
-  loading: boolean
 }
 
 const encouragingTexts = ['We know you got this!', 'Keep calm and rock this test!', 'You can do it!']
 
-export class StartTest extends React.Component<IProps, IState> {
-  public state: IState = {
-    error: '',
-    loading: true,
-  }
+export class DisconnectedStartTest extends React.Component<IProps, IState> {
+  public state: IState = { error: '' }
 
   public async componentDidMount() {
-    const { testParameters, token, storeTest } = this.props
+    const { newTestParameters, token } = this.props
     try {
-      const test = await fetchNewTest(token, testParameters)
-      storeTest(test)
-      this.setState({ loading: false })
-
+      this.props.dispatch(handleReceiveTest(token, newTestParameters))
+      this.setState({ error: '' })
     } catch(error) {
       this.setState({ error })
     }
   }
 
   public render() {
-    if (this.state.loading) {
+    if (this.props.test === undefined || this.props.test === null) {
       return <p>Loading...</p>
     }
 
-    const { onCancel, onSubmit } = this.props
     const headerText = encouragingTexts[Math.floor(Math.random() * encouragingTexts.length)]
 
     return (
@@ -57,14 +47,14 @@ export class StartTest extends React.Component<IProps, IState> {
           <Button
             className="green"
             autoFocus={true}
-            onClick={onSubmit}
+            onClick={this.handleSubmit}
           >
             Start Test
           </Button>
 
           <Button
             className="cancel-button"
-            onClick={onCancel}
+            onClick={this.handleCancel}
           >
             Cancel
           </Button>
@@ -72,4 +62,20 @@ export class StartTest extends React.Component<IProps, IState> {
       </Card>
     )
   }
+
+  private handleSubmit = () => {
+    console.log('submitting')
+  }
+
+  private handleCancel = () => {
+    console.log('handleCancel')
+  }
 }
+
+const mapStateToProps = ({ factFluency, user }: any) => ({
+  newTestParameters: factFluency.newTestParameters,
+  test: factFluency.test,
+  token: user.token,
+})
+
+export const StartTest = connect(mapStateToProps)(DisconnectedStartTest)

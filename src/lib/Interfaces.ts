@@ -27,6 +27,11 @@ export interface IRequest {
   token?: string
 }
 
+export interface INewTestParameters {
+  testNumber: ITestNumber
+  operator: string
+}
+
 export interface ITestParameters {
   _id: string
   duration: number
