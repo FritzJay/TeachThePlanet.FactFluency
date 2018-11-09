@@ -15,7 +15,6 @@ export class TitleModal extends React.Component<IProps, any> {
 
   public render() {
     const { match } = this.props
-    console.log(match)
     
     return (
       <Modal

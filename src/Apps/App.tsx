@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import {
   Redirect,
   Route,
@@ -9,11 +10,15 @@ import {
 import Login from 'src/Apps/Login/Login'
 import { IUser } from 'src/lib/Interfaces'
 import { Caching } from 'src/lib/lib'
+import { LoadingBar } from 'src/sharedComponents'
 import './App.css'
 import { Classes } from './Classes/Classes'
 import { FactFluency } from './FactFluency/FactFluency'
 
-interface IProps extends RouteComponentProps<{}> {}
+interface IProps extends RouteComponentProps<{}> {
+  userType?: string
+  user?: IUser
+}
 
 interface IState {
   token?: string
@@ -28,7 +33,11 @@ class App extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <div className="index">
+      <div className="App">
+        <LoadingBar />
+        
+        <Route render={this.renderRedirect} />
+
         <Switch>
           <Route
             path="/index"
@@ -44,18 +53,16 @@ class App extends React.Component<IProps, IState> {
             path="/classes"
             render={this.renderClasses}
           />
-
-          <Route render={this.renderRedirect} />
         </Switch>
       </div>
     )
   }
 
   private renderClasses = (props: any) => {
-    const token = this.state.token || Caching.getCached('token')
-    const user = this.state.user || Caching.getCached('user')
+    const user = this.props.user
+    console.log(user)
 
-    if (token === undefined || token === null || user === undefined || user === null) {
+    if (user === undefined || user === null) {
       return <Redirect to="/index" />
     }
 
@@ -64,7 +71,7 @@ class App extends React.Component<IProps, IState> {
         {...props}
         onLogout={this.handleLogout}
         user={user}
-        token={token}
+        token={user.token}
       />
     )
   }
@@ -123,7 +130,29 @@ class App extends React.Component<IProps, IState> {
     })
   }
 
-  private renderRedirect = () => <Redirect to="/index" />
+  private renderRedirect = (props: any) => {
+    if (props.location.pathname.startsWith('/index')) {
+      switch (this.props.userType) {
+        case 'Teacher':
+          return <Redirect to="/classes" />
+        case 'Student':
+          return <Redirect to="/fact-fluency" />
+        default:
+          return null
+      }
+    } else if (props.location.pathname === '/') {
+      return <Redirect to="/index" />
+    }
+    return null
+  }
 }
 
-export default withRouter(App)
+const mapStateToProps = ({ user }: any) => {
+  return {
+    userType: user.userType,
+    user
+  }
+}
+const ConnectedApp = connect(mapStateToProps)(App)
+
+export default withRouter(ConnectedApp)

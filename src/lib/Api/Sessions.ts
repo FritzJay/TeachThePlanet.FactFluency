@@ -6,7 +6,7 @@ interface ILogin {
   token: string
 }
 
-export const login = (email: string, password: string, userType: string): Promise<ILogin> => {
+export const login = async (email: string, password: string, userType: string): Promise<ILogin> => {
   const request: IRequest = {
     body: {
       email,
@@ -18,7 +18,11 @@ export const login = (email: string, password: string, userType: string): Promis
 
   const url = `${process.env.REACT_APP_API_URL}/${userType.toLowerCase()}s/signin`
 
-  return Requests.jsonFetch(url, request)
+  const results = await Requests.jsonFetch(url, request)
+
+  results.user.userType = userType
+
+  return results
 }
 
 export const signup = async (email: string, password: string, userType: string): Promise<ILogin> => {

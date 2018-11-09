@@ -1,16 +1,16 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { login } from 'src/lib/Api/Sessions'
-import { IUser } from 'src/lib/Interfaces'
+import { handleReceiveUser } from 'src/redux/actions/user';
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './LoginModal.css'
 
 interface IProps extends RouteComponentProps<any> {
+  dispatch: any
   email: string
   password: string
   userType: string
-  onLogin: (user: IUser, token: string, userType: string) => void
   onUserTypeSelect: (e: any) => void
   onChange: (e: any) => void
 }
@@ -19,7 +19,7 @@ interface IState {
   error: string
 }
 
-export class LoginModal extends React.Component<IProps, IState> {
+class Component extends React.Component<IProps, IState> {
   public state: IState = {
     error: ''
   }
@@ -117,13 +117,12 @@ export class LoginModal extends React.Component<IProps, IState> {
 
   private loginRequest = async (email: string, password: string, userType: string) => {
     try {
-      const { user, token } = await login(email, password, userType)
-  
-      this.props.onLogin(user, token, userType)
-
+      this.props.dispatch(handleReceiveUser(email, password, userType))
     } catch(error) {
       console.warn(error)
       this.setState({ error: 'Invalid email/username or password'})
     }
   }
 }
+
+export const LoginModal = connect()(Component)

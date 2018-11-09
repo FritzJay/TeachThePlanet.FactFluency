@@ -73,6 +73,7 @@ export class Navbar extends React.Component<IProps, IState> {
         ref={this.setWrapperRef}
         className="Navbar"
       >
+
         <LogoutLink
           active={user !== undefined}
           onLogout={onLogout}

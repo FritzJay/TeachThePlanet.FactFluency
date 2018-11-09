@@ -1,9 +1,13 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import { createStore } from 'redux'
 import * as WebFont from 'webfontloader'
 import App from './Apps/App'
+import middleware from './redux/middleware'
+import reducer from './redux/reducers'
 
 WebFont.load({
   google: {
@@ -15,9 +19,13 @@ WebFont.load({
   },
 })
 
+const store = createStore(reducer, middleware)
+
 ReactDOM.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>),
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>),
   document.getElementById('root') as HTMLElement
 )

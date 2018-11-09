@@ -1,29 +1,30 @@
 
 export interface IUser {
-  userType: string;
-  name: string;
-  email: string;
-};
+  userType: string
+  name: string
+  email: string
+  token: string
+}
 
 export interface IQuestion {
-  question: string;
-  studentAnswer?: number;
-  correctAnswer?: number;
-  start?: Date;
-  end?: Date;
+  question: string
+  studentAnswer?: number
+  correctAnswer?: number
+  start?: Date
+  end?: Date
 }
 
 export interface IDisplayQuestion {
-  bottom: string;
-  operator: string;
-  start?: Date;
-  top: string;
+  bottom: string
+  operator: string
+  start?: Date
+  top: string
 }
 
 export interface IRequest {
-  body?: object;
-  method?: string;
-  token?: string;
+  body?: object
+  method?: string
+  token?: string
 }
 
 export interface ITestParameters {
@@ -36,32 +37,32 @@ export interface ITestParameters {
 }
 
 export interface ITest {
-  duration?: number;
-  start?: Date;
-  end?: Date;
-  questions: IQuestion[];
+  duration?: number
+  start?: Date
+  end?: Date
+  questions: IQuestion[]
 }
 
 export interface ITestResults {
-  total: number;
-  needed: number;
-  correct: number;
-  incorrect: IQuestion;
-  quickest: IQuestion;
+  total: number
+  needed: number
+  correct: number
+  incorrect: IQuestion
+  quickest: IQuestion
 }
 
 export interface ITestNumber {
-  number: number;
-  operators: string[];
+  number: number
+  operators: string[]
 }
 
 export interface IAvailableTests {
-  numbers: ITestNumber[];
+  numbers: ITestNumber[]
 }
 
 export interface IClass {
-  _id: string;
-  grade: string;
-  name: string;
-  classCode: string;
+  _id: string
+  grade: string
+  name: string
+  classCode: string
 }
