@@ -58,12 +58,21 @@ export class Navbar extends React.Component<IProps, IState> {
     activeDropdown: false,
   }
 
+  private wrapperRef: any
+
+  public componentWillUnmount() {
+    window.removeEventListener('click', this.handleClickOutside)
+  }
+
   public render() {
     const { user, logoLink, onLogout } = this.props
     const { activeDropdown } = this.state
 
     return (
-      <div className="Navbar">
+      <div
+        ref={this.setWrapperRef}
+        className="Navbar"
+      >
         <LogoutLink
           active={user !== undefined}
           onLogout={onLogout}
@@ -95,7 +104,25 @@ export class Navbar extends React.Component<IProps, IState> {
     )
   }
 
+  private setWrapperRef = (node: any) => {
+    this.wrapperRef = node
+  }
+
+  private handleClickOutside = (event: any) => {
+    console.log('handleClickOutside')
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.handleToggleButtonClick()
+    }
+  }
+
   private handleToggleButtonClick = () => {
+    console.log('handleToggleButtonClick')
+    if (!this.state.activeDropdown) {
+      window.addEventListener('click', this.handleClickOutside)
+    } else {
+      window.removeEventListener('click', this.handleClickOutside)
+    }
+
     this.setState((prevState: IState) => ({
       activeDropdown: !prevState.activeDropdown
     }))
