@@ -2,6 +2,7 @@ import * as React from "react"
 import { fetchAvailableTests } from "src/lib/Api/Tests";
 import { IAvailableTests, ITestNumber } from "src/lib/Interfaces"
 import { Themes } from "src/lib/lib"
+import { Loading } from "src/sharedComponents";
 import './SelectTest.css'
 import { TestNumber } from './TestNumber/TestNumber'
 
@@ -47,7 +48,11 @@ export class SelectTest extends React.Component<IProps, IState> {
   
   public render() {
     if (this.state.availableTests === undefined) {
-      return <p>Loading...</p>
+      return (
+        <div className="SelectTest">
+          <Loading className="loading" />
+        </div>
+      )
     }
 
     return (
