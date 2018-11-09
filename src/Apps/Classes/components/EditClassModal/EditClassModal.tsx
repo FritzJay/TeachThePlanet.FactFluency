@@ -6,6 +6,9 @@ import { Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'
 
+const DEFAULT_DELETE_TEXT = 'Delete Class'
+const CONFIRM_DELETE_TEXT = 'Confirm'
+
 interface IProps extends RouteComponentProps<{}> {
   cls: IClass
   token: string
@@ -13,6 +16,7 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
+  deleteText: string
   error: string
   name: string
   grade: string
@@ -20,14 +24,21 @@ interface IState {
 
 export class EditClassModal extends React.Component<IProps, IState> {
   public state = {
+    deleteText: DEFAULT_DELETE_TEXT,
     error: '',
     grade: this.props.cls.grade,
     name: this.props.cls.name,
   }
 
+  private deleteConfirmationTimeout: any
+
+  public componentWillUnmount() {
+    window.clearTimeout(this.deleteConfirmationTimeout)
+  }
+
   public render() {
     const { cls } = this.props
-    const { name, grade } = this.state
+    const { deleteText, name, grade } = this.state
 
     return (
       <Modal
@@ -70,29 +81,40 @@ export class EditClassModal extends React.Component<IProps, IState> {
 
           </div>
 
-          <div className="btn-row">
+            {deleteText === DEFAULT_DELETE_TEXT
+              ? (
+                <div className="btn-row">
+                  <Button
+                    className="red delete-class"
+                    onClick={this.handleDeleteClick}
+                  >
+                    {deleteText}
+                  </Button>
 
-            <Button
-              className="delete-class"
-              onClick={this.handleDeleteClick}
-            >
-              Delete Class
-            </Button>
+                  <Button
+                    className="gray cancel"
+                    onClick={this.handleCancelClick}
+                  >
+                    Cancel
+                  </Button>
 
-            <Button
-              className="cancel"
-              onClick={this.handleCancelClick}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              className="save-changes"
-              onClick={this.handleSaveChangesClick}
-            >
-              Save Changes
-            </Button>
-          </div>
+                  <Button
+                    className="green save-changes"
+                    onClick={this.handleSaveChangesClick}
+                  >
+                    Save Changes
+                  </Button>
+                </div>
+              ) : (
+                <div className="btn-row">
+                  <Button
+                    className="red delete-class confirm"
+                    onClick={this.handleDeleteClick}
+                  >
+                    {deleteText}
+                  </Button>
+                </div>
+              )}
 
         </ModalContent>
       </Modal>
@@ -100,6 +122,16 @@ export class EditClassModal extends React.Component<IProps, IState> {
   }
   
   private handleDeleteClick = async () => {
+    if (this.state.deleteText !== CONFIRM_DELETE_TEXT) {
+      this.setState({ deleteText: CONFIRM_DELETE_TEXT })
+      
+      this.deleteConfirmationTimeout = window.setTimeout(() => {
+        this.setState({ deleteText: DEFAULT_DELETE_TEXT })
+      }, 3000)
+
+      return
+    }
+
     const { token, history, cls, onSave } = this.props
     
     try {
