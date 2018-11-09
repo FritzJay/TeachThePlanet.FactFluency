@@ -91,7 +91,7 @@ export default class Login extends React.Component<IProps, IState> {
         secondPassword={secondPassword}
         userType={userType}
         onSignup={this.props.onLogin}
-        onUserTypeSelect={this.handleChange}
+        onUserTypeSelect={this.handleUserTypeSelect}
         onChange={this.handleChange}
       />
     )
