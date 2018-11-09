@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { fetchAvailableTests, fetchNewTest } from 'src/lib/Api/Tests'
+import { fetchAvailableTests } from 'src/lib/Api/Tests'
 import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
 import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
@@ -134,51 +134,42 @@ export class FactFluency extends React.Component<IProps, IState> {
   /****** Start Test ******/
   
   private renderStartTest = (props: any) => {
+    const { token, match } = this.props
+
+    const testParameters = this.state.testParameters || Caching.getCached('testParameters')
+    if (testParameters === undefined || testParameters === null) {
+      return <Redirect to={match.url} />
+    }
+
     return (
-      <RequestComponent
-        request={this.requestStartTest}
-        onResolve={this.handleStartTestResolve}
-        component={StartTest}
-        props={{
-          ...props,
-          onCancel: this.handleStartTestCancel,
-          onSubmit: this.handleStartTestSubmit,
-        }}
+      <StartTest
+        {...props}
+        token={token}
+        testParameters={testParameters}
+        onSubmit={this.handleStartTestSubmit}
+        onCancel={this.handleStartTestCancel}
+        storeTest={this.storeTest}
       />
     )
   }
-
-  private requestStartTest = async (): Promise<ITest | undefined> => {
-    const testParameters = this.state.testParameters || Caching.getCached('testParameters')
-    if (testParameters === undefined || testParameters === null) {
-      this.props.history.goBack()
-      return
-    }
-
-    try {
-      return await fetchNewTest(this.props.token, testParameters)
-    } catch(error) {
-      this.handleLogout()
-      return
-    }
-  }
-
-  private handleStartTestResolve = (results: { test: ITest }) => {
-    Caching.setCached('test', results.test)
-    this.setState({test: results.test})
-  }
   
   private handleStartTestSubmit = () => {
-    this.setState({testResults: undefined}, () => {
+    this.setState({ testResults: undefined }, () => {
       Caching.removeCached('testResults')
       this.props.history.push(`${this.props.match.url}/take-test`)
     })
   }
   
   private handleStartTestCancel = () => {
-    this.props.history.push(`${this.props.match.url}`)
+    Caching.removeCached('test')
+    this.props.history.push(this.props.match.url)
   }
-
+  
+  private storeTest = (results: { test: ITest }) => {
+    Caching.setCached('test', results.test)
+    this.setState({ test: results.test })
+  }
+  
   /****** END Start Test ******/
 
   /****** Take Test ******/
@@ -202,7 +193,7 @@ export class FactFluency extends React.Component<IProps, IState> {
   private handleTakeTestSubmit = (test: ITest) => {
     Caching.setCached('test', test)
 
-    this.setState({test}, () => {
+    this.setState({ test }, () => {
       this.props.history.push(`${this.props.match.url}/test-results`)
     })
   }
@@ -224,8 +215,15 @@ export class FactFluency extends React.Component<IProps, IState> {
         {...props}
         test={test}
         token={this.props.token}
+        storeTestResults={this.storeTestResults}
       />
     )
+  }
+
+  private storeTestResults = (testResults: ITestResults) => {
+    Caching.removeCached('test')
+    Caching.setCached('testResults', testResults)
+    this.setState({ testResults })
   }
 
   /****** END Test Results ******/

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { fetchTestResults } from 'src/lib/Api/Tests'
-import { Caching } from 'src/lib/lib'
 import { Button, Card } from 'src/sharedComponents'
 import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
 import { padString } from '../../../../lib/Utility/Utility'
@@ -61,6 +60,7 @@ const IncorrectCard = ({ question }: IIncorrectCardProps) => {
 interface IProps extends RouteComponentProps<{}> {
   test: ITest
   token: string
+  storeTestResults: (testResults: ITestResults) => void
 }
 
 interface IState {
@@ -74,12 +74,12 @@ export class TestResults extends React.Component<IProps, IState> {
   }
 
   public async componentDidMount() {
-    const { test, token } = this.props
+    const { test, token, storeTestResults } = this.props
 
     try {
       const testResults = await fetchTestResults(token, test)
-      Caching.setCached('testResults', testResults)
-      localStorage.removeItem('test')
+      
+      storeTestResults(testResults)
 
       this.setState({
         error: '',
@@ -88,7 +88,6 @@ export class TestResults extends React.Component<IProps, IState> {
 
     } catch(error) {
       this.setState({ error })
-      return
     }
   }
 

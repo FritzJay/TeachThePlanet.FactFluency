@@ -1,6 +1,6 @@
 @import '../../../../Stylesheets/all';
 
-.start-test {
+.StartTest {
   grid-column: 2;
   justify-self: center;
 
@@ -45,7 +45,7 @@
 
 /* Mobile */ 
 @media only screen and (max-width: 399px) {
-  .start-test {
+  .StartTest {
     margin-top: -30px;
     box-shadow: none;
     grid-column: 1/-1;

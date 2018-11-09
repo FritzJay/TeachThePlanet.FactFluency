@@ -1,43 +1,75 @@
-import * as React from 'react';
-import { Button, Card } from 'src/sharedComponents';
-import './StartTest.css';
+import * as React from 'react'
+import { fetchNewTest } from 'src/lib/Api/Tests';
+import { ITest } from 'src/lib/Interfaces';
+import { Button, Card } from 'src/sharedComponents'
+import './StartTest.css'
 
 interface IProps {
-  onSubmit: () => void;
-  onCancel: () => void;
+  testParameters: {
+    operator: string
+    number: number
+  }
+  token: string
+  onSubmit: () => void
+  onCancel: () => void
+  storeTest: (test: ITest) => void
 }
 
-const encouragingTexts = ['We know you got this!', 'Keep calm and rock this test!', 'You can do it!'];
+interface IState {
+  error: string
+  loading: boolean
+}
 
-export class StartTest extends React.Component<IProps> {
-  public constructor(props: IProps) {
-    super(props);
-    this.handleStartTestClick = this.handleStartTestClick.bind(this);
-    this.handleCancelClick = this.handleCancelClick.bind(this);
+const encouragingTexts = ['We know you got this!', 'Keep calm and rock this test!', 'You can do it!']
+
+export class StartTest extends React.Component<IProps, IState> {
+  public state: IState = {
+    error: '',
+    loading: true,
+  }
+
+  public async componentDidMount() {
+    const { testParameters, token, storeTest } = this.props
+    try {
+      const test = await fetchNewTest(token, testParameters)
+      storeTest(test)
+      this.setState({ loading: false })
+
+    } catch(error) {
+      this.setState({ error })
+    }
   }
 
   public render() {
-    const headerText = encouragingTexts[Math.floor(Math.random() * encouragingTexts.length)];
+    if (this.state.loading) {
+      return <p>Loading...</p>
+    }
+
+    const { onCancel, onSubmit } = this.props
+    const headerText = encouragingTexts[Math.floor(Math.random() * encouragingTexts.length)]
+
     return (
-      <Card className="start-test">
+      <Card className="StartTest">
         <div className="header">
           <h1>{headerText}</h1>
         </div>
         <div className="buttons">
-          <Button className="green" autoFocus={true} onClick={this.handleStartTestClick}>Start Test</Button>
-          <Button className="cancel-button" onClick={this.handleCancelClick}>Cancel</Button>
+          <Button
+            className="green"
+            autoFocus={true}
+            onClick={onSubmit}
+          >
+            Start Test
+          </Button>
+
+          <Button
+            className="cancel-button"
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
         </div>
       </Card>
-    );
-  }
-
-  private handleStartTestClick() {
-    this.setState({hidden: true}, () => {
-      this.props.onSubmit();
-    });
-  }
-
-  private handleCancelClick() {
-    this.props.onCancel();
+    )
   }
 }
