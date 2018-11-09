@@ -1,12 +1,15 @@
 import { hideLoading, showLoading } from "react-redux-loading";
-import { fetchAvailableTests, fetchNewTest } from "src/lib/Api/Tests";
-import { IAvailableTests, INewTestParameters, ITest } from "src/lib/Interfaces";
+import { fetchAvailableTests, fetchNewTest, fetchTestResults } from "src/lib/Api/Tests";
+import { IAvailableTests, INewTestParameters, ITest, ITestResults } from "src/lib/Interfaces";
 
 export const RECEIVE_AVAILABLE_TESTS = 'RECEIVE_AVAILABLE_TESTS'
 export const REMOVE_AVAILABLE_TESTS = 'REMOVE_AVAILABLE_TESTS'
 export const SET_NEW_TEST_PARAMETERS = 'SET_TEST_PARAMETERS'
 export const REMOVE_TEST_PARAMETERS = 'REMOVE_TEST_PARAMETERS'
 export const RECEIVE_TEST = 'RECEIVE_TEST'
+export const REMOVE_TEST = 'REMOVE_TEST'
+export const RECEIVE_TEST_RESULTS = 'RECEIVE_TEST_RESULTS'
+export const REMOVE_TEST_RESULTS = 'REMOVE_TEST_RESULTS'
 
 export function receiveAvailableTests (availableTests: IAvailableTests) {
   return {
@@ -43,6 +46,27 @@ export function receiveTest (test: ITest) {
   }
 }
 
+export function removeTest () {
+  return {
+    type: REMOVE_TEST,
+    test: null,
+  }
+}
+
+export function receiveTestResults (testResults: ITestResults) {
+  return {
+    type: RECEIVE_TEST_RESULTS,
+    testResults
+  }
+}
+
+export function removeTestResults () {
+  return {
+    type: REMOVE_TEST_RESULTS,
+    testResults: null,
+  }
+}
+
 export function handleReceiveAvailableTests (token: string) {
   return async (dispatch: any) => {
     dispatch(showLoading())
@@ -54,15 +78,26 @@ export function handleReceiveAvailableTests (token: string) {
   }
 }
 
-export function handleReceiveTest (token: string, testParameters: INewTestParameters) {
+export function handleReceiveTest (token: string, newTestParameters: INewTestParameters) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
     const test = await fetchNewTest(token, {
-      number: testParameters.testNumber.number,
-      operator: testParameters.operator,
+      number: newTestParameters.testNumber.number,
+      operator: newTestParameters.operator,
     })
     dispatch(receiveTest(test))
+
+    dispatch(hideLoading())
+  }
+}
+
+export function handleReceiveTestResults (token: string, test: ITest) {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+
+    const testResults = await fetchTestResults(token, test)
+    dispatch(receiveTestResults(testResults))
 
     dispatch(hideLoading())
   }

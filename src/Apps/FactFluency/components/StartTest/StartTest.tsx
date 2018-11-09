@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import { INewTestParameters, ITest } from 'src/lib/Interfaces';
-import { handleReceiveTest } from 'src/redux/actions/factFluency';
+import { handleReceiveTest, removeTest, removeTestResults } from 'src/redux/actions/factFluency';
 import { Button, Card } from 'src/sharedComponents'
 import './StartTest.css'
 
-interface IProps {
+interface IProps extends RouteComponentProps<{}> {
   dispatch: any
   newTestParameters: INewTestParameters
   test: ITest
@@ -64,11 +65,13 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
   }
 
   private handleSubmit = () => {
-    console.log('submitting')
+    this.props.dispatch(removeTestResults())
+    this.props.history.push('/fact-fluency/take-test')
   }
 
   private handleCancel = () => {
-    console.log('handleCancel')
+    this.props.dispatch(removeTest())
+    this.props.history.push('/fact-fluency/')
   }
 }
 

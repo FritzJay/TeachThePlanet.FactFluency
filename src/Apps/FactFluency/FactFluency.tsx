@@ -51,7 +51,7 @@ class DisconnectedFactFluency extends React.Component<IProps, IState> {
 
             <Route
               path={`${match.path}/take-test`}
-              render={this.renderTakeTest}
+              component={TakeTest}
             />
 
             <Route
@@ -65,48 +65,8 @@ class DisconnectedFactFluency extends React.Component<IProps, IState> {
       </div>
     )
   }
-  
+
   /*
-  private handleStartTestSubmit = () => {
-    Caching.removeCached('testResults')
-
-    this.setState({ testResults: undefined }, () => {
-      this.props.history.push(`${this.props.match.url}/take-test`)
-    })
-  }
-  
-  private handleStartTestCancel = () => {
-    Caching.removeCached('test')
-    this.props.history.push(this.props.match.url)
-  }
-  
-  private storeTest = (test: ITest ) => {
-    Caching.setCached('test', test)
-    this.setState({ test })
-  }
-  */
-  
-  /****** END Start Test ******/
-
-  /****** Take Test ******/
-  
-  private renderTakeTest = (props: any) => {
-    const test = this.state.test || Caching.getCached('test')
-
-    if (test === undefined || test === null) {
-      console.warn('Error while rendering TakeTest: ``test`` is undefined')
-      return <Redirect to={`${this.props.match.url}/start-test`} />
-    }
-
-    return (
-      <TakeTest
-        {...props}
-        test={test}
-        onSubmit={this.handleTakeTestSubmit}
-      />
-    )
-  }
-
   private handleTakeTestSubmit = (test: ITest) => {
     Caching.setCached('test', test)
 
@@ -114,7 +74,7 @@ class DisconnectedFactFluency extends React.Component<IProps, IState> {
       this.props.history.push(`${this.props.match.url}/test-results`)
     })
   }
-
+  */
   /****** END Take Test ******/
 
   /****** Test Results ******/
