@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { fetchAvailableTests, fetchNewTest, fetchTestResults } from 'src/lib/Api/Tests';
+import { fetchAvailableTests, fetchNewTest } from 'src/lib/Api/Tests'
 import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
 import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
@@ -217,65 +217,20 @@ export class FactFluency extends React.Component<IProps, IState> {
   /****** Test Results ******/
   
   private renderTestResults = (props: any) => {
-    const testResults = this.state.testResults || Caching.getCached('testResults')
-
-    if (testResults) {
-      return (
-        <TestResults
-          testResults={testResults}
-          onRetry={this.handleTestResultsRetry}
-          onSubmit={this.handleTestResultsSubmit}
-        />
-      )
-    }
-
-    return (
-      <RequestComponent
-        request={this.requestTestResults}
-        onResolve={this.handleTestResultsResolve}
-        component={TestResults}
-        props={{
-          ...props,
-          onRetry: this.handleTestResultsRetry,
-          onSubmit: this.handleTestResultsSubmit,
-        }}
-      />
-    )
-  }
-
-  private requestTestResults = async (): Promise<ITestResults | undefined> => {
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
-      this.props.history.replace(`${this.props.match.url}`)
-      return
+      console.warn('Error while rendering TestResults: ``test`` is undefined')
+      return <Redirect to='/fact-fluency' />
     }
 
-    try {
-      return await fetchTestResults(this.props.token, test)
-    } catch(error) {
-      this.handleLogout()
-      return
-    }
-  }
-
-  private handleTestResultsResolve = (results: { testResults: ITestResults }) => {
-    localStorage.removeItem('test')
-
-    Caching.setCached('testResults', results.testResults)
-
-    this.setState({
-      test: undefined,
-      testResults: results.testResults,
-    })
-  }
-
-  private handleTestResultsSubmit = () => {
-    this.props.history.push(`${this.props.match.url}`)
-  }
-
-  private handleTestResultsRetry = () => {
-    this.props.history.replace(`${this.props.match.url}/start-test`)
+    return (
+      <TestResults
+        {...props}
+        token={this.props.token}
+        test={test}
+      />
+    )
   }
 
   /****** END Test Results ******/

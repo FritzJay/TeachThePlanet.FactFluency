@@ -1,40 +1,131 @@
-import * as React from 'react';
-import { Button, Card } from 'src/sharedComponents';
-import { IQuestion, ITestResults } from '../../../../lib/Interfaces';
-import { padString } from '../../../../lib/Utility/Utility';
-import './TestResults.css';
+import * as React from 'react'
+import { RouteComponentProps } from 'react-router-dom';
+import { fetchTestResults } from 'src/lib/Api/Tests';
+import { Caching } from 'src/lib/lib';
+import { Button, Card } from 'src/sharedComponents'
+import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
+import { padString } from '../../../../lib/Utility/Utility'
+import './TestResults.css'
 
-interface IProps {
-  onRetry: () => void;
-  onSubmit: (testResults: ITestResults) => void;
-  testResults: ITestResults;
+interface IQuickestCardProps {
+  question?: IQuestion
 }
 
-export class TestResults extends React.Component<IProps> {
-  public render() {
-    const correctClassName = (this.props.testResults.correct >= this.props.testResults.needed) ? 'pass' : 'fail';
-    const amountCorrect = padString(this.props.testResults.correct, 2, '\xa0');
-    const total = padString(this.props.testResults.total, 2, '\xa0');
+const QuickestCard = ({ question }: IQuickestCardProps) => {
+  if (question && question.start && question.end) {
+    const durationInSeconds = (new Date(question.end).getTime() - new Date(question.start).getTime()) / 1000
+    
     return (
-      <div className="test-results">
-        <h1 className="amount-correct-text">You got <span className={correctClassName}>{amountCorrect}</span> out of <span className="pass">{total}</span> correct!</h1>
+      <Card className="QuickestCard">
+        <div className="header">
+          <p>You Rocked This Problem!</p>
+        </div>
+        <div className="card-main-content">
+          <h3>{question.question} = {question.correctAnswer}</h3>
+          <p className="breakdown-text">It only took you {durationInSeconds} second.</p>
+        </div>
+      </Card>
+    )
+  } else {
+    return null
+  }
+}
 
-        <p>Remember you need {this.props.testResults.needed}/{this.props.testResults.total} to pass.</p>
+
+interface IIncorrectCardProps {
+  question?: IQuestion
+}
+
+const IncorrectCard = ({ question }: IIncorrectCardProps) => {
+  if (question) {
+    const youAnsweredMessage = question.studentAnswer ? `You answered ${question.studentAnswer}` : 'You didn\'t answer this question'
+
+    return (
+      <Card className="IncorrectCard">
+        <div className="header">
+          <p>This Gave You Some Trouble.</p>
+        </div>
+        <div className="card-main-content">
+            <h3>{question.question} = {question.correctAnswer}</h3>
+            <h3>{youAnsweredMessage}</h3>
+            <p className="breakdown-text">Hint: It might be a good idea to practice this one.</p>
+        </div>
+      </Card>
+    )
+  } else {
+    return null
+  }
+}
+
+
+interface IProps extends RouteComponentProps<{}> {
+  test: ITest
+  token: string
+}
+
+interface IState {
+  error: string
+  testResults?: ITestResults
+}
+
+export class TestResults extends React.Component<IProps, IState> {
+  public state: IState = {
+    error: ''
+  }
+
+  public async componentDidMount() {
+    const { test, token } = this.props
+
+    try {
+      const testResults = await fetchTestResults(token, test)
+      Caching.setCached('testResults', testResults)
+      localStorage.removeItem('test')
+
+      this.setState({
+        error: '',
+        testResults,
+      })
+
+    } catch(error) {
+      this.setState({ error })
+      return
+    }
+  }
+
+  public render() {
+    if (this.state.testResults === undefined) {
+      return <p>Loading...</p>
+    }
+    const { correct, needed, total, quickest, incorrect } = this.state.testResults
+
+    return (
+      <div className="TestResults">
+        <h1 className="amount-correct-text">
+          You got
+            <span className={correct >= needed ? 'pass' : 'fail'}>
+              {padString(correct, 2, '\xa0')}
+            </span> out of 
+            <span className="pass">
+              {padString(total, 2, '\xa0')}
+            </span> correct!
+        </h1>
+
+        <p>Remember you need {needed}/{total} to pass.</p>
 
         <div className="cards-container">
-          {this.quickestCard(this.props.testResults.quickest)}
-          {this.incorrectCard(this.props.testResults.incorrect)}
+          <QuickestCard question={quickest} />
+          <IncorrectCard question={incorrect} />
         </div>
 
         <div className="buttons-container">
-          <Button className="blue" onClick={this.props.onRetry}>
+          <Button className="blue" onClick={this.handleRetryClick}>
             <span className="btn-text">Retry</span>
             <span className="btn-icon">
               <i className="material-icons">replay</i>
             </span>
           </Button>
 
-          <Button className="blue" onClick={this.props.onSubmit}>
+          <Button className="blue" onClick={this.handleHomeClick}>
             <span className="btn-text">Home</span>
             <span className="btn-icon">
               <i className="material-icons">home</i>
@@ -42,45 +133,16 @@ export class TestResults extends React.Component<IProps> {
           </Button>
         </div>
       </div>
-    );
+    )
   }
 
-  private quickestCard(quickest?: IQuestion): JSX.Element | undefined {
-    if (quickest && quickest.start && quickest.end) {
-      const quickestDurationInSeconds = (new Date(quickest.end).getTime() - new Date(quickest.start).getTime()) / 1000;
-      return (
-        <Card className="quickest-card">
-          <div className="header">
-            <p>You Rocked This Problem!</p>
-          </div>
-          <div className="card-main-content">
-            <h3>{this.props.testResults.quickest.question} = {this.props.testResults.quickest.correctAnswer}</h3>
-            <p className="breakdown-text">It only took you {quickestDurationInSeconds} second.</p>
-          </div>
-        </Card>
-      );
-    } else {
-      return undefined;
-    }
+  private handleRetryClick = () => {
+    localStorage.removeItem('testResults')
+    this.props.history.replace('/fact-fluency/start-test')
   }
 
-  private incorrectCard(incorrect?: IQuestion): JSX.Element | undefined {
-    if (incorrect) {
-      const youAnsweredMessage = incorrect.studentAnswer ? `You answered ${this.props.testResults.incorrect.studentAnswer}` : 'You didn\'t answer this question';
-      return (
-        <Card className="incorrect-card">
-          <div className="header">
-            <p>This Gave You Some Trouble.</p>
-          </div>
-          <div className="card-main-content">
-              <h3>{this.props.testResults.incorrect.question} = {this.props.testResults.incorrect.correctAnswer}</h3>
-              <h3>{youAnsweredMessage}</h3>
-              <p className="breakdown-text">Hint: It might be a good idea to practice this one.</p>
-          </div>
-        </Card>
-      );
-    } else {
-      return undefined;
-    }
+  private handleHomeClick = () => {
+    localStorage.removeItem('testResults')
+    this.props.history.push('/fact-fluency')
   }
 }

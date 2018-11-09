@@ -38,7 +38,13 @@ export const fetchTestResults = async (token: string, test: ITest): Promise<ITes
   }
 
   try {
-    return await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
+    
+    if (response.error !== undefined) {
+      throw response.error
+    }
+
+    return response.testResults
   } catch(error) {
     console.warn('fetchTestResults failed with error', error)
     throw error

@@ -75,23 +75,15 @@
       h3 {
         color: rgba(0, 0, 0, 0.75);
       }
-
-      /* 
-
-      .breakdown-text {
-        display: none;
-      }
-
-      */
       
-      .quickest-card {
+      .QuickestCard {
         .header {
           background-color: $green;
           font-size: 1em;
         }
       }
       
-      .incorrect-card {
+      .IncorrectCard {
         .header {
           background-color: $red;
           font-size: 1em;
@@ -161,7 +153,7 @@
 }
 
 @media (min-width: 450px) {
-  .test-results {
+  .TestResults {
 
     grid-column: 2 / 2;
   
@@ -240,14 +232,14 @@
   
       }
       
-      .quickest-card {
+      .QuickestCard {
         .header {
           background-color: $green;
           font-size: 1.15em;
         }
       }
       
-      .incorrect-card {
+      .IncorrectCard {
         .header {
           background-color: $red;
           font-size: 1.15em;
