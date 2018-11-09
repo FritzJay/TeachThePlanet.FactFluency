@@ -1,6 +1,6 @@
 @import '../../../../Stylesheets/all';
 
-.take-test {
+.TakeTest {
   grid-column: 2 / 2;
   justify-self: center;
 
@@ -102,7 +102,7 @@
 
 /*  Mobile  */
 @media only screen and (max-width: 399px) {
-  .take-test {
+  .TakeTest {
     margin-top: -2em;
 
     grid-column: 2 / 2;
@@ -134,7 +134,7 @@
 
 /*  Tablet  */
 @media only screen and (min-width: 400px) {
-  .take-test {
+  .TakeTest {
     max-width: 600px;
     width: 100%;
 
@@ -147,7 +147,7 @@
 }
 
 @media only screen and (min-width: 500px) { 
-  .take-test {    
+  .TakeTest {    
     .button-container {
       display: grid;
     }

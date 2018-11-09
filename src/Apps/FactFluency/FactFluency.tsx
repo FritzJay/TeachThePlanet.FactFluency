@@ -184,12 +184,6 @@ export class FactFluency extends React.Component<IProps, IState> {
   /****** Take Test ******/
   
   private renderTakeTest = (props: any) => {
-    const testResults = this.state.testResults || Caching.getCached('testResults')
-
-    if (testResults !== undefined && testResults !== null) {
-      return <Redirect to={`${this.props.match.url}/test-results`} />
-    }
-
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
@@ -197,7 +191,8 @@ export class FactFluency extends React.Component<IProps, IState> {
     }
 
     return (
-      <TakeTest {...props}
+      <TakeTest
+        {...props}
         test={test}
         onSubmit={this.handleTakeTestSubmit}
       />
@@ -221,14 +216,14 @@ export class FactFluency extends React.Component<IProps, IState> {
 
     if (test === undefined || test === null) {
       console.warn('Error while rendering TestResults: ``test`` is undefined')
-      return <Redirect to='/fact-fluency' />
+      return <Redirect to={this.props.match.url} />
     }
 
     return (
       <TestResults
         {...props}
-        token={this.props.token}
         test={test}
+        token={this.props.token}
       />
     )
   }

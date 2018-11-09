@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom';
-import { fetchTestResults } from 'src/lib/Api/Tests';
-import { Caching } from 'src/lib/lib';
+import { RouteComponentProps } from 'react-router-dom'
+import { fetchTestResults } from 'src/lib/Api/Tests'
+import { Caching } from 'src/lib/lib'
 import { Button, Card } from 'src/sharedComponents'
 import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
 import { padString } from '../../../../lib/Utility/Utility'
@@ -101,13 +101,7 @@ export class TestResults extends React.Component<IProps, IState> {
     return (
       <div className="TestResults">
         <h1 className="amount-correct-text">
-          You got
-            <span className={correct >= needed ? 'pass' : 'fail'}>
-              {padString(correct, 2, '\xa0')}
-            </span> out of 
-            <span className="pass">
-              {padString(total, 2, '\xa0')}
-            </span> correct!
+          You got <span className={correct >= needed ? 'pass' : 'fail'}>{padString(correct, 2, '\xa0')}</span> out of <span className="pass">{padString(total, 2, '\xa0')}</span> correct!
         </h1>
 
         <p>Remember you need {needed}/{total} to pass.</p>
