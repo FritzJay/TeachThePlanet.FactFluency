@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { fetchAvailableTests } from 'src/lib/Api/Tests'
-import { Navbar, PageNotFound, RequestComponent } from 'src/sharedComponents'
+import { Navbar, PageNotFound } from 'src/sharedComponents'
 import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
 import { Caching } from '../../lib/lib'
 import { SelectTest, StartTest, TakeTest, TestResults } from './components'
@@ -76,42 +75,25 @@ export class FactFluency extends React.Component<IProps, IState> {
   /****** Select Test ******/
 
   private renderSelectTest = (props: any) => {
-    const availableTests = this.state.availableTests || Caching.getCached('availableTests')
-
-    if (availableTests) {
-      return (
-        <SelectTest {...props}
-          availableTests={availableTests}
-          onSubmit={this.handleSelectTestSubmit}
-        />
-      )
+    const token = this.props.token || Caching.getCached('token')
+    if (token === undefined || token === null) {
+      this.props.onLogout()
+      return <Redirect to='/' />
     }
 
     return (
-      <RequestComponent
-        request={this.requestSelectTest}
-        onResolve={this.handleSelectTestResolve}
-        component={SelectTest}
-        props={{
-          ...props,
-          onSubmit: this.handleSelectTestSubmit
-        }}
+      <SelectTest
+        {...props}
+        token={token}
+        onSubmit={this.handleSelectTestSubmit}
+        storeAvailableTests={this.storeAvailableTests}
       />
     )
   }
 
-  private requestSelectTest = async (): Promise<IAvailableTests | undefined> => {
-    try {
-      return await fetchAvailableTests(this.props.token)
-    } catch (error) {
-      this.handleLogout()
-      return
-    }
-  }
-
-  private handleSelectTestResolve = (results: {availableTests: IAvailableTests}) => {
-    Caching.setCached('availableTests', results.availableTests)
-    this.setState({availableTests: results.availableTests})
+  private storeAvailableTests = (availableTests: IAvailableTests) => {
+    Caching.setCached('availableTests', availableTests)
+    this.setState({ availableTests })
   }
   
   private handleSelectTestSubmit = (testNumber: ITestNumber, operator: string) => {
@@ -227,15 +209,4 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
 
   /****** END Test Results ******/
-
-  private handleLogout = () => {
-    this.setState({
-      availableTests: undefined,
-      test: undefined,
-      testParameters: undefined,
-      testResults: undefined,
-    }, () => {
-      this.props.onLogout()
-    })
-  }
 }

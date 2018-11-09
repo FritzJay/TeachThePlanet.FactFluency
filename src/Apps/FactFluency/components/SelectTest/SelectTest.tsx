@@ -1,32 +1,44 @@
 import * as React from "react"
-import { IAvailableTests, ITestNumber } from "../../../../lib/Interfaces"
-import { Themes } from "../../../../lib/lib"
-import { TestNumber } from './Components/Components'
+import { fetchAvailableTests } from "src/lib/Api/Tests";
+import { IAvailableTests, ITestNumber } from "src/lib/Interfaces"
+import { Themes } from "src/lib/lib"
 import './SelectTest.css'
+import { TestNumber } from './TestNumber/TestNumber'
 
 interface IProps  {
+  token: string
   onSubmit: (testNumber: ITestNumber) => void
-  availableTests: IAvailableTests
+  storeAvailableTests: (availableTests: IAvailableTests) => void
 }
 
 interface IState {
+  availableTests?: IAvailableTests
+  error: string
   selectedNumber?: number
 }
 
 export class SelectTest extends React.Component<IProps, IState> {
-  public constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      selectedNumber: undefined,
-    }
-
-    this.handleTestNumberClick = this.handleTestNumberClick.bind(this)
-    this.handleScroll = this.handleScroll.bind(this)
+  public state: IState = {
+    error: '',
   }
+  
+  public async componentDidMount() {
+    const { token, storeAvailableTests } = this.props
 
-  public componentWillMount() {
     window.addEventListener('scroll', this.handleScroll)
+
+    try {
+      const availableTests = await fetchAvailableTests(token)
+      
+      storeAvailableTests(availableTests)
+
+      this.setState({
+        availableTests,
+        error: '',
+      })
+    } catch (error) {
+      this.setState({ error })
+    }
   }
 
   public componentWillUnmount() {
@@ -34,36 +46,38 @@ export class SelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const testNumbers: any = []
-    for (const testNumber of this.props.availableTests.numbers) {
-      const colorIndex = testNumbers.length
-      const color = Themes.themeColors[colorIndex % Themes.themeColors.length]
-      const active = (testNumber.number === this.state.selectedNumber)
-      testNumbers.push(
-        <TestNumber
-          active={active}
-          color={color}
-          key={colorIndex}
-          number={testNumber}
-          onClick={this.handleTestNumberClick}
-          onSubmit={this.props.onSubmit}
-        />
-      )
+    if (this.state.availableTests === undefined) {
+      return <p>Loading...</p>
     }
+
     return (
-      <div className="select-test-numbers">
-        {testNumbers}
+      <div className="SelectTest">
+        {this.state.availableTests.numbers.map((testNumber, i) => {
+          const color = Themes.themeColors[i % Themes.themeColors.length]
+          const active = (testNumber.number === this.state.selectedNumber)
+
+          return (
+            <TestNumber
+              active={active}
+              color={color}
+              key={testNumber.number}
+              num={testNumber}
+              onClick={this.handleTestNumberClick}
+              onSubmit={this.props.onSubmit}
+            />
+          )
+        })}
       </div>
     )
   }
 
-  private handleTestNumberClick(selectedNumber: number) {
-    this.setState({selectedNumber})
+  private handleTestNumberClick = (selectedNumber: number) => {
+    this.setState({ selectedNumber })
   }
   
-  private handleScroll() {
+  private handleScroll = () => {
     if (this.state.selectedNumber !== undefined) {
-      this.setState({selectedNumber: undefined})
+      this.setState({ selectedNumber: undefined })
     }
   }
 }

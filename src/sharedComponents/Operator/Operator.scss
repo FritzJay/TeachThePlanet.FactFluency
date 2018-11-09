@@ -1,9 +1,9 @@
 @import 'src/Stylesheets/all';
 
-.operator-div {
+.Operator {
   display: grid;
   
-  .operator {
+  .operator-inner {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;

@@ -14,3 +14,16 @@ export const padString = (str: any, length: number, char: string = ' ', left: bo
   }
   return str;
 }
+
+export const getOperatorSymbol = (operator: string): string => {
+  switch(operator) {
+    case '*':
+      return '×';
+    case '/':
+      return '÷';
+     case '-':
+      return '−';
+    default:
+      return operator
+  }
+}

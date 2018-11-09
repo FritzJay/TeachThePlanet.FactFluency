@@ -1,7 +1,8 @@
 import * as React from "react"
+import { IDisplayQuestion, IQuestion, ITest } from "src/lib/Interfaces"
+import { Testing } from 'src/lib/lib'
+import { getOperatorSymbol } from "src/lib/Utility/Utility";
 import { Button, Card } from "src/sharedComponents"
-import { IDisplayQuestion, IQuestion, ITest } from "../../../../lib/Interfaces"
-import { Testing } from '../../../../lib/lib'
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
 
@@ -58,7 +59,7 @@ export class TakeTest extends React.Component<IProps, IState> {
     const { answer, keyboard, question } = this.state
 
     if (question) {
-      const operator = this.getOperatorSymbol(question.operator)
+      const operator = getOperatorSymbol(question.operator)
       return (
         <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
           <div className="question-problem">
@@ -81,19 +82,6 @@ export class TakeTest extends React.Component<IProps, IState> {
       )
     } else {
       return <div/>
-    }
-  }
-
-  private getOperatorSymbol = (operator: string) => {
-    switch (operator) {
-      case '*':
-        return '×'
-      case '/':
-        return '÷'
-       case '-':
-        return '−'
-      default:
-        return operator
     }
   }
 

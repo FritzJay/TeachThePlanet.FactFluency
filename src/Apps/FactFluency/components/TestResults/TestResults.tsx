@@ -86,7 +86,7 @@ export class TestResults extends React.Component<IProps, IState> {
         testResults,
       })
 
-    } catch(error) {
+    } catch (error) {
       this.setState({ error })
     }
   }

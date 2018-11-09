@@ -1,6 +1,6 @@
 @import 'src/Stylesheets/all';
 
-.test-number {
+.TestNumber {
   display: grid;
   
   // change on active
@@ -73,7 +73,7 @@
   }
 }
 
-.test-number.active {
+.TestNumber.active {
   max-height: 250px;
 
   .header {
@@ -102,7 +102,7 @@
   }
 }
 
-.test-number.active.error {
+.TestNumber.active.error {
   max-height: 300px;
 
   .button-container {
@@ -119,12 +119,12 @@
   }
 }
 
-.test-number:hover {
+.TestNumber:hover {
   box-shadow: $dp-eight;
 }
 
 @media (max-width: 399px) {
-  .test-number {
+  .TestNumber {
     grid-template-columns: 2fr 4fr;
   
     .operators-container {
@@ -134,7 +134,7 @@
 }
 
 @media (max-width: 300px) {
-  .test-number {
+  .TestNumber {
     .header {
       padding-right: 0px;
     }

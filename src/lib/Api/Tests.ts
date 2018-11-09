@@ -8,7 +8,14 @@ export const fetchAvailableTests = async (token: string): Promise<IAvailableTest
   }
 
   try {
-    return await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
+
+    if (response.error !== undefined) {
+      throw (response.error)
+    }
+
+    return response.availableTests
+    
   } catch(error) {
     console.warn('fetchAvailableTests failed with error', error)
     throw error
@@ -45,6 +52,7 @@ export const fetchTestResults = async (token: string, test: ITest): Promise<ITes
     }
 
     return response.testResults
+
   } catch(error) {
     console.warn('fetchTestResults failed with error', error)
     throw error
