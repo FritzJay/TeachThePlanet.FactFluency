@@ -1,0 +1,14 @@
+@import 'src/Stylesheets/all';
+
+.CopyToClipboard {
+  .notification {
+    position: absolute;
+    border-radius: 3px;
+    padding: 1em;
+    background-color: $white;
+    color: $gray;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: $dp-six;
+  }
+}

@@ -1,7 +1,6 @@
 import * as React from 'react'
-import * as CopyToClipboard from 'react-copy-to-clipboard'
 import { IClass } from 'src/lib/Interfaces'
-import { Card } from 'src/sharedComponents'
+import { Card, CopyToClipboard } from 'src/sharedComponents'
 import './ClassCard.css'
 import SchoolIcon from './school-icon.svg'
 
@@ -22,10 +21,6 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
     e.stopPropagation()
   }
 
-  const handleCopyClick = (e: any) => {
-    e.stopPropagation()
-  }
-
   return (
     <Card
       className="ClassCard"
@@ -36,25 +31,21 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
         className="settings"
         onClick={handleSettingsClick}
       >
-        <i className="material-icons">settings</i>
+        <i className="material-icons settings">settings</i>
       </button>
 
       <img src={SchoolIcon} className="school-icon" alt="school icon" />
 
       <h3 className="class-name">{cls.name}</h3>
       
-      <div
+      <CopyToClipboard
+        text={cls.classCode}
         className="class-code"
-        onClick={handleCopyClick}
       >
         <h4>Class Code: {cls.classCode}</h4>
 
-        <CopyToClipboard
-          text={cls.classCode}
-        >
-          <i className="material-icons">assignment</i>
-        </CopyToClipboard>
-      </div>
+        <i className="material-icons">assignment</i>
+      </CopyToClipboard>
     </Card>
   )
 }
