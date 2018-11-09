@@ -22,7 +22,7 @@ interface IState {
   testResults?: ITestResults
 }
 
-class Component extends React.Component<IProps, IState> {
+class DisconnectedFactFluency extends React.Component<IProps, IState> {
   public state: IState = {}
 
   public render() {
@@ -209,4 +209,4 @@ class Component extends React.Component<IProps, IState> {
 
 const mapStateToProps = ({ user }: any) => ({ user })
 
-export const FactFluency = connect(mapStateToProps)(Component)
+export const FactFluency = connect(mapStateToProps)(DisconnectedFactFluency)

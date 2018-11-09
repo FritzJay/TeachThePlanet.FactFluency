@@ -1,8 +1,8 @@
 import * as React from 'react'
+import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
 import { getClasses } from 'src/lib/Api/Classes'
 import { IClass, IUser } from 'src/lib/Interfaces'
-import { Caching } from 'src/lib/lib'
 import './Classes.css'
 import {
   ClassDetail,
@@ -15,7 +15,6 @@ import {
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser
-  token: string
   onLogout: () => void
 }
 
@@ -25,7 +24,7 @@ interface IState {
   isLoading: boolean
 }
 
-export class Classes extends React.Component<IProps, IState> {
+export class DisconnectedClasses extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props)
 
@@ -113,7 +112,7 @@ export class Classes extends React.Component<IProps, IState> {
         {...props}
         classes={classes}
         isLoading={isLoading}
-        token={this.props.token}
+        token={this.props.user.token}
         onLogout={this.props.onLogout}
         onClassCardClick={this.handleClassCardClick}
         onClassSettingsClick={this.handleClassSettingsClick}
@@ -140,18 +139,19 @@ export class Classes extends React.Component<IProps, IState> {
   }
 
   private renderEditClassModal(props: any) {
-    const selectedTask = this.state.selectedClass
+    const selectedClass = this.state.selectedClass
 
-    if (selectedTask === undefined || selectedTask === null) {
+    if (selectedClass === undefined || selectedClass === null) {
+      console.warn('Error while rendering EditClassModal: ``selectedClass`` is undefined')
       return <Redirect to='/classes' />
     }
 
     return (
       <EditClassModal
         {...props}
-        cls={selectedTask}
+        cls={selectedClass}
         onSave={this.fetchClasses}
-        token={this.props.token}
+        token={this.props.user.token}
       />
     )
   }
@@ -160,7 +160,7 @@ export class Classes extends React.Component<IProps, IState> {
     return (
       <NewClassModal
         {...props}
-        token={this.props.token}
+        token={this.props.user.token}
         onSave={this.fetchClasses}
       />
     )
@@ -170,6 +170,7 @@ export class Classes extends React.Component<IProps, IState> {
     const { selectedClass } = this.state
 
     if (selectedClass === undefined) {
+      console.warn('Error while rendering ClassDetail: ``selectedClass`` is undefined')
       return <Redirect to="/classes" />
     }
 
@@ -182,7 +183,7 @@ export class Classes extends React.Component<IProps, IState> {
   }
 
   private renderTestParameters(props: any) {
-    const { token } = this.props
+    const { user } = this.props
     const { selectedClass } = this.state
 
     if (selectedClass === undefined) {
@@ -192,7 +193,7 @@ export class Classes extends React.Component<IProps, IState> {
     return (
       <TestParameters
         {...props}
-        token={token}
+        token={user.token}
         classID={selectedClass._id}
       />
     )
@@ -201,12 +202,7 @@ export class Classes extends React.Component<IProps, IState> {
   private fetchClasses() {
     const { onLogout } = this.props
     
-    const token = this.props.token || Caching.getCached('token')
-
-    if (token === undefined || token === null) {
-      onLogout()
-      return
-    }
+    const token = this.props.user.token
 
     this.setState({
       isLoading: true
@@ -227,3 +223,7 @@ export class Classes extends React.Component<IProps, IState> {
     })
   }
 }
+
+const mapStateToProps = ({ user }: any) => ({ user })
+
+export const Classes = connect(mapStateToProps)(DisconnectedClasses)
