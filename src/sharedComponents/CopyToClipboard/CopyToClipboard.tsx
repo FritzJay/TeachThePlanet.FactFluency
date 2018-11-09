@@ -61,14 +61,11 @@ export class CopyToClipboard extends React.Component<IProps, IState> {
   }
 
   private handleClick = (e: any) => {
-    e.stopPropagation()
-    
-    if (this.state.notification) {
-      return
-    }
-
     const x = e.pageX
     const y = e.pageY
+
+    e.preventDefault()
+    e.stopPropagation()
 
     this.setState({
       notification: true,
