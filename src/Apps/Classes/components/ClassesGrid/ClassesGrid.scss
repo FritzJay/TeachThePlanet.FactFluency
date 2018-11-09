@@ -1,3 +1,5 @@
+@import 'src/Stylesheets/all';
+
 .ClassesGrid {
   grid-column: 2 / 2;
   padding-top: 115px;
@@ -12,5 +14,7 @@
   .title {
     grid-row: 1 / 1;
     grid-column: 1 / -1;
+
+    color: $gray;
   }
 }

@@ -41,7 +41,7 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
 
       <img src={SchoolIcon} className="school-icon" alt="school icon" />
 
-      <h3>{cls.name}</h3>
+      <h3 className="class-name">{cls.name}</h3>
       
       <div
         className="class-code"
