@@ -13,14 +13,14 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
 #root {
     height: 100%;
 }
 
-.index {
+.App {
     height: 100%;
-}
-
-a {
-    text-decoration: none;
 }
