@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
 import { Navbar, PageNotFound } from 'src/sharedComponents'
 import { IAvailableTests, ITest, ITestNumber, ITestResults, IUser } from '../../lib/Interfaces'
@@ -7,9 +8,7 @@ import { SelectTest, StartTest, TakeTest, TestResults } from './components'
 import './FactFluency.css'
 
 interface IProps extends RouteComponentProps<{}> {
-  token: string
-  user?: IUser
-  onLogin: (user: IUser, token: string, userType: string) => void
+  user: IUser
   onLogout: () => void
 }
 
@@ -23,7 +22,7 @@ interface IState {
   testResults?: ITestResults
 }
 
-export class FactFluency extends React.Component<IProps, IState> {
+class Component extends React.Component<IProps, IState> {
   public state: IState = {}
 
   public render() {
@@ -33,7 +32,7 @@ export class FactFluency extends React.Component<IProps, IState> {
       <div>
         <Navbar
           logoLink={match.url}
-          user={user || Caching.getCached('user')}
+          user={user}
           onLogout={onLogout}
         />
 
@@ -74,22 +73,14 @@ export class FactFluency extends React.Component<IProps, IState> {
   
   /****** Select Test ******/
 
-  private renderSelectTest = (props: any) => {
-    const token = this.props.token || Caching.getCached('token')
-    if (token === undefined || token === null) {
-      this.props.onLogout()
-      return <Redirect to='/' />
-    }
-
-    return (
-      <SelectTest
-        {...props}
-        token={token}
-        onSubmit={this.handleSelectTestSubmit}
-        storeAvailableTests={this.storeAvailableTests}
-      />
-    )
-  }
+  private renderSelectTest = (props: any) => (
+    <SelectTest
+      {...props}
+      token={this.props.user.token}
+      onSubmit={this.handleSelectTestSubmit}
+      storeAvailableTests={this.storeAvailableTests}
+    />
+  )
 
   private storeAvailableTests = (availableTests: IAvailableTests) => {
     Caching.setCached('availableTests', availableTests)
@@ -102,11 +93,13 @@ export class FactFluency extends React.Component<IProps, IState> {
       operator,
     }
 
+    Caching.removeCached('test')
+    Caching.setCached('testParameters', testParameters)
+
     this.setState({
       test: undefined,
       testParameters,
     }, () => {
-      Caching.removeCached('test')
       this.props.history.push(`${this.props.match.url}/start-test`)
     })
   }
@@ -116,17 +109,18 @@ export class FactFluency extends React.Component<IProps, IState> {
   /****** Start Test ******/
   
   private renderStartTest = (props: any) => {
-    const { token, match } = this.props
+    const { user, match } = this.props
 
     const testParameters = this.state.testParameters || Caching.getCached('testParameters')
     if (testParameters === undefined || testParameters === null) {
+      console.warn('Error while rendering StartTest: ``testParameters`` is undefined')
       return <Redirect to={match.url} />
     }
 
     return (
       <StartTest
         {...props}
-        token={token}
+        token={user.token}
         testParameters={testParameters}
         onSubmit={this.handleStartTestSubmit}
         onCancel={this.handleStartTestCancel}
@@ -136,8 +130,9 @@ export class FactFluency extends React.Component<IProps, IState> {
   }
   
   private handleStartTestSubmit = () => {
+    Caching.removeCached('testResults')
+
     this.setState({ testResults: undefined }, () => {
-      Caching.removeCached('testResults')
       this.props.history.push(`${this.props.match.url}/take-test`)
     })
   }
@@ -147,9 +142,9 @@ export class FactFluency extends React.Component<IProps, IState> {
     this.props.history.push(this.props.match.url)
   }
   
-  private storeTest = (results: { test: ITest }) => {
-    Caching.setCached('test', results.test)
-    this.setState({ test: results.test })
+  private storeTest = (test: ITest ) => {
+    Caching.setCached('test', test)
+    this.setState({ test })
   }
   
   /****** END Start Test ******/
@@ -160,6 +155,7 @@ export class FactFluency extends React.Component<IProps, IState> {
     const test = this.state.test || Caching.getCached('test')
 
     if (test === undefined || test === null) {
+      console.warn('Error while rendering TakeTest: ``test`` is undefined')
       return <Redirect to={`${this.props.match.url}/start-test`} />
     }
 
@@ -196,7 +192,7 @@ export class FactFluency extends React.Component<IProps, IState> {
       <TestResults
         {...props}
         test={test}
-        token={this.props.token}
+        token={this.props.user.token}
         storeTestResults={this.storeTestResults}
       />
     )
@@ -210,3 +206,7 @@ export class FactFluency extends React.Component<IProps, IState> {
 
   /****** END Test Results ******/
 }
+
+const mapStateToProps = ({ user }: any) => ({ user })
+
+export const FactFluency = connect(mapStateToProps)(Component)

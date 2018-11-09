@@ -30,7 +30,14 @@ export const fetchNewTest = async (token: string, testParameters: { operator: st
   }
 
   try {
-    return await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
+
+    if (response.error !== undefined) {
+      throw (response.error)
+    }
+
+    return response.test
+
   } catch (error) {
     console.warn('fetchNewTest failed with error', error)
     throw error

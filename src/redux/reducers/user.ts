@@ -1,4 +1,4 @@
-import { RECEIVE_USER } from '../actions/user'
+import { RECEIVE_USER, REMOVE_USER } from '../actions/user'
 
 export default function user (state = {}, action: any) {
   switch (action.type) {
@@ -7,6 +7,8 @@ export default function user (state = {}, action: any) {
         ...state,
         ...action.user,
       }
+    case REMOVE_USER:
+      return {}
     default:
       return state
   }

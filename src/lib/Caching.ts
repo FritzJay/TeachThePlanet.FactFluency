@@ -13,3 +13,7 @@ export const getCached = (key: string) => {
 export const removeCached = (key: string) => {
   localStorage.removeItem(key);
 }
+
+export const clearCached = () => {
+  localStorage.clear()
+}
