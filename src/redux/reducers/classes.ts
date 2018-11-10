@@ -1,5 +1,6 @@
 import { IClass } from 'src/lib/Interfaces';
 import {
+  CREATE_CLASS,
   DELETE_CLASS,
   RECEIVE_CLASS_LIST,
   REMOVE_SELECTED_CLASS,
@@ -41,6 +42,14 @@ export default function classes (state: any = {}, action: any) {
             cls._id.toString() === action.updates._id.toString()
               ? action.updates
               : cls))
+          : []
+      }
+
+    case CREATE_CLASS:
+      return {
+        ...state,
+        classList: state.classList
+          ? state.classList.concat([action.newClass])
           : []
       }
 

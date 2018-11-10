@@ -22,18 +22,26 @@ export const fetchClasses = async (token: string): Promise<IClass[]> => {
   }
 }
 
-export const createClass = async (token: string, grade: string, name: string) => {
+export const createClass = async (token: string, grade: string, name: string): Promise<IClass> => {
   const request: IRequest = {
     body: { grade, name },
     method: "PUT",
     token,
   }
 
-  const url = `${process.env.REACT_APP_API_URL}/classes/`
+  try {
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
+  
+    if (response.error !== undefined) {
+      throw (response.error)
+    }
 
-  const cls = await Requests.jsonFetch(url, request)
+    return response.class
 
-  return cls
+  } catch(error) {
+    console.warn('updateClass failed with error', error)
+    throw error
+  }
 }
 
 export const updateClass = async (token: string, { _id, ...classParams }: IClass) => {

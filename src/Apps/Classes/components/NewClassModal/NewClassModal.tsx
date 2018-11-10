@@ -1,12 +1,13 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { createClass } from 'src/lib/Api/Classes'
+import { handleCreateClass } from 'src/redux/actions/classes';
 import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './NewClassModal.css'
 
 interface IProps extends RouteComponentProps<{}> {
+  dispatch: any
   token: string
-  onSave: () => void
 }
 
 interface IState {
@@ -15,7 +16,7 @@ interface IState {
   name: string
 }
 
-export class NewClassModal extends React.Component<IProps, IState> {
+export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
   public state = {
     error: '',
     grade: 'kindergarten',
@@ -90,7 +91,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
   }
 
   private handleCreateClassClick = async () => {
-    const { token, history, onSave } = this.props
+    const { dispatch, token, history } = this.props
     const { grade, name } = this.state
     
     if (grade === '' || name === '') {
@@ -99,14 +100,11 @@ export class NewClassModal extends React.Component<IProps, IState> {
     }
 
     try {
-      await createClass(token, grade, name)
-
-      onSave()
-
+      await dispatch(handleCreateClass(token, grade, name))
       history.push('/classes')
 
     } catch (error) {
-      console.log(error)
+      console.warn(error)
       this.setState({ error: 'An unexpected error ocurred. Please try again later' })
     }
   }
@@ -124,3 +122,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
     this.setState(state)
   }
 }
+
+const mapStateToProps = ({ user }: any) => ({ token: user.token })
+
+export const NewClassModal = connect(mapStateToProps)(DisconnectedNewClassModal)

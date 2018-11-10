@@ -83,26 +83,6 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     return <Redirect to={`${props.match.url}/grid`} />
   }
 
-  /*
-  private renderEditClassModal = (props: any) => {
-    const selectedClass = this.state.selectedClass
-
-    if (selectedClass === undefined || selectedClass === null) {
-      console.warn('Error while rendering EditClassModal: ``selectedClass`` is undefined')
-      return <Redirect to='/classes' />
-    }
-
-    return (
-      <EditClassModal
-        {...props}
-        cls={selectedClass}
-        onSave={this.fetchClasses}
-        token={this.props.user.token}
-      />
-    )
-  }
-  */
-
   private renderNewClassModal = (props: any) => {
     return (
       <NewClassModal
