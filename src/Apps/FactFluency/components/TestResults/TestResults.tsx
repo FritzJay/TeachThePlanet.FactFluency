@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { handleReceiveTestResults, removeTest, removeTestResults } from 'src/redux/actions/factFluency';
-import { Button, Card } from 'src/sharedComponents'
+import { Button, Card, Loading } from 'src/sharedComponents'
 import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
 import { padString } from '../../../../lib/Utility/Utility'
 import './TestResults.css'
@@ -78,21 +78,35 @@ class DisconnectedTestResults extends React.Component<IProps, IState> {
     const { test, token } = this.props
 
     try {
-      this.props.dispatch(handleReceiveTestResults(token, test))
+      await this.props.dispatch(handleReceiveTestResults(token, test))
 
       this.setState({
         error: '',
       })
 
     } catch (error) {
-      this.setState({ error })
+      this.setState({ error: error.toString() })
     }
   }
 
   public render() {
-    if (this.props.testResults === undefined) {
-      return <p>Loading...</p>
+    if (this.state.error !== '') {
+      return (
+        <div className="TestResults">
+          <h1 className="error">{this.state.error}</h1>
+          <h2 className="error">Please Try Again Later</h2>
+        </div>
+      )
     }
+
+    if (this.props.testResults === undefined) {
+      return (
+        <div className="TestResults">
+          <Loading className="loading" />
+        </div>
+      )
+    }
+
     const { correct, needed, total, quickest, incorrect } = this.props.testResults
 
     return (

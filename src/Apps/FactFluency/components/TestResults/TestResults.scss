@@ -1,5 +1,17 @@
 @import '../../../../Stylesheets/all';
 
+.TestResults {
+  .loading {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+
+  .error {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}
+
 @media (max-width: 449px) {
   .TestResults {
     grid-column: 1 / -1;
@@ -148,8 +160,8 @@
           }
         }
       }
+    }
   }
-}
 }
 
 @media (min-width: 450px) {

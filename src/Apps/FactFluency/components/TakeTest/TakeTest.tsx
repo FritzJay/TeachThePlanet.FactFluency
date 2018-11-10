@@ -160,12 +160,13 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     })
   }
 
-  private submitTest = () => {
+  private submitTest = async () => {
     const questions = Testing.sortQuestions(this.state.questions)
     const test = this.props.test
     test.questions = questions
     test.end = new Date()
-    this.props.dispatch(updateTest(test))
+
+    await this.props.dispatch(updateTest(test))
     this.props.history.push('/fact-fluency/test-results')
   }
 }
