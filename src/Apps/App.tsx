@@ -9,8 +9,6 @@ import {
 } from 'react-router-dom'
 import Login from 'src/Apps/Login/Login'
 import { IUser } from 'src/lib/Interfaces'
-import { Caching } from 'src/lib/lib'
-import { removeUser } from 'src/redux/actions/user';
 import { LoadingBar } from 'src/sharedComponents'
 import './App.css'
 import { Classes } from './Classes/Classes'
@@ -36,7 +34,7 @@ class App extends React.Component<IProps> {
 
           <Route
             path="/fact-fluency"
-            render={this.renderFactFluency}
+            component={FactFluency}
           />
 
           <Route
@@ -60,11 +58,7 @@ class App extends React.Component<IProps> {
         break
     }
 
-    return (
-      <Login
-        {...props}
-      />
-    )
+    return <Login {...props} />
   }
 
   private renderClasses = (props: any) => {
@@ -77,34 +71,10 @@ class App extends React.Component<IProps> {
     return (
       <Classes
         {...props}
-        onLogout={this.handleLogout}
         user={user}
         token={user.token}
       />
     )
-  }
-
-  private renderFactFluency = (props: any) => {
-    const user = this.props.user
-
-    if (user === undefined || user === null) {
-      return <Redirect to="/index" />
-    }
-
-    return (
-      <FactFluency
-        {...props}
-        onLogout={this.handleLogout}
-        user={user}
-        token={user.token}
-      />
-    )
-  }
-
-  private handleLogout = () => {
-    Caching.clearCached()
-    this.props.dispatch(removeUser())
-    this.props.history.replace('/index')
   }
 
   private renderRedirect = () => (

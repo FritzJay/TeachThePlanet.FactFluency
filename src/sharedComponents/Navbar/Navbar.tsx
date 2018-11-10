@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
+import { Caching } from 'src/lib/lib';
+import { removeUser } from 'src/redux/actions/user';
 import { Button, Dropdown } from 'src/sharedComponents'
 import { IUser } from '../../lib/Interfaces'
 import Logo from './logo.png'
@@ -43,17 +46,17 @@ const UserIcon = ({ user, onClick }: IUserIconProps) => {
 }
 
 
-interface IProps {
+interface IProps extends RouteComponentProps<{}> {
   logoLink: string
+  dispatch: any
   user?: IUser
-  onLogout: () => void
 }
 
 interface IState {
   activeDropdown: boolean
 }
 
-export class Navbar extends React.Component<IProps, IState> {
+class DisconnectedNavbar extends React.Component<IProps, IState> {
   public state: IState = {
     activeDropdown: false,
   }
@@ -65,7 +68,7 @@ export class Navbar extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { user, logoLink, onLogout } = this.props
+    const { user, logoLink } = this.props
     const { activeDropdown } = this.state
 
     return (
@@ -76,7 +79,7 @@ export class Navbar extends React.Component<IProps, IState> {
 
         <LogoutLink
           active={user !== undefined}
-          onLogout={onLogout}
+          onLogout={this.handleLogout}
         />
 
         <Link className="logo" to={logoLink}>
@@ -98,7 +101,7 @@ export class Navbar extends React.Component<IProps, IState> {
         <Dropdown active={activeDropdown}>
           <LogoutLink
             active={user !== undefined}
-            onLogout={onLogout}
+            onLogout={this.handleLogout}
           />
         </Dropdown>
       </div>
@@ -110,14 +113,12 @@ export class Navbar extends React.Component<IProps, IState> {
   }
 
   private handleClickOutside = (event: any) => {
-    console.log('handleClickOutside')
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.handleToggleButtonClick()
     }
   }
 
   private handleToggleButtonClick = () => {
-    console.log('handleToggleButtonClick')
     if (!this.state.activeDropdown) {
       window.addEventListener('click', this.handleClickOutside)
     } else {
@@ -128,4 +129,14 @@ export class Navbar extends React.Component<IProps, IState> {
       activeDropdown: !prevState.activeDropdown
     }))
   }
+
+  private handleLogout = () => {
+    Caching.clearCached()
+    this.props.dispatch(removeUser())
+    this.props.history.push('/index')
+  }
 }
+
+const mapStateToProps = ({ user }: any) => ({ user })
+
+export const Navbar = withRouter(connect(mapStateToProps)(DisconnectedNavbar))

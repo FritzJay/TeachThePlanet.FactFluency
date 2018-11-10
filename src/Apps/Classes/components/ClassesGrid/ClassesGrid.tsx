@@ -9,7 +9,6 @@ interface IProps extends RouteComponentProps<{}> {
   classes: IClass[]
   token: string
   isLoading: boolean
-  onLogout: () => void
   onClassCardClick: (selectedClass: IClass) => void
   onClassSettingsClick: (selectedClass: IClass) => void
 }

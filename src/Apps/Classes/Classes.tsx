@@ -15,7 +15,6 @@ import {
 
 interface IProps extends RouteComponentProps<{}> {
   user: IUser
-  onLogout: () => void
 }
 
 interface IState {
@@ -51,15 +50,11 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { match, onLogout, user } = this.props
+    const { match } = this.props
 
     return (
       <div className="Classes">
-        <Navbar
-          user={user}
-          logoLink="/"
-          onLogout={onLogout}
-        />
+        <Navbar logoLink="/" />
 
         <Route
           exact={true}
@@ -113,7 +108,6 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
         classes={classes}
         isLoading={isLoading}
         token={this.props.user.token}
-        onLogout={this.props.onLogout}
         onClassCardClick={this.handleClassCardClick}
         onClassSettingsClick={this.handleClassSettingsClick}
       />
@@ -199,9 +193,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     )
   }
 
-  private fetchClasses() {
-    const { onLogout } = this.props
-    
+  private fetchClasses() {    
     const token = this.props.user.token
 
     this.setState({
@@ -218,7 +210,6 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
 
       } catch(error) {
         console.log('requestClasses failed', error)
-        onLogout()
       }
     })
   }

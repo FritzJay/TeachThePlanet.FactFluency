@@ -25,16 +25,12 @@ export default class Login extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { match, user, onLogout } = this.props
+    const { match } = this.props
 
     return (
      <div className="Login">
 
-      <Navbar
-        logoLink={'/'}
-        user={user}
-        onLogout={onLogout}
-      />
+      <Navbar logoLink={'/'} />
 
       <Switch>
         <Route
