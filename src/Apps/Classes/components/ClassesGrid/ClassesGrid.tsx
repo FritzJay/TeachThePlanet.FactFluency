@@ -34,7 +34,7 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { classList } = this.props
+    const { classList, match } = this.props
     const { error } = this.state
 
     if (error !== '') {
@@ -68,7 +68,7 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
           />
           ))}
   
-        <Link to={'/classes/grid/new'}>
+        <Link to={`${match.url}/new`}>
           <CreateClassCard />
         </Link>
       </div>
