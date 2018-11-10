@@ -1,14 +1,18 @@
 import * as React from "react"
+import { connect } from 'react-redux'
+import { RouteComponentProps } from "react-router-dom";
 import { IDisplayQuestion, IQuestion, ITest } from "src/lib/Interfaces"
 import { Testing } from 'src/lib/lib'
 import { getOperatorSymbol } from "src/lib/Utility/Utility";
+import { updateTest } from "src/redux/actions/factFluency";
 import { Button, Card } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
 
-interface IProps {
+interface IProps extends RouteComponentProps<{}> {
+  dispatch: any
+  history: any
   test: ITest
-  onSubmit: (test: ITest) => void
 }
 
 interface IState {
@@ -19,7 +23,7 @@ interface IState {
   questions: IQuestion[]
 }
 
-export class TakeTest extends React.Component<IProps, IState> {
+export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   private submitTestOnTimeout: any
 
   public constructor(props: IProps) {
@@ -161,6 +165,11 @@ export class TakeTest extends React.Component<IProps, IState> {
     const test = this.props.test
     test.questions = questions
     test.end = new Date()
-    this.props.onSubmit(test)
+    this.props.dispatch(updateTest(test))
+    this.props.history.push('/fact-fluency/test-results')
   }
 }
+
+const mapStateToProps = ({ factFluency }: any) => ({ test: factFluency.test })
+
+export const TakeTest = connect(mapStateToProps)(DisconnectedTakeTest)

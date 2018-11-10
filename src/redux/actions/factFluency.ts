@@ -10,6 +10,7 @@ export const RECEIVE_TEST = 'RECEIVE_TEST'
 export const REMOVE_TEST = 'REMOVE_TEST'
 export const RECEIVE_TEST_RESULTS = 'RECEIVE_TEST_RESULTS'
 export const REMOVE_TEST_RESULTS = 'REMOVE_TEST_RESULTS'
+export const UPDATE_TEST = 'UPDATE_TEST'
 
 export function receiveAvailableTests (availableTests: IAvailableTests) {
   return {
@@ -42,6 +43,13 @@ export function removeTestParameters () {
 export function receiveTest (test: ITest) {
   return {
     type: RECEIVE_TEST,
+    test,
+  }
+}
+
+export function updateTest (test: ITest) {
+  return {
+    type: UPDATE_TEST,
     test,
   }
 }

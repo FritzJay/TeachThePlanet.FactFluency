@@ -1,6 +1,7 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { fetchTestResults } from 'src/lib/Api/Tests'
+import { handleReceiveTestResults, removeTest, removeTestResults } from 'src/redux/actions/factFluency';
 import { Button, Card } from 'src/sharedComponents'
 import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
 import { padString } from '../../../../lib/Utility/Utility'
@@ -59,31 +60,28 @@ const IncorrectCard = ({ question }: IIncorrectCardProps) => {
 
 interface IProps extends RouteComponentProps<{}> {
   test: ITest
+  testResults: ITestResults
   token: string
-  storeTestResults: (testResults: ITestResults) => void
+  dispatch: any
 }
 
 interface IState {
   error: string
-  testResults?: ITestResults
 }
 
-export class TestResults extends React.Component<IProps, IState> {
+class DisconnectedTestResults extends React.Component<IProps, IState> {
   public state: IState = {
     error: ''
   }
 
   public async componentDidMount() {
-    const { test, token, storeTestResults } = this.props
+    const { test, token } = this.props
 
     try {
-      const testResults = await fetchTestResults(token, test)
-      
-      storeTestResults(testResults)
+      this.props.dispatch(handleReceiveTestResults(token, test))
 
       this.setState({
         error: '',
-        testResults,
       })
 
     } catch (error) {
@@ -92,10 +90,10 @@ export class TestResults extends React.Component<IProps, IState> {
   }
 
   public render() {
-    if (this.state.testResults === undefined) {
+    if (this.props.testResults === undefined) {
       return <p>Loading...</p>
     }
-    const { correct, needed, total, quickest, incorrect } = this.state.testResults
+    const { correct, needed, total, quickest, incorrect } = this.props.testResults
 
     return (
       <div className="TestResults">
@@ -130,12 +128,22 @@ export class TestResults extends React.Component<IProps, IState> {
   }
 
   private handleRetryClick = () => {
-    localStorage.removeItem('testResults')
+    this.props.dispatch(removeTestResults())
+    this.props.dispatch(removeTest())
     this.props.history.replace('/fact-fluency/start-test')
   }
 
   private handleHomeClick = () => {
-    localStorage.removeItem('testResults')
+    this.props.dispatch(removeTestResults())
+    this.props.dispatch(removeTest())
     this.props.history.push('/fact-fluency')
   }
 }
+
+const mapStateToProps = ({ factFluency, user }: any) => ({
+  test: factFluency.test,
+  testResults: factFluency.testResults,
+  token: user.token,
+})
+
+export const TestResults = connect(mapStateToProps)(DisconnectedTestResults)
