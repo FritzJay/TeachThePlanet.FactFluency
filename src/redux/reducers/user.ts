@@ -1,3 +1,4 @@
+import { CLEAR_STORE } from '../actions/shared'
 import {
   RECEIVE_USER,
   REHYDRATE_USER,
@@ -6,6 +7,9 @@ import {
 
 export default function user (state = {}, action: any) {
   switch (action.type) {
+    case CLEAR_STORE:
+      return {}
+
     case REHYDRATE_USER:
       return {
         ...state,

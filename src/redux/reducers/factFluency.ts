@@ -10,9 +10,13 @@ import {
   SET_NEW_TEST_PARAMETERS,
   UPDATE_TEST,
 } from '../actions/factFluency'
+import { CLEAR_STORE } from '../actions/shared'
 
 export default function factFluency (state: any = {}, action: any) {
   switch (action.type) {
+    case CLEAR_STORE:
+      return {}
+
     case REHYDRATE_FACT_FLUENCY:
       return {
         ...state,

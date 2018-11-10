@@ -125,16 +125,12 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
       return
     }
     
-    this.loginRequest(email, password, userType)
+    await this.loginRequest(email, password, userType)
   }
 
   private loginRequest = async (email: string, password: string, userType: string) => {
     try {
-      this.setState({ loading: true }, () => {
-        this.props.dispatch(handleLoginUser(email, password, userType, (user) => {
-          this.setState({ loading: false })
-        }))
-      })
+      this.setState({ loading: true }, () => this.props.dispatch(handleLoginUser(email, password, userType)))
     } catch(error) {
       console.warn(error)
       this.setState({

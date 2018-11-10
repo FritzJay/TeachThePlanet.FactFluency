@@ -23,14 +23,16 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   public state = { error: '' }
 
   public async componentDidMount() {
-    const { dispatch, token } = this.props
+    const { classList, dispatch, token } = this.props
 
-    try {
-      await dispatch(handleReceiveClassList(token))
-      this.setState({ error: '' })
-
-    } catch (error) {
-      this.setState({ error: error.toString() })
+    if (classList === undefined) {
+      try {
+        await dispatch(handleReceiveClassList(token))
+        this.setState({ error: '' })
+  
+      } catch (error) {
+        this.setState({ error: error.toString() })
+      }
     }
   }
 

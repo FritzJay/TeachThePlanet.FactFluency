@@ -10,9 +10,13 @@ import {
   SET_SELECTED_CLASS,
   UPDATE_CLASS,
 } from '../actions/classes'
+import { CLEAR_STORE } from '../actions/shared'
 
 export default function classes (state: any = {}, action: any) {
   switch (action.type) {
+    case CLEAR_STORE:
+      return {}
+
     case REHYDRATE_CLASSES:
       return {
         ...state,
