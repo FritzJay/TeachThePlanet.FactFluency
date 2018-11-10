@@ -1,17 +1,17 @@
 import * as React from 'react'
+import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { signup } from 'src/lib/Api/Sessions'
-import { IUser } from 'src/lib/Interfaces'
+import { handleSignUpUser } from 'src/redux/actions/user';
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './SignupModal.css'
 
 interface IProps extends RouteComponentProps<any> {
+  dispatch: any
   email: string
   password: string
   secondPassword: string
   userType: string
-  onSignup: (user: IUser, token: string, userType: string) => void
   onUserTypeSelect: (e: any) => void
   onChange: (e: any) => void
 }
@@ -20,7 +20,7 @@ interface IState {
   error: string
 }
 
-export class SignupModal extends React.Component<IProps, IState> {
+class DisconnectedSignupModal extends React.Component<IProps, IState> {
   public state: IState = {
     error: ''
   }
@@ -48,7 +48,7 @@ export class SignupModal extends React.Component<IProps, IState> {
         </ModalContent>
 
         <ModalContent className="inputs">
-          {error !== '' && <p className="error active">{error}</p>}
+          {error !== '' ? <p className="error active">{error}</p> : null}
           
           <input
             className="input"
@@ -96,7 +96,7 @@ export class SignupModal extends React.Component<IProps, IState> {
   }
 
   private handleSignupClick = async () => {
-    const { email, password, secondPassword, userType } = this.props
+    const { dispatch, email, history, password, secondPassword, userType } = this.props
 
     if (email === '' || password === '') {
       this.setState({ error: 'Please enter an email and password' })
@@ -114,9 +114,15 @@ export class SignupModal extends React.Component<IProps, IState> {
     }
 
     try {
-      const { user, token } = await signup(email, password, userType)
-  
-      this.props.onSignup(user, token, userType)
+      await dispatch(handleSignUpUser(email, password, userType))
+
+      if (userType === 'Student') {
+        history.push('/fact-fluency')
+      } else if (userType === 'Teacher') {
+        history.push('/classes')
+      } else {
+        history.push('/index')
+      }
 
     } catch(error) {
       console.warn(error)
@@ -124,3 +130,5 @@ export class SignupModal extends React.Component<IProps, IState> {
     }
   }
 }
+
+export const SignupModal = connect()(DisconnectedSignupModal)

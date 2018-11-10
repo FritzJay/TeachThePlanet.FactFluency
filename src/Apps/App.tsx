@@ -63,7 +63,6 @@ class App extends React.Component<IProps> {
     return (
       <Login
         {...props}
-        onLogin={this.handleLogin}
       />
     )
   }
@@ -100,16 +99,6 @@ class App extends React.Component<IProps> {
         token={user.token}
       />
     )
-  }
-
-  private handleLogin = (user: IUser, token: string, userType: string) => {
-    if (userType === 'Student') {
-      this.props.history.push('/fact-fluency')
-    } else if (userType === 'Teacher') {
-      this.props.history.push('/classes')
-    } else {
-      this.props.history.push('/index')
-    }
   }
 
   private handleLogout = () => {

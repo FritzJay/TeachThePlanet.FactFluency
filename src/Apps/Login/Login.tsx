@@ -6,7 +6,6 @@ import './Login.css'
 
 interface IProps extends RouteComponentProps<any> {
   user: IUser
-  onLogin: (user: IUser, token: string, userType: string) => void
   onLogout: () => void
 }
 
@@ -89,7 +88,6 @@ export default class Login extends React.Component<IProps, IState> {
         password={password}
         secondPassword={secondPassword}
         userType={userType}
-        onSignup={this.props.onLogin}
         onUserTypeSelect={this.handleUserTypeSelect}
         onChange={this.handleChange}
       />

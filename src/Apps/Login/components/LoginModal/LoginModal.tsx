@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { handleReceiveUser } from 'src/redux/actions/user';
+import { handleLoginUser } from 'src/redux/actions/user';
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './LoginModal.css'
@@ -20,9 +20,7 @@ interface IState {
 }
 
 class Component extends React.Component<IProps, IState> {
-  public state: IState = {
-    error: ''
-  }
+  public state: IState = { error: '' }
 
   public render() {
     const { email, password, userType, onUserTypeSelect, onChange } = this.props
@@ -49,7 +47,7 @@ class Component extends React.Component<IProps, IState> {
         </ModalContent>
 
         <ModalContent className="inputs">
-          {error !== '' && <p className="error active">{error}</p>}
+          {error !== '' ? <p className="error active">{error}</p> : null}
 
           <input
             className="input"
@@ -117,10 +115,10 @@ class Component extends React.Component<IProps, IState> {
 
   private loginRequest = async (email: string, password: string, userType: string) => {
     try {
-      this.props.dispatch(handleReceiveUser(email, password, userType))
+      await this.props.dispatch(handleLoginUser(email, password, userType))
     } catch(error) {
       console.warn(error)
-      this.setState({ error: 'Invalid email/username or password'})
+      this.setState({ error: error.toString() })
     }
   }
 }
