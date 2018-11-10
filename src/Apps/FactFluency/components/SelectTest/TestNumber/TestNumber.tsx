@@ -1,6 +1,6 @@
 import * as React from 'react'
+import { themeColors } from 'src/lib'
 import { ITestNumber } from 'src/lib/Interfaces'
-import { Themes } from 'src/lib/lib'
 import { Button, Card, Operator } from 'src/sharedComponents'
 import './TestNumber.css'
 
@@ -33,7 +33,7 @@ export class TestNumber extends React.Component <IProps, IState> {
 
         <div className="operators-container">
           {num.operators.map((operator, i) => {
-            const themeColor = Themes.themeColors[i % Themes.themeColors.length]
+            const themeColor = themeColors[i % themeColors.length]
             const selected = (active && this.state.operator === operator)
             return (
               <Operator

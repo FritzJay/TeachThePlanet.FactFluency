@@ -1,8 +1,13 @@
 import * as React from "react"
 import { connect } from 'react-redux'
 import { RouteComponentProps } from "react-router-dom";
+import {
+  initializeQuestions,
+  randomizeQuestions,
+  sortQuestions,
+  startQuestion,
+} from 'src/lib'
 import { IDisplayQuestion, IQuestion, ITest } from "src/lib/Interfaces"
-import { Testing } from 'src/lib/lib'
 import { getOperatorSymbol } from "src/lib/Utility/Utility";
 import { updateTest } from "src/redux/actions/factFluency";
 import { Button, Card } from "src/sharedComponents"
@@ -30,9 +35,9 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     super(props)
 
     this.props.test.start = new Date()
-    Testing.initializeQuestions(this.props.test.questions)
-    const questions = Testing.randomizeQuestions(this.props.test.questions)
-    const question = Testing.startQuestion(questions[0])
+    initializeQuestions(this.props.test.questions)
+    const questions = randomizeQuestions(this.props.test.questions)
+    const question = startQuestion(questions[0])
 
     this.state = {
       answer: '',
@@ -136,7 +141,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     this.answerCurrentQuestion()
     const nextQuestionIndex = this.state.questionIndex + 1
     if (nextQuestionIndex < this.props.test.questions.length) {
-      const nextQuestion = Testing.startQuestion(this.state.questions[nextQuestionIndex])
+      const nextQuestion = startQuestion(this.state.questions[nextQuestionIndex])
       this.setState({
         answer: '',
         question: nextQuestion,
@@ -161,7 +166,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   }
 
   private submitTest = async () => {
-    const questions = Testing.sortQuestions(this.state.questions)
+    const questions = sortQuestions(this.state.questions)
     const test = this.props.test
     test.questions = questions
     test.end = new Date()

@@ -1,5 +1,5 @@
+import { jsonFetch } from "..";
 import { IAvailableTests, IRequest, ITest, ITestResults } from "../Interfaces";
-import { Requests } from "../lib";
 
 export const fetchAvailableTests = async (token: string): Promise<IAvailableTests> => {
   const requestParams: IRequest = {
@@ -8,7 +8,7 @@ export const fetchAvailableTests = async (token: string): Promise<IAvailableTest
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/tests/available`, requestParams)
 
     if (response.error !== undefined) {
       throw (response.error)
@@ -30,7 +30,7 @@ export const fetchNewTest = async (token: string, testParameters: { operator: st
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/tests/new`, request)
 
     if (response.error !== undefined) {
       throw (response.error)
@@ -52,7 +52,7 @@ export const fetchTestResults = async (token: string, test: ITest): Promise<ITes
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/tests/grade`, requestParams)
     
     if (response.error !== undefined) {
       throw response.error

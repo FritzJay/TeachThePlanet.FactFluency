@@ -1,4 +1,5 @@
 import { hideLoading, showLoading } from 'react-redux-loading' 
+import { getCached } from 'src/lib';
 import {
   createClass as fetchCreateClass,
   deleteClass as fetchDeleteClass,
@@ -6,7 +7,6 @@ import {
   updateClass as fetchUpdateClass,
 } from 'src/lib/Api/Classes';
 import { IClass } from 'src/lib/Interfaces';
-import { Caching } from 'src/lib/lib';
 export const REHYDRATE_CLASSES = 'REHYDRATE_CLASS'
 export const CREATE_CLASS = 'CREATE_CLASS'
 export const DELETE_CLASS = 'DELETE_CLASS'
@@ -110,7 +110,7 @@ export function handleCreateClass (token: string, grade: string, name: string) {
 
 export function handleRehydrateClasses () {
   return async (dispatch: any) => {
-    const classes = await Caching.getCached('classes')
+    const classes = await getCached('classes')
 
     dispatch(rehydrateClasses(classes))
   }

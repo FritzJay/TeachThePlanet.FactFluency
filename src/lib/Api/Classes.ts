@@ -1,5 +1,5 @@
+import { jsonFetch } from "..";
 import { IClass, IRequest } from "../Interfaces";
-import { Requests } from "../lib";
 
 export const fetchClasses = async (token: string): Promise<IClass[]> => {
   const request: IRequest = {
@@ -8,7 +8,7 @@ export const fetchClasses = async (token: string): Promise<IClass[]> => {
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/teachers/classes`, request)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/teachers/classes`, request)
 
     if (response.error !== undefined) {
       throw (response.error)
@@ -30,7 +30,7 @@ export const createClass = async (token: string, grade: string, name: string): P
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
   
     if (response.error !== undefined) {
       throw (response.error)
@@ -55,7 +55,7 @@ export const updateClass = async (token: string, { _id, ...classParams }: IClass
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
 
     if (response.error !== undefined) {
       throw (response.error)
@@ -77,7 +77,7 @@ export const deleteClass = async (token: string, classID: string) => {
   }
 
   try {
-    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
+    const response = await jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
   
     if (response.error !== undefined) {
       throw (response.error)

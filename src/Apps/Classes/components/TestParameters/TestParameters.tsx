@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { themeColors } from 'src/lib'
 import { fetchTestParameters, updateTestParameters } from 'src/lib/Api/TestParameters'
-import { Themes } from 'src/lib/lib'
 import { Button, Input, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
 import './TestParameters.css'
 
@@ -97,7 +97,7 @@ export class TestParameters extends React.Component<IProps, IState> {
             <p className="operators-text">Select as many as you wish</p>
             <div className="operators">
               {['+', '-', '*', '/'].map((symbol, i) => {
-                const color = Themes.themeColors[i % Themes.themeColors.length]
+                const color = themeColors[i % themeColors.length]
                 
                 return (
                   <Operator

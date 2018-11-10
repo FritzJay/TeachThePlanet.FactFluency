@@ -1,5 +1,5 @@
+import { jsonFetch } from "..";
 import { IRequest, ITestParameters } from "../Interfaces";
-import { Requests } from "../lib";
 
 export const fetchTestParameters = async (token: string, classID: string): Promise<ITestParameters> => {
   const request: IRequest = {
@@ -9,7 +9,7 @@ export const fetchTestParameters = async (token: string, classID: string): Promi
 
   const url = `${process.env.REACT_APP_API_URL}/test-parameters/${classID}`
 
-  const results = await Requests.jsonFetch(url, request)
+  const results = await jsonFetch(url, request)
 
   return results.testParameters
 }
@@ -26,7 +26,7 @@ export const updateTestParameters = async (token: string, { _id, ...testParams }
 
   const url = `${process.env.REACT_APP_API_URL}/test-parameters/`
 
-  const cls = await Requests.jsonFetch(url, request)
+  const cls = await jsonFetch(url, request)
 
   return cls
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
-import { Caching } from 'src/lib/lib';
+import { clearCached } from 'src/lib';
 import { removeUser } from 'src/redux/actions/user';
 import { Button, Dropdown } from 'src/sharedComponents'
 import { IUser } from '../../lib/Interfaces'
@@ -131,7 +131,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
   }
 
   private handleLogout = async () => {
-    await Caching.clearCached()
+    await clearCached()
     this.props.dispatch(removeUser())
     this.props.history.push('/index')
   }

@@ -1,8 +1,8 @@
 import * as React from "react"
 import { connect } from 'react-redux'
 import { RouteComponentProps } from "react-router-dom";
+import { themeColors } from "src/lib"
 import { IAvailableTests, ITestNumber } from "src/lib/Interfaces"
-import { Themes } from "src/lib/lib"
 import { handleReceiveAvailableTests, setNewTestParameters } from "src/redux/actions/factFluency";
 import { Loading } from "src/sharedComponents";
 import './SelectTest.css'
@@ -53,7 +53,7 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
     return (
       <div className="SelectTest">
         {availableTests.numbers.map((testNumber, i) => {
-          const color = Themes.themeColors[i % Themes.themeColors.length]
+          const color = themeColors[i % themeColors.length]
           const active = (testNumber.number === this.state.selectedNumber)
 
           return (

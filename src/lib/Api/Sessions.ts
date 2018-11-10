@@ -1,5 +1,5 @@
+import { jsonFetch } from "..";
 import { IRequest, IUser } from "../Interfaces";
-import { Requests } from "../lib";
 
 interface ILogin {
   user: IUser
@@ -18,7 +18,7 @@ export const login = async (email: string, password: string, userType: string): 
 
   const url = `${process.env.REACT_APP_API_URL}/${userType.toLowerCase()}s/signin`
 
-  const results = await Requests.jsonFetch(url, request)
+  const results = await jsonFetch(url, request)
 
   results.user.userType = userType
 
@@ -37,7 +37,7 @@ export const signup = async (email: string, password: string, userType: string):
 
   const url = `${process.env.REACT_APP_API_URL}/${userType.toLowerCase()}s/create`
 
-  await Requests.jsonFetch(url, request)
+  await jsonFetch(url, request)
 
   return login(email, password, userType)
 }

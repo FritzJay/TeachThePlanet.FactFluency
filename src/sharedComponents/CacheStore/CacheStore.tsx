@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Caching } from 'src/lib/lib'
+import { setCached } from 'src/lib'
 import { handleRehydrateClasses } from 'src/redux/actions/classes';
 import { handleRehydrateFactFluency } from 'src/redux/actions/factFluency';
 import { handleRehydrateUser } from 'src/redux/actions/user';
@@ -56,7 +56,7 @@ class DisconnectedCacheStore extends React.Component<IProps, IState> {
     for (const property in store) {
       if (this.validKeys.includes(property)
           && JSON.stringify(store[property]) !== localStorage.getItem(property)) {
-        Caching.setCached(property, store[property])
+        setCached(property, store[property])
       }
     }
   }
