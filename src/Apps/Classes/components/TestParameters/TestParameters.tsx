@@ -4,14 +4,15 @@ import { RouteComponentProps } from 'react-router-dom'
 import {
   ITestParameters,
   themeColors,
-  updateTestParameters,
 } from 'src/lib'
 import { removeTestParameters } from 'src/redux/actions/classes'
-import { handleReceiveTestParameters } from 'src/redux/handlers/classes'
-import { Button, Input, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
+import { handleReceiveTestParameters, handleUpdateTestParameters } from 'src/redux/handlers/classes'
+import { Button, Input, Loading, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
+  error: string
+  loading: boolean
   minute: number
   numbers: number[]
   operators: string[]
@@ -30,6 +31,8 @@ interface IProps extends RouteComponentProps<{}> {
 
 class DisconnectedTestParameters extends React.Component<IProps, IState> {
   public state: IState = {
+    error: '',
+    loading: false,
     minute: 0,
     numbers: [],
     operators: [],
@@ -40,25 +43,25 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
   }
 
   public async componentDidMount() {
-    const { dispatch, token, selectedClass, testParameters } = this.props
+    const { dispatch, token, selectedClass } = this.props
 
     try {
-      await dispatch(handleReceiveTestParameters(token, selectedClass))
-
-      const { _id, duration, operators, numbers, questions, randomQuestions } = testParameters
-      
-      const minute = Math.floor(duration / 60)
-      const second = duration % 60
-      
-      this.setState({
-        minute,
-        numbers,
-        operators,
-        questions,
-        randomQuestions,
-        second,
-        testParametersID: _id,
-      })
+      dispatch(handleReceiveTestParameters(token, selectedClass, (testParameters) => {
+        const { _id, duration, operators, numbers, questions, randomQuestions } = testParameters
+        
+        const minute = Math.floor(duration / 60.0)
+        const second = duration % 60
+        
+        this.setState({
+          minute,
+          numbers,
+          operators,
+          questions,
+          randomQuestions,
+          second,
+          testParametersID: _id,
+        })
+      }))
 
     } catch(error) {
       console.warn(error)
@@ -71,9 +74,9 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
 
   public render() {
     const { testParameters } = this.props
-    const { minute, second, questions, randomQuestions, operators, numbers } = this.state
+    const { error, loading, minute, second, questions, randomQuestions, operators, numbers } = this.state
 
-    if (testParameters === undefined || testParameters === null) {
+    if (error !== '') {
       return (
         <Modal
           overlay={true}
@@ -85,7 +88,26 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
           </ModalHeader>
 
           <ModalContent className="parameter-content">
-            <h2>Loading...</h2>
+            <h1>{error}</h1>
+            <h2>Please Try Again Later</h2>
+          </ModalContent>
+        </Modal>
+      )
+    }
+
+    if ((testParameters === undefined || testParameters === null) || loading) {
+      return (
+        <Modal
+          overlay={true}
+          className="test-parameters-modal"
+        >
+
+          <ModalHeader className="parameters-header">
+            <h1>Test Parameters</h1>
+          </ModalHeader>
+
+          <ModalContent className="parameter-content">
+            <Loading />
           </ModalContent>
         </Modal>
       )
@@ -235,26 +257,33 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
   private handleSaveClick = async (e: any) => {
     e.preventDefault()
 
-    const { token, history } = this.props
+    const { dispatch, token, history } = this.props
     const { testParametersID, minute, numbers, operators, questions, randomQuestions, second } = this.state
 
-    const duration = (minute * 60) + second
-
-    try {
-      await updateTestParameters(token, {
-        _id: testParametersID,
-        duration,
-        numbers,
-        operators,
-        questions,
-        randomQuestions,
-      })
-
-      history.push('/classes/detail')
-      
-    } catch(error) {
-      console.log(error)
+    const duration = (parseInt(minute.toString(), 10) * 60) + parseInt(second.toString(), 10)
+    const updates = {
+      _id: testParametersID,
+      duration,
+      numbers,
+      operators,
+      questions,
+      randomQuestions,
     }
+
+    this.setState({ loading: true }, () => {
+      try {
+        dispatch(handleUpdateTestParameters(token, updates, (tp) => {
+          history.push('/classes/detail')
+        }))
+  
+      } catch(error) {
+        console.warn(error)
+        this.setState({
+          error: error.toString(),
+          loading: false,
+        })
+      }
+    })
   }
   
   private handleCancelClick = () => this.props.history.push('/classes/detail')

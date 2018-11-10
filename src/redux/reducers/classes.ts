@@ -9,6 +9,7 @@ import {
   REMOVE_TEST_PARAMETERS,
   SET_SELECTED_CLASS,
   UPDATE_CLASS,
+  UPDATE_TEST_PARAMETERS,
 } from '../actions/classes'
 import { CLEAR_STORE } from '../actions/shared'
 
@@ -66,6 +67,12 @@ export default function classes (state: any = {}, action: any) {
               ? action.updates
               : cls))
           : []
+      }
+
+    case UPDATE_TEST_PARAMETERS:
+      return {
+        ...state,
+        testParameters: action.testParameters,
       }
 
     case CREATE_CLASS:

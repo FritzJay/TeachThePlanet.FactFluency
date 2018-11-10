@@ -6,7 +6,9 @@ import {
   fetchTestParameters,
   getCached,
   IClass,
+  ITestParameters,
   updateClass as fetchUpdateClass,
+  updateTestParameters as fetchUpdateTestParameters,
 } from 'src/lib'
 import {
   createClass,
@@ -16,6 +18,7 @@ import {
   rehydrateClasses,
   removeSelectedClass,
   updateClass,
+  updateTestParameters,
 } from '../actions/classes'
 
 export function handleReceiveClassList (token: string, cb?: any) {
@@ -91,7 +94,7 @@ export function handleRehydrateClasses (cb?: any) {
   }
 }
 
-export function handleReceiveTestParameters (token: string, selectedClass: string, cb?: any) {
+export function handleReceiveTestParameters (token: string, selectedClass: string, cb?: (testParameters: ITestParameters) => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -101,7 +104,22 @@ export function handleReceiveTestParameters (token: string, selectedClass: strin
     dispatch(hideLoading())
 
     if (cb !== undefined) {
-      cb()
+      cb(testParameters)
+    }
+  }
+}
+
+export function handleUpdateTestParameters (token: string, updates: ITestParameters, cb?: (testParameters: ITestParameters) => void) {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+
+    const testParameters = await fetchUpdateTestParameters(token, updates)
+    dispatch(updateTestParameters(updates))
+
+    dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb(testParameters)
     }
   }
 }

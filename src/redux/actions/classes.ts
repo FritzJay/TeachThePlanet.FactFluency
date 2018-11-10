@@ -8,6 +8,7 @@ export const REMOVE_TEST_PARAMETERS = 'REMOVE_TEST_PARAMETERS'
 export const SET_SELECTED_CLASS = 'SET_SELECTED_CLASS'
 export const UPDATE_CLASS = 'UPDATE_CLASS'
 export const RECEIVE_TEST_PARAMETERS = 'RECEIVE_TEST_PARAMETERS'
+export const UPDATE_TEST_PARAMETERS = 'UPDATE_TEST_PARAMETERS'
 
 export function rehydrateClasses (classes: any) {
   return {
@@ -67,5 +68,12 @@ export function receiveTestParameters (testParameters: ITestParameters) {
 export function removeTestParameters () {
   return {
     type: REMOVE_TEST_PARAMETERS
+  }
+}
+
+export function updateTestParameters (updates: ITestParameters) {
+  return {
+    type: UPDATE_TEST_PARAMETERS,
+    updates
   }
 }
