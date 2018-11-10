@@ -53,7 +53,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
 
         <Route
           path={`${match.path}/grid/edit`}
-          render={this.renderEditClassModal}
+          component={EditClassModal}
         />
 
         <Route
@@ -73,7 +73,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
         
         <Route
           path={`${match.path}/detail/class-settings`}
-          render={this.renderEditClassModal}
+          component={EditClassModal}
         />
       </div>
     )
@@ -83,6 +83,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     return <Redirect to={`${props.match.url}/grid`} />
   }
 
+  /*
   private renderEditClassModal = (props: any) => {
     const selectedClass = this.state.selectedClass
 
@@ -100,6 +101,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
       />
     )
   }
+  */
 
   private renderNewClassModal = (props: any) => {
     return (

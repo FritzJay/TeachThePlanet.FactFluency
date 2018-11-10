@@ -46,11 +46,19 @@ export const updateClass = async (token: string, { _id, ...classParams }: IClass
     token
   }
 
-  const url = `${process.env.REACT_APP_API_URL}/classes/`
+  try {
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
 
-  const cls = await Requests.jsonFetch(url, request)
+    if (response.error !== undefined) {
+      throw (response.error)
+    }
 
-  return cls
+    return response.cls
+
+  } catch(error) {
+    console.warn('updateClass failed with error', error)
+    throw error
+  }
 }
 
 export const deleteClass = async (token: string, classID: string) => {
@@ -60,9 +68,17 @@ export const deleteClass = async (token: string, classID: string) => {
     token
   }
 
-  const url = `${process.env.REACT_APP_API_URL}/classes/`
+  try {
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/classes/`, request)
+  
+    if (response.error !== undefined) {
+      throw (response.error)
+    }
 
-  const cls = await Requests.jsonFetch(url, request)
+    return response.cls
 
-  return cls
+  } catch(error) {
+    console.warn('deleteClass failed with error', error)
+    throw error
+  }
 }

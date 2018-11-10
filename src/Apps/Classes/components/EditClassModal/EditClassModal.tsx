@@ -1,8 +1,9 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { deleteClass, updateClass } from 'src/lib/Api/Classes'
 import { IClass } from 'src/lib/Interfaces'
-import { Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { handleDeleteClass, handleUpdateClass } from 'src/redux/actions/classes';
+import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'
 
@@ -10,9 +11,9 @@ const DEFAULT_DELETE_TEXT = 'Delete Class'
 const CONFIRM_DELETE_TEXT = 'Confirm'
 
 interface IProps extends RouteComponentProps<{}> {
-  cls: IClass
+  dispatch: any
+  selectedClass: IClass
   token: string
-  onSave: () => void
 }
 
 interface IState {
@@ -22,12 +23,13 @@ interface IState {
   grade: string
 }
 
-export class EditClassModal extends React.Component<IProps, IState> {
+export class DisconnectedEditClassModal extends React.Component<IProps, IState> {
   public state = {
     deleteText: DEFAULT_DELETE_TEXT,
     error: '',
-    grade: this.props.cls.grade,
-    name: this.props.cls.name,
+    loading: false,
+    grade: this.props.selectedClass.grade,
+    name: this.props.selectedClass.name,
   }
 
   private deleteConfirmationTimeout: any
@@ -37,8 +39,21 @@ export class EditClassModal extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { cls } = this.props
-    const { deleteText, name, grade } = this.state
+    const { selectedClass } = this.props
+    const { deleteText, error, name, grade } = this.state
+
+    if (error !== '') {
+      return (
+        <div className="EditClassModal">
+          <h1 className="error">{error}</h1>
+          <h2 className="error">Please Try Again Later</h2>
+        </div>
+      )
+    }
+
+    if (selectedClass === undefined || selectedClass === null) {
+      return <Loading className="loading" />
+    }
 
     return (
       <Modal
@@ -57,7 +72,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
             <Input
               name="name"
               className="class-name"
-              placeholder={cls.name}
+              placeholder={selectedClass.name}
               value={name}
               onChange={this.handleChange}
             />
@@ -121,7 +136,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
     )
   }
   
-  private handleDeleteClick = async () => {
+  private handleDeleteClick = () => {
     if (this.state.deleteText !== CONFIRM_DELETE_TEXT) {
       this.setState({ deleteText: CONFIRM_DELETE_TEXT })
       
@@ -132,34 +147,29 @@ export class EditClassModal extends React.Component<IProps, IState> {
       return
     }
 
-    const { token, history, cls, onSave } = this.props
+    const { dispatch, token, history, selectedClass } = this.props
     
     try {
-      await deleteClass(token, cls._id)
-
-      onSave()
-      
+      dispatch(handleDeleteClass(token, selectedClass._id))
       history.push('/classes')
-      
+
     } catch (error) {
-      console.log(error)
+      console.warn(error)
       this.setState({ error: 'An unexpected error ocurred. Please try again later' })
     }
   }
 
   private handleSaveChangesClick = async () => {
-    const { token, history, cls, onSave } = this.props
+    const { dispatch, token, history, selectedClass } = this.props
     const { grade, name } = this.state
 
     try {
-      await updateClass(token, {
-        _id: cls._id,
-        classCode: cls.classCode,
+      await dispatch(handleUpdateClass(token, {
+        _id: selectedClass._id,
+        classCode: selectedClass.classCode,
         grade,
         name,
-      })
-
-      onSave()
+      }))
       
       history.goBack()
 
@@ -182,3 +192,12 @@ export class EditClassModal extends React.Component<IProps, IState> {
     this.setState(state)
   }
 }
+
+const mapStateToProps = ({ user, classes }: any) => ({
+  token: user.token,
+  selectedClass: classes.selectedClass
+    ? classes.classList.find((cls: IClass) => cls._id === classes.selectedClass)
+    : undefined
+})
+
+export const EditClassModal = connect(mapStateToProps)(DisconnectedEditClassModal)
