@@ -23,12 +23,12 @@ const LogoutLink = ({ active, onLogout }: ILogoutLinkProps) => {
 
 
 interface IUserIconProps {
-  user?: IUser
+  name?: string
   onClick: () => void
 }
 
-const UserIcon = ({ user, onClick }: IUserIconProps) => {
-  if (user !== undefined) {
+const UserIcon = ({ name, onClick }: IUserIconProps) => {
+  if (name !== undefined) {
     return (
       <Button
         onClick={onClick}
@@ -37,7 +37,7 @@ const UserIcon = ({ user, onClick }: IUserIconProps) => {
         <i className="user-icon material-icons">
           account_circle
         </i>
-        {user.name}
+        {name}
       </Button>
     )
   } else {
@@ -78,7 +78,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
       >
 
         <LogoutLink
-          active={user !== undefined}
+          active={user !== undefined && user.name !== undefined}
           onLogout={this.handleLogout}
         />
 
@@ -87,7 +87,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
         </Link>
 
         <UserIcon
-          user={user}
+          name={user && user.name}
           onClick={this.handleToggleButtonClick}
         />
 
@@ -100,7 +100,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
 
         <Dropdown active={activeDropdown}>
           <LogoutLink
-            active={user !== undefined}
+            active={user !== undefined && user.name !== undefined}
             onLogout={this.handleLogout}
           />
         </Dropdown>
@@ -130,8 +130,8 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
     }))
   }
 
-  private handleLogout = () => {
-    Caching.clearCached()
+  private handleLogout = async () => {
+    await Caching.clearCached()
     this.props.dispatch(removeUser())
     this.props.history.push('/index')
   }

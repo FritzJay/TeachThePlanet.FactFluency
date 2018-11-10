@@ -2,6 +2,7 @@ import {
   RECEIVE_AVAILABLE_TESTS,
   RECEIVE_TEST,
   RECEIVE_TEST_RESULTS,
+  REHYDRATE_FACT_FLUENCY,
   REMOVE_AVAILABLE_TESTS,
   REMOVE_TEST,
   REMOVE_TEST_PARAMETERS,
@@ -12,6 +13,12 @@ import {
 
 export default function factFluency (state: any = {}, action: any) {
   switch (action.type) {
+    case REHYDRATE_FACT_FLUENCY:
+      return {
+        ...state,
+        ...action.factFluency,
+      }
+
     case RECEIVE_AVAILABLE_TESTS:
       return {
         ...state,

@@ -6,13 +6,21 @@ import {
   updateClass as fetchUpdateClass,
 } from 'src/lib/Api/Classes';
 import { IClass } from 'src/lib/Interfaces';
-
+import { Caching } from 'src/lib/lib';
+export const REHYDRATE_CLASSES = 'REHYDRATE_CLASS'
 export const CREATE_CLASS = 'CREATE_CLASS'
 export const DELETE_CLASS = 'DELETE_CLASS'
 export const RECEIVE_CLASS_LIST = 'RECEIVE_CLASS_LIST'
 export const REMOVE_SELECTED_CLASS = 'REMOVE_SELECTED_CLASS'
 export const SET_SELECTED_CLASS = 'SET_SELECTED_CLASS'
 export const UPDATE_CLASS = 'UPDATE_CLASS'
+
+export function rehydrateClasses (classes: any) {
+  return {
+    type: REHYDRATE_CLASSES,
+    classes,
+  }
+}
 
 export function receiveClassList (classList: IClass[]) {
   return {
@@ -97,5 +105,13 @@ export function handleCreateClass (token: string, grade: string, name: string) {
     dispatch(createClass(newClass))
 
     dispatch(hideLoading())
+  }
+}
+
+export function handleRehydrateClasses () {
+  return async (dispatch: any) => {
+    const classes = await Caching.getCached('classes')
+
+    dispatch(rehydrateClasses(classes))
   }
 }

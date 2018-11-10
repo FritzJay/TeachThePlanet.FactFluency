@@ -3,6 +3,7 @@ import {
   CREATE_CLASS,
   DELETE_CLASS,
   RECEIVE_CLASS_LIST,
+  REHYDRATE_CLASSES,
   REMOVE_SELECTED_CLASS,
   SET_SELECTED_CLASS,
   UPDATE_CLASS,
@@ -10,6 +11,12 @@ import {
 
 export default function classes (state: any = {}, action: any) {
   switch (action.type) {
+    case REHYDRATE_CLASSES:
+      return {
+        ...state,
+        ...action.classes
+      }
+
     case RECEIVE_CLASS_LIST:
       return {
         ...state,

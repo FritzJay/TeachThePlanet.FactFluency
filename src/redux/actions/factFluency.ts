@@ -1,7 +1,9 @@
 import { hideLoading, showLoading } from "react-redux-loading";
 import { fetchAvailableTests, fetchNewTest, fetchTestResults } from "src/lib/Api/Tests";
 import { IAvailableTests, INewTestParameters, ITest, ITestResults } from "src/lib/Interfaces";
+import { Caching } from "src/lib/lib";
 
+export const REHYDRATE_FACT_FLUENCY = 'REHYDRATE_FACT_FLUENCY'
 export const RECEIVE_AVAILABLE_TESTS = 'RECEIVE_AVAILABLE_TESTS'
 export const REMOVE_AVAILABLE_TESTS = 'REMOVE_AVAILABLE_TESTS'
 export const SET_NEW_TEST_PARAMETERS = 'SET_TEST_PARAMETERS'
@@ -11,6 +13,13 @@ export const REMOVE_TEST = 'REMOVE_TEST'
 export const RECEIVE_TEST_RESULTS = 'RECEIVE_TEST_RESULTS'
 export const REMOVE_TEST_RESULTS = 'REMOVE_TEST_RESULTS'
 export const UPDATE_TEST = 'UPDATE_TEST'
+
+export function rehydrateFactFluency (factFluency: any) {
+  return {
+    type: REHYDRATE_FACT_FLUENCY,
+    factFluency,
+  }
+}
 
 export function receiveAvailableTests (availableTests: IAvailableTests) {
   return {
@@ -106,6 +115,17 @@ export function handleReceiveTestResults (token: string, test: ITest) {
 
     const testResults = await fetchTestResults(token, test)
     dispatch(receiveTestResults(testResults))
+
+    dispatch(hideLoading())
+  }
+}
+
+export function handleRehydrateFactFluency () {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+
+    const factFluency = await Caching.getCached('factFluency')
+    dispatch(rehydrateFactFluency(factFluency))
 
     dispatch(hideLoading())
   }

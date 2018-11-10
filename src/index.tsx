@@ -8,6 +8,7 @@ import * as WebFont from 'webfontloader'
 import App from './Apps/App'
 import middleware from './redux/middleware'
 import reducer from './redux/reducers'
+import { CacheStore } from './sharedComponents';
 
 WebFont.load({
   google: {
@@ -23,9 +24,11 @@ const store = createStore(reducer, middleware)
 
 ReactDOM.render((
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <CacheStore>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </CacheStore>
   </Provider>),
   document.getElementById('root') as HTMLElement
 )
