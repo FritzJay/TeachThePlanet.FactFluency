@@ -1,19 +1,15 @@
 import * as React from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { IUser } from '../../lib/Interfaces'
 import { LoginModal, Navbar, PageNotFound, SignupModal, TitleModal } from './components'
 import './Login.css'
 
-interface IProps extends RouteComponentProps<any> {
-  user: IUser
-  onLogout: () => void
-}
+interface IProps extends RouteComponentProps<any> { }
 
 interface IState {
   email: string
-  userType: string
   password: string
   secondPassword: string
+  userType: string
 }
 
 export default class Login extends React.Component<IProps, IState> {
