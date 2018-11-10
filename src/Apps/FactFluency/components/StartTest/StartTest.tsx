@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { INewTestParameters, ITest } from 'src/lib/Interfaces';
 import { handleReceiveTest, removeTest, removeTestResults } from 'src/redux/actions/factFluency';
-import { Button, Card } from 'src/sharedComponents'
+import { Button, Card, Loading } from 'src/sharedComponents'
 import './StartTest.css'
 
 interface IProps extends RouteComponentProps<{}> {
@@ -25,7 +25,7 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
   public async componentDidMount() {
     const { newTestParameters, token } = this.props
     try {
-      this.props.dispatch(handleReceiveTest(token, newTestParameters))
+      await this.props.dispatch(handleReceiveTest(token, newTestParameters))
       this.setState({ error: '' })
     } catch(error) {
       this.setState({ error })
@@ -33,8 +33,21 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
   }
 
   public render() {
+    if (this.state.error !== '') {
+      return (
+        <div className="StartTest">
+          <h1 className="error">{this.state.error}</h1>
+          <h2 className="error">Please Try Again Later</h2>
+        </div>
+      )
+    }
+
     if (this.props.test === undefined || this.props.test === null) {
-      return <p>Loading...</p>
+      return (
+        <div className="StartTest">
+          <Loading className="loading" />
+        </div>
+      )
     }
 
     const headerText = encouragingTexts[Math.floor(Math.random() * encouragingTexts.length)]
