@@ -23,12 +23,14 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
   public state: IState = { error: '' }
 
   public async componentDidMount() {
-    const { newTestParameters, token } = this.props
+    const { dispatch, newTestParameters, token } = this.props
+
     try {
-      await this.props.dispatch(handleReceiveTest(token, newTestParameters))
+      await dispatch(handleReceiveTest(token, newTestParameters))
       this.setState({ error: '' })
-    } catch(error) {
-      this.setState({ error })
+
+    } catch (error) {
+      this.setState({ error: error.toString() })
     }
   }
 

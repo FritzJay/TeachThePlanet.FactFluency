@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
-import { getClasses } from 'src/lib/Api/Classes'
+import { fetchClasses } from 'src/lib/Api/Classes';
 import { IClass, IUser } from 'src/lib/Interfaces'
 import './Classes.css'
 import {
@@ -24,25 +24,9 @@ interface IState {
 }
 
 export class DisconnectedClasses extends React.Component<IProps, IState> {
-  public constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      classes: [],
-      isLoading: false,
-    }
-
-    this.handleClassCardClick = this.handleClassCardClick.bind(this)
-    this.handleClassSettingsClick = this.handleClassSettingsClick.bind(this)
-
-    this.renderEditClassModal = this.renderEditClassModal.bind(this)
-    this.renderClassesGrid = this.renderClassesGrid.bind(this)
-    this.renderNewClassModal = this.renderNewClassModal.bind(this)
-    this.renderRedirect = this.renderRedirect.bind(this)
-    this.renderTestParameters = this.renderTestParameters.bind(this)
-    this.renderClassDetail = this.renderClassDetail.bind(this)
-
-    this.fetchClasses = this.fetchClasses.bind(this)
+  public state: IState = {
+    classes: [],
+    isLoading: false,
   }
 
   public componentDidMount() {
@@ -54,7 +38,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
 
     return (
       <div className="Classes">
-        <Navbar logoLink="/" />
+        <Navbar logoLink={`${match.url}/grid`} />
 
         <Route
           exact={true}
@@ -64,7 +48,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
 
         <Route
           path={`${match.path}/grid`}
-          render={this.renderClassesGrid}
+          component={ClassesGrid}
         />
 
         <Route
@@ -95,44 +79,11 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     )
   }
 
-  private renderRedirect(props: any) {
+  private renderRedirect = (props: any) => {
     return <Redirect to={`${props.match.url}/grid`} />
   }
 
-  private renderClassesGrid(props: any) {
-    const { classes, isLoading } = this.state
-
-    return (
-      <ClassesGrid
-        {...props}
-        classes={classes}
-        isLoading={isLoading}
-        token={this.props.user.token}
-        onClassCardClick={this.handleClassCardClick}
-        onClassSettingsClick={this.handleClassSettingsClick}
-      />
-    )
-  }
-
-  private handleClassCardClick(selectedClass: IClass) {
-    const { history, match } = this.props
-
-    this.setState({ selectedClass }, () => {
-      history.push(`${match.url}/detail`)
-    })
-  }
-
-  private handleClassSettingsClick(selectedClass: IClass) {
-    const { history, match } = this.props
-
-    this.setState({
-      selectedClass,
-    }, () => {
-      history.push(`${match.url}/grid/edit`)
-    })
-  }
-
-  private renderEditClassModal(props: any) {
+  private renderEditClassModal = (props: any) => {
     const selectedClass = this.state.selectedClass
 
     if (selectedClass === undefined || selectedClass === null) {
@@ -150,7 +101,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     )
   }
 
-  private renderNewClassModal(props: any) {
+  private renderNewClassModal = (props: any) => {
     return (
       <NewClassModal
         {...props}
@@ -160,7 +111,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     )
   }
 
-  private renderClassDetail(props: any) {
+  private renderClassDetail = (props: any) => {
     const { selectedClass } = this.state
 
     if (selectedClass === undefined) {
@@ -176,7 +127,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     )
   }
 
-  private renderTestParameters(props: any) {
+  private renderTestParameters = (props: any) => {
     const { user } = this.props
     const { selectedClass } = this.state
 
@@ -193,7 +144,7 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     )
   }
 
-  private fetchClasses() {    
+  private fetchClasses = () => {    
     const token = this.props.user.token
 
     this.setState({
@@ -201,10 +152,10 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     }, async () => {
 
       try {
-        const results = await getClasses(token)
+        const classes = await fetchClasses(token)
 
         this.setState({
-          classes: results.classes,
+          classes,
           isLoading: false
         })
 

@@ -1,15 +1,25 @@
 import { IClass, IRequest } from "../Interfaces";
 import { Requests } from "../lib";
 
-export const getClasses = async (token: string): Promise<{ classes: IClass[] }> => {
+export const fetchClasses = async (token: string): Promise<IClass[]> => {
   const request: IRequest = {
     method: "GET",
     token,
   }
 
-  const url = `${process.env.REACT_APP_API_URL}/teachers/classes`
+  try {
+    const response = await Requests.jsonFetch(`${process.env.REACT_APP_API_URL}/teachers/classes`, request)
 
-  return await Requests.jsonFetch(url, request)
+    if (response.error !== undefined) {
+      throw (response.error)
+    }
+
+    return response.classes
+
+  } catch(error) {
+    console.warn('fetchClasses failed with error', error)
+    throw error
+  }
 }
 
 export const createClass = async (token: string, grade: string, name: string) => {

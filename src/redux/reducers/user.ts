@@ -10,8 +10,10 @@ export default function user (state = {}, action: any) {
         ...state,
         ...action.user,
       }
+
     case REMOVE_USER:
       return {}
+      
     default:
       return state
   }

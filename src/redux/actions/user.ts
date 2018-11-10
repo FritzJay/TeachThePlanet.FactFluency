@@ -2,16 +2,8 @@ import { hideLoading, showLoading } from 'react-redux-loading'
 import { login, signup } from 'src/lib/Api/Sessions';
 import { IUser } from "src/lib/Interfaces";
 
-export const LOGIN_USER = 'RECEIVE_USER'
 export const REMOVE_USER = 'REMOVE_USER'
 export const RECEIVE_USER = 'RECEIVE_USER'
-
-export function loginUser (user: IUser) {
-  return {
-    type: LOGIN_USER,
-    user
-  }
-}
 
 export function receiveUser (user: IUser) {
   return {
