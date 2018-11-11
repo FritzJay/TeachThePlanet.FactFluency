@@ -6,7 +6,7 @@ import {
   rehydrateUser,
 } from '../actions/user'
 
-export function handleLoginUser (email: string, password: string, userType: string) {
+export function handleLoginUser (email: string, password: string, userType: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -14,10 +14,14 @@ export function handleLoginUser (email: string, password: string, userType: stri
     dispatch(receiveUser({ ...user, token }))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleSignUpUser (email: string, password: string, userType: string) {
+export function handleSignUpUser (email: string, password: string, userType: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -25,15 +29,26 @@ export function handleSignUpUser (email: string, password: string, userType: str
     dispatch(receiveUser({ ...user, token }))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleRehydrateUser () {
+export function handleRehydrateUser (cb?: any) {
   return async (dispatch: any) => {
+    dispatch(showLoading())
+
     const user = await getCached('user')
-    console.log(user)
     if (user !== null && user !== {}) {
       dispatch(rehydrateUser(user))
+    }
+
+    dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
     }
   }
 }

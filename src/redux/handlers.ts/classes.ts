@@ -18,7 +18,7 @@ import {
   updateClass,
 } from '../actions/classes'
 
-export function handleReceiveClassList (token: string) {
+export function handleReceiveClassList (token: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -26,10 +26,14 @@ export function handleReceiveClassList (token: string) {
     dispatch(receiveClassList(classList))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleDeleteClass (token: string, id: string) {
+export function handleDeleteClass (token: string, id: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -38,10 +42,14 @@ export function handleDeleteClass (token: string, id: string) {
     dispatch(removeSelectedClass())
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleUpdateClass (token: string, updates: IClass) {
+export function handleUpdateClass (token: string, updates: IClass, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -49,10 +57,14 @@ export function handleUpdateClass (token: string, updates: IClass) {
     dispatch(updateClass(updates))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleCreateClass (token: string, grade: string, name: string) {
+export function handleCreateClass (token: string, grade: string, name: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -60,18 +72,26 @@ export function handleCreateClass (token: string, grade: string, name: string) {
     dispatch(createClass(newClass))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleRehydrateClasses () {
+export function handleRehydrateClasses (cb?: any) {
   return async (dispatch: any) => {
     const classes = await getCached('classes')
 
     dispatch(rehydrateClasses(classes))
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleReceiveTestParameters (token: string, selectedClass: string) {
+export function handleReceiveTestParameters (token: string, selectedClass: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -79,5 +99,9 @@ export function handleReceiveTestParameters (token: string, selectedClass: strin
     dispatch(receiveTestParameters(testParameters))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }

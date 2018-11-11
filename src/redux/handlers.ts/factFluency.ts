@@ -1,6 +1,13 @@
 import { hideLoading, showLoading } from "react-redux-loading";
-import { getCached } from "src/lib";
-import { fetchAvailableTests, fetchNewTest, fetchTestResults } from "src/lib/Api/Tests";
+import {
+  fetchAvailableTests,
+  fetchNewTest,
+  fetchTestResults,
+  getCached,
+  INewTestParameters,
+  ITest,
+} from "src/lib";
+import {  } from "src/lib";
 import { 
   receiveAvailableTests,
   receiveTest,
@@ -8,7 +15,7 @@ import {
   rehydrateFactFluency,
 } from '../actions/factFluency'
 
-export function handleReceiveAvailableTests (token: string) {
+export function handleReceiveAvailableTests (token: string, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -16,10 +23,14 @@ export function handleReceiveAvailableTests (token: string) {
     dispatch(receiveAvailableTests(availableTests))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleReceiveTest (token: string, newTestParameters: INewTestParameters) {
+export function handleReceiveTest (token: string, newTestParameters: INewTestParameters, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -30,10 +41,14 @@ export function handleReceiveTest (token: string, newTestParameters: INewTestPar
     dispatch(receiveTest(test))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleReceiveTestResults (token: string, test: ITest) {
+export function handleReceiveTestResults (token: string, test: ITest, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -41,10 +56,14 @@ export function handleReceiveTestResults (token: string, test: ITest) {
     dispatch(receiveTestResults(testResults))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
 
-export function handleRehydrateFactFluency () {
+export function handleRehydrateFactFluency (cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -52,5 +71,9 @@ export function handleRehydrateFactFluency () {
     dispatch(rehydrateFactFluency(factFluency))
 
     dispatch(hideLoading())
+
+    if (cb !== undefined) {
+      cb()
+    }
   }
 }
