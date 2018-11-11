@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { setCached } from 'src/lib'
-import { handleRehydrateClasses } from 'src/redux/actions/classes';
-import { handleRehydrateFactFluency } from 'src/redux/actions/factFluency';
-import { handleRehydrateUser } from 'src/redux/actions/user';
+import { handleRehydrateClasses } from 'src/redux/handlers/classes';
+import { handleRehydrateFactFluency } from 'src/redux/handlers/factFluency';
+import { handleRehydrateUser } from 'src/redux/handlers/users';
 
 interface IProps {
   store: any

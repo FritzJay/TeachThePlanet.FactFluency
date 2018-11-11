@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { IClass } from 'src/lib/Interfaces'
-import { handleReceiveClassList, setSelectedClass } from 'src/redux/actions/classes';
-import { Loading } from 'src/sharedComponents';
+import { setSelectedClass } from 'src/redux/actions/classes'
+import { handleReceiveClassList } from 'src/redux/handlers/classes'
+import { Loading } from 'src/sharedComponents'
 import { ClassCard } from '../ClassCard/ClassCard'
 import { CreateClassCard } from '../CreateClassCard/CreateClassCard'
 import './ClassesGrid.css'

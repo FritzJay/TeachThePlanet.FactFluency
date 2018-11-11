@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { handleSignUpUser } from 'src/redux/actions/user';
+import { handleSignUpUser } from 'src/redux/handlers/users';
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './SignupModal.css'

@@ -1,16 +1,17 @@
 import * as React from "react"
 import { connect } from 'react-redux'
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom"
 import { themeColors } from "src/lib"
 import { IAvailableTests, ITestNumber } from "src/lib/Interfaces"
-import { handleReceiveAvailableTests, setNewTestParameters } from "src/redux/actions/factFluency";
-import { Loading } from "src/sharedComponents";
+import { setNewTestParameters } from 'src/redux/actions/factFluency'
+import { handleReceiveAvailableTests } from "src/redux/handlers/factFluency"
+import { Loading } from "src/sharedComponents"
 import './SelectTest.css'
 import { TestNumber } from './TestNumber/TestNumber'
 
 interface IProps extends RouteComponentProps<{}>  {
   availableTests?: IAvailableTests
-  dispatch: any;
+  dispatch: any
   token: string
 }
 

@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { handleReceiveTestResults, removeTest, removeTestResults } from 'src/redux/actions/factFluency';
+import { removeTest, removeTestResults } from 'src/redux/actions/factFluency';
+import { handleReceiveTestResults } from 'src/redux/handlers/factFluency';
 import { Button, Card, Loading } from 'src/sharedComponents'
 import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
 import { padString } from '../../../../lib/Utility/Utility'

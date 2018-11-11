@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { IClass } from 'src/lib/Interfaces'
-import { handleDeleteClass, handleUpdateClass } from 'src/redux/actions/classes';
+import { handleDeleteClass, handleUpdateClass } from 'src/redux/handlers/classes'
 import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'

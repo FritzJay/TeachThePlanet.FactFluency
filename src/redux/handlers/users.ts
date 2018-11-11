@@ -1,12 +1,12 @@
 import { hideLoading, showLoading } from 'react-redux-loading' 
-import { getCached } from 'src/lib'
+import { getCached, IUser } from 'src/lib'
 import { login, signup } from 'src/lib/Api/Sessions'
 import { 
   receiveUser,
   rehydrateUser,
 } from '../actions/user'
 
-export function handleLoginUser (email: string, password: string, userType: string, cb?: any) {
+export function handleLoginUser (email: string, password: string, userType: string, cb?: (user: IUser) => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -16,12 +16,12 @@ export function handleLoginUser (email: string, password: string, userType: stri
     dispatch(hideLoading())
 
     if (cb !== undefined) {
-      cb()
+      cb({ ...user, token })
     }
   }
 }
 
-export function handleSignUpUser (email: string, password: string, userType: string, cb?: any) {
+export function handleSignUpUser (email: string, password: string, userType: string, cb?: (user: IUser) => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -31,12 +31,12 @@ export function handleSignUpUser (email: string, password: string, userType: str
     dispatch(hideLoading())
 
     if (cb !== undefined) {
-      cb()
+      cb({ ...user, token })
     }
   }
 }
 
-export function handleRehydrateUser (cb?: any) {
+export function handleRehydrateUser (cb?: () => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 

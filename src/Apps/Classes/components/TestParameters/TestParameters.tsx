@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   ITestParameters,
   themeColors,
   updateTestParameters,
 } from 'src/lib'
-import { handleReceiveTestParameters, removeTestParameters } from 'src/redux/actions/classes';
+import { removeTestParameters } from 'src/redux/actions/classes'
+import { handleReceiveTestParameters } from 'src/redux/handlers/classes'
 import { Button, Input, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
 import './TestParameters.css'
 

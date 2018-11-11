@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { handleLoginUser } from 'src/redux/actions/user';
-import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { handleLoginUser } from 'src/redux/handlers/users'
+import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './LoginModal.css'
 
@@ -17,14 +17,29 @@ interface IProps extends RouteComponentProps<any> {
 
 interface IState {
   error: string
+  loading: boolean
 }
 
 class Component extends React.Component<IProps, IState> {
-  public state: IState = { error: '' }
+  public state: IState = {
+    error: '',
+    loading: false,
+  }
 
   public render() {
     const { email, password, userType, onUserTypeSelect, onChange } = this.props
-    const { error } = this.state
+    const { error, loading } = this.state
+
+    if (loading) {
+      return (
+        <Modal
+          overlay={true}
+          className="LoginModal"
+        >
+          <Loading className="loading" />
+        </Modal>
+      )
+    }
 
     return (
       <Modal
@@ -115,7 +130,11 @@ class Component extends React.Component<IProps, IState> {
 
   private loginRequest = async (email: string, password: string, userType: string) => {
     try {
-      await this.props.dispatch(handleLoginUser(email, password, userType))
+      this.setState({ loading: true }, () => {
+        this.props.dispatch(handleLoginUser(email, password, userType, (user) => {
+          this.setState({ loading: false })
+        }))
+      })
     } catch(error) {
       console.warn(error)
       this.setState({ error: error.toString() })
