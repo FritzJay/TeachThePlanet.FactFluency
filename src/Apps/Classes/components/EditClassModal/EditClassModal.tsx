@@ -76,15 +76,6 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
         <ModalContent>
           <div className="input-fields">
 
-            <label className="label">Change Class Name</label>
-            <Input
-              name="name"
-              className="class-name"
-              placeholder={selectedClass.name}
-              value={name}
-              onChange={this.handleChange}
-            />
-
             <label className="label">Change Grade Level</label>
             <select
               name="grade"
@@ -101,6 +92,17 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
               <option value="high">High School (9-12)</option>
               <option value="beyond">College or Beyond</option>
             </select>
+
+            <label className="label">Change Class Name</label>
+            <Input
+              name="name"
+              className="class-name"
+              placeholder={selectedClass.name}
+              value={name}
+              onChange={this.handleChange}
+            />
+            
+            {error !== '' && <p className="error">{error}</p>}
 
           </div>
 
@@ -177,20 +179,21 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
     const { dispatch, token, history, selectedClass } = this.props
     const { grade, name } = this.state
 
-    try {
-      await dispatch(handleUpdateClass(token, {
-        _id: selectedClass._id,
-        classCode: selectedClass.classCode,
-        grade,
-        name,
-      }))
-      
-      history.goBack()
-
-    } catch (error) {
-      console.log(error)
-      this.setState({ error: 'An unexpected error ocurred. Please try again later' })
-    }
+    this.setState({ loading: true }, () => {
+      try {
+        dispatch(handleUpdateClass(token, {
+          _id: selectedClass._id,
+          classCode: selectedClass.classCode,
+          grade,
+          name,
+        }, (cls: IClass) => {
+          history.goBack()
+        }))
+      } catch (error) {
+        console.log(error)
+        this.setState({ error: 'An unexpected error ocurred. Please try again later' })
+      }
+    })
   }
 
   private handleCancelClick = () => {
