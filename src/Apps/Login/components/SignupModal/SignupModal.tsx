@@ -18,11 +18,13 @@ interface IProps extends RouteComponentProps<any> {
 
 interface IState {
   error: string
+  loading: boolean
 }
 
 class DisconnectedSignupModal extends React.Component<IProps, IState> {
   public state: IState = {
-    error: ''
+    error: '',
+    loading: false,
   }
 
   public render() {

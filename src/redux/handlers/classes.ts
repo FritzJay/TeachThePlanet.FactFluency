@@ -33,18 +33,18 @@ export function handleReceiveClassList (token: string, cb?: any) {
   }
 }
 
-export function handleDeleteClass (token: string, id: string, cb?: any) {
+export function handleDeleteClass (token: string, id: string, cb?: (cls: IClass) => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
-    await fetchDeleteClass(token, id)
+    const cls = await fetchDeleteClass(token, id)
     dispatch(deleteClass(id))
     dispatch(removeSelectedClass())
 
     dispatch(hideLoading())
 
     if (cb !== undefined) {
-      cb()
+      cb(cls)
     }
   }
 }

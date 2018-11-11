@@ -1,6 +1,8 @@
 @import 'src/Stylesheets/all';
 
 .EditClassModal {
+    min-width: 200px;
+    min-height: 200px;
 
     .modal-header {
         background-color: $blue;

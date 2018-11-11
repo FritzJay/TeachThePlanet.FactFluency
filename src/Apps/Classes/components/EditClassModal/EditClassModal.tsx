@@ -19,12 +19,13 @@ interface IProps extends RouteComponentProps<{}> {
 interface IState {
   deleteText: string
   error: string
+  loading: boolean
   name: string
   grade: string
 }
 
 export class DisconnectedEditClassModal extends React.Component<IProps, IState> {
-  public state = {
+  public state: IState = {
     deleteText: DEFAULT_DELETE_TEXT,
     error: '',
     loading: false,
@@ -40,7 +41,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
   public render() {
     const { selectedClass } = this.props
-    const { deleteText, error, name, grade } = this.state
+    const { deleteText, error, loading, name, grade } = this.state
 
     if (error !== '') {
       return (
@@ -51,8 +52,15 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
       )
     }
 
-    if (selectedClass === undefined || selectedClass === null) {
-      return <Loading className="loading" />
+    if (loading) {
+      return (
+        <Modal
+          overlay={true}
+          className="EditClassModal"
+        >
+          <Loading className="loading" />
+        </Modal>
+      )
     }
 
     return (
@@ -137,6 +145,8 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
   
   private handleDeleteClick = () => {
+    const { dispatch, token, history, selectedClass } = this.props
+
     if (this.state.deleteText !== CONFIRM_DELETE_TEXT) {
       this.setState({ deleteText: CONFIRM_DELETE_TEXT })
       
@@ -147,16 +157,20 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
       return
     }
 
-    const { dispatch, token, history, selectedClass } = this.props
-    
-    try {
-      dispatch(handleDeleteClass(token, selectedClass._id))
-      history.push('/classes')
-
-    } catch (error) {
-      console.warn(error)
-      this.setState({ error: 'An unexpected error ocurred. Please try again later' })
-    }
+    this.setState({ loading: true }, () => {
+      try {
+        dispatch(handleDeleteClass(token, selectedClass._id, (cls: IClass) => {
+          history.push('/classes')
+        }))
+  
+      } catch (error) {
+        console.warn(error)
+        this.setState({
+          error: 'An unexpected error ocurred. Please try again later',
+          loading: false,
+        })
+      }
+    })
   }
 
   private handleSaveChangesClick = async () => {
