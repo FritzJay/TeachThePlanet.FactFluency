@@ -20,7 +20,7 @@ interface IState {
   loading: boolean
 }
 
-class Component extends React.Component<IProps, IState> {
+class DisconnectedLoginModal extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     loading: false,
@@ -142,4 +142,4 @@ class Component extends React.Component<IProps, IState> {
   }
 }
 
-export const LoginModal = connect()(Component)
+export const LoginModal = connect()(DisconnectedLoginModal)
