@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { handleCreateClass } from 'src/redux/handlers/classes';
-import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './NewClassModal.css'
 
 interface IProps extends RouteComponentProps<{}> {
@@ -12,6 +12,7 @@ interface IProps extends RouteComponentProps<{}> {
 
 interface IState {
   error: string
+  loading: boolean
   grade: string
   name: string
 }
@@ -19,12 +20,24 @@ interface IState {
 export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
   public state = {
     error: '',
+    loading: false,
     grade: 'kindergarten',
     name: '',
   }
 
   public render() {
-    const { error, name, grade } = this.state
+    const { error, loading, name, grade } = this.state
+
+    if (loading) {
+      return (
+        <Modal
+          overlay={true}
+          className="NewClassModal"
+        >
+          <Loading className="loading" />
+        </Modal>
+      )
+    }
 
     return (
       <Modal
@@ -99,14 +112,21 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
       return
     }
 
-    try {
-      await dispatch(handleCreateClass(token, grade, name))
-      history.push('/classes')
+    this.setState({ loading: true }, () => {
+      try {
+        dispatch(handleCreateClass(token, grade, name, (cls) => {
+          history.push('/classes')
+        }))
+  
+      } catch (error) {
+        console.warn(error)
+        this.setState({
+          error: 'An unexpected error ocurred. Please try again later',
+          loading: false,
+        })
+      }
+    })
 
-    } catch (error) {
-      console.warn(error)
-      this.setState({ error: 'An unexpected error ocurred. Please try again later' })
-    }
   }
 
   private handleCancelClick = () => {

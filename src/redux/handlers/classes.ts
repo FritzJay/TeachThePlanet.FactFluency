@@ -49,22 +49,22 @@ export function handleDeleteClass (token: string, id: string, cb?: (cls: IClass)
   }
 }
 
-export function handleUpdateClass (token: string, updates: IClass, cb?: any) {
+export function handleUpdateClass (token: string, updates: IClass, cb?: (cls: IClass) => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
-    await fetchUpdateClass(token, updates)
+    const cls = await fetchUpdateClass(token, updates)
     dispatch(updateClass(updates))
 
     dispatch(hideLoading())
 
     if (cb !== undefined) {
-      cb()
+      cb(cls)
     }
   }
 }
 
-export function handleCreateClass (token: string, grade: string, name: string, cb?: any) {
+export function handleCreateClass (token: string, grade: string, name: string, cb?: (cls: IClass) => void) {
   return async (dispatch: any) => {
     dispatch(showLoading())
 
@@ -74,7 +74,7 @@ export function handleCreateClass (token: string, grade: string, name: string, c
     dispatch(hideLoading())
 
     if (cb !== undefined) {
-      cb()
+      cb(newClass)
     }
   }
 }

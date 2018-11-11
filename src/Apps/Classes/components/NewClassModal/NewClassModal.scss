@@ -1,6 +1,9 @@
 @import 'src/Stylesheets/all';
 
 .NewClassModal {
+    min-width: 200px;
+    min-height: 200px;
+
     .modal-header {
         background-color: $blue;
     
@@ -71,5 +74,11 @@
     .error {
         color: $red;
         font-weight: 600;
+    }
+    
+    .loading {
+        grid-column: 1 / -1;
+        justify-self: center;
+        align-self: center;
     }
 }

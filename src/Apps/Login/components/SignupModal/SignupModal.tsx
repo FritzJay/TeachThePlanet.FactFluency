@@ -128,7 +128,10 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
 
     } catch(error) {
       console.warn(error)
-      this.setState({ error: 'An unexpected error ocurred. Please try again later. '})
+      this.setState({
+        error: 'An unexpected error ocurred. Please try again later.',
+        loading: false,
+      })
     }
   }
 }
