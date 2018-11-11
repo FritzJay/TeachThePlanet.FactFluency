@@ -40,5 +40,9 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "postinstall": "npm-run-all build-css build-js"
+  },
+  "devDependencies": {
+    "@types/redux-devtools-extension": "^2.13.2",
+    "redux-devtools-extension": "^2.13.5"
   }
 }

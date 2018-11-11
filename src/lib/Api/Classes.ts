@@ -90,3 +90,14 @@ export const deleteClass = async (token: string, classID: string) => {
     throw error
   }
 }
+
+/*
+export const fetchStudents = async (token: string, classID: string) => {
+  const request: IRequest = `${process.env.REACT_APP_API_URL}/students/by-class`
+    method: "GET",
+    token
+  }
+
+  url = $
+}
+*/

@@ -1,11 +1,28 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { IClass } from 'src/lib';
 import { Card } from 'src/sharedComponents'
 import './ClassDetail.css'
 
+interface IProps extends RouteComponentProps<{}> {
+  token: string
+  selectedClass: IClass
+}
 
-export class ClassDetail extends React.Component<any> {
-  
+class DisconnectedClassDetail extends React.Component<IProps> {
+  /*
+  public componentDidMount() {
+    const { token, selectedClass } = this.props
+
+    try {
+      await dispatchEvent(handleReceiveStudentList(token, selectedClass.studentIDs, (students) => {
+
+      }))
+    }
+  }
+   */
+
   public render() {
     const { match } = this.props 
 
@@ -47,3 +64,10 @@ export class ClassDetail extends React.Component<any> {
     )
   }
 }
+
+const mapStateToProps = ({ classes, user }: any) => ({
+  selectedClass: classes.classList.find((cls: IClass) => cls._id.toString() === classes.selectedClass),
+  token: user.token,
+})
+
+export const ClassDetail = connect(mapStateToProps)(DisconnectedClassDetail)

@@ -70,4 +70,5 @@ export interface IClass {
   grade: string
   name: string
   classCode: string
+  studentIDs?: string[]
 }
