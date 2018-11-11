@@ -76,10 +76,10 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   }
 
   private handleCardClick = async (selectedClass: IClass) => {
-    const { dispatch, history, match } = this.props
+    const { dispatch, history } = this.props
 
     await dispatch(setSelectedClass(selectedClass._id))
-    history.push(`${match.url}/detail`)
+    history.push('/classes/detail')
   }
 
   private handleSettingsClick = async (selectedClass: IClass) => {

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
-import { fetchClasses } from 'src/lib/Api/Classes';
 import { IClass, IUser } from 'src/lib/Interfaces'
 import './Classes.css'
 import {
@@ -29,10 +28,6 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     isLoading: false,
   }
 
-  public componentDidMount() {
-    this.fetchClasses()
-  }
-
   public render() {
     const { match } = this.props
 
@@ -58,17 +53,17 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
 
         <Route
           path={`${match.path}/grid/new`}
-          render={this.renderNewClassModal}
+          component={NewClassModal}
         />
 
         <Route
           path={`${match.path}/detail`}
-          render={this.renderClassDetail}
+          component={ClassDetail}
         />
 
         <Route
           path={`${match.path}/detail/test-parameters`}
-          render={this.renderTestParameters}
+          component={TestParameters}
         />
         
         <Route
@@ -81,70 +76,6 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
 
   private renderRedirect = (props: any) => {
     return <Redirect to={`${props.match.url}/grid`} />
-  }
-
-  private renderNewClassModal = (props: any) => {
-    return (
-      <NewClassModal
-        {...props}
-        token={this.props.user.token}
-        onSave={this.fetchClasses}
-      />
-    )
-  }
-
-  private renderClassDetail = (props: any) => {
-    const { selectedClass } = this.state
-
-    if (selectedClass === undefined) {
-      console.warn('Error while rendering ClassDetail: ``selectedClass`` is undefined')
-      return <Redirect to="/classes" />
-    }
-
-    return (
-      <ClassDetail
-        {...props}
-        class={selectedClass}
-      />
-    )
-  }
-
-  private renderTestParameters = (props: any) => {
-    const { user } = this.props
-    const { selectedClass } = this.state
-
-    if (selectedClass === undefined) {
-      return <Redirect to="/classes" />
-    }
-
-    return (
-      <TestParameters
-        {...props}
-        token={user.token}
-        classID={selectedClass._id}
-      />
-    )
-  }
-
-  private fetchClasses = () => {    
-    const token = this.props.user.token
-
-    this.setState({
-      isLoading: true
-    }, async () => {
-
-      try {
-        const classes = await fetchClasses(token)
-
-        this.setState({
-          classes,
-          isLoading: false
-        })
-
-      } catch(error) {
-        console.log('requestClasses failed', error)
-      }
-    })
   }
 }
 

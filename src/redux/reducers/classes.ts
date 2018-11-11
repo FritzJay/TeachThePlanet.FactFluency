@@ -1,10 +1,12 @@
-import { IClass } from 'src/lib/Interfaces';
+import { IClass } from 'src/lib';
 import {
   CREATE_CLASS,
   DELETE_CLASS,
   RECEIVE_CLASS_LIST,
+  RECEIVE_TEST_PARAMETERS,
   REHYDRATE_CLASSES,
   REMOVE_SELECTED_CLASS,
+  REMOVE_TEST_PARAMETERS,
   SET_SELECTED_CLASS,
   UPDATE_CLASS,
 } from '../actions/classes'
@@ -23,6 +25,12 @@ export default function classes (state: any = {}, action: any) {
         classList: action.classList,
       }
 
+    case RECEIVE_TEST_PARAMETERS:
+      return {
+        ...state,
+        testParameters: action.testParameters
+      }
+
     case SET_SELECTED_CLASS:
       return {
         ...state,
@@ -32,6 +40,10 @@ export default function classes (state: any = {}, action: any) {
     case REMOVE_SELECTED_CLASS:
       const { selectedClass, ...allExceptSelectedClass } = state
       return allExceptSelectedClass
+
+    case REMOVE_TEST_PARAMETERS:
+      const { testParameters, ...allExceptTestParameters } = state
+      return allExceptTestParameters
 
     case DELETE_CLASS:
       return {

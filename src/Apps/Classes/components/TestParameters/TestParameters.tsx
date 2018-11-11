@@ -1,12 +1,16 @@
 import * as React from 'react'
+import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom'
-import { themeColors } from 'src/lib'
-import { fetchTestParameters, updateTestParameters } from 'src/lib/Api/TestParameters'
+import {
+  ITestParameters,
+  themeColors,
+  updateTestParameters,
+} from 'src/lib'
+import { handleReceiveTestParameters, removeTestParameters } from 'src/redux/actions/classes';
 import { Button, Input, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
-  loading: boolean
   minute: number
   numbers: number[]
   operators: string[]
@@ -17,13 +21,14 @@ interface IState {
 }
 
 interface IProps extends RouteComponentProps<{}> {
+  dispatch: any
   token: string
-  classID: string
+  selectedClass: string
+  testParameters: ITestParameters
 }
 
-export class TestParameters extends React.Component<IProps, IState> {
+class DisconnectedTestParameters extends React.Component<IProps, IState> {
   public state: IState = {
-    loading: true,
     minute: 0,
     numbers: [],
     operators: [],
@@ -34,16 +39,17 @@ export class TestParameters extends React.Component<IProps, IState> {
   }
 
   public async componentDidMount() {
-    const { token, classID } = this.props
+    const { dispatch, token, selectedClass, testParameters } = this.props
 
     try {
-      const { _id, duration, operators, numbers, questions, randomQuestions } = await fetchTestParameters(token, classID)
+      await dispatch(handleReceiveTestParameters(token, selectedClass))
+
+      const { _id, duration, operators, numbers, questions, randomQuestions } = testParameters
       
       const minute = Math.floor(duration / 60)
       const second = duration % 60
       
       this.setState({
-        loading: false,
         minute,
         numbers,
         operators,
@@ -54,14 +60,19 @@ export class TestParameters extends React.Component<IProps, IState> {
       })
 
     } catch(error) {
-      console.log(error)
+      console.warn(error)
     }
   }
 
-  public render() {
-    const { loading, minute, second, questions, randomQuestions, operators, numbers } = this.state
+  public componentWillUnmount() {
+    this.props.dispatch(removeTestParameters())
+  }
 
-    if (loading) {
+  public render() {
+    const { testParameters } = this.props
+    const { minute, second, questions, randomQuestions, operators, numbers } = this.state
+
+    if (testParameters === undefined || testParameters === null) {
       return (
         <Modal
           overlay={true}
@@ -247,3 +258,11 @@ export class TestParameters extends React.Component<IProps, IState> {
   
   private handleCancelClick = () => this.props.history.push('/classes/detail')
 }
+
+const mapStateToProps = ({ user, classes }: any) => ({
+  token: user.token,
+  selectedClass: classes.selectedClass,
+  testParameters: classes.testParameters,
+})
+
+export const TestParameters = connect(mapStateToProps)(DisconnectedTestParameters)
