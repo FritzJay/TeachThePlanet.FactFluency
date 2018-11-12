@@ -12,6 +12,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
           id
           code
           grade
+          name
           testParameters {
             id
             duration
@@ -69,6 +70,7 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
           id
           code
           grade
+          name
           testParameters {
             id
             duration
