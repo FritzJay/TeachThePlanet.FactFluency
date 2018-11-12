@@ -8,6 +8,10 @@ import { CLEAR_STORE } from 'src/actions/shared';
 
 export default function user (state: any = {}, action: any) {
   switch (action.type) {
+    case CLEAR_STORE: {
+      return {}
+    }
+
     case ADD_USER || UPDATE_USER:
       return {
         ...state,

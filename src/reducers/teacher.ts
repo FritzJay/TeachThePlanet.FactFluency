@@ -24,6 +24,10 @@ import classes from '../reducers/classes'
 
 export default function teacher (state: any = {}, action: any) {
   switch (action.type) {
+    case CLEAR_STORE: {
+      return {}
+    }
+
     case ADD_TEACHER || UPDATE_TEACHER:
       return {
         ...state,

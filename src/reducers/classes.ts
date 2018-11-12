@@ -15,9 +15,14 @@ import {
   UPDATE_TEST_PARAMETERS,
 } from '../actions/testParameters'
 import testParameters from '../reducers/testParameters'
+import { CLEAR_STORE } from 'src/actions/shared';
 
 export default function classes (state: any = {}, action: any) {
   switch (action.type) {
+    case CLEAR_STORE: {
+      return {}
+    }
+
     case ADD_CLASS:
       return {
         ...state,
