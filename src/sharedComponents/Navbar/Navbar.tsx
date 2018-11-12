@@ -23,12 +23,12 @@ const LogoutLink = ({ active, onLogout }: ILogoutLinkProps) => {
 
 
 interface IUserIconProps {
-  name?: string
+  email?: string
   onClick: () => void
 }
 
-const UserIcon = ({ name, onClick }: IUserIconProps) => {
-  if (name !== undefined) {
+const UserIcon = ({ email, onClick }: IUserIconProps) => {
+  if (email !== undefined) {
     return (
       <Button
         onClick={onClick}
@@ -37,7 +37,7 @@ const UserIcon = ({ name, onClick }: IUserIconProps) => {
         <i className="user-icon material-icons">
           account_circle
         </i>
-        {name}
+        {email}
       </Button>
     )
   } else {
@@ -78,7 +78,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
       >
 
         <LogoutLink
-          active={user !== undefined && user.name !== undefined}
+          active={user !== undefined && user.email !== undefined}
           onLogout={this.handleLogout}
         />
 
@@ -87,7 +87,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
         </Link>
 
         <UserIcon
-          name={user && user.name}
+          email={user && user.email}
           onClick={this.handleToggleButtonClick}
         />
 
@@ -100,7 +100,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
 
         <Dropdown active={activeDropdown}>
           <LogoutLink
-            active={user !== undefined && user.name !== undefined}
+            active={user !== undefined && user.email !== undefined}
             onLogout={this.handleLogout}
           />
         </Dropdown>

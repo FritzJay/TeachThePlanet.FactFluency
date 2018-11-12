@@ -1,6 +1,14 @@
-export interface IUser {
+/* API Get Interfaces */
+export interface ITeacher {
   id: string
   name: string
+  classes: IClass[]
+  user: IUser
+}
+
+export interface IUser {
+  email: string
+  token: string
 }
 
 export interface IClass {
@@ -8,28 +16,12 @@ export interface IClass {
   name: string
   code: string
   grade: string
-}
-
-export interface INewClassParameters {
-  grade: string
-  name: string
+  testParameters: ITestParameters
+  students: IStudent[]
 }
 
 export interface IStudent {
   id: string
-}
-
-export interface INewStudentParameters {
-  grade: string
-  name: string
-}
-
-export interface ITeacher {
-  id: string
-}
-
-export interface INewTeacherParameters {
-  grade: string
   name: string
 }
 
@@ -41,6 +33,27 @@ export interface ITestParameters {
   questions: number
   randomQuestions: number
 }
+
+
+/* API Update Interfaces */
+
+export interface INewClassParameters {
+  grade: string
+  name: string
+}
+
+export interface INewStudentParameters {
+  grade: string
+  name: string
+}
+
+export interface INewTeacherParameters {
+  grade: string
+  name: string
+}
+
+
+/* Fact Fluency Interfaces */
 
 export interface ITest {
   duration?: number

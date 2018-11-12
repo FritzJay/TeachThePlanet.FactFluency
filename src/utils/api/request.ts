@@ -32,10 +32,14 @@ const createJsonRequestObject = async (request: IRequest) => {
 
 export const validateResponse = (name: string, response: IResponse) => {
   if (response.error !== undefined) {
-    handleError(name, response.error)
+    handleError(name, new Error(response.error))
   }
 }
 
-export const handleError = (name: string, error: any) => {
-  console.warn(`${name} failed with error:`, error)
+export const handleError = (name: string, error: Error) => {
+  console.warn(`${name} failed with error:`, error.message)
+}
+
+export const handleErrors = (name: string, errors: Error[]) => {
+  errors.forEach((error) => handleError(name, error))
 }

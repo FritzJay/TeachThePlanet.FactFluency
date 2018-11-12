@@ -130,31 +130,33 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
   }
 
   private loginRequest = async (email: string, password: string, userType: string) => {
+    this.setState({ loading: true }, async () => {
+      await this.loginForUserType(email, password, userType)
+    })
+  }
+
+  private async loginForUserType(email: string, password: string, userType: string) {
+    const { history, dispatch } = this.props
+
     try {
-      this.setState({ loading: true }, () => this.loginForUserType(email, password, userType))
+      switch (userType.toLowerCase()) {
+        case 'student':
+          await dispatch(handleSignInStudent(email, password))
+          history.push('/fact-fluency')
+          return
+        case 'teacher':
+          await dispatch(handleSignInTeacher(email, password))
+          history.push('/classes')
+          return
+        default:
+          throw new Error('Invalid user type!')
+      }
     } catch(error) {
       console.warn(error)
       this.setState({
-        error: error.toString(),
+        error: error.message,
         loading: false,
       })
-    }
-  }
-
-  private loginForUserType(email: string, password: string, userType: string) {
-    const { history, dispatch } = this.props
-
-    switch (userType) {
-      case 'Student':
-        dispatch(handleSignInStudent(email, password))
-        history.push('/fact-fluency')
-        return
-      case 'Teacher':
-        dispatch(handleSignInTeacher(email, password))
-        history.push('/classes')
-        return
-      default:
-        throw new Error('Invalid user type!')
     }
   }
 }

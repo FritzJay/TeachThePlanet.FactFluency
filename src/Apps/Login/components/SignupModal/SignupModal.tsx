@@ -117,22 +117,22 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
     }
 
     try {
-      switch (userType) {
-        case 'Student':
-          dispatch(handleSignUpStudent(email, password))
+      switch (userType.toLowerCase()) {
+        case 'student':
+          await dispatch(handleSignUpStudent(email, password))
           history.push('/fact-fluency')
           return
-        case 'Teacher':
-          dispatch(handleSignUpTeacher(email, password))
+        case 'teacher':
+          await dispatch(handleSignUpTeacher(email, password))
           history.push('/classes')
+          return
         default:
           throw new Error('Invalid user type')
       }
-
-    } catch(error) {
+    } catch (error) {
       console.warn(error)
       this.setState({
-        error: 'An unexpected error ocurred. Please try again later.',
+        error: error.message,
         loading: false,
       })
     }
