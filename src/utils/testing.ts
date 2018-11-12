@@ -1,4 +1,5 @@
-import { IDisplayQuestion, IQuestion } from "../Interfaces";
+import { IQuestion } from './interfaces'
+import { IDisplayQuestion } from './tempInterfaces'
 
 export const initializeQuestions = (questions: IQuestion[]): void => {
   questions.forEach((q: any) => {

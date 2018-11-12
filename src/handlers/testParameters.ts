@@ -8,7 +8,7 @@ import {
 import { ITestParameters } from '../utils/interfaces'
 
 export const handleUpdateTestParameters = (token: string, classId: string, updates: ITestParameters) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       const updatedTestParameters = await saveUpdateTestParameters(token, updates)

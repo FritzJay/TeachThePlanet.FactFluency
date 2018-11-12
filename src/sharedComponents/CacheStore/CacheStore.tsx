@@ -21,7 +21,7 @@ class DisconnectedCacheStore extends React.Component<IProps, IState> {
     loading: true,
   }
 
-  private validKeys = ['factFluency', 'classes', 'user']
+  private validKeys = ['teacher', 'user']
 
   private keyMappings = {
     teacher: addTeacher,
@@ -63,6 +63,7 @@ class DisconnectedCacheStore extends React.Component<IProps, IState> {
     for (const property in store) {
       if (this.validKeys.includes(property)) {
         const action = this.keyMappings[property]
+        console.log(action)
         const value = getCached(property)
         this.props.dispatch(action(value))
       }

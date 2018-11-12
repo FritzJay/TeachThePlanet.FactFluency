@@ -250,7 +250,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
 
     const duration = (parseInt(minute.toString(), 10) * 60) + parseInt(second.toString(), 10)
     const updates = {
-      _id: testParametersID,
+      id: testParametersID,
       duration,
       numbers,
       operators,

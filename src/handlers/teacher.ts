@@ -14,7 +14,7 @@ import {
 import { ITeacher } from '../utils/interfaces'
 
 export const handleSignUpTeacher = (email: string, password: string) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading())
     const { user, teacher } = await saveSignUpTeacher(email, password)
     dispatch(addUser(user))
@@ -24,7 +24,7 @@ export const handleSignUpTeacher = (email: string, password: string) => {
 }
 
 export const handleSignInTeacher = (email: string, password: string) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading())
     const { user, teacher } = await saveSignInTeacher(email, password)
     dispatch(addUser(user))
@@ -34,7 +34,7 @@ export const handleSignInTeacher = (email: string, password: string) => {
 }
 
 export const handleUpdateTeacher = (token: string, updates: ITeacher) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       const updatedTeacher = await saveUpdateTeacher(token, updates)
@@ -48,7 +48,7 @@ export const handleUpdateTeacher = (token: string, updates: ITeacher) => {
 }
 
 export const handleRemoveTeacher = (token: string, teacherId: string) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       await saveRemoveTeacher(token, teacherId)

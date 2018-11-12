@@ -12,7 +12,7 @@ import {
 import { IStudent, INewStudentParameters } from '../utils/interfaces'
 
 export const handleAddStudent = (token: string, classId: string, student: INewStudentParameters) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading())
     const newStudent = await saveAddStudent(token, classId, student)
     dispatch(addStudent(classId, newStudent))
@@ -21,7 +21,7 @@ export const handleAddStudent = (token: string, classId: string, student: INewSt
 }
 
 export const handleUpdateStudent = (token: string, classId: string, updates: IStudent) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       const updatedStudent = await saveUpdateStudent(token, updates)
@@ -35,7 +35,7 @@ export const handleUpdateStudent = (token: string, classId: string, updates: ISt
 }
 
 export const handleRemoveStudent = (token: string, classId: string, studentId: string) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       await saveRemoveStudent(token, classId, studentId)

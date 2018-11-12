@@ -176,12 +176,12 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
   private handleSaveChangesClick = async () => {
     const { dispatch, token, history, selectedClass } = this.props
-    const { id, code } = selectedClass
+    const { id } = selectedClass
     const { grade, name } = this.state
 
     this.setState({ loading: true }, () => {
       try {
-        dispatch(handleUpdateClass(token, id, { code, grade, name, }))
+        dispatch(handleUpdateClass(token, id, { grade, name }))
         history.goBack()
 
       } catch (error) {
