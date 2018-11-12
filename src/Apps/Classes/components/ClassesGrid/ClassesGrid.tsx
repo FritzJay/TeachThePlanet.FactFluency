@@ -45,10 +45,10 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   
         <h2 className="title">Classes</h2>
   
-        {classes.map((cls) => (
+        {Object.keys(classes).map((key) => (
           <ClassCard
-            key={cls.id}
-            cls={cls}
+            key={key}
+            cls={classes[key]}
             onCardClick={this.handleCardClick}
             onSettingsClick={this.handleSettingsClick}
           />

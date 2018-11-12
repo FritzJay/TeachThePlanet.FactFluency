@@ -24,6 +24,8 @@ export default function classes (state: any = {}, action: any) {
     }
 
     case ADD_CLASS:
+      console.log('state:', state)
+      console.log('action:', action)
       return {
         ...state,
         [action.class.id]: action.class,

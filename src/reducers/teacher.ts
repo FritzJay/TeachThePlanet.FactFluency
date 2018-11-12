@@ -21,6 +21,7 @@ import { UPDATE_TEST_PARAMETERS } from '../actions/testParameters'
 import { CLEAR_STORE } from '../actions/shared'
 
 import classes from '../reducers/classes'
+import { IClass } from 'src/utils';
 
 export default function teacher (state: any = {}, action: any) {
   switch (action.type) {
@@ -29,9 +30,13 @@ export default function teacher (state: any = {}, action: any) {
     }
 
     case ADD_TEACHER || UPDATE_TEACHER:
+      const formattedClasses = action.teacher.classes
+        ? action.teacher.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: cls }), {})
+        : {}
       return {
         ...state,
         ...action.teacher,
+        classes: formattedClasses
       }
 
     case REMOVE_TEACHER || CLEAR_STORE:

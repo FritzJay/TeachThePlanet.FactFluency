@@ -11,10 +11,11 @@ import {
 } from '../actions/classes'
 import { INewClassParameters } from '../utils'
 
-export const handleAddClass = (token: string, cls: INewClassParameters) => {
+export const handleAddClass = (token: string, { grade, name }: INewClassParameters) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
-    const newClass = await saveAddClass(token, cls)
+    const newClass = await saveAddClass(token, grade, name)
+    console.log(newClass)
     dispatch(addClass(newClass))
     dispatch(hideLoading())
   }
