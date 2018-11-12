@@ -1,18 +1,17 @@
-import { hideLoading, showLoading } from "react-redux-loading";
+import { hideLoading, showLoading } from "react-redux-loading"
 import {
   fetchAvailableTests,
   fetchNewTest,
-  fetchTestResults,
-  getCached,
-  INewTestParameters,
-  ITest,
-} from "src/lib";
+  fetchTestResults
+} from "src/utils/api"
 import { 
   receiveAvailableTests,
   receiveTest,
   receiveTestResults,
   rehydrateFactFluency,
 } from '../actions/factFluency'
+import { INewTestParameters } from "src/utils/tempInterfaces";
+import { ITest, getCached } from "src/utils";
 
 export function handleReceiveAvailableTests (token: string, cb?: any) {
   return async (dispatch: any) => {

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { handleCreateClass } from 'src/redux/handlers/classes';
+import { handleAddClass } from 'src/handlers/classes';
 import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './NewClassModal.css'
 
@@ -114,9 +114,8 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
 
     this.setState({ loading: true }, () => {
       try {
-        dispatch(handleCreateClass(token, grade, name, (cls) => {
-          history.push('/classes')
-        }))
+        dispatch(handleAddClass(token, { grade, name }))
+        history.push('/classes')
   
       } catch (error) {
         console.warn(error)

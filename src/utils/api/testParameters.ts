@@ -19,5 +19,6 @@ export const saveUpdateTestParameters = async (token: string, { id, ...updates }
     return response.student
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }

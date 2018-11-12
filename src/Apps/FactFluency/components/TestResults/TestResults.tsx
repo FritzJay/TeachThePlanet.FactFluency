@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { removeTest, removeTestResults } from 'src/redux/actions/factFluency';
-import { handleReceiveTestResults } from 'src/redux/handlers/factFluency';
+import { removeTest, removeTestResults } from 'src/actions/factFluency';
+import { handleReceiveTestResults } from 'src/handlers/factFluency';
 import { Button, Card, Loading } from 'src/sharedComponents'
-import { IQuestion, ITest, ITestResults } from '../../../../lib/Interfaces'
-import { padString } from '../../../../lib/Utility/Utility'
+import { IQuestion, ITest, ITestResults, padString } from 'src/utils'
 import './TestResults.css'
 
 interface IQuickestCardProps {

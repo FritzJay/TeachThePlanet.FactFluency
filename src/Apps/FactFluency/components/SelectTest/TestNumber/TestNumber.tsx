@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { themeColors } from 'src/lib'
-import { ITestNumber } from 'src/lib/Interfaces'
+import { themeColors } from 'src/utils'
+import { ITestNumber } from 'src/utils/tempInterfaces'
 import { Button, Card, Operator } from 'src/sharedComponents'
 import './TestNumber.css'
 

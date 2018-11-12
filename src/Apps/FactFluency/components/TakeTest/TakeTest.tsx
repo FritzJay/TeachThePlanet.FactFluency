@@ -6,10 +6,10 @@ import {
   randomizeQuestions,
   sortQuestions,
   startQuestion,
-} from 'src/lib'
-import { IDisplayQuestion, IQuestion, ITest } from "src/lib/Interfaces"
-import { getOperatorSymbol } from "src/lib/Utility/Utility";
-import { updateTest } from "src/redux/actions/factFluency";
+} from 'src/utils'
+import { IDisplayQuestion, IQuestion, ITest } from "src/utils"
+import { getOperatorSymbol } from "src/utils"
+import { updateTest } from "src/actions/factFluency";
 import { Button, Card } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'

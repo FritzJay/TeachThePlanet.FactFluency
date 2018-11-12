@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { IClass } from 'src/lib/Interfaces'
-import { handleDeleteClass, handleUpdateClass } from 'src/redux/handlers/classes'
+import { IClass } from 'src/utils'
+import { handleRemoveClass, handleUpdateClass } from 'src/handlers/classes'
 import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'
@@ -161,9 +161,8 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
     this.setState({ loading: true }, () => {
       try {
-        dispatch(handleDeleteClass(token, selectedClass._id, (cls: IClass) => {
-          history.push('/classes')
-        }))
+        dispatch(handleRemoveClass(token, selectedClass.id))
+        history.push('/classes')
   
       } catch (error) {
         console.warn(error)
@@ -177,18 +176,14 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
   private handleSaveChangesClick = async () => {
     const { dispatch, token, history, selectedClass } = this.props
+    const { id, code } = selectedClass
     const { grade, name } = this.state
 
     this.setState({ loading: true }, () => {
       try {
-        dispatch(handleUpdateClass(token, {
-          _id: selectedClass._id,
-          classCode: selectedClass.classCode,
-          grade,
-          name,
-        }, (cls: IClass) => {
-          history.goBack()
-        }))
+        dispatch(handleUpdateClass(token, id, { code, grade, name, }))
+        history.goBack()
+
       } catch (error) {
         console.log(error)
         this.setState({
@@ -216,7 +211,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 const mapStateToProps = ({ user, classes }: any) => ({
   token: user.token,
   selectedClass: classes.selectedClass
-    ? classes.classList.find((cls: IClass) => cls._id === classes.selectedClass)
+    ? classes.classList.find((cls: IClass) => cls.id === classes.selectedClass)
     : undefined
 })
 

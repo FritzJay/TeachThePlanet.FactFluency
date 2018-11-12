@@ -4,7 +4,9 @@ import {
   REMOVE_USER,
 } from '../actions/user'
 
-export default function user (state: IUser = {}, action: any) {
+import { CLEAR_STORE } from 'src/actions/shared';
+
+export default function user (state: any = {}, action: any) {
   switch (action.type) {
     case ADD_USER || UPDATE_USER:
       return {
@@ -12,7 +14,7 @@ export default function user (state: IUser = {}, action: any) {
         ...action.user
       }
 
-    case REMOVE_USER:
+    case REMOVE_USER || CLEAR_STORE:
       return {}
 
     default:

@@ -3,12 +3,14 @@ import {
   UPDATE_CLASS,
   REMOVE_CLASS,
 } from '../actions/classes'
+
 import {
   ADD_STUDENT,
   UPDATE_STUDENT,
   REMOVE_STUDENT,
 } from '../actions/students'
 import students from '../reducers/students'
+
 import { 
   UPDATE_TEST_PARAMETERS,
 } from '../actions/testParameters'

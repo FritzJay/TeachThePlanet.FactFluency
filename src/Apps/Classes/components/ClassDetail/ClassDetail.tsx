@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { IClass } from 'src/lib';
+import { IClass } from 'src/utils';
 import { Card } from 'src/sharedComponents'
 import './ClassDetail.css'
 
@@ -66,7 +66,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
 }
 
 const mapStateToProps = ({ classes, user }: any) => ({
-  selectedClass: classes.classList.find((cls: IClass) => cls._id.toString() === classes.selectedClass),
+  selectedClass: classes.classList.find((cls: IClass) => cls.id === classes.selectedClass),
   token: user.token,
 })
 

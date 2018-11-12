@@ -1,4 +1,4 @@
-import { ITestParameters } from '../utils/interfaces'
+import { ITestParameters } from '../utils'
 
 export const UPDATE_TEST_PARAMETERS = 'UPDATE_TEST_PARAMETERS'
 

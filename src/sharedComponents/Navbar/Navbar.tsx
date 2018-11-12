@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
-import { clearCached } from 'src/lib'
-import { clearStore } from 'src/redux/actions/shared'
+import { clearCached } from 'src/utils'
+import { clearStore } from 'src/actions/shared'
 import { Button, Dropdown } from 'src/sharedComponents'
-import { IUser } from '../../lib/Interfaces'
+import { IUser } from '../../utils'
 import Logo from './logo.png'
 import './Navbar.css'
 

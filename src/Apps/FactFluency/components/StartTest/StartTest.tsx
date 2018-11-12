@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { INewTestParameters, ITest } from 'src/lib/Interfaces';
-import { removeTest, removeTestResults } from 'src/redux/actions/factFluency';
-import { handleReceiveTest } from 'src/redux/handlers/factFluency';
+import { INewTestParameters, ITest } from 'src/utils';
+import { removeTest, removeTestResults } from 'src/actions/factFluency';
+import { handleReceiveTest } from 'src/handlers/factFluency';
 
 import { Button, Card, Loading } from 'src/sharedComponents'
 import './StartTest.css'

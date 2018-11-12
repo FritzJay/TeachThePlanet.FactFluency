@@ -6,8 +6,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { createStore } from 'redux'
 import * as WebFont from 'webfontloader'
 import App from './Apps/App'
-import middleware from './redux/middleware'
-import reducer from './redux/reducers'
+import middleware from './middleware'
+import reducer from './reducers'
 import { CacheStore } from './sharedComponents';
 
 WebFont.load({

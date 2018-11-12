@@ -16,6 +16,7 @@ export const saveAddClass = async (token: string, cls: INewClassParameters): Pro
     return response.class
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -37,6 +38,7 @@ export const saveUpdateClass = async (token: string, classId: string, updates: I
     return response.class
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -55,5 +57,6 @@ export const saveRemoveClass = async (token: string, classId: string): Promise<I
     return response.class
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }

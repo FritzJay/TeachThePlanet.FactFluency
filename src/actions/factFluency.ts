@@ -1,4 +1,5 @@
-import { IAvailableTests, INewTestParameters, ITest, ITestResults } from "src/lib/Interfaces";
+import { ITest, ITestResults } from "src/utils/interfaces";
+import { IAvailableTests, INewTestParameters } from 'src/utils/tempInterfaces'
 
 export const REHYDRATE_FACT_FLUENCY = 'REHYDRATE_FACT_FLUENCY'
 export const RECEIVE_AVAILABLE_TESTS = 'RECEIVE_AVAILABLE_TESTS'

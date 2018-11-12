@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IClass } from 'src/lib/Interfaces'
+import { IClass } from 'src/utils'
 import { Card, CopyToClipboard } from 'src/sharedComponents'
 import './ClassCard.css'
 import SchoolIcon from './school-icon.svg'
@@ -39,10 +39,10 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
       <h3 className="class-name">{cls.name}</h3>
       
       <CopyToClipboard
-        text={cls.classCode}
+        text={cls.code}
         className="class-code"
       >
-        <h4>Class Code: {cls.classCode}</h4>
+        <h4>Class Code: {cls.code}</h4>
 
         <i className="material-icons">assignment</i>
       </CopyToClipboard>

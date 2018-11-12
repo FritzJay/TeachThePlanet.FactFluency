@@ -18,6 +18,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
     return response.teacher
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -38,6 +39,7 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
     return response.teacher
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -59,6 +61,7 @@ export const saveUpdateTeacher = async (token: string, { id, ...updates }: ITeac
     return response.teacher
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -77,5 +80,6 @@ export const saveRemoveTeacher = async (token: string, teacherId: string): Promi
     return response.teacher
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }

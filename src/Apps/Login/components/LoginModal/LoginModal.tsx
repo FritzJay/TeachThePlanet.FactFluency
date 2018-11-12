@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { handleLoginUser } from 'src/redux/handlers/users'
+import { handleSignInStudent } from 'src/handlers/student'
+import { handleSignInTeacher } from 'src/handlers/teacher';
 import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './LoginModal.css'
@@ -130,13 +131,24 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
 
   private loginRequest = async (email: string, password: string, userType: string) => {
     try {
-      this.setState({ loading: true }, () => this.props.dispatch(handleLoginUser(email, password, userType)))
+      this.setState({ loading: true }, () => this.loginForUserType(email, password, userType))
     } catch(error) {
       console.warn(error)
       this.setState({
         error: error.toString(),
         loading: false,
       })
+    }
+  }
+
+  private loginForUserType(email: string, password: string, userType: string) {
+    switch (userType) {
+      case 'Student':
+        this.props.dispatch(handleSignInStudent(email, password))
+      case 'Teacher':
+        this.props.dispatch(handleSignInTeacher(email, password))
+      default:
+        throw new Error('Invalid user type!')
     }
   }
 }

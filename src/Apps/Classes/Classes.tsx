@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
-import { IClass, IUser } from 'src/lib/Interfaces'
+import { IClass, IUser } from 'src/utils'
 import './Classes.css'
 import {
   ClassDetail,

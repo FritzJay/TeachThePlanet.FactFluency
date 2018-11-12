@@ -23,7 +23,7 @@ export const handleSignUpTeacher = (email: string, password: string) => {
   }
 }
 
-export const handleLoginTeacher = (email: string, password: string) => {
+export const handleSignInTeacher = (email: string, password: string) => {
   return async (dispatch) => {
     dispatch(showLoading())
     const { user, teacher } = await saveSignInTeacher(email, password)

@@ -3,22 +3,26 @@ import {
   UPDATE_TEACHER,
   REMOVE_TEACHER,
 } from '../actions/teacher'
+
 import {
   ADD_CLASS,
   UPDATE_CLASS,
   REMOVE_CLASS,
 } from '../actions/classes'
-import classes from '../reducers/classes'
+
 import {
   ADD_STUDENT,
   UPDATE_STUDENT,
   REMOVE_STUDENT,
 } from '../actions/students'
-import { 
-  UPDATE_TEST_PARAMETERS,
-} from '../actions/testParameters'
 
-export default function teacher (state: ITeacher = {}, action: any) {
+import { UPDATE_TEST_PARAMETERS } from '../actions/testParameters'
+
+import { CLEAR_STORE } from '../actions/shared'
+
+import classes from '../reducers/classes'
+
+export default function teacher (state: any = {}, action: any) {
   switch (action.type) {
     case ADD_TEACHER || UPDATE_TEACHER:
       return {
@@ -26,7 +30,7 @@ export default function teacher (state: ITeacher = {}, action: any) {
         ...action.teacher
       }
 
-    case REMOVE_TEACHER:
+    case REMOVE_TEACHER || CLEAR_STORE:
       return {}
 
     case ADD_CLASS || UPDATE_CLASS || REMOVE_CLASS ||

@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { setCached } from 'src/lib'
-import { handleRehydrateClasses } from 'src/redux/handlers/classes';
-import { handleRehydrateFactFluency } from 'src/redux/handlers/factFluency';
-import { handleRehydrateUser } from 'src/redux/handlers/users';
+import { setCached, getCached } from 'src/utils'
+import { addTeacher } from 'src/actions/teacher'
+import { addUser } from 'src/actions/user';
 
 interface IProps {
   store: any
@@ -25,9 +24,8 @@ class DisconnectedCacheStore extends React.Component<IProps, IState> {
   private validKeys = ['factFluency', 'classes', 'user']
 
   private keyMappings = {
-    classes: handleRehydrateClasses,
-    factFluency: handleRehydrateFactFluency,
-    user: handleRehydrateUser,
+    teacher: addTeacher,
+    user: addUser,
   }
 
   private cacheInterval: any
@@ -65,7 +63,8 @@ class DisconnectedCacheStore extends React.Component<IProps, IState> {
     for (const property in store) {
       if (this.validKeys.includes(property)) {
         const action = this.keyMappings[property]
-        this.props.dispatch(action())
+        const value = getCached(property)
+        this.props.dispatch(action(value))
       }
     }
   }

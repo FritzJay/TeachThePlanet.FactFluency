@@ -19,6 +19,7 @@ export const saveAddStudent = async (token: string, classId: string, student: IN
     return response.student
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -40,6 +41,7 @@ export const saveUpdateStudent = async (token: string, { id, ...updates }: IStud
     return response.student
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }
 
@@ -61,5 +63,6 @@ export const saveRemoveStudent = async (token: string, classId: string, studentI
     return response.student
   } catch (error) {
     handleError(functionName, error)
+    throw error
   }
 }

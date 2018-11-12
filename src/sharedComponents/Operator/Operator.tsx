@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { getOperatorSymbol } from 'src/lib/Utility/Utility';
-import './Operator.css';
+import * as React from 'react'
+import { getOperatorSymbol } from 'src/utils'
+import './Operator.css'
 
 interface IProps {
   active: boolean;

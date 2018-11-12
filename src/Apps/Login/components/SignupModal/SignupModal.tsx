@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { handleSignUpUser } from 'src/redux/handlers/users';
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './SignupModal.css'
+import { handleSignUpTeacher } from 'src/handlers/teacher';
+import { handleSignUpStudent } from 'src/handlers/student';
 
 interface IProps extends RouteComponentProps<any> {
   dispatch: any
@@ -116,14 +117,16 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
     }
 
     try {
-      await dispatch(handleSignUpUser(email, password, userType))
-
-      if (userType === 'Student') {
-        history.push('/fact-fluency')
-      } else if (userType === 'Teacher') {
-        history.push('/classes')
-      } else {
-        history.push('/index')
+      switch (userType) {
+        case 'Student':
+          dispatch(handleSignUpStudent(email, password))
+          history.push('/fact-fluency')
+          return
+        case 'Teacher':
+          dispatch(handleSignUpTeacher(email, password))
+          history.push('/classes')
+        default:
+          throw new Error('Invalid user type')
       }
 
     } catch(error) {

@@ -9,10 +9,10 @@ import {
   updateClass,
   removeClass,
 } from '../actions/classes'
-import { INewClassParameters } from '../utils/interfaces'
+import { INewClassParameters } from '../utils'
 
 export const handleAddClass = (token: string, cls: INewClassParameters) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading())
     const newClass = await saveAddClass(token, cls)
     dispatch(addClass(newClass))
@@ -21,7 +21,7 @@ export const handleAddClass = (token: string, cls: INewClassParameters) => {
 }
 
 export const handleUpdateClass = (token: string, classId: string, updates: INewClassParameters) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       const updatedClass = await saveUpdateClass(token, classId, updates)
@@ -35,7 +35,7 @@ export const handleUpdateClass = (token: string, classId: string, updates: INewC
 }
 
 export const handleRemoveClass = (token: string, classId: string) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showLoading)
     try {
       await saveRemoveClass(token, classId)

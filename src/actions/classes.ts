@@ -1,4 +1,4 @@
-import { IClass } from '../utils/interfaces'
+import { IClass } from '../utils'
 
 export const ADD_CLASS = 'ADD_CLASS'
 export const UPDATE_CLASS = 'UPDATE_CLASS'

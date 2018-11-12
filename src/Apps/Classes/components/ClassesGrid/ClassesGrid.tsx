@@ -1,18 +1,15 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { IClass } from 'src/lib/Interfaces'
-import { setSelectedClass } from 'src/redux/actions/classes'
-import { handleReceiveClassList } from 'src/redux/handlers/classes'
+import { IClass } from 'src/utils'
 import { Loading } from 'src/sharedComponents'
 import { ClassCard } from '../ClassCard/ClassCard'
 import { CreateClassCard } from '../CreateClassCard/CreateClassCard'
 import './ClassesGrid.css'
 
 interface IProps extends RouteComponentProps<{}> {
-  classList?: IClass[]
+  classes?: IClass[]
   dispatch: any
-  token: string
 }
 
 interface IState {
@@ -22,22 +19,8 @@ interface IState {
 class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   public state = { error: '' }
 
-  public async componentDidMount() {
-    const { classList, dispatch, token } = this.props
-
-    if (classList === undefined) {
-      try {
-        await dispatch(handleReceiveClassList(token))
-        this.setState({ error: '' })
-  
-      } catch (error) {
-        this.setState({ error: error.toString() })
-      }
-    }
-  }
-
   public render() {
-    const { classList, match } = this.props
+    const { classes, match } = this.props
     const { error } = this.state
 
     if (error !== '') {
@@ -49,7 +32,7 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
       )
     }
 
-    if (classList === undefined || classList === null) {
+    if (classes === undefined || classes === null) {
       return (
         <div className="ClassesGrid">
           <Loading className="loading" />
@@ -62,9 +45,9 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   
         <h2 className="title">Classes</h2>
   
-        {classList.map((cls: IClass) => (
+        {classes.map((cls) => (
           <ClassCard
-            key={cls._id}
+            key={cls.id}
             cls={cls}
             onCardClick={this.handleCardClick}
             onSettingsClick={this.handleSettingsClick}
@@ -79,16 +62,16 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   }
 
   private handleCardClick = async (selectedClass: IClass) => {
-    const { dispatch, history } = this.props
+    const { history } = this.props
 
-    await dispatch(setSelectedClass(selectedClass._id))
+    // TODO: await dispatch(setSelectedClass(selectedClass._id))
     history.push('/classes/detail')
   }
 
   private handleSettingsClick = async (selectedClass: IClass) => {
-    const { dispatch, history, match } = this.props
+    const { history, match } = this.props
 
-    await dispatch(setSelectedClass(selectedClass._id))
+    // TODO: await dispatch(setSelectedClass(selectedClass._id))
     history.push(`${match.url}/edit`)
   }
 }

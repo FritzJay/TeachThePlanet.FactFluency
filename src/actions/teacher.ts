@@ -1,4 +1,4 @@
-import { ITeacher } from '../utils/interfaces'
+import { ITeacher } from '../utils'
 
 export const ADD_TEACHER = 'ADD_TEACHER'
 export const UPDATE_TEACHER = 'UPDATE_TEACHER'
