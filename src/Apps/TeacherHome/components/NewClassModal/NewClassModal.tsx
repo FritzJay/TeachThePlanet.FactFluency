@@ -115,7 +115,7 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
     this.setState({ loading: true }, () => {
       try {
         dispatch(handleAddClass(token, { grade, name }))
-        history.push('/classes')
+        history.push('/teacher')
   
       } catch (error) {
         console.warn(error)
@@ -129,7 +129,7 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
   }
 
   private handleCancelClick = () => {
-    this.props.history.push('/classes')
+    this.props.history.push('/teacher')
   }
 
   private handleChange = (e: any) => {

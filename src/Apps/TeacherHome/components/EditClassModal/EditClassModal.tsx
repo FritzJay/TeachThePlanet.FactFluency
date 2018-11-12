@@ -10,7 +10,7 @@ import './EditClassModal.css'
 const DEFAULT_DELETE_TEXT = 'Delete Class'
 const CONFIRM_DELETE_TEXT = 'Confirm'
 
-interface IProps extends RouteComponentProps<{}> {
+interface IProps extends RouteComponentProps<{ id: string }> {
   dispatch: any
   selectedClass: IClass
   token: string
@@ -162,7 +162,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
     this.setState({ loading: true }, () => {
       try {
         dispatch(handleRemoveClass(token, selectedClass.id))
-        history.push('/classes')
+        history.push('/teacher')
   
       } catch (error) {
         console.warn(error)
@@ -208,11 +208,9 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 }
 
-const mapStateToProps = ({ user, classes }: any) => ({
+const mapStateToProps = ({ user, teacher }: any, { match }: any) => ({
   token: user.token,
-  selectedClass: classes.selectedClass
-    ? classes.classList.find((cls: IClass) => cls.id === classes.selectedClass)
-    : undefined
+  selectedClass: teacher.classes[match.params.id]
 })
 
 export const EditClassModal = connect(mapStateToProps)(DisconnectedEditClassModal)

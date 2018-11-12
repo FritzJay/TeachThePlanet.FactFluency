@@ -21,10 +21,9 @@ interface IState {
   testParametersID: string
 }
 
-interface IProps extends RouteComponentProps<{}> {
+interface IProps extends RouteComponentProps<{ id: string }> {
   dispatch: any
   token: string
-  selectedClass: string
   testParameters: ITestParameters
 }
 
@@ -245,7 +244,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
   private handleSaveClick = async (e: any) => {
     e.preventDefault()
 
-    const { dispatch, token, history, selectedClass } = this.props
+    const { dispatch, token, history, match } = this.props
     const { testParametersID, minute, numbers, operators, questions, randomQuestions, second } = this.state
 
     const duration = (parseInt(minute.toString(), 10) * 60) + parseInt(second.toString(), 10)
@@ -258,17 +257,16 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       randomQuestions,
     }
 
-    dispatch(handleUpdateTestParameters(token, selectedClass, updates))
-    history.push('/classes/detail')
+    dispatch(handleUpdateTestParameters(token, match.params.id, updates))
+    history.push('/teacher/detail')
   }
   
-  private handleCancelClick = () => this.props.history.push('/classes/detail')
+  private handleCancelClick = () => this.props.history.goBack()
 }
 
-const mapStateToProps = ({ user, classes }: any) => ({
+const mapStateToProps = ({ user, teacher }: any, { match }: any) => ({
   token: user.token,
-  selectedClass: classes.selectedClass,
-  testParameters: classes.testParameters,
+  testParameters: teacher.classes[match.params.id].testParameters,
 })
 
 export const TestParameters = connect(mapStateToProps)(DisconnectedTestParameters)

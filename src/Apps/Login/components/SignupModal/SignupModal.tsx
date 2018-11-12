@@ -124,7 +124,7 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
           return
         case 'teacher':
           await dispatch(handleSignUpTeacher(email, password))
-          history.push('/classes')
+          history.push('/teacher')
           return
         default:
           throw new Error('Invalid user type')

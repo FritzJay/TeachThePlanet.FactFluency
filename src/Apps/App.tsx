@@ -10,7 +10,7 @@ import {
 import Login from 'src/Apps/Login/Login'
 import { LoadingBar } from 'src/sharedComponents'
 import './App.css'
-import { Classes } from './Classes/Classes'
+import { TeacherHome } from './TeacherHome/TeacherHome'
 import { FactFluency } from './FactFluency/FactFluency'
 
 interface IProps extends RouteComponentProps<{}> {
@@ -36,8 +36,8 @@ class App extends React.Component<IProps> {
           />
 
           <Route
-            path="/classes"
-            component={Classes}
+            path="/teacher"
+            component={TeacherHome}
           />
 
           <Route render={this.renderRedirect} />
@@ -49,7 +49,7 @@ class App extends React.Component<IProps> {
   private renderLogin = (props: any) => {
     switch (this.props.userType) {
       case 'Teacher':
-        return <Redirect to="/classes" />
+        return <Redirect to="/teacher" />
       case 'Student':
         return <Redirect to="/fact-fluency" />
       default:

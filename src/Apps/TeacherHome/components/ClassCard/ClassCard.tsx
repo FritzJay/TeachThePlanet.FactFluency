@@ -16,8 +16,9 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
   }
 
   const handleSettingsClick = (e: any) => {
-    onSettingsClick(cls.id)
+    e.preventDefault()
     e.stopPropagation()
+    onSettingsClick(cls.id)
   }
 
   return (

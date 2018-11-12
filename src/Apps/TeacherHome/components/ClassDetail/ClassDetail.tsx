@@ -6,30 +6,23 @@ import { Card } from 'src/sharedComponents'
 import './ClassDetail.css'
 
 interface IProps extends RouteComponentProps<{}> {
-  token: string
   selectedClass: IClass
 }
 
 class DisconnectedClassDetail extends React.Component<IProps> {
-  /*
-  public componentDidMount() {
-    const { token, selectedClass } = this.props
-
-    try {
-      await dispatchEvent(handleReceiveStudentList(token, selectedClass.studentIDs, (students) => {
-
-      }))
-    }
-  }
-   */
-
   public render() {
     const { match } = this.props 
 
     return (
       <div className="ClassDetail">
         <div className="header-row">
-          <h1><span><i className="material-icons big">arrow_back_ios</i><a className="classrooms" href="#"> Classrooms</a></span>/Class Name</h1>
+          <h2>
+            <Link className="classrooms" to="/teacher/classes">
+              <i className="material-icons big">arrow_back_ios</i>
+              Classes
+            </Link>
+            /Class Name
+          </h2>
           <div className="btn-row">
             <Link className="parent-invitations detail-btn" to={`${match.url}/parent-invitations`}>
               Parent Invites
@@ -65,9 +58,8 @@ class DisconnectedClassDetail extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ classes, user }: any) => ({
-  selectedClass: classes.classList.find((cls: IClass) => cls.id === classes.selectedClass),
-  token: user.token,
+const mapStateToProps = ({ teacher }: any, { match }: any) => ({
+  selectedClass: teacher.classes[match.params.id]
 })
 
 export const ClassDetail = connect(mapStateToProps)(DisconnectedClassDetail)

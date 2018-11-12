@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
-import { IClass } from 'src/utils'
-import './Classes.css'
 import {
   ClassDetail,
   ClassesGrid,
@@ -10,27 +8,17 @@ import {
   NewClassModal,
   TestParameters,
 } from './components'
+import './TeacherHome.css'
 
 interface IProps extends RouteComponentProps<{}> {}
 
-interface IState {
-  classes: IClass[]
-  selectedClass?: IClass
-  isLoading: boolean
-}
-
-export class Classes extends React.Component<IProps, IState> {
-  public state: IState = {
-    classes: [],
-    isLoading: false,
-  }
-
+export class TeacherHome extends React.Component<IProps> {
   public render() {
     const { match } = this.props
 
     return (
-      <div className="Classes">
-        <Navbar logoLink={`${match.url}/grid`} />
+      <div className="TeacherHome">
+        <Navbar logoLink={`${match.url}/classes`} />
 
         <Route
           exact={true}
@@ -39,32 +27,32 @@ export class Classes extends React.Component<IProps, IState> {
         />
 
         <Route
-          path={`${match.path}/grid`}
+          path={`${match.path}/classes`}
           component={ClassesGrid}
         />
 
         <Route
-          path={`${match.path}/grid/edit`}
-          component={EditClassModal}
-        />
-
-        <Route
-          path={`${match.path}/grid/new`}
+          path={`${match.path}/classes/new`}
           component={NewClassModal}
         />
 
         <Route
-          path={`${match.path}/detail`}
+          path={`${match.path}/classes/edit/:id`}
+          component={EditClassModal}
+        />
+
+        <Route
+          path={`${match.path}/class-detail/:id`}
           component={ClassDetail}
         />
 
         <Route
-          path={`${match.path}/detail/test-parameters`}
+          path={`${match.path}/class-detail/:id/test-parameters`}
           component={TestParameters}
         />
         
         <Route
-          path={`${match.path}/detail/class-settings`}
+          path={`${match.path}/class-detail/:id/class-settings`}
           component={EditClassModal}
         />
       </div>
@@ -72,6 +60,6 @@ export class Classes extends React.Component<IProps, IState> {
   }
 
   private renderRedirect = (props: any) => {
-    return <Redirect to={`${props.match.url}/grid`} />
+    return <Redirect to={`${props.match.url}/classes`} />
   }
 }
