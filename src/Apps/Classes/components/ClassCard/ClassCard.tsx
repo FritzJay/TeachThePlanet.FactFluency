@@ -6,18 +6,17 @@ import SchoolIcon from './school-icon.svg'
 
 interface IProps {
   cls: IClass
-  onCardClick: (cls: IClass) => void
-  onSettingsClick: (cls: IClass) => void
+  onCardClick: (id: string) => void
+  onSettingsClick: (id: string) => void
 }
 
 export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
   const handleCardClick = () => {
-    onCardClick(cls)
+    onCardClick(cls.id)
   }
 
   const handleSettingsClick = (e: any) => {
-    onSettingsClick(cls)
-
+    onSettingsClick(cls.id)
     e.stopPropagation()
   }
 
