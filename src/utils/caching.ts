@@ -1,7 +1,6 @@
 export const setCached = async (key: string, value: any): Promise<void> => {
   const json = JSON.stringify(value)
   localStorage.setItem(key, json)
-  console.log(localStorage)
 }
 
 export const getCached = async (key: string): Promise<any> => {

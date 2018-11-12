@@ -142,11 +142,17 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
   }
 
   private loginForUserType(email: string, password: string, userType: string) {
+    const { history, dispatch } = this.props
+
     switch (userType) {
       case 'Student':
-        this.props.dispatch(handleSignInStudent(email, password))
+        dispatch(handleSignInStudent(email, password))
+        history.push('/fact-fluency')
+        return
       case 'Teacher':
-        this.props.dispatch(handleSignInTeacher(email, password))
+        dispatch(handleSignInTeacher(email, password))
+        history.push('/classes')
+        return
       default:
         throw new Error('Invalid user type!')
     }

@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
-import { IClass, IUser } from 'src/utils'
+import { IClass } from 'src/utils'
 import './Classes.css'
 import {
   ClassDetail,
@@ -12,9 +11,7 @@ import {
   TestParameters,
 } from './components'
 
-interface IProps extends RouteComponentProps<{}> {
-  user: IUser
-}
+interface IProps extends RouteComponentProps<{}> {}
 
 interface IState {
   classes: IClass[]
@@ -22,7 +19,7 @@ interface IState {
   isLoading: boolean
 }
 
-export class DisconnectedClasses extends React.Component<IProps, IState> {
+export class Classes extends React.Component<IProps, IState> {
   public state: IState = {
     classes: [],
     isLoading: false,
@@ -78,7 +75,3 @@ export class DisconnectedClasses extends React.Component<IProps, IState> {
     return <Redirect to={`${props.match.url}/grid`} />
   }
 }
-
-const mapStateToProps = ({ user }: any) => ({ user })
-
-export const Classes = connect(mapStateToProps)(DisconnectedClasses)

@@ -23,7 +23,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
 }
 
 export const saveSignInTeacher = async (email: string, password: string): Promise<{ user: IUser, teacher: ITeacher }> => {
-  const functionName = 'saveSignIn'
+  const functionName = 'saveSignInTeacher'
   try {
     const response = await jsonFetch(
       `${process.env.REACT_APP_API_URL}/teachers/sign-in`,
@@ -32,11 +32,14 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
           email,
           password,
         },
-        method: 'PUT',
+        method: 'POST',
       }
     )
     validateResponse(functionName, response)
-    return response.teacher
+    return {
+      user: response.user,
+      teacher: response.teacher
+    }
   } catch (error) {
     handleError(functionName, error)
     throw error

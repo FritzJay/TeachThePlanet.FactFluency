@@ -27,7 +27,7 @@ export default function teacher (state: any = {}, action: any) {
     case ADD_TEACHER || UPDATE_TEACHER:
       return {
         ...state,
-        ...action.teacher
+        ...action.teacher,
       }
 
     case REMOVE_TEACHER || CLEAR_STORE:

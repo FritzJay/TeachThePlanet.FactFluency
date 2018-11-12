@@ -63,7 +63,6 @@ class DisconnectedCacheStore extends React.Component<IProps, IState> {
     for (const property in store) {
       if (this.validKeys.includes(property)) {
         const action = this.keyMappings[property]
-        console.log(action)
         const value = getCached(property)
         this.props.dispatch(action(value))
       }
