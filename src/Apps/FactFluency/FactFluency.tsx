@@ -1,18 +1,28 @@
 import * as React from 'react'
-import { Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { Navbar, PageNotFound } from 'src/sharedComponents'
+import { Route, RouteComponentProps, Redirect } from 'react-router-dom'
+import { Navbar } from 'src/sharedComponents'
 import { SelectTest, StartTest, TakeTest, TestResults } from './components'
 import './FactFluency.css'
 
-export const FactFluency = ({ match }: RouteComponentProps) => (
-  <div>
-    <Navbar logoLink={match.url} />
 
-    <div className="FactFluency">
-      <Switch>
+
+export const FactFluency = ({ match }: RouteComponentProps) => {
+  const renderRedirect = () => <Redirect to={`${match.url}/select-test`} />
+
+  return (
+    <div>
+      <Navbar logoLink={match.url} />
+
+      <div className="FactFluency">
+
         <Route
           exact={true}
           path={match.path}
+          render={renderRedirect}
+        />
+
+        <Route
+          path={`${match.path}/select-test`}
           component={SelectTest}
         />
 
@@ -30,9 +40,7 @@ export const FactFluency = ({ match }: RouteComponentProps) => (
           path={`${match.path}/test-results`}
           component={TestResults}
         />
-
-        <Route component={PageNotFound} />
-      </Switch>
+      </div>
     </div>
-  </div>
-)
+  )
+}

@@ -19,7 +19,6 @@ export default function factFluency (state: any = {}, action: any) {
       return {}
 
     case SIGN_IN_STUDENT:
-      console.log(state, action)
       const formattedClasses = action.student.classes
         ? action.student.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: cls }), {})
         : {}
