@@ -10,3 +10,9 @@ export default combineReducers({
   user,
   loadingBar: loadingBarReducer,
 })
+
+export const testingReducers = combineReducers({
+  factFluency,
+  teacher,
+  user
+})

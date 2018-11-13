@@ -181,6 +181,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
     this.setState({ loading: true }, () => {
       try {
+        console.log("UPDATING CLASS: ", id, grade, name)
         dispatch(handleUpdateClass(token, id, { grade, name }))
         history.goBack()
 

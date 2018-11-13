@@ -26,7 +26,10 @@ export const handleUpdateClass = (token: string, classId: string, updates: INewC
     dispatch(showLoading)
     try {
       const updatedClass = await saveUpdateClass(token, classId, updates)
-      dispatch(updateClass(updatedClass))
+      dispatch(updateClass({
+        ...updatedClass,
+        ...updates
+      }))
     } catch (error) {
       alert('There was an error saving your changes. Please try again later.')
     } finally {

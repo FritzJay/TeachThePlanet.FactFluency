@@ -15,7 +15,7 @@ import {
   UPDATE_TEST_PARAMETERS,
 } from '../actions/testParameters'
 import testParameters from '../reducers/testParameters'
-import { CLEAR_STORE } from 'src/actions/shared';
+import { CLEAR_STORE } from '../actions/shared';
 
 export default function classes (state: any = {}, action: any) {
   switch (action.type) {
@@ -24,14 +24,14 @@ export default function classes (state: any = {}, action: any) {
     }
 
     case ADD_CLASS:
-      console.log('state:', state)
-      console.log('action:', action)
       return {
         ...state,
         [action.class.id]: action.class,
       }
 
     case UPDATE_CLASS:
+      console.log(state)
+      console.log(action)
       return {
         ...state,
         [action.class.id]: {
@@ -41,12 +41,13 @@ export default function classes (state: any = {}, action: any) {
       }
 
     case REMOVE_CLASS:
-      return {
-        ...state,
-        [action.classId]: undefined,
-      }
+      const newState = Object.assign({}, state)
+      delete newState[action.id]
+      return newState
 
-    case ADD_STUDENT || UPDATE_STUDENT || REMOVE_STUDENT: {
+    case ADD_STUDENT:
+    case UPDATE_STUDENT:
+    case REMOVE_STUDENT: {
       const { classId, ...remainingAction } = action
 
       return {

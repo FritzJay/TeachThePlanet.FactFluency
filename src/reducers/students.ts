@@ -6,7 +6,8 @@ import {
 
 export default function students (state: any = {}, action: any) {
   switch (action.type) {
-    case ADD_STUDENT || UPDATE_STUDENT:
+    case ADD_STUDENT:
+    case UPDATE_STUDENT:
       return {
         ...state,
         [action.student.id]: action.student,
