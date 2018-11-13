@@ -136,7 +136,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
   }
 
   private async loginForUserType(email: string, password: string, userType: string) {
-    const { history, dispatch } = this.props
+    const { dispatch, history } = this.props
 
     try {
       switch (userType.toLowerCase()) {

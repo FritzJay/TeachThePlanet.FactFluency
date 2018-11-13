@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import {
-  Redirect,
   Route,
   RouteComponentProps,
   Switch,
   withRouter,
 } from 'react-router-dom'
 import Login from 'src/Apps/Login/Login'
-import { LoadingBar } from 'src/sharedComponents'
+import { LoadingBar, PageNotFound } from 'src/sharedComponents'
 import './App.css'
 import { TeacherHome } from './TeacherHome/TeacherHome'
 import { FactFluency } from './FactFluency/FactFluency'
@@ -19,6 +18,21 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 class App extends React.Component<IProps> {
+  public componentDidMount() {
+    const { history, location } = this.props
+
+    switch (this.props.userType) {
+      case 'teacher':
+        history.push('/teacher')
+      case 'student':
+        history.push('/fact-fluency')
+      default:
+        if (!location.pathname.startsWith('/index')) {
+          history.push('/index')
+        }
+    }
+  }
+
   public render() {
     return (
       <div className="App">
@@ -27,7 +41,7 @@ class App extends React.Component<IProps> {
         <Switch>
           <Route
             path="/index"
-            render={this.renderLogin}
+            component={Login}
           />
 
           <Route
@@ -40,31 +54,19 @@ class App extends React.Component<IProps> {
             component={TeacherHome}
           />
 
-          <Route render={this.renderRedirect} />
+          <Route component={PageNotFound} />
         </Switch>
       </div>
     )
   }
-
-  private renderLogin = (props: any) => {
-    switch (this.props.userType) {
-      case 'Teacher':
-        return <Redirect to="/teacher" />
-      case 'Student':
-        return <Redirect to="/fact-fluency" />
-      default:
-        break
-    }
-
-    return <Login {...props} />
-  }
-
-  private renderRedirect = () => (
-    <Redirect to="/index" />
-  )
 }
 
-const mapStateToProps = ({ user }: any) => ({ userType: user.userType })
+const mapStateToProps = ({ teacher }: any) => {
+  if (teacher !== undefined && Object.keys(teacher).length > 0) {
+    return { userType: 'teacher' }
+  }
+  return { userType: undefined }
+}
 
 const ConnectedApp = connect(mapStateToProps)(App)
 
