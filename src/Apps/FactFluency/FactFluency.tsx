@@ -4,8 +4,6 @@ import { Navbar } from 'src/sharedComponents'
 import { SelectTest, StartTest, TakeTest, TestResults } from './components'
 import './FactFluency.css'
 
-
-
 export const FactFluency = ({ match }: RouteComponentProps) => {
   const renderRedirect = () => <Redirect to={`${match.url}/select-test`} />
 

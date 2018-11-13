@@ -1,26 +1,18 @@
 import * as React from "react"
 import { connect } from 'react-redux'
 import { RouteComponentProps } from "react-router-dom"
-import { themeColors } from "src/utils"
+import { themeColors, IClass } from "src/utils"
 import { setNewTestParameters } from 'src/actions/factFluency'
-import { handleReceiveAvailableTests } from "src/handlers/factFluency"
 import { Loading } from "src/sharedComponents"
 import './SelectTest.css'
 import { TestNumber } from './TestNumber/TestNumber'
 
-interface IAvailableTests {
-  numbers: ITestNumber[]
-}
-
-interface ITestNumber {
-  number: number
-  operators: string[]
-}
-
 interface IProps extends RouteComponentProps<{}>  {
-  availableTests?: IAvailableTests
+  classes?: IClass[]
   dispatch: any
-  token: string
+  activeClass?: IClass
+  availableOperators?: string[]
+  availableNumbers?: number[]
 }
 
 interface IState {
@@ -35,13 +27,6 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   
   public async componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
-
-    try {
-      this.props.dispatch(handleReceiveAvailableTests(this.props.token))
-      this.setState({ error: '' })
-    } catch (error) {
-      this.setState({ error })
-    }
   }
 
   public componentWillUnmount() {
@@ -49,9 +34,9 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const { availableTests } = this.props
+    const { availableNumbers, availableOperators, classes } = this.props
 
-    if (availableTests === undefined || availableTests === null) {
+    if (classes === undefined || availableNumbers === undefined || availableOperators === undefined) {
       return (
         <div className="SelectTest">
           <Loading className="loading" />
@@ -61,16 +46,17 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
 
     return (
       <div className="SelectTest">
-        {availableTests.numbers.map((testNumber, i) => {
+        {availableNumbers.map((num, i) => {
           const color = themeColors[i % themeColors.length]
-          const active = (testNumber.number === this.state.selectedNumber)
+          const active = (num === this.state.selectedNumber)
 
           return (
             <TestNumber
               active={active}
               color={color}
-              key={testNumber.number}
-              num={testNumber}
+              key={num}
+              num={num}
+              operators={availableOperators}
               onClick={this.handleTestNumberClick}
               onSubmit={this.handleSubmit}
             />
@@ -80,11 +66,11 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
     )
   }
 
-  private handleSubmit = (testNumber: ITestNumber, operator: string) => {
+  private handleSubmit = (num: number, operator: string) => {
     const { history, dispatch } = this.props
 
     dispatch(setNewTestParameters({
-      testNumber,
+      num,
       operator,
     }))
 
@@ -102,9 +88,19 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ factFluency, user }: any) => ({
-  availableTests: factFluency.availableTests,
-  token: user.token
-})
+const mapStateToProps = ({ factFluency }: any) => {
+  const { classes, activeClass } = factFluency
+
+  return {
+    classes,
+    activeClass,
+    availableNumbers: classes && classes[activeClass] && classes[activeClass].testParameters
+      ? classes[activeClass].testParameters.numbers
+      : undefined,
+    availableOperators: classes && classes[activeClass] && classes[activeClass].testParameters
+      ? classes[activeClass].testParameters.operators
+      : undefined,
+  }
+}
 
 export const SelectTest = connect(mapStateToProps)(DisconnectedSelectTest)

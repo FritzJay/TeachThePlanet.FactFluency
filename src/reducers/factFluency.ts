@@ -1,8 +1,6 @@
 import {
-  RECEIVE_AVAILABLE_TESTS,
   RECEIVE_TEST,
   RECEIVE_TEST_RESULTS,
-  REMOVE_AVAILABLE_TESTS,
   REMOVE_TEST,
   REMOVE_TEST_PARAMETERS,
   REMOVE_TEST_RESULTS,
@@ -25,18 +23,9 @@ export default function factFluency (state: any = {}, action: any) {
       return {
         ...state,
         ...action.student,
-        classes: formattedClasses
+        classes: formattedClasses,
+        activeClass: Object.keys(formattedClasses)[0]
       }
-
-    case RECEIVE_AVAILABLE_TESTS:
-      return {
-        ...state,
-        availableTests: action.availableTests,
-      }
-
-    case REMOVE_AVAILABLE_TESTS:
-      const { availableTests, ...allExceptAvailableTests } = state
-      return allExceptAvailableTests
 
     case SET_NEW_TEST_PARAMETERS:
       return {

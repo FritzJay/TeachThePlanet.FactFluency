@@ -1,22 +1,5 @@
 import { jsonFetch, handleError, validateResponse } from './request'
 import { ITest, ITestResults } from '../interfaces';
-import { IAvailableTests } from '../tempInterfaces';
-
-export const fetchAvailableTests = async (token: string): Promise<IAvailableTests> => {
-  const functionName = 'fetchAvailableTests'
-  try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/tests/available`, {
-        method: "GET",
-        token,
-      })
-    validateResponse(functionName, response)
-    return response.availableTests
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
 
 export const fetchNewTest = async (token: string, testParameters: { operator: string, number: number }): Promise<ITest> => {
   const functionName = 'fetchNewTest'

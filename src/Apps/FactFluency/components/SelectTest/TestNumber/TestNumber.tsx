@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { themeColors } from 'src/utils'
-import { ITestNumber } from 'src/utils/tempInterfaces'
 import { Button, Card, Operator } from 'src/sharedComponents'
 import './TestNumber.css'
 
 interface IProps {
   active: boolean
   color: string
-  num: ITestNumber
-  onSubmit: (testNumber: ITestNumber, operator: string) => void
+  num: number
+  operators: string[]
+  onSubmit: (num: number, operator: string) => void
   onClick: (selectedNumber: number) => void
 }
 
@@ -23,16 +23,19 @@ export class TestNumber extends React.Component <IProps, IState> {
   }
 
   public render() {
-    const { active, color, num } = this.props
+    const { active, color, num, operators } = this.props
 
     return (
-      <Card onClick={this.activateCard} className={`TestNumber ${active && 'active'} ${this.state.error && 'error'}`}>
+      <Card
+        onClick={this.activateCard}
+        className={`TestNumber ${active && 'active'} ${this.state.error && 'error'}`}
+      >
         <div className="header">
-          <p className={`text ${color}`}>{num.number}</p>
+          <p className={`text ${color}`}>{num}</p>
         </div>
 
         <div className="operators-container">
-          {num.operators.map((operator, i) => {
+          {operators.map((operator, i) => {
             const themeColor = themeColors[i % themeColors.length]
             const selected = (active && this.state.operator === operator)
             return (
@@ -65,7 +68,7 @@ export class TestNumber extends React.Component <IProps, IState> {
   private activateCard = () => {
     const { active, num, onClick } = this.props
 
-    onClick(num.number)
+    onClick(num)
 
     if (!active) {
       this.setState({

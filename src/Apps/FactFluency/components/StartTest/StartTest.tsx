@@ -1,16 +1,19 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { INewTestParameters, ITest } from 'src/utils';
+
 import { removeTest, removeTestResults } from 'src/actions/factFluency';
 import { handleReceiveTest } from 'src/handlers/factFluency';
-
+import { ITest } from 'src/utils'
 import { Button, Card, Loading } from 'src/sharedComponents'
 import './StartTest.css'
 
 interface IProps extends RouteComponentProps<{}> {
   dispatch: any
-  newTestParameters: INewTestParameters
+  newTestParameters: {
+    num: number
+    operator: string
+  }
   test: ITest
   token: string
 }

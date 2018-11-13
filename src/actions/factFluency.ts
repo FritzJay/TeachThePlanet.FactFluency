@@ -1,9 +1,6 @@
 import { ITest, ITestResults } from "src/utils/interfaces";
-import { IAvailableTests, INewTestParameters } from 'src/utils/tempInterfaces'
 
 export const REHYDRATE_FACT_FLUENCY = 'REHYDRATE_FACT_FLUENCY'
-export const RECEIVE_AVAILABLE_TESTS = 'RECEIVE_AVAILABLE_TESTS'
-export const REMOVE_AVAILABLE_TESTS = 'REMOVE_AVAILABLE_TESTS'
 export const SET_NEW_TEST_PARAMETERS = 'SET_TEST_PARAMETERS'
 export const REMOVE_TEST_PARAMETERS = 'REMOVE_TEST_PARAMETERS'
 export const RECEIVE_TEST = 'RECEIVE_TEST'
@@ -19,21 +16,7 @@ export function rehydrateFactFluency (factFluency: any) {
   }
 }
 
-export function receiveAvailableTests (availableTests: IAvailableTests) {
-  return {
-    type: RECEIVE_AVAILABLE_TESTS,
-    availableTests,
-  }
-}
-
-export function removeAvailableTests () {
-  return {
-    type: REMOVE_AVAILABLE_TESTS,
-    availableTests: null,
-  }
-}
-
-export function setNewTestParameters (newTestParameters: INewTestParameters) {
+export function setNewTestParameters (newTestParameters: { num: number, operator: string }) {
   return {
     type: SET_NEW_TEST_PARAMETERS,
     newTestParameters,
