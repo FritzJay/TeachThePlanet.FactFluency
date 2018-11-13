@@ -4,8 +4,8 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './SignupModal.css'
-import { handleSignUpTeacher } from 'src/handlers/teacher';
-import { handleSignUpStudent } from 'src/handlers/student';
+import { handleSignUpTeacher } from 'src/handlers/teacherHome';
+import { handleSignUpStudent } from 'src/handlers/factFluency';
 
 interface IProps extends RouteComponentProps<any> {
   dispatch: any

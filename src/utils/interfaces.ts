@@ -1,8 +1,25 @@
-export interface ITeacher {
+export interface ITeacherUser {
   id: string
   name: string
   classes: IClass[]
   user: IUser
+}
+
+export interface ITeacher {
+  id: string
+  name: string
+}
+
+export interface IStudentUser {
+  id: string
+  name: string
+  classes: IClass[]
+  user: IUser
+}
+
+export interface IStudent {
+  id: string
+  name: string
 }
 
 export interface IUser {
@@ -17,11 +34,6 @@ export interface IClass {
   grade: string
   testParameters: ITestParameters
   students: IStudent[]
-}
-
-export interface IStudent {
-  id: string
-  name: string
 }
 
 export interface ITestParameters {

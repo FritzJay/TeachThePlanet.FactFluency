@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { handleSignInStudent } from 'src/handlers/student'
-import { handleSignInTeacher } from 'src/handlers/teacher';
+import { handleSignInStudent } from 'src/handlers/factFluency'
+import { handleSignInTeacher } from 'src/handlers/teacherHome';
 import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './LoginModal.css'

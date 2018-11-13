@@ -1,15 +1,19 @@
+import { 
+  SIGN_IN_TEACHER,
+} from '../actions/teacherHome'
+
 import {
   ADD_TEACHER,
   UPDATE_TEACHER,
   REMOVE_TEACHER,
-} from '../actions/teacher'
+} from '../actions/teachers'
 
 import {
   ADD_CLASS,
   UPDATE_CLASS,
   REMOVE_CLASS,
 } from '../actions/classes'
-import classes from '../reducers/classes'
+import classes from './classes'
 
 import {
   ADD_STUDENT,
@@ -23,7 +27,7 @@ import { CLEAR_STORE } from '../actions/shared'
 
 import { IClass } from 'src/utils';
 
-export default function teacher (state: any = {}, action: any) {
+export default function teacherHome (state: any = {}, action: any) {
   switch (action.type) {
     case CLEAR_STORE: {
       return {}
@@ -31,6 +35,10 @@ export default function teacher (state: any = {}, action: any) {
 
     case ADD_TEACHER:
     case UPDATE_TEACHER:
+      throw new Error('Not implemented')
+      break
+
+    case SIGN_IN_TEACHER:
       const formattedClasses = action.teacher.classes
         ? action.teacher.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: cls }), {})
         : {}

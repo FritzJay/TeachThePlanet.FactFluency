@@ -268,10 +268,10 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
   private handleCancelClick = () => this.props.history.goBack()
 }
 
-const mapStateToProps = ({ user, teacher }: any, { match }: any) => ({
+const mapStateToProps = ({ user, teacherHome }: any, { match }: any) => ({
   token: user.token,
-  testParameters: teacher.classes
-    ? teacher.classes[match.params.id].testParameters
+  testParameters: teacherHome.classes
+    ? teacherHome.classes[match.params.id].testParameters
     : undefined
 })
 

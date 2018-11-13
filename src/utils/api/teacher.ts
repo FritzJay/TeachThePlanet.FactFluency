@@ -1,7 +1,7 @@
 import { handleError } from './request'
-import { ITeacher } from '../interfaces'
+import { ITeacherUser } from '../interfaces'
 
-export const saveSignUpTeacher = async (email: string, password: string): Promise<ITeacher> => {
+export const saveSignUpTeacher = async (email: string, password: string): Promise<ITeacherUser> => {
   const functionName = 'saveSignUpTeacher'
   const query = `
     mutation createTeacher($email: String!, $password: String!) {
@@ -59,11 +59,11 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
   }
 }
 
-export const saveSignInTeacher = async (email: string, password: string): Promise<ITeacher> => {
+export const saveSignInTeacher = async (email: string, password: string): Promise<ITeacherUser> => {
   const functionName = 'saveSignInTeacher'
   const query = `
-    query getTeacher($email: String!, $password: String!) {
-      getTeacher(email: $email, password: $password) {
+    query signInTeacher($email: String!, $password: String!) {
+      signInTeacher(email: $email, password: $password) {
         id
         name
         classes {
@@ -109,7 +109,7 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
       throw errors[0]
     }
 
-    return data.getTeacher
+    return data.signInTeacher
 
   } catch (error) {
     handleError(functionName, error)

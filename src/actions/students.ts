@@ -1,12 +1,18 @@
 import { IStudent } from '../utils'
 
 export const ADD_STUDENT = 'ADD_STUDENT'
+export const SIGN_IN_STUDENT = 'SIGN_IN_STUDENT'
 export const UPDATE_STUDENT = 'UPDATE_STUDENT'
 export const REMOVE_STUDENT = 'REMOVE_STUDENT'
 
 export const addStudent = (classId: string, student: IStudent) => ({
   type: ADD_STUDENT,
   classId,
+  student,
+})
+
+export const signInStudent = (student: IStudent) => ({
+  type: SIGN_IN_STUDENT,
   student,
 })
 

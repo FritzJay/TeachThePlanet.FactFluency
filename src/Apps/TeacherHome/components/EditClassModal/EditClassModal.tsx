@@ -208,10 +208,10 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 }
 
-const mapStateToProps = ({ user, teacher }: any, { match }: any) => ({
+const mapStateToProps = ({ user, teacherHome }: any, { match }: any) => ({
   token: user.token,
-  selectedClass: teacher.classes
-    ? teacher.classes[match.params.id]
+  selectedClass: teacherHome.classes
+    ? teacherHome.classes[match.params.id]
     : undefined
 })
 

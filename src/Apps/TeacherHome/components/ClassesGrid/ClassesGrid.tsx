@@ -72,6 +72,6 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ teacher }: any) => ({ classes: teacher.classes })
+const mapStateToProps = ({ teacherHome }: any) => ({ classes: teacherHome.classes })
 
 export const ClassesGrid = connect(mapStateToProps)(DisconnectedClassesGrid)

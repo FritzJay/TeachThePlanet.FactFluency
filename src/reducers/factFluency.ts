@@ -2,7 +2,6 @@ import {
   RECEIVE_AVAILABLE_TESTS,
   RECEIVE_TEST,
   RECEIVE_TEST_RESULTS,
-  REHYDRATE_FACT_FLUENCY,
   REMOVE_AVAILABLE_TESTS,
   REMOVE_TEST,
   REMOVE_TEST_PARAMETERS,
@@ -10,17 +9,24 @@ import {
   SET_NEW_TEST_PARAMETERS,
   UPDATE_TEST,
 } from '../actions/factFluency'
+import { SIGN_IN_STUDENT } from 'src/actions/students'
 import { CLEAR_STORE } from '../actions/shared'
+import { IClass } from 'src/utils'
 
 export default function factFluency (state: any = {}, action: any) {
   switch (action.type) {
     case CLEAR_STORE:
       return {}
 
-    case REHYDRATE_FACT_FLUENCY:
+    case SIGN_IN_STUDENT:
+      console.log(state, action)
+      const formattedClasses = action.student.classes
+        ? action.student.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: cls }), {})
+        : {}
       return {
         ...state,
-        ...action.factFluency,
+        ...action.student,
+        classes: formattedClasses
       }
 
     case RECEIVE_AVAILABLE_TESTS:

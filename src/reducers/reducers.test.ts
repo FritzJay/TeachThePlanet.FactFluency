@@ -2,7 +2,7 @@ import { testingReducers } from '.'
 
 const originalState = {
   factFluency: { },
-  teacher: {
+  teacherHome: {
     id:'5be11b4de8b8632cd8cd769b',
     name:'teacher2@email.com',
     classes: {
@@ -59,7 +59,7 @@ test('reducers', () => {
       id: '5bea15803b2e252594ca7cb1'
     }
     const state = testingReducers(originalState, action)
-    const classesState = state.teacher.classes
+    const classesState = state.teacherHome.classes
     const expected = {
       '5be5920b08aa510b0cb651d4': {
         id:'5be5920b08aa510b0cb651d4',
@@ -89,7 +89,7 @@ test('reducers', () => {
       id: '5bea15803b2e252594ca7cb1'
     }
     const state = testingReducers(originalState, action)
-    const classesState = state.teacher.classes
+    const classesState = state.teacherHome.classes
     const expected = {
       '5be5920b08aa510b0cb651d4': {
         id:'5be5920b08aa510b0cb651d4',

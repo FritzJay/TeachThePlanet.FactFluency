@@ -4,14 +4,14 @@ import {
   saveSignUpTeacher,
 } from '../utils/api'
 import { addUser } from '../actions/user'
-import { addTeacher } from '../actions/teacher'
+import { signInTeacher } from 'src/actions/teacherHome'
 
 export const handleSignUpTeacher = (email: string, password: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
     const teacher = await saveSignUpTeacher(email, password)
     dispatch(addUser(teacher.user))
-    dispatch(addTeacher(teacher))
+    dispatch(signInTeacher(teacher))
     dispatch(hideLoading())
   }
 }
@@ -21,7 +21,7 @@ export const handleSignInTeacher = (email: string, password: string) => {
     dispatch(showLoading())
     const teacher = await saveSignInTeacher(email, password)
     dispatch(addUser(teacher.user))
-    dispatch(addTeacher(teacher))
+    dispatch(signInTeacher(teacher))
     dispatch(hideLoading())
   }
 }

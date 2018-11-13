@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { setCached, getCached } from 'src/utils'
-import { addTeacher } from 'src/actions/teacher'
+import { addTeacher } from 'src/actions/teachers'
 import { addUser } from 'src/actions/user';
 
 interface IProps {

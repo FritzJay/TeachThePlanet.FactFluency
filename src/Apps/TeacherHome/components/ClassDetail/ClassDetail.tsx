@@ -66,9 +66,9 @@ class DisconnectedClassDetail extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ teacher }: any, { match }: any) => ({
-  selectedClass: teacher.classes
-    ? teacher.classes[match.params.id]
+const mapStateToProps = ({ teacherHome }: any, { match }: any) => ({
+  selectedClass: teacherHome.classes
+    ? teacherHome.classes[match.params.id]
     : undefined
 })
 

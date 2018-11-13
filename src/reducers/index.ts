@@ -1,18 +1,18 @@
 import { loadingBarReducer } from 'react-redux-loading'
 import { combineReducers } from 'redux'
-import teacher from './teacher'
+import teacherHome from './teacherHome'
 import user from './user'
 import factFluency from './factFluency';
 
 export default combineReducers({
   factFluency,
-  teacher,
+  teacherHome,
   user,
   loadingBar: loadingBarReducer,
 })
 
 export const testingReducers = combineReducers({
   factFluency,
-  teacher,
+  teacherHome,
   user
 })
