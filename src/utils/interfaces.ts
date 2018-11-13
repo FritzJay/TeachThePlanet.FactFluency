@@ -1,4 +1,3 @@
-/* API Get Interfaces */
 export interface ITeacher {
   id: string
   name: string
@@ -47,11 +46,13 @@ export interface INewStudentParameters {
   name: string
 }
 
-export interface INewTeacherParameters {
-  grade: string
-  name: string
+export interface IUpdateTestParameters {
+  duration: number
+  operators: string[]
+  numbers: number[]
+  questions: number
+  randomQuestions: number
 }
-
 
 /* Fact Fluency Interfaces */
 

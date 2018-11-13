@@ -253,8 +253,8 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       duration,
       numbers,
       operators,
-      questions,
-      randomQuestions,
+      questions: parseInt(questions.toString(), 10),
+      randomQuestions: parseInt(randomQuestions.toString(), 10),
     }
 
     dispatch(handleUpdateTestParameters(token, match.params.id, updates))

@@ -7,12 +7,13 @@ import {
 } from '../actions/testParameters'
 import { ITestParameters } from '../utils/interfaces'
 
-export const handleUpdateTestParameters = (token: string, classId: string, updates: ITestParameters) => {
+export const handleUpdateTestParameters = (token: string, classID: string, updates: ITestParameters) => {
   return async (dispatch: any) => {
     dispatch(showLoading)
     try {
-      const updatedTestParameters = await saveUpdateTestParameters(token, updates)
-      dispatch(updateTestParameters(classId, updatedTestParameters))
+      const { id, ...remainingUpdates } = updates
+      const updatedTestParameters = await saveUpdateTestParameters(token, id, remainingUpdates)
+      dispatch(updateTestParameters(classID, updatedTestParameters))
     } catch (error) {
       alert('There was an error saving your changes. Please try again later.')
     } finally {
