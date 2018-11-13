@@ -1,11 +1,11 @@
 import {
-  RECEIVE_TEST,
-  RECEIVE_TEST_RESULTS,
-  REMOVE_TEST,
-  REMOVE_NEW_TEST_PARAMETERS,
-  REMOVE_TEST_RESULTS,
   SET_NEW_TEST_PARAMETERS,
+  REMOVE_NEW_TEST_PARAMETERS,
+  RECEIVE_TEST,
+  REMOVE_TEST,
+  REMOVE_TEST_RESULTS,
   UPDATE_TEST,
+  RECEIVE_TEST_RESULTS,
 } from '../actions/factFluency'
 import { SIGN_IN_STUDENT } from 'src/actions/students'
 import { CLEAR_STORE } from '../actions/shared'
