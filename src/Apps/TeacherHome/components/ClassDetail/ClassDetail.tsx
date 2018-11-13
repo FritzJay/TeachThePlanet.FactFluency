@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { IClass } from 'src/utils';
-import { Card } from 'src/sharedComponents'
+import { Card, Loading } from 'src/sharedComponents'
 import './ClassDetail.css'
 
 interface IProps extends RouteComponentProps<{}> {
@@ -11,7 +11,15 @@ interface IProps extends RouteComponentProps<{}> {
 
 class DisconnectedClassDetail extends React.Component<IProps> {
   public render() {
-    const { match } = this.props 
+    const { match, selectedClass } = this.props
+
+    if (selectedClass === undefined) {
+      return (
+        <div className="ClassDetail">
+          <Loading className="loading" />
+        </div>
+      )
+    }
 
     return (
       <div className="ClassDetail">
@@ -59,7 +67,9 @@ class DisconnectedClassDetail extends React.Component<IProps> {
 }
 
 const mapStateToProps = ({ teacher }: any, { match }: any) => ({
-  selectedClass: teacher.classes[match.params.id]
+  selectedClass: teacher.classes
+    ? teacher.classes[match.params.id]
+    : undefined
 })
 
 export const ClassDetail = connect(mapStateToProps)(DisconnectedClassDetail)

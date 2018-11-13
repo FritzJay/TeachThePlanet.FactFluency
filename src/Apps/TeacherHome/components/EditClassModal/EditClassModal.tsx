@@ -40,7 +40,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 
   public render() {
-    const { selectedClass } = this.props
+    const { selectedClass, token } = this.props
     const { deleteText, error, loading, name, grade } = this.state
 
     if (error !== '') {
@@ -52,7 +52,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
       )
     }
 
-    if (loading) {
+    if (token === undefined || selectedClass === undefined || loading) {
       return (
         <Modal
           overlay={true}
@@ -181,7 +181,6 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
     this.setState({ loading: true }, () => {
       try {
-        console.log("UPDATING CLASS: ", id, grade, name)
         dispatch(handleUpdateClass(token, id, { grade, name }))
         history.goBack()
 
@@ -211,7 +210,9 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
 const mapStateToProps = ({ user, teacher }: any, { match }: any) => ({
   token: user.token,
-  selectedClass: teacher.classes[match.params.id]
+  selectedClass: teacher.classes
+    ? teacher.classes[match.params.id]
+    : undefined
 })
 
 export const EditClassModal = connect(mapStateToProps)(DisconnectedEditClassModal)

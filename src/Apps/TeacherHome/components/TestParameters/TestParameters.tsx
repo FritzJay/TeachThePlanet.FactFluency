@@ -43,6 +43,10 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
   public async componentDidMount() {
     const { testParameters } = this.props
 
+    if (testParameters === undefined) {
+      return
+    }
+
     const { id, duration, operators, numbers, questions, randomQuestions } = testParameters
     
     const minute = Math.floor(duration / 60.0)
@@ -258,7 +262,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
     }
 
     dispatch(handleUpdateTestParameters(token, match.params.id, updates))
-    history.push('/teacher/detail')
+    history.goBack()
   }
   
   private handleCancelClick = () => this.props.history.goBack()
@@ -266,7 +270,9 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
 
 const mapStateToProps = ({ user, teacher }: any, { match }: any) => ({
   token: user.token,
-  testParameters: teacher.classes[match.params.id].testParameters,
+  testParameters: teacher.classes
+    ? teacher.classes[match.params.id].testParameters
+    : undefined
 })
 
 export const TestParameters = connect(mapStateToProps)(DisconnectedTestParameters)

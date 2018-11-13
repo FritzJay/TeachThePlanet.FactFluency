@@ -28,7 +28,7 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
   public render() {
     const { error, loading, name, grade } = this.state
 
-    if (loading) {
+    if (this.props.token === undefined || loading) {
       return (
         <Modal
           overlay={true}

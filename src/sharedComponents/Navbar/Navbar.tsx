@@ -131,9 +131,9 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
   }
 
   private handleLogout = async () => {
+    this.props.history.push('/index')
     this.props.dispatch(clearStore())
     await clearCached()
-    this.props.history.push('/index')
   }
 }
 
