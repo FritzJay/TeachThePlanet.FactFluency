@@ -1,8 +1,8 @@
 import { ITest, ITestResults } from "src/utils/interfaces";
 
 export const REHYDRATE_FACT_FLUENCY = 'REHYDRATE_FACT_FLUENCY'
-export const SET_NEW_TEST_PARAMETERS = 'SET_TEST_PARAMETERS'
-export const REMOVE_TEST_PARAMETERS = 'REMOVE_TEST_PARAMETERS'
+export const SET_NEW_TEST_PARAMETERS = 'SET_NEW_TEST_PARAMETERS'
+export const REMOVE_NEW_TEST_PARAMETERS = 'REMOVE_NEW_TEST_PARAMETERS'
 export const RECEIVE_TEST = 'RECEIVE_TEST'
 export const REMOVE_TEST = 'REMOVE_TEST'
 export const RECEIVE_TEST_RESULTS = 'RECEIVE_TEST_RESULTS'
@@ -25,7 +25,7 @@ export function setNewTestParameters (newTestParameters: { num: number, operator
 
 export function removeTestParameters () {
   return {
-    type: REMOVE_TEST_PARAMETERS,
+    type: REMOVE_NEW_TEST_PARAMETERS,
     testParameters: null,
   }
 }

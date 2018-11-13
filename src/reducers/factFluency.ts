@@ -2,7 +2,7 @@ import {
   RECEIVE_TEST,
   RECEIVE_TEST_RESULTS,
   REMOVE_TEST,
-  REMOVE_TEST_PARAMETERS,
+  REMOVE_NEW_TEST_PARAMETERS,
   REMOVE_TEST_RESULTS,
   SET_NEW_TEST_PARAMETERS,
   UPDATE_TEST,
@@ -33,7 +33,7 @@ export default function factFluency (state: any = {}, action: any) {
         newTestParameters: action.newTestParameters
       }
 
-    case REMOVE_TEST_PARAMETERS:
+    case REMOVE_NEW_TEST_PARAMETERS:
       const { testParameters, ...allExceptTestParameters } = state
       return allExceptTestParameters
 
