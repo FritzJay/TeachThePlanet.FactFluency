@@ -4,8 +4,8 @@ import { IStudentUser } from '../interfaces'
 export const saveSignUpStudent = async (email: string, password: string): Promise<IStudentUser> => {
   const functionName = 'saveSignUpStudent'
   const query = `
-    mutation createStudent($email: String!, $password: String!) {
-      createStudent(email: $email, password: $password) {
+    mutation signUpStudent($email: String!, $password: String!) {
+      signUpStudent(email: $email, password: $password) {
         id
         name
         classes {
@@ -51,7 +51,7 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
       throw errors[0]
     }
 
-    return data.createStudent
+    return data.signUpStudent
 
   } catch (error) {
     handleError(functionName, error)

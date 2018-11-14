@@ -1,17 +1,5 @@
 import { showLoading, hideLoading } from 'react-redux-loading'
-import { IStudent, INewStudentParameters } from '../utils/interfaces'
-
-export const handleAddStudent = (token: string, classId: string, student: INewStudentParameters) => {
-  return async (dispatch: any) => {
-    dispatch(showLoading())
-    /*
-    const newStudent = await saveAddStudent(token, classId, student)
-    dispatch(addStudent(classId, newStudent))
-    */
-    throw new Error('Not implemented')
-    dispatch(hideLoading())
-  }
-}
+import { IStudent } from '../utils/interfaces'
 
 export const handleUpdateStudent = (token: string, classId: string, updates: IStudent) => {
   return async (dispatch: any) => {
