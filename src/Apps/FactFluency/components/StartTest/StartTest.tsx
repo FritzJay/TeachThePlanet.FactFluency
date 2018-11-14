@@ -11,6 +11,7 @@ import './StartTest.css'
 interface IProps extends RouteComponentProps<{}> {
   dispatch: any
   newTestParameters: {
+    classID: string
     num: number
     operator: string
   }
@@ -29,6 +30,10 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
 
   public async componentDidMount() {
     const { dispatch, newTestParameters, token } = this.props
+
+    if (newTestParameters === undefined || token === undefined) {
+      return
+    }
 
     try {
       await dispatch(handleReceiveTest(token, newTestParameters))

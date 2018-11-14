@@ -10,7 +10,7 @@ import { TestNumber } from './TestNumber/TestNumber'
 interface IProps extends RouteComponentProps<{}>  {
   classes?: IClass[]
   dispatch: any
-  activeClass?: IClass
+  activeClass: string
   availableOperators?: string[]
   availableNumbers?: number[]
 }
@@ -67,9 +67,10 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
 
   private handleSubmit = (num: number, operator: string) => {
-    const { history, dispatch } = this.props
+    const { activeClass, history, dispatch } = this.props
 
     dispatch(setNewTestParameters({
+      classID: activeClass,
       num,
       operator,
     }))

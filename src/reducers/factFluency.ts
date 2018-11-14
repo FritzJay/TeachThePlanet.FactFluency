@@ -38,6 +38,7 @@ export default function factFluency (state: any = {}, action: any) {
       return allExceptTestParameters
 
     case RECEIVE_TEST:
+      console.log(state, action)
       return {
         ...state,
         test: action.test

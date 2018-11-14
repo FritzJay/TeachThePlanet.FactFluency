@@ -1,4 +1,5 @@
-import { ITest, ITestResults } from "src/utils/interfaces";
+import { ITest, ITestResults } from "src/utils/interfaces"
+import { INewTestParameters } from "src/utils/api"
 
 export const REHYDRATE_FACT_FLUENCY = 'REHYDRATE_FACT_FLUENCY'
 export const SET_NEW_TEST_PARAMETERS = 'SET_NEW_TEST_PARAMETERS'
@@ -16,7 +17,7 @@ export function rehydrateFactFluency (factFluency: any) {
   }
 }
 
-export function setNewTestParameters (newTestParameters: { num: number, operator: string }) {
+export function setNewTestParameters (newTestParameters: INewTestParameters) {
   return {
     type: SET_NEW_TEST_PARAMETERS,
     newTestParameters,

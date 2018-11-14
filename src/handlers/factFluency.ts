@@ -1,9 +1,10 @@
 import { hideLoading, showLoading } from "react-redux-loading"
 import {
-  fetchNewTest,
   fetchTestResults,
   saveSignUpStudent,
-  saveSignInStudent
+  saveSignInStudent,
+  saveNewTest,
+  INewTestParameters
 } from "src/utils/api"
 import { 
   receiveTest,
@@ -34,21 +35,17 @@ export const handleSignInStudent = (email: string, password: string) => {
   }
 }
 
-export function handleReceiveTest (token: string, newTestParameters: { num: number, operator: string }, cb?: any) {
+export function handleReceiveTest (token: string, { classID, num, operator }: INewTestParameters) {
   return async (dispatch: any) => {
     dispatch(showLoading())
-
-    const test = await fetchNewTest(token, {
-      number: newTestParameters.num,
-      operator: newTestParameters.operator,
+    const test = await saveNewTest(token, {
+      classID,
+      num,
+      operator
     })
+    console.log('Test from handleReceiveTest', test)
     dispatch(receiveTest(test))
-
     dispatch(hideLoading())
-
-    if (cb !== undefined) {
-      cb()
-    }
   }
 }
 
