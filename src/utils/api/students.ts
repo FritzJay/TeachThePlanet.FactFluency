@@ -55,38 +55,17 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
       })
     })
     const { data, errors } = await response.json()
-
+    const { courses, ...rest } = data.createStudent
+    
     if (errors !== undefined) {
       throw errors[0]
     }
-
-    return data.createStudent
-
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-
-export const saveSignInStudent = async (email: string, password: string): Promise<string> => {
-  const functionName = 'saveSignInStudent'
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({ email, password })
-    })
-    const { error, token } = await response.json()
-
-    if (error !== undefined) {
-      throw error
+    
+    return {
+      ...rest,
+      classes: courses
     }
-
-    return token
-
+    
   } catch (error) {
     handleError(functionName, error)
     throw error
@@ -143,12 +122,41 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
       })
     })
     const { data, errors } = await response.json()
+    const { courses, ...rest } = data.student
 
     if (errors !== undefined) {
       throw errors[0]
     }
 
-    return data.student
+    return {
+      ...rest,
+      classes: courses
+    }
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}
+
+export const saveSignInStudent = async (email: string, password: string): Promise<string> => {
+  const functionName = 'saveSignInStudent'
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    const { error, token } = await response.json()
+
+    if (error !== undefined) {
+      throw error
+    }
+
+    return token
 
   } catch (error) {
     handleError(functionName, error)

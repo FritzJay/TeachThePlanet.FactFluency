@@ -30,8 +30,6 @@ export default function classes (state: any = {}, action: any) {
       }
 
     case UPDATE_CLASS:
-      console.log(state)
-      console.log(action)
       return {
         ...state,
         [action.class.id]: {

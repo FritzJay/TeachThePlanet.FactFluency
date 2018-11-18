@@ -109,12 +109,24 @@ export const saveAddClass = async (token: string, grade: string, name: string): 
 export const saveUpdateClass = async (token: string, classID: string, updates: INewClassParameters): Promise<IClass> => {
   const functionName = 'saveUpdateClass'
   const query = `
-    mutation changeClass($token: String!, $updates: ClassInput!) {
-      changeClass(token: $token, updates: $updates) {
-        id,
-        name,
-        code,
+  mutation updateCourse($id: ObjID!, $input: UpdateCourseInput!) {
+    updateCourse(id: $id, input: $input) {
+        id
+        code
         grade
+        name
+        testParameters {
+          id
+          duration
+          numbers
+          operators
+          questions
+          randomQuestions
+        }
+        students {
+          id
+          name
+        }
       }
     }
   `
@@ -124,10 +136,15 @@ export const saveUpdateClass = async (token: string, classID: string, updates: I
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token
       },
       body: JSON.stringify({
         query,
-        variables: { token, updates: { id: classID, ...updates }}
+        variables: { 
+          id: classID,
+          input: { ...updates }
+        },
+        operationName: 'updateCourse',
       })
     })
     const { data, errors } = await response.json()
@@ -136,7 +153,7 @@ export const saveUpdateClass = async (token: string, classID: string, updates: I
       throw errors[0]
     }
 
-    return data.changeClass
+    return data.updateCourse
 
   } catch (error) {
     handleError(functionName, error)
@@ -147,8 +164,8 @@ export const saveUpdateClass = async (token: string, classID: string, updates: I
 export const saveRemoveClass = async (token: string, classID: string) => {
   const functionName = 'saveRemoveClass'
   const query = `
-    mutation removeClass($token: String!, $id: String!) {
-      removeClass(token: $token, id: $id)
+    mutation removeCourse($id: ObjID!) {
+      removeCourse(id: $id)
   }
   `
   try {
@@ -157,6 +174,7 @@ export const saveRemoveClass = async (token: string, classID: string) => {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
       },
       body: JSON.stringify({
         query,
