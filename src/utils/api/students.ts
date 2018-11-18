@@ -4,185 +4,154 @@ import { IStudentUser } from '../interfaces'
 export const saveSignUpStudent = async (email: string, password: string): Promise<IStudentUser> => {
   const functionName = 'saveSignUpStudent'
   const query = `
-    mutation signUpStudent($email: String!, $password: String!) {
-      signUpStudent(email: $email, password: $password) {
-        id
-        name
-        classes {
-          id
-          code
-          grade
-          name
-          testParameters {
-            id
-            duration
-            numbers
-            operators
-            questions
-            randomQuestions
-          }
-          students {
-            id
-            name
-          }
-        }
-        user {
-          email
-          token
-        }
-      }
-    }
-  `
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        query,
-        variables: { email, password }
-      })
-    })
-    const { data, errors } = await response.json()
-
-    if (errors !== undefined) {
-      throw errors[0]
-    }
-
-    return data.signUpStudent
-
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-
-export const saveSignInStudent = async (email: string, password: string): Promise<IStudentUser> => {
-  const functionName = 'saveSignInStudent'
-  const query = `
-    query signInStudent($email: String!, $password: String!) {
-      signInStudent(email: $email, password: $password) {
-        id
-        name
-        classes {
-          id
-          code
-          grade
-          name
-          testParameters {
-            id
-            duration
-            numbers
-            operators
-            questions
-            randomQuestions
-          }
-          students {
-            id
-            name
-          }
-        }
-        user {
-          email
-          token
-        }
-      }
-    }
-  `
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        query,
-        variables: { email, password }
-      })
-    })
-    const { data, errors } = await response.json()
-
-    if (errors !== undefined) {
-      throw errors[0]
-    }
-
-    return data.signInStudent
-
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-
-
-
-/*
-export const saveAddStudent = async (token: string, classId: string, student: INewStudentParameters): Promise<IStudent> => {
-  const functionName = 'saveAddStudent'
-  try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/students/`,
-      {
-        body: {
-          classId,
-          student,
-        },
-        method: 'PUT',
-        token,
-      }
-    )
-    validateResponse(functionName, response)
-    return response.student
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-
-export const saveUpdateStudent = async (token: string, { id, ...updates }: IStudent): Promise<IStudent> => {
-  const functionName = 'saveUpdateStudent'
-  try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/students/`,
-      {
-        body: {
+    mutation createStudent($input: CreateStudentInput!) {
+      createStudent(input: $input) {
+        id,
+        name,
+        courses {
           id,
-          updates,
+          code,
+          grade,
+          name,
+          students {
+            id
+          }
         },
-        method: 'PATCH',
-        token,
+        tests {
+          id,
+          duration,
+          start,
+          end,
+          questions {
+            question,
+            studentAnswer,
+            correctAnswer,
+            start,
+            end,
+          }
+        },
+        user {
+          email,
+          role
+        }
       }
-    )
-    validateResponse(functionName, response)
-    return response.student
+    }
+  `
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: {
+          input: {
+            user: { email, password },
+          },
+        },
+        operationName: 'createStudent',
+      })
+    })
+    const { data, errors } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.createStudent
+
   } catch (error) {
     handleError(functionName, error)
     throw error
   }
 }
 
-export const saveRemoveStudent = async (token: string, classId: string, studentId: string): Promise<IStudent> => {
-  const functionName = 'saveUpdateStudent'
+export const saveSignInStudent = async (email: string, password: string): Promise<string> => {
+  const functionName = 'saveSignInStudent'
   try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/students/`,
-      {
-        body: {
-          classId,
-          studentId,
-        },
-        method: 'DELETE',
-        token,
-      }
-    )
-    validateResponse(functionName, response)
-    return response.student
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    const { error, token } = await response.json()
+
+    if (error !== undefined) {
+      throw error
+    }
+
+    return token
+
   } catch (error) {
     handleError(functionName, error)
     throw error
   }
 }
-*/
+
+export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
+  const functionName = 'saveGetStudent'
+  const query = `
+    query student($id: ObjID) {
+      student(id: $id) {
+        id,
+        name,
+        courses {
+          id,
+          code,
+          grade,
+          name,
+          students {
+            id
+          }
+        },
+        tests {
+          id,
+          duration,
+          start,
+          end,
+          questions {
+            question,
+            studentAnswer,
+            correctAnswer,
+            start,
+            end,
+          }
+        },
+        user {
+          email,
+          role
+        }
+      }
+    }
+  `
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'jwt ' + token
+      },
+      body: JSON.stringify({
+        query,
+        operationName: 'student',
+      })
+    })
+    const { data, errors } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.student
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}

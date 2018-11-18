@@ -1,4 +1,4 @@
-import { jsonFetch, handleError, validateResponse } from './request'
+import { handleError } from './request'
 import { ITest, ITestResults } from '../interfaces';
 
 export interface INewTestParameters {
@@ -52,17 +52,51 @@ export const saveNewTest = async (token: string, { classID, num, operator }: INe
   }
 }
 
-export const fetchTestResults = async (token: string, test: ITest): Promise<ITestResults> => {
-  const functionName = 'fetchNewTest'
+export const saveTestResults = async (token: string, test: ITest): Promise<ITestResults> => {
+  const functionName = 'saveTestResults'
+  const query = `
+    mutation gradeTest($token: String!, $test: TestInput!) {
+      gradeTest(token: $token, test: $test) {
+        total
+        needed
+        correct
+        incorrect {
+          question
+          studentAnswer
+          correctAnswer
+          start
+          end
+        }
+        quickest {
+          question
+          studentAnswer
+          correctAnswer
+          start
+          end
+        }
+      }
+    }
+  `
   try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/tests/grade`, {
-        body: test,
-        method: "POST",
-        token,
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: { token, test }
       })
-    validateResponse(functionName, response)
-    return response.testResults
+    })
+    const { data, errors } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.gradeTest
+
   } catch (error) {
     handleError(functionName, error)
     throw error
