@@ -13,6 +13,14 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
           code,
           grade,
           name,
+          testParameters {
+            id,
+            duration,
+            numbers,
+            operators,
+            questions,
+            randomQuestions
+          }
         },
         user {
           email,
@@ -68,6 +76,14 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
           code,
           grade,
           name,
+          testParameters {
+            id,
+            duration,
+            numbers,
+            operators,
+            questions,
+            randomQuestions
+          }
         },
         user {
           email,
@@ -116,7 +132,7 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, role: 'teacher' })
     })
     const { error, token } = await response.json()
 

@@ -148,7 +148,7 @@ export const saveSignInStudent = async (email: string, password: string): Promis
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, role: 'student' })
     })
     const { error, token } = await response.json()
 
