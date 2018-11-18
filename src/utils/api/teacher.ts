@@ -39,12 +39,16 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
       })
     })
     const { data, errors } = await response.json()
+    const { courses, ...rest } = data
 
     if (errors !== undefined) {
       throw errors[0]
     }
 
-    return data.createTeacher
+    return {
+      ...rest,
+      classes: courses,
+    }
 
   } catch (error) {
     handleError(functionName, error)
@@ -111,12 +115,16 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
       })
     })
     const { data, errors } = await response.json()
+    const { courses, ...rest } = data
 
     if (errors !== undefined) {
       throw errors[0]
     }
 
-    return data.teacher
+    return {
+      ...rest,
+      classes: courses,
+    }
 
   } catch (error) {
     handleError(functionName, error)

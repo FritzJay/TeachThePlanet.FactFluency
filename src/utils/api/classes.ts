@@ -55,8 +55,8 @@ export const fetchClass = async (token: string, classID: string): Promise<IClass
 export const saveAddClass = async (token: string, grade: string, name: string): Promise<IClass> => {
   const functionName = 'saveAddClass'
   const query = `
-    mutation addClass($token: String!, $grade: String!, $name: String!) {
-      addClass(token: $token, grade: $grade, name: $name) {
+    mutation createCourse($input: CreateCourseInput!) {
+      createCourse(input: $input) {
         id
         code
         grade
@@ -82,10 +82,14 @@ export const saveAddClass = async (token: string, grade: string, name: string): 
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
       },
       body: JSON.stringify({
         query,
-        variables: { token, grade, name }
+        variables: {
+          input: { grade, name }
+        },
+        operationName: 'createCourse',
       })
     })
     const { data, errors } = await response.json()
@@ -94,7 +98,7 @@ export const saveAddClass = async (token: string, grade: string, name: string): 
       throw errors[0]
     }
 
-    return data.addClass
+    return data.createCourse
 
   } catch (error) {
     handleError(functionName, error)
