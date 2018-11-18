@@ -61,12 +61,11 @@ class App extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ teacherHome }: any) => {
-  if (teacherHome !== undefined && Object.keys(teacherHome).length > 0) {
-    return { userType: 'teacher' }
-  }
-  return { userType: undefined }
-}
+const mapStateToProps = ({ user }: any) => ({
+  userType: user
+    ? user.role
+    : undefined
+})
 
 const ConnectedApp = connect(mapStateToProps)(App)
 

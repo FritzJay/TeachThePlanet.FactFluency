@@ -39,42 +39,17 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
       })
     })
     const { data, errors } = await response.json()
-    const { courses, ...rest } = data
-
+    const { courses, ...rest } = data.createTeacher
+    
     if (errors !== undefined) {
       throw errors[0]
     }
-
+    
     return {
       ...rest,
-      classes: courses,
+      classes: courses
     }
-
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-
-export const saveSignInTeacher = async (email: string, password: string): Promise<string> => {
-  const functionName = 'saveSignInTeacher'
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({ email, password })
-    })
-    const { error, token } = await response.json()
-
-    if (error !== undefined) {
-      throw error
-    }
-
-    return token
-
+    
   } catch (error) {
     handleError(functionName, error)
     throw error
@@ -115,7 +90,7 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
       })
     })
     const { data, errors } = await response.json()
-    const { courses, ...rest } = data
+    const { courses, ...rest } = data.teacher
 
     if (errors !== undefined) {
       throw errors[0]
@@ -123,8 +98,33 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
 
     return {
       ...rest,
-      classes: courses,
+      classes: courses
     }
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}
+
+export const saveSignInTeacher = async (email: string, password: string): Promise<string> => {
+  const functionName = 'saveSignInTeacher'
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    const { error, token } = await response.json()
+
+    if (error !== undefined) {
+      throw error
+    }
+
+    return token
 
   } catch (error) {
     handleError(functionName, error)
