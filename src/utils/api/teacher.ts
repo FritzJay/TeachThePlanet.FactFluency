@@ -4,31 +4,19 @@ import { ITeacherUser } from '../interfaces'
 export const saveSignUpTeacher = async (email: string, password: string): Promise<ITeacherUser> => {
   const functionName = 'saveSignUpTeacher'
   const query = `
-    mutation createTeacher($email: String!, $password: String!) {
-      createTeacher(email: $email, password: $password) {
-        id
-        name
-        classes {
-          id
-          code
-          grade
-          name
-          testParameters {
-            id
-            duration
-            numbers
-            operators
-            questions
-            randomQuestions
-          }
-          students {
-            id
-            name
-          }
-        }
+    mutation createTeacher($input: CreateTeacherInput!) {
+      createTeacher(input: $input) {
+        id,
+        name,
+        courses {
+          id,
+          code,
+          grade,
+          name,
+        },
         user {
-          email
-          token
+          email,
+          role
         }
       }
     }
@@ -42,7 +30,12 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
       },
       body: JSON.stringify({
         query,
-        variables: { email, password }
+        variables: {
+          input: {
+            user: { email, password },
+          },
+        },
+        operationName: 'createTeacher',
       })
     })
     const { data, errors } = await response.json()
@@ -59,34 +52,47 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
   }
 }
 
-export const saveSignInTeacher = async (email: string, password: string): Promise<ITeacherUser> => {
+export const saveSignInTeacher = async (email: string, password: string): Promise<string> => {
   const functionName = 'saveSignInTeacher'
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    const { error, token } = await response.json()
+
+    if (error !== undefined) {
+      throw error
+    }
+
+    return token
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}
+
+export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
+  const functionName = 'saveGetTeacher'
   const query = `
-    query signInTeacher($email: String!, $password: String!) {
-      signInTeacher(email: $email, password: $password) {
-        id
-        name
-        classes {
-          id
-          code
-          grade
-          name
-          testParameters {
-            id
-            duration
-            numbers
-            operators
-            questions
-            randomQuestions
-          }
-          students {
-            id
-            name
-          }
-        }
+    query teacher($id: ObjID) {
+      teacher(id: $id) {
+        id,
+        name,
+        courses {
+          id,
+          code,
+          grade,
+          name,
+        },
         user {
-          email
-          token
+          email,
+          role
         }
       }
     }
@@ -97,10 +103,11 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token
       },
       body: JSON.stringify({
         query,
-        variables: { email, password }
+        operationName: 'teacher',
       })
     })
     const { data, errors } = await response.json()
@@ -109,53 +116,10 @@ export const saveSignInTeacher = async (email: string, password: string): Promis
       throw errors[0]
     }
 
-    return data.signInTeacher
+    return data.teacher
 
   } catch (error) {
     handleError(functionName, error)
     throw error
   }
 }
-
-/*
-export const saveUpdateTeacher = async (token: string, { id, ...updates }: ITeacher): Promise<ITeacher> => {
-  const functionName = 'saveUpdateTeacher'
-  try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/teachers/`,
-      {
-        body: {
-          id,
-          updates,
-        },
-        method: 'PATCH',
-        token,
-      }
-    )
-    validateResponse(functionName, response)
-    return response.teacher
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-
-export const saveRemoveTeacher = async (token: string, teacherId: string): Promise<ITeacher> => {
-  const functionName = 'saveUpdateTeacher'
-  try {
-    const response = await jsonFetch(
-      `${process.env.REACT_APP_API_URL}/teachers/`,
-      {
-        body: { teacherId },
-        method: 'DELETE',
-        token,
-      }
-    )
-    validateResponse(functionName, response)
-    return response.teacher
-  } catch (error) {
-    handleError(functionName, error)
-    throw error
-  }
-}
-*/
