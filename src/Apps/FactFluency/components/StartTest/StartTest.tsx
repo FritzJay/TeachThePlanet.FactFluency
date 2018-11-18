@@ -97,7 +97,7 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
 
   private handleCancel = () => {
     this.props.dispatch(removeTest())
-    this.props.history.push('/fact-fluency/')
+    this.props.history.push('/fact-fluency')
   }
 }
 

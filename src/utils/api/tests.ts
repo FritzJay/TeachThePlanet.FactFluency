@@ -17,6 +17,7 @@ export const saveNewTest = async (token: string, studentID: string, { classID, n
         start,
         end,
         questions {
+          id,
           question,
           studentAnswer,
           correctAnswer,
@@ -64,24 +65,27 @@ export const saveNewTest = async (token: string, studentID: string, { classID, n
 export const saveTestResults = async (token: string, test: ITest): Promise<ITestResults> => {
   const functionName = 'saveTestResults'
   const query = `
-    mutation gradeTest($token: String!, $test: TestInput!) {
-      gradeTest(token: $token, test: $test) {
-        total
-        needed
-        correct
-        incorrect {
-          question
-          studentAnswer
-          correctAnswer
-          start
-          end
-        }
-        quickest {
-          question
-          studentAnswer
-          correctAnswer
-          start
-          end
+    mutation gradeTest($id: ObjID!, $input: GradeTestInput!) {
+      gradeTest(id: $id, input: $input) {
+        id,
+        testResults {
+          total,
+          needed,
+          correct,
+          incorrect {
+            question,
+            studentAnswer,
+            correctAnswer,
+            start,
+            end
+          },
+          quickest {
+            question,
+            studentAnswer,
+            correctAnswer,
+            start,
+            end
+          },
         }
       }
     }
@@ -92,10 +96,19 @@ export const saveTestResults = async (token: string, test: ITest): Promise<ITest
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
       },
       body: JSON.stringify({
         query,
-        variables: { token, test }
+        variables: {
+          id: test.id,
+          input: {
+            start: test.start,
+            end: test.end,
+            questions: test.questions.map(({ id, studentAnswer, start, end }) => ({ id, studentAnswer, start, end })),
+          },
+        },
+        operationName: 'gradeTest',
       })
     })
     const { data, errors } = await response.json()
@@ -104,7 +117,7 @@ export const saveTestResults = async (token: string, test: ITest): Promise<ITest
       throw errors[0]
     }
 
-    return data.gradeTest
+    return data.gradeTest.testResults
 
   } catch (error) {
     handleError(functionName, error)

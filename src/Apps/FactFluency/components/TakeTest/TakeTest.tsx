@@ -34,7 +34,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props)
 
-    this.props.test.start = new Date()
+    this.props.test.start = new Date().getTime()
     initializeQuestions(this.props.test.questions)
     const questions = randomizeQuestions(this.props.test.questions)
     const question = startQuestion(questions[0])
@@ -158,7 +158,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     const answer = parseInt(this.state.answer, 10)
     question.studentAnswer = answer
     question.start = this.state.question.start
-    question.end = new Date()
+    question.end = new Date().getTime()
     this.setState({
       answer: '',
       questions
@@ -169,7 +169,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     const questions = sortQuestions(this.state.questions)
     const test = this.props.test
     test.questions = questions
-    test.end = new Date()
+    test.end = new Date().getTime()
 
     await this.props.dispatch(updateTest(test))
     this.props.history.push('/fact-fluency/test-results')

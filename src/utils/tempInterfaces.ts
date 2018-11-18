@@ -1,6 +1,6 @@
 export interface IDisplayQuestion {
   bottom: string
   operator: string
-  start?: Date
+  start?: number
   top: string
 }

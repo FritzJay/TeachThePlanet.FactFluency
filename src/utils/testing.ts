@@ -25,7 +25,7 @@ export const sortQuestions = (questions: IQuestion[]): IQuestion[] => {
 
 export const startQuestion = (question: IQuestion): IDisplayQuestion => {
   const flippedQuestion = randomlyFlipQuestion(question);
-  flippedQuestion.start = new Date();
+  flippedQuestion.start = new Date().getTime();
   return flippedQuestion;
 }
 

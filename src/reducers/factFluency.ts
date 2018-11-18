@@ -33,36 +33,40 @@ export default function factFluency (state: any = {}, action: any) {
         newTestParameters: action.newTestParameters
       }
 
-    case REMOVE_NEW_TEST_PARAMETERS:
-      const { testParameters, ...allExceptTestParameters } = state
-      return allExceptTestParameters
+    case REMOVE_NEW_TEST_PARAMETERS: {
+      const { testParameters, ...rest } = state
+      return rest
+    }
 
     case RECEIVE_TEST:
-      console.log(state, action)
       return {
         ...state,
         test: action.test
       }
 
-    case REMOVE_TEST:
-      const { test, ...allExceptTest } = state
-      return allExceptTest
+    case REMOVE_TEST: {
+      const { test, ...rest } = state
+      return rest
+    }
 
-    case UPDATE_TEST:
-      const { testTwo, ...allExceptTestTwo } = state
+    case UPDATE_TEST: {
+      const { testTwo, ...rest } = state
       return {
-        ...allExceptTestTwo,
+        ...rest,
         test: action.test
       }
+    }
 
     case RECEIVE_TEST_RESULTS:
       return {
         ...state,
         testResults: action.testResults
       }
-    case REMOVE_TEST_RESULTS:
-      const { testResults, ...allExceptTestResults } = state
-      return allExceptTestResults
+
+    case REMOVE_TEST_RESULTS: {
+      const { testResults, ...rest } = state
+      return rest
+    }
 
     default:
       return state

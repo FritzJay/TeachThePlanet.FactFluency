@@ -38,7 +38,7 @@ export function receiveTest (test: ITest) {
   }
 }
 
-export function updateTest (test: ITest) {
+export function updateTest (test: any) {
   return {
     type: UPDATE_TEST,
     test,

@@ -69,10 +69,20 @@ export interface IUpdateTestParameters {
 /* Fact Fluency Interfaces */
 
 export interface ITest {
+  id: string
   duration?: number
-  start?: Date
-  end?: Date
+  start?: number
+  end?: number
   questions: IQuestion[]
+}
+
+export interface IQuestion {
+  id: string
+  question: string
+  studentAnswer?: number
+  correctAnswer?: number
+  start?: number
+  end?: number
 }
 
 export interface ITestResults {
@@ -81,12 +91,4 @@ export interface ITestResults {
   correct: number
   incorrect: IQuestion
   quickest: IQuestion
-}
-
-export interface IQuestion {
-  question: string
-  studentAnswer?: number
-  correctAnswer?: number
-  start?: Date
-  end?: Date
 }
