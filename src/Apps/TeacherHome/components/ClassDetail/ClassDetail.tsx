@@ -107,7 +107,7 @@ const StudentCard = ({ student }: IStudentCardProps) => {
     <Card className="StudentCard">
       <h3 className="name">{name}</h3>
       <button className="settings">
-        <i className="material-icons">settings</i>
+        <i className="material-icons">delete</i>
       </button>
       {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
     </Card>
