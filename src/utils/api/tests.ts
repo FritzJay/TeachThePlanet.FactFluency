@@ -7,11 +7,11 @@ export interface INewTestParameters {
   operator: string
 }
 
-export const saveNewTest = async (token: string, { classID, num, operator }: INewTestParameters): Promise<ITest> => {
+export const saveNewTest = async (token: string, studentID: string, { classID, num, operator }: INewTestParameters): Promise<ITest> => {
   const functionName = 'saveNewTest'
   const query = `
-    mutation newTest($token: String!, $classID: String!, $number: Int!, $operator: String!) {
-      newTest(token: $token, classID: $classID, number: $number, operator: $operator) {
+    mutation createTest($input:CreateTestInput!) {
+      createTest(input: $input) {
         id,
         duration,
         start,
@@ -32,10 +32,19 @@ export const saveNewTest = async (token: string, { classID, num, operator }: INe
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
       },
       body: JSON.stringify({
         query,
-        variables: { token, classID, number: num, operator }
+        variables: { 
+          input: {
+            courseId: classID,
+            studentId: studentID,
+            number: num,
+            operator,
+          }
+        },
+        operationName: 'createTest',
       })
     })
     const { data, errors } = await response.json()
@@ -44,7 +53,7 @@ export const saveNewTest = async (token: string, { classID, num, operator }: INe
       throw errors[0]
     }
 
-    return data.newTest
+    return data.createTest
 
   } catch (error) {
     handleError(functionName, error)
