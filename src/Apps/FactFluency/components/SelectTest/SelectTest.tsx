@@ -97,7 +97,7 @@ const mapStateToProps = ({ factFluency }: any) => {
     classes,
     activeClass,
     availableNumbers: hasTestParameters
-      ? classes[activeClass].testParameters.numbers
+      ? classes[activeClass].testParameters.numbers.sort((a: number, b: number) => a - b)
       : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     availableOperators: hasTestParameters
       ? classes[activeClass].testParameters.operators
