@@ -15,6 +15,14 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
           name,
           students {
             id
+          },
+          testParameters {
+            id,
+            duration,
+            numbers,
+            operators,
+            questions,
+            randomQuestions
           }
         },
         tests {
@@ -86,6 +94,14 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
           name,
           students {
             id
+          },
+          testParameters {
+            id,
+            duration,
+            numbers,
+            operators,
+            questions,
+            randomQuestions
           }
         },
         tests {
