@@ -119,7 +119,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
           <form className="form">
 
             <h3 className="operators-header">Operators</h3>
-            <p className="operators-text">Select as many as you wish</p>
+            <p className="operators-text">Select available operators for students</p>
             <div className="operators">
               {['+', '-', '*', '/'].map((symbol, i) => {
                 const color = themeColors[i % themeColors.length]
@@ -138,7 +138,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
             </div>
             
             <h3 className="numbers-header">Multiples Available</h3>
-            <p className="numbers-text">Select as many as you wish</p>
+            <p className="numbers-text">Select available numbers for students</p>
             <div className="numbers">
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => {
                 return (

@@ -106,8 +106,9 @@ const StudentCard = ({ student }: IStudentCardProps) => {
   return (
     <Card className="StudentCard">
       <h3 className="name">{name}</h3>
-      <button className="settings"><i className="material-icons">settings</i></button>
-  
+      <button className="settings">
+        <i className="material-icons">settings</i>
+      </button>
       {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
     </Card>
   )
@@ -177,7 +178,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
 
         <div className="students">
           {selectedClass.students
-            ? selectedClass.students.map((student) => (<StudentCard key={student.id} student={student} />))
+            ? selectedClass.students.map((student) => <StudentCard key={student.id} student={student} />)
             : <StudentCard />
           }
         </div>
