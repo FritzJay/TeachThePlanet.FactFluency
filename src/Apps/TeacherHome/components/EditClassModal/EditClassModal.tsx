@@ -116,12 +116,12 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
                     {deleteText}
                   </Button>
 
-                  <Button
+                  <button
                     className="gray cancel"
                     onClick={this.handleCancelClick}
                   >
                     Cancel
-                  </Button>
+                  </button>
 
                   <Button
                     className="green save-changes"

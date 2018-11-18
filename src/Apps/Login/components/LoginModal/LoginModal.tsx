@@ -105,7 +105,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
 
         <ModalContent className="bottom-content">
           <Button
-            className="green practice-button"
+            className="yellow practice-button"
             onClick={this.handlePracticeClick}
           >
             Practice Without an Account
