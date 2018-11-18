@@ -20,6 +20,7 @@ export interface IStudentUser {
 export interface IStudent {
   id: string
   name: string
+  tests?: ITest[]
 }
 
 export interface IUser {
@@ -74,6 +75,9 @@ export interface ITest {
   start?: number
   end?: number
   questions: IQuestion[]
+  testResults?: ITestResults
+  number: number
+  operator: string
 }
 
 export interface IQuestion {

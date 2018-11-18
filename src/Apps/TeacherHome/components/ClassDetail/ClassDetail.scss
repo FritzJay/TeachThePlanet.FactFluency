@@ -5,152 +5,195 @@
     padding-top: 115px;
 
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto;
+    grid-row-gap: 1em;
+    grid-template-areas:
+        'link     link     link     link    link'
+        'buttons  buttons  buttons  buttons  buttons'
+        'buttons  buttons  buttons  buttons  buttons'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students'
+        'students students students students students';
     align-content: flex-start;
 
-    .header-row {
-        grid-column: 1 / -1;
-        grid-row: 1 / 1;
-
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-
-        margin-bottom: 1em;
-
-        h1 {
-            grid-column: 1 / -1;
-            grid-row: 1 / 1;
-        }
-
-        .classrooms {
-            color: $gray;
-        }
-
-        .material-icons.big {
-            font-size: 1em;
-            font-weight: 700;
-
-            vertical-align: sub;
-
-        }
-
-        .btn-row {
-            grid-column: 1 / -1;
-            grid-row: 2 / 2;
-
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-            grid-gap: 1em;
-
-            .detail-btn {
-                background-color: $white;
-                color: $gray;
-
-                border: 3px solid $gray;
-
-                padding: 1em .5em;
-                font-size: 1em;
-                font-weight: 600;
-                border-radius: 12px;
-
-                text-align: center;
-
-                &:hover {
-                    background-color: $blue;
-                    color: $white;
-                    border-color: $blue;
-                }
-            }
-
-        }
+    .link {
+        grid-area: link;
     }
 
-    .student-report {
-        grid-column: 1 / -1;
-        grid-row: 2 / 2;
+    .buttons {
+        grid-area: buttons;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: flex-start;
 
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        .detail-btn {
+            margin-right: 1em;
 
-        padding: 1em;
+            background-color: $white;
+            color: $gray;
 
-        .header-row {
+            border: 3px solid $gray;
+
+            padding: 1em .5em;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 12px;
+
+            text-align: center;
+
+            &:hover {
+                background-color: $blue;
+                color: $white;
+                border-color: $blue;
+            }
+        }
+    }
+    
+    .students {
+        grid-area: students;
+
+        .StudentCard {
+            max-width: 684px;
+
             grid-column: 1 / -1;
-            grid-row: 1 / 1;
-
+            grid-row: 2 / 2;
+    
+            padding: 1em;
             display: grid;
-            grid-template-columns: 1fr auto;
-
-            .student-name {
-                grid-column: 1 / 1;
-
+            grid-gap: 1em;
+            grid-template-areas:
+                'name           name           name           settings       settings       settings'
+                'addition       addition       addition       addition       addition       addition'
+                'subtraction    subtraction    subtraction    subtraction    subtraction    subtraction'
+                'multiplication multiplication multiplication multiplication multiplication multiplication'
+                'division       division       division       division       division       division';
+    
+    
+            .name {
+                grid-area: name;
                 margin: 0;
             }
 
-            .student-settings {
-                grid-column: 2 / 2;
+            .settings {
+                grid-area: settings;
+                justify-self: flex-end;
 
                 border: none;
                 background-color: transparent;
                 
                 margin: 0;
-            }
-        }
 
-        .operator-row.plus {
-            grid-column: 1 / -1;
-            grid-row: 2 / 2;
-            
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
-            grid-template-rows: 1fr;
-
-            grid-column-gap: .5em;
-
-            border-bottom: 1px solid rgba($color: #000000, $alpha: .25);
-            padding-bottom: .5em;
-
-            .operator {
-                grid-column: 1 / 1;
-                grid-row: 1 / 1;
-
-                margin: 0;
-
-                background-color: $red;
-                color: $white;
-                border: none;
-                font-size: 24px;
-                font-weight: 500;
-
-                width: 36px;
-                height: 36px;
-
-                border-radius: 12px;
-
-                outline: none;
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
-            .number {
-                grid-column: 2 / 2;
-                grid-row: 1 / 1;
+            .OperatorRow {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
 
-                margin: 0;
+                border-bottom: 1px solid rgba($color: #000000, $alpha: .25);
+                padding-bottom: .5em;
 
-                background-color: $gray;
-                color: $white;
-                border: none;
-                font-size: 24px;
-                font-weight: 500;
+                &.addition {
+                    grid-area: addition;
+                }
 
-                width: 36px;
-                height: 36px;
+                &.subtraction {
+                    grid-area: subtraction;
+                }
 
-                border-radius: 50%;
+                &.multiplication {
+                    grid-area: multiplication;
+                }
 
-                outline: none;
+                &.division {
+                    grid-area: division;
+                }
+                
+                .operator {
+                    margin: 0 1em 0 0;
+
+                    color: $white;
+                    border: none;
+                    font-size: 24px;
+                    font-weight: 500;
+    
+                    width: 36px;
+                    height: 36px;
+    
+                    border-radius: 12px;
+    
+                    outline: none;
+
+                    &.red {
+                        background-color: $red;
+                    }
+
+                    &.blue {
+                        background-color: $blue;
+                    }
+
+                    &.green {
+                        background-color: $green;
+                    }
+
+                    &.yellow {
+                        background-color: $yellow;
+                    }
+                }
+    
+                .number {
+                    margin: 0 0.5em 0.5em 0;
+
+                    display: flex;
+                    align-content: center;
+                    justify-content: center;
+    
+                    border: none;
+                    font-size: 24px;
+                    font-weight: 500;
+    
+                    width: 36px;
+                    height: 36px;
+    
+                    border-radius: 50%;
+    
+                    outline: none;
+
+                    &.not-taken {
+                        background-color: $gray;
+                        color: $white;
+                    }
+
+                    &.in-progress {
+                        background-color: $light-red;
+                        color: $white;
+                    }
+
+                    &.passed-once {
+                        background-color: $light-yellow;
+                        color: $white;
+                    }
+
+                    &.passed-twice {
+                        background-color: $light-green;
+                        color: $white;
+                    }
+
+                    &.passed {
+                        background-color: $green;
+                        color: $white;
+                    }
+                }
             }
         }
     }
