@@ -115,7 +115,7 @@ const StudentCard = ({ student }: IStudentCardProps) => {
 }
 
 
-interface IProps extends RouteComponentProps<{}> {
+interface IProps extends RouteComponentProps<{ id: string }> {
   selectedClass: IClass
 }
 
@@ -146,7 +146,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         <div className="buttons">
           <Link
             className="detail-btn"
-            to={`${match.url}/parent-invitations`}
+            to={`/teacher/parent-invitations/${match.params.id}`}
           >
             Parent Invites
           </Link>
