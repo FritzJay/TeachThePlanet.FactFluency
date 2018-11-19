@@ -12,16 +12,16 @@ const CONFIRM_DELETE_TEXT = 'Confirm'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   dispatch: any
-  selectedClass: IClass
-  token: string
+  selectedClass?: IClass
+  token?: string
 }
 
 interface IState {
   deleteText: string
   error: string
   loading: boolean
-  name: string
-  grade: string
+  name?: string
+  grade?: string
 }
 
 export class DisconnectedEditClassModal extends React.Component<IProps, IState> {
@@ -29,8 +29,12 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
     deleteText: DEFAULT_DELETE_TEXT,
     error: '',
     loading: false,
-    grade: this.props.selectedClass.grade,
-    name: this.props.selectedClass.name,
+    grade: this.props.selectedClass
+      ? this.props.selectedClass.grade
+      : undefined,
+    name: this.props.selectedClass
+      ? this.props.selectedClass.name
+      : undefined,
   }
 
   private deleteConfirmationTimeout: any
@@ -42,15 +46,6 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   public render() {
     const { selectedClass, token } = this.props
     const { deleteText, error, loading, name, grade } = this.state
-
-    if (error !== '') {
-      return (
-        <div className="EditClassModal">
-          <h1 className="error">{error}</h1>
-          <h2 className="error">Please Try Again Later</h2>
-        </div>
-      )
-    }
 
     if (token === undefined || selectedClass === undefined || loading) {
       return (
@@ -149,6 +144,10 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   private handleDeleteClick = () => {
     const { dispatch, token, history, selectedClass } = this.props
 
+    if (token === undefined || selectedClass === undefined) {
+      return
+    }
+
     if (this.state.deleteText !== CONFIRM_DELETE_TEXT) {
       this.setState({ deleteText: CONFIRM_DELETE_TEXT })
       
@@ -176,18 +175,21 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
   private handleSaveChangesClick = async () => {
     const { dispatch, token, history, selectedClass } = this.props
-    const { id } = selectedClass
     const { grade, name } = this.state
+    if (token === undefined || selectedClass === undefined || grade === undefined || name === undefined) {
+      return
+    }
+    const { id } = selectedClass
 
-    this.setState({ loading: true }, () => {
+    this.setState({ loading: true }, async () => {
       try {
-        dispatch(handleUpdateClass(token, id, { grade, name }))
+        await dispatch(handleUpdateClass(token, id, { grade, name }))
         history.goBack()
 
       } catch (error) {
         console.warn(error)
         this.setState({
-          error: 'An unexpected error ocurred. Please try again later',
+          error: error.message,
           loading: false,
         })
       }

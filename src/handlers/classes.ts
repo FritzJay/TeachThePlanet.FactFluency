@@ -14,9 +14,12 @@ import { INewClassParameters } from '../utils'
 export const handleAddClass = (token: string, { grade, name }: INewClassParameters) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
-    const newClass = await saveAddClass(token, grade, name)
-    dispatch(addClass(newClass))
-    dispatch(hideLoading())
+    try {
+      const newClass = await saveAddClass(token, grade, name)
+      dispatch(addClass(newClass))
+    } finally {
+      dispatch(hideLoading())
+    }
   }
 }
 
@@ -29,8 +32,6 @@ export const handleUpdateClass = (token: string, classId: string, updates: INewC
         ...updatedClass,
         ...updates
       }))
-    } catch (error) {
-      alert('There was an error saving your changes. Please try again later.')
     } finally {
       dispatch(hideLoading())
     }
