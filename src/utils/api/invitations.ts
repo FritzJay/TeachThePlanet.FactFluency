@@ -3,16 +3,10 @@ import { handleError } from "./request"
 export const saveCreateInvitation = async (token: string, classId: string, email: string): Promise<void> => {
   const functionName = 'saveCreateInvitation'
   const query = `
-    mutation createClassInvitation($input: CreateClassInvitationInput!) {
-      createClassInvitation(input: $input) {
+    mutation createCourseInvitation($input: CreateCourseInvitationInput!) {
+      createCourseInvitation(input: $input) {
         id,
-        course {
-          id,
-          code,
-          grade,
-          name
-        },
-        student {
+        invitations {
           id,
           name
         }
@@ -31,11 +25,11 @@ export const saveCreateInvitation = async (token: string, classId: string, email
         query,
         variables: {
           input: {
-            classId,
+            courseId: classId,
             email,
           },
         },
-        operationName: 'createClassInvitation',
+        operationName: 'createCourseInvitation',
       })
     })
     const { data, errors } = await response.json()
@@ -44,7 +38,7 @@ export const saveCreateInvitation = async (token: string, classId: string, email
       throw errors[0].message
     }
     
-    return data.createClassInvitations
+    return data.createCourseInvitation
     
   } catch (error) {
     handleError(functionName, error)
