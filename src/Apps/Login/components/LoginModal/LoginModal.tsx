@@ -116,7 +116,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
     )
   }
   
-  private handlePracticeClick = async () =>  this.loginRequest('empty@email.com', 'password', 'Student')
+  private handlePracticeClick = async () => this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, 'password', 'Student')
 
   private handleLoginClick = async () => {
     const { email, password, userType } = this.props
@@ -129,10 +129,14 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
     await this.loginRequest(email, password, userType)
   }
 
-  private loginRequest = async (email: string, password: string, userType: string) => {
-    this.setState({ loading: true }, async () => {
-      await this.loginForUserType(email, password, userType)
-    })
+  private loginRequest = async (email?: string, password?: string, userType?: string) => {
+    if (email !== undefined && password !== undefined && userType !== undefined) {
+      this.setState({ loading: true }, async () => {
+        await this.loginForUserType(email, password, userType)
+      })
+    } else {
+      throw new Error('There was an error logging in with the default student. You probably need to setup a REACT_APP_DEFAULT_STUDENT_LOGIN environment variable')
+    }
   }
 
   private async loginForUserType(email: string, password: string, userType: string) {
