@@ -78,6 +78,11 @@
         display: grid;
         grid-auto-flow: row;
         grid-row-gap: 2em;
+        justify-content: center;
+
+        .new-student-card {
+            width: 757px;
+        }
 
         .StudentCard {
             width: 725px;
@@ -95,7 +100,6 @@
                 'subtraction    subtraction    subtraction    subtraction    subtraction    subtraction'
                 'multiplication multiplication multiplication multiplication multiplication multiplication'
                 'division       division       division       division       division       division';
-    
     
             .name {
                 grid-area: name;

@@ -207,7 +207,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
             ? selectedClass.students.map((student) => <StudentCard key={student.id} student={student} />)
             : (
               <Link to={`${match.url}/add-students`}>
-                <NewCard text="Add your first student!" />
+                <NewCard className="new-student-card" text="Add your first student!" />
               </Link>
             )
           }
