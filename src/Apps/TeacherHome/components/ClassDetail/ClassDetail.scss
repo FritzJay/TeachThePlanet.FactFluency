@@ -195,6 +195,10 @@
                         color: $white;
                     }
                 }
+
+                &:last-child {
+                    border-bottom: none;
+                }
             }
         }
     }
