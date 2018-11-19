@@ -52,7 +52,6 @@ export function handleReceiveTest (token: string, studentID: string, { classID, 
       num,
       operator
     })
-    console.log('Test from handleReceiveTest', test)
     dispatch(receiveTest(test))
     dispatch(hideLoading())
   }

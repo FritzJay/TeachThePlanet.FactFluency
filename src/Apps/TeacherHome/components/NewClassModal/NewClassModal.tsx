@@ -112,15 +112,15 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
       return
     }
 
-    this.setState({ loading: true }, () => {
+    this.setState({ loading: true }, async () => {
       try {
-        dispatch(handleAddClass(token, { grade, name }))
+        await dispatch(handleAddClass(token, { grade, name }))
         history.push('/teacher')
   
       } catch (error) {
         console.warn(error)
         this.setState({
-          error: 'An unexpected error ocurred. Please try again later',
+          error: error.message,
           loading: false,
         })
       }

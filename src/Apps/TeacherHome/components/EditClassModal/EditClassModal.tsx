@@ -185,7 +185,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
         history.goBack()
 
       } catch (error) {
-        console.log(error)
+        console.warn(error)
         this.setState({
           error: 'An unexpected error ocurred. Please try again later',
           loading: false,
