@@ -5,12 +5,37 @@
 
   table {
     border-collapse: collapse;
+    border-spacing: 5px;
 
     td, th {
       border: 1px solid $gray;
       text-align: center;
-      padding: 0.5em;
+      padding: 3px;
     }
   }
 
+  .print-button {
+    margin: 1em auto;
+  }
+}
+
+@media print {
+  html, body { 
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  .Navbar {
+    display: none;
+  }
+
+  .ParentInvite {
+    margin-top: -115px;
+
+    .print-button {
+      display: none;
+    }
+  }
 }
