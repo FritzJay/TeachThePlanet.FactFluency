@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { handleSignInStudent } from 'src/handlers/factFluency'
 import { handleSignInTeacher } from 'src/handlers/teacherHome';
 import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
@@ -86,13 +86,12 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
         <ModalContent className="sign-log">
           <div className="button-row">
 
-            <Link to='/index/signup'>
-              <Button
-                className="login-modal-button gray"
-              >
-                Sign up
-              </Button>
-            </Link>
+            <Button
+              className="login-modal-button gray"
+              onClick={this.redirectToSignup}
+            >
+              Sign up
+            </Button>
 
             <Button
               className="login-modal-button gray"
@@ -105,7 +104,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
 
         <ModalContent className="bottom-content">
           <Button
-            className="yellow practice-button"
+            className="green practice-button"
             onClick={this.handlePracticeClick}
           >
             Practice Without an Account
@@ -162,6 +161,10 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
         loading: false,
       })
     }
+  }
+
+  private redirectToSignup = () => {
+    this.props.history.push('/index/signup')
   }
 }
 
