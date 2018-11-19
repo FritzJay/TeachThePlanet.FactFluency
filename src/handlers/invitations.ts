@@ -10,8 +10,6 @@ export const handleCreateInvitation = (token: string, classId: string, email: st
     try {
       await saveCreateInvitation(token, classId, email)
       dispatch(addInvitation(classId, email))
-    } catch (error) {
-      alert('There was an error saving your changes. Please try again later.')
     } finally {
       dispatch(hideLoading())
     }

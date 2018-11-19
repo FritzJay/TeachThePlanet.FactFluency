@@ -25,6 +25,7 @@ export const saveCreateInvitation = async (token: string, classId: string, email
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
       },
       body: JSON.stringify({
         query,
@@ -40,7 +41,7 @@ export const saveCreateInvitation = async (token: string, classId: string, email
     const { data, errors } = await response.json()
     
     if (errors !== undefined) {
-      throw errors[0]
+      throw errors[0].message
     }
     
     return data.createClassInvitations

@@ -8,7 +8,7 @@ import './SelectStudentModal.css'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   token: string
-  classId: string
+  dispatch: any
 }
 
 interface IState {
@@ -88,13 +88,18 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
       return
     }
 
+    const { dispatch, token, match } = this.props
+
     this.setState({ loading: true }, async () => {
       try {
-        await handleCreateInvitation(this.props.token, this.props.classId, this.state.student)
+        await dispatch(handleCreateInvitation(token, match.params.id, this.state.student))
         this.setState({ loading: false })
       } catch (error) {
         console.warn(error)
-        this.setState({ error: error.toString() })
+        this.setState({
+          loading: false,
+          error: error.toString(),
+        })
       }
     })
   }
@@ -110,10 +115,6 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
 }
   
 
-const MapStateToProps = ({ teacherHome }: any, { match }: any) => ({
-  classCode: teacherHome.classes
-    ? teacherHome.classes[match.params.id].code
-    : undefined
-})
+const MapStateToProps = ({ user }: any, { match }: any) => ({ token: user.token })
 
 export const ConnectedSelectStudentsModal = connect(MapStateToProps)(SelectStudentsModal)
