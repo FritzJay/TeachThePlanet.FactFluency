@@ -9,6 +9,7 @@ import {
   TestParameters,
   ParentInvite,
   AddStudentModal,
+  ConnectedSelectStudentsModal,
 } from './components'
 import './TeacherHome.css'
 
@@ -59,8 +60,14 @@ export class TeacherHome extends React.Component<IProps> {
         />
 
         <Route
+          exact={true}
           path={`${match.path}/class-detail/:id/add-students`}
           component={AddStudentModal}
+        />
+
+        <Route
+          path={`${match.url}/class-detail/:id/add-students/existing`}
+          component={ConnectedSelectStudentsModal}
         />
 
         <Route

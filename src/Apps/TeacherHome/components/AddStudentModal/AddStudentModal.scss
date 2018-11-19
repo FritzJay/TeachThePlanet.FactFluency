@@ -1,15 +1,68 @@
 @import 'src/Stylesheets/all';
 
-.add-student-modal-start {
+.AddStudentModal {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
+
+    .header {
+        background-color: $blue;
+        color: $white;
+    }
+
+    .account-card {
+        padding: 0 1em;
+        margin: 0.5em 0;
+
+        &:hover {
+            border: 2px solid rgba($color: $blue, $alpha: 1.0);
+            cursor: pointer;
+        }
+
+        &.selected {
+            border: 4px solid rgba($color: $blue, $alpha: 1.0);
+        }
+    }
+
+    .class-code {
+        .material-icons {
+            margin-left: 0.5em;
+            transform: translateY(5px);
+        }
+
+        &:hover {
+            color: $blue;
+            cursor: pointer;
+        }
+
+        &:active {
+            transform: translateY(2px);
+        }
+    }
+
+    .btn-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        justify-items: center;
+        align-items: stretch;
+
+        margin: 1em;
+
+        .cancel-button {
+            border: none;
+
+            &:hover {
+                color: $red;
+                background: transparent;
+            }
+        }
+    }
 }
 
-.add-students {
-    background-color: $blue;
-    color: $white;
-}
+
+
 
 .current-account {
     padding: 0 1em;
