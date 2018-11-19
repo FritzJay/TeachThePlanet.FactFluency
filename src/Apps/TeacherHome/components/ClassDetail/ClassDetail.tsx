@@ -1,23 +1,30 @@
 import * as React from 'react'
+/* tslint:disable:jsx-no-lambda */
+
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { IClass, IStudent, getOperatorSymbol, ITest, ICourseInvitation } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
 import './ClassDetail.css'
+import { handleRemoveInvitation } from 'src/handlers/invitations';
 
 interface IInvitationCardProps {
   invitation: ICourseInvitation
+  onDelete: (id: string) => void
 }
 
-const InvitationCard = ({ invitation }: IInvitationCardProps) => (
-  <Card className="InvitationCard">
-    <h3>{invitation.student.name}</h3>
-    <h4>Sent On: {new Date(invitation.createdAt).getUTCDate()}</h4>
-    <button className="delete">
-      <i className="material-icons">delete</i>
-    </button>
-  </Card>
-)
+const InvitationCard = ({ invitation, onDelete }: IInvitationCardProps) => {
+  const date = new Date(invitation.createdAt)
+  return (
+    <Card className="InvitationCard">
+      <h3>{invitation.student.name}</h3>
+      <h4>Sent On: {date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
+      <button onClick={() => onDelete(invitation.id)} className="delete">
+        <i className="material-icons">delete</i>
+      </button>
+    </Card>
+  )
+}
 
 
 interface IStudentNumberProps {
@@ -132,6 +139,8 @@ const StudentCard = ({ student }: IStudentCardProps) => {
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   selectedClass: IClass
+  dispatch: any
+  token: string
 }
 
 class DisconnectedClassDetail extends React.Component<IProps> {
@@ -207,9 +216,14 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         <div className="invitations">
           <h2>Pending Invitations</h2>
 
-          {selectedClass.courseInvitations && selectedClass.courseInvitations.length > 0
-            ? selectedClass.courseInvitations.map((invitation: ICourseInvitation) => <InvitationCard key={invitation.id} invitation={invitation} />)
-            : null
+          {selectedClass.courseInvitations
+            ? Object.keys(selectedClass.courseInvitations).map((id: string) => (
+              <InvitationCard
+                key={id}
+                invitation={selectedClass.courseInvitations[id]}
+                onDelete={this.handleInvitationDelete}
+              />
+            )) : null
           }
 
           <Link to={`${match.url}/add-students/existing`}>
@@ -219,12 +233,22 @@ class DisconnectedClassDetail extends React.Component<IProps> {
       </div>
     )
   }
+
+  private handleInvitationDelete = (id: string) => {
+    const { dispatch, token, selectedClass } = this.props
+    try {
+      dispatch(handleRemoveInvitation(token, selectedClass.id, id))
+    } catch (error) {
+      alert(error.message())
+    }
+  }
 }
 
-const mapStateToProps = ({ teacherHome }: any, { match }: any) => ({
+const mapStateToProps = ({ teacherHome, user }: any, { match }: any) => ({
   selectedClass: teacherHome.classes
     ? teacherHome.classes[match.params.id]
-    : undefined
+    : undefined,
+  token: user.token,
 })
 
 export const ClassDetail = connect(mapStateToProps)(DisconnectedClassDetail)

@@ -17,12 +17,12 @@ export const handleCreateInvitation = (token: string, classId: string, email: st
   }
 }
 
-export const handleRemoveInvitation = (token: string, id: string) => {
+export const handleRemoveInvitation = (token: string, classId: string, id: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
     try {
       await saveRemoveInvitation(token, id)
-      dispatch(removeInvitation(id))
+      dispatch(removeInvitation(classId, id))
     } finally {
       dispatch(hideLoading())
     }

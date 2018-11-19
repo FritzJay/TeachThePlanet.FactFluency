@@ -7,6 +7,7 @@ export const saveCreateInvitation = async (token: string, classId: string, email
     mutation createCourseInvitation($input: CreateCourseInvitationInput!) {
       createCourseInvitation(input: $input) {
         id
+        createdAt
         course {
           id
           name

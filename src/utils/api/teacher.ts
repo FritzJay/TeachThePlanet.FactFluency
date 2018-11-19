@@ -39,6 +39,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
           }
           courseInvitations {
             id
+            createdAt
             student {
               id
               name
@@ -134,6 +135,7 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
           }
           courseInvitations {
             id
+            createdAt
             student {
               id
               name

@@ -9,7 +9,8 @@ export const addInvitation = (classId: string, invitation: ICourseInvitation) =>
   classId,
 })
 
-export const removeInvitation = (id: string) => ({
+export const removeInvitation = (classId: string, id: string) => ({
   type: REMOVE_INVITATION,
-  id
+  classId,
+  id,
 })

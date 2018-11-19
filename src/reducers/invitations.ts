@@ -13,10 +13,9 @@ export default function invitations (state: any = {}, action: any) {
     }
 
     case REMOVE_INVITATION: {
-      return {
-        ...state,
-        [action.id]: undefined
-      }
+      const newState = Object.assign({}, state)
+      delete newState[action.id]
+      return newState
     }
 
     default:
