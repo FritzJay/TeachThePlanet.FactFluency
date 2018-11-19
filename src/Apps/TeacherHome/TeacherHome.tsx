@@ -9,7 +9,7 @@ import {
   TestParameters,
   ParentInvite,
   AddStudentModal,
-  ConnectedSendInviteModal,
+  ConnectedStudentInvitationModal,
 } from './components'
 import './TeacherHome.css'
 
@@ -67,7 +67,7 @@ export class TeacherHome extends React.Component<IProps> {
 
         <Route
           path={`${match.url}/class-detail/:id/add-students/existing`}
-          component={ConnectedSendInviteModal}
+          component={ConnectedStudentInvitationModal}
         />
 
         <Route

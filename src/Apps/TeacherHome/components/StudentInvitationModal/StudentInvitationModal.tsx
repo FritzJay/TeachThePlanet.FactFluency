@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { Button, Input, Modal, ModalContent, ModalHeader, Loading } from 'src/sharedComponents'
 import { handleCreateInvitation } from 'src/handlers/invitations'
-import './SendInviteModal.css'
+import './StudentInvitationModal.css'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   token: string
@@ -18,7 +18,7 @@ interface IState {
   error: string
 }
 
-class SendInviteModal extends React.Component<IProps, IState> {
+class StudentInvitationModal extends React.Component<IProps, IState> {
   public state: IState = {
     student: '',
     loading: false,
@@ -32,14 +32,14 @@ class SendInviteModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
-        className="SelectStudentsModal"
+        className="StudentInvitationModal"
       >
         <ModalHeader className="header">
-          <h1>Add Students</h1>
+          <h1>Invite Students</h1>
         </ModalHeader>
 
-        <ModalContent>
-          <h3 className="sub-header">Send an invitation</h3>
+        <ModalContent className="content">
+          <h3 className="sub-header">Enter the email or username of an existing student</h3>
 
           {error !== ''
             ? <p className="error">{error}</p>
@@ -56,16 +56,11 @@ class SendInviteModal extends React.Component<IProps, IState> {
             : null
           }
 
-          <label
-            className="student-label"
-            htmlFor="student"
-          >
-            Email/Username:
-          </label>
           <Input
             className="student-input"
             name="student"
             value={student}
+            placeholder="Email/Username"
             onChange={this.handleChange}
           />
           
@@ -91,7 +86,11 @@ class SendInviteModal extends React.Component<IProps, IState> {
 
   private handleSendClick = () => {
     if (this.state.student === '') {
-      alert('Enter a student\'s email address to send an invitation')
+      this.setState({
+        loading: false,
+        error: 'Email or username is required',
+        successMessage: ''
+      })
       return
     }
 
@@ -106,7 +105,6 @@ class SendInviteModal extends React.Component<IProps, IState> {
           successMessage: 'Invitation was successfully submitted!'
         })
       } catch (error) {
-        console.warn(error)
         this.setState({
           loading: false,
           error: error.toString(),
@@ -133,4 +131,4 @@ class SendInviteModal extends React.Component<IProps, IState> {
 
 const MapStateToProps = ({ user }: any, { match }: any) => ({ token: user.token })
 
-export const ConnectedSendInviteModal = connect(MapStateToProps)(SendInviteModal)
+export const ConnectedStudentInvitationModal = connect(MapStateToProps)(StudentInvitationModal)

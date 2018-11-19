@@ -11,7 +11,11 @@ interface IInvitationCardProps {
 
 const InvitationCard = ({ email }: IInvitationCardProps) => (
   <Card className="InvitationCard">
-    <h4>{email}</h4>
+    <h3>{email}</h3>
+    <h4>Sent On: 11/19/2018</h4>
+    <button className="delete">
+      <i className="material-icons">delete</i>
+    </button>
   </Card>
 )
 
@@ -150,7 +154,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
           </Link>
         </h2>
         
-        <h1 className="name">
+        <h1 className="class-name">
           {selectedClass.name}
         </h1>
 
@@ -188,6 +192,8 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         </div>
 
         <div className="students">
+          <h2>Students</h2>
+
           {selectedClass.students.length > 0
             ? selectedClass.students.map((student) => <StudentCard key={student.id} student={student} />)
             : (
@@ -203,12 +209,12 @@ class DisconnectedClassDetail extends React.Component<IProps> {
 
           {selectedClass.invitations && selectedClass.invitations.length > 0
             ? selectedClass.invitations.map((email: string) => <InvitationCard key={email} email={email} />)
-            : (
-              <Link to={`${match.url}/add-students/existing`}>
-                <NewCard className="new-invite-card" text="Invite a student!" />
-              </Link>
-            )
+            : null
           }
+
+          <Link to={`${match.url}/add-students/existing`}>
+            <NewCard className="new-invite-card" text="Invite a student!" />
+          </Link>
         </div>
       </div>
     )

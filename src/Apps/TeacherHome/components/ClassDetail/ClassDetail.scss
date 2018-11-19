@@ -6,16 +6,23 @@
     display: grid;
     grid-row-gap: 1em;
     grid-template-areas:
-        'classes     classes     name        name        name'
+        'classes     classes     classname   filler      filler'
         'buttons     buttons     buttons     buttons     buttons'
         'students    students    students    students    students'
         'invitations invitations invitations invitations invitations';
     align-content: flex-start;
     justify-content: stretch;
 
+    h2 {
+        margin-bottom: 0;
+    }
+
     .classes {
         grid-area: classes;
+        grid-column: 1 / -1;
+        grid-row: 1 / 1;
         align-self: center;
+        justify-self: flex-start;
         
         color: $gray;
 
@@ -28,9 +35,12 @@
         }
     }
 
-    .name {
-        grid-area: name;
+    .class-name {
+        grid-area: classname;
+        grid-column: 1 / -1;
+        grid-row: 1 / 1;
         align-self: center;
+        justify-self: center;
     }
 
     .buttons {
@@ -66,6 +76,8 @@
     .students {
         grid-area: students;
         display: grid;
+        grid-auto-flow: row;
+        grid-row-gap: 2em;
 
         .StudentCard {
             width: 725px;
@@ -219,14 +231,32 @@
     .invitations {
         grid-area: invitations;
 
+        width: 757px; // Match the size of the student cards
+        justify-self: center;
+
         display: grid;
+        grid-auto-flow: row;
+        grid-row-gap: 2em;
         justify-content: stretch;
 
         .InvitationCard {
-            padding: 0.25em 1em;
+            padding: 0.25em 3em;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-content: center;
+
+            .delete {
+                border: none;
+                background-color: transparent;
+                
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .new-invite-card {
+            margin-bottom: 3em;
         }
     }
 }
