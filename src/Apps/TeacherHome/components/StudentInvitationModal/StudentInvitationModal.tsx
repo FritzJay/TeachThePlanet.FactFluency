@@ -70,7 +70,7 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
               className="gray"
               onClick={this.handleCloseClick}
             >
-              Back
+              Close
             </Button>
             <Button
               className="green"
