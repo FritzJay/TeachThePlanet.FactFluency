@@ -102,9 +102,11 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
         this.setState({
           loading: false,
           error: '',
-          successMessage: 'Invitation was successfully submitted!'
+          successMessage: 'Invitation was successfully submitted!',
+          student: '',
         })
       } catch (error) {
+        console.warn(error)
         this.setState({
           loading: false,
           error: error.toString(),

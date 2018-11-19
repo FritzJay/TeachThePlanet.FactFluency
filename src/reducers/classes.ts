@@ -75,14 +75,18 @@ export default function classes (state: any = {}, action: any) {
     }
 
     case ADD_INVITATION:
-    case REMOVE_INVITATION:
+    case REMOVE_INVITATION: {
+      const courseInvitations = state[action.classId]
+        ? state[action.classId].courseInvitations
+        : {}
       return {
         ...state,
         [action.classId]: {
           ...state[action.classId],
-          courseInvitations: invitations(state[action.classId].courseInvitations, action)
+          courseInvitations: invitations(courseInvitations, action)
         }
       }
+    }
 
     default:
       return state
