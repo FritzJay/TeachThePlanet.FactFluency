@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { IClass, IStudent, getOperatorSymbol, ITest } from 'src/utils'
-import { Card, Loading } from 'src/sharedComponents'
+import { Card, Loading, NewCard } from 'src/sharedComponents'
 import './ClassDetail.css'
 
 interface IStudentNumberProps {
@@ -179,7 +179,11 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         <div className="students">
           {selectedClass.students.length > 0
             ? selectedClass.students.map((student) => <StudentCard key={student.id} student={student} />)
-            : <StudentCard />
+            : (
+              <Link to={`${match.url}/add-students`}>
+                <NewCard text="Add your first student!" />
+              </Link>
+            )
           }
         </div>
       </div>

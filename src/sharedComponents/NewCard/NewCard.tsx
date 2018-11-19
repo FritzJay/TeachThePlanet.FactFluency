@@ -1,9 +1,14 @@
 import * as React from 'react'
 import { Card } from 'src/sharedComponents'
-import './CreateClassCard.css'
+import './NewCard.css'
 
-export const CreateClassCard = () => (
+interface IProps {
+  text?: string
+}
+
+export const NewCard = ({ text }: IProps) => (
   <Card className="CreateClassCard active">
+    <h2 className="text">{text}</h2>
     <div className="plus-container active">
       <p className="plus">+</p>
     </div>

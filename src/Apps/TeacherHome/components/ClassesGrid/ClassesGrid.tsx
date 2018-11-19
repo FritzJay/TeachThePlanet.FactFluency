@@ -2,9 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { IClass } from 'src/utils'
-import { Loading } from 'src/sharedComponents'
+import { Loading, NewCard } from 'src/sharedComponents'
 import { ClassCard } from '../ClassCard/ClassCard'
-import { CreateClassCard } from '../CreateClassCard/CreateClassCard'
 import './ClassesGrid.css'
 
 interface IProps extends RouteComponentProps<{}> {
@@ -55,7 +54,7 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
           ))}
   
         <Link to={`${match.url}/new`}>
-          <CreateClassCard />
+          <NewCard />
         </Link>
       </div>
     )
