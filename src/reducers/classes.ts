@@ -76,8 +76,6 @@ export default function classes (state: any = {}, action: any) {
 
     case ADD_INVITATION:
     case REMOVE_INVITATION:
-      console.log(state, action)
-      console.log(state[action.classId])
       return {
         ...state,
         [action.classId]: {

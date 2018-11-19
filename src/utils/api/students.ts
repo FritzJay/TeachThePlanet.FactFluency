@@ -15,14 +15,6 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
           name,
           students {
             id
-          },
-          testParameters {
-            id,
-            duration,
-            numbers,
-            operators,
-            questions,
-            randomQuestions
           }
         },
         tests {
@@ -40,7 +32,22 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
         },
         user {
           email,
+          firstName,
+          lastName,
+          title,
           role
+        },
+        courseInvitations {
+          id,
+          course {
+            id
+            name
+            createdAt
+            teacher {
+              id
+              name
+            }
+          }
         }
       }
     }
@@ -94,14 +101,6 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
           name,
           students {
             id
-          },
-          testParameters {
-            id,
-            duration,
-            numbers,
-            operators,
-            questions,
-            randomQuestions
           }
         },
         tests {
@@ -119,7 +118,22 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
         },
         user {
           email,
+          firstName,
+          lastName,
+          title,
           role
+        },
+        courseInvitations {
+          id,
+          course {
+            id
+            name
+            createdAt
+            teacher {
+              id
+              name
+            }
+          }
         }
       }
     }

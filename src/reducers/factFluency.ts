@@ -7,9 +7,33 @@ import {
   UPDATE_TEST,
   RECEIVE_TEST_RESULTS,
 } from '../actions/factFluency'
-import { SIGN_IN_STUDENT } from 'src/actions/students'
+
+import {
+  SIGN_IN_STUDENT,
+  ADD_STUDENT,
+  UPDATE_STUDENT,
+  REMOVE_STUDENT
+} from 'src/actions/students'
+
+import {
+  REMOVE_CLASS,
+  UPDATE_CLASS,
+  ADD_CLASS
+} from 'src/actions/classes'
+import classes from './classes'
+
+import {
+  ADD_INVITATION,
+  REMOVE_INVITATION
+} from 'src/actions/invitations'
+
+import {
+  formatClasses,
+  formatCourseInvitations,
+} from './utils'
+
+import { UPDATE_TEST_PARAMETERS } from 'src/actions/testParameters'
 import { CLEAR_STORE } from '../actions/shared'
-import { IClass } from 'src/utils'
 
 export default function factFluency (state: any = {}, action: any) {
   switch (action.type) {
@@ -17,14 +41,13 @@ export default function factFluency (state: any = {}, action: any) {
       return {}
 
     case SIGN_IN_STUDENT:
-      const formattedClasses = action.student.classes
-        ? action.student.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: cls }), {})
-        : {}
+      const formattedClasses = formatClasses(action.student.classes)
       return {
         ...state,
         ...action.student,
         classes: formattedClasses,
-        activeClass: Object.keys(formattedClasses)[0]
+        activeClass: Object.keys(formattedClasses)[0],
+        courseInvitations: formatCourseInvitations(action.student.courseInvitations),
       }
 
     case SET_NEW_TEST_PARAMETERS:
@@ -67,6 +90,20 @@ export default function factFluency (state: any = {}, action: any) {
       const { testResults, ...rest } = state
       return rest
     }
+
+    case REMOVE_CLASS:
+    case UPDATE_CLASS:
+    case ADD_CLASS:
+    case ADD_STUDENT:
+    case UPDATE_STUDENT:
+    case REMOVE_STUDENT:
+    case UPDATE_TEST_PARAMETERS:
+    case ADD_INVITATION:
+    case REMOVE_INVITATION:
+      return {
+        ...state,
+        classes: classes(state.classes, action)
+      }
 
     default:
       return state
