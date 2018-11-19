@@ -167,16 +167,12 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
       })
     })
     const { data, errors } = await response.json()
-    const { courses, ...rest } = data.teacher
 
     if (errors !== undefined) {
       throw errors[0]
     }
 
-    return {
-      ...rest,
-      classes: courses
-    }
+    return data.teacher
 
   } catch (error) {
     handleError(functionName, error)

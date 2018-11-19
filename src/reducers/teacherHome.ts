@@ -30,7 +30,7 @@ import {
   REMOVE_INVITATION,
 } from 'src/actions/invitations'
 
-import { formatClasses, formatCourseInvitations } from './utils'
+import { formatClasses } from './utils'
 
 export default function teacherHome (state: any = {}, action: any) {
   switch (action.type) {
@@ -47,8 +47,7 @@ export default function teacherHome (state: any = {}, action: any) {
       return {
         ...state,
         ...action.teacher,
-        classes: formatClasses(action.student.classes),
-        courseInvitations: formatCourseInvitations(action.student.courseInvitations),
+        classes: formatClasses(action.teacher.courses)
       }
 
     case REMOVE_TEACHER:
