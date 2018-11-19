@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, RouteComponentProps, Redirect } from 'react-router-dom'
-import { Navbar } from 'src/sharedComponents'
+import { Navbar, ConnectedClassListDropdown } from 'src/sharedComponents'
 import { SelectTest, StartTest, TakeTest, TestResults } from './components'
 import './FactFluency.css'
 
@@ -9,7 +9,9 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
 
   return (
     <div>
-      <Navbar logoLink={match.url} />
+      <Navbar logoLink={match.url}>
+        <ConnectedClassListDropdown />
+      </Navbar>
 
       <div className="FactFluency">
 

@@ -34,6 +34,7 @@ export interface IClass {
   code: string
   grade: string
   testParameters: ITestParameters
+  teacher: ITeacher
   students: IStudent[]
   courseInvitations: any
 }

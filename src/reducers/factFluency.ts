@@ -6,6 +6,7 @@ import {
   REMOVE_TEST_RESULTS,
   UPDATE_TEST,
   RECEIVE_TEST_RESULTS,
+  UPDATE_ACTIVE_CLASS,
 } from '../actions/factFluency'
 
 import {
@@ -103,6 +104,14 @@ export default function factFluency (state: any = {}, action: any) {
       return {
         ...state,
         classes: classes(state.classes, action)
+      }
+
+    case UPDATE_ACTIVE_CLASS:
+      return {
+        ...state,
+        activeClass: state.classes
+          ? state.classes[action.id]
+          : {}
       }
 
     default:

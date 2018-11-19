@@ -11,6 +11,7 @@ import './Navbar.css'
 interface ILogoutLinkProps {
   active: boolean
   onLogout: () => void
+  children?: any
 }
 
 const LogoutLink = ({ active, onLogout }: ILogoutLinkProps) => {
@@ -68,8 +69,12 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { user, logoLink } = this.props
+    const { user, logoLink, children } = this.props
     const { activeDropdown } = this.state
+
+    const childrenArray = React.Children.toArray(children)
+    const firstHalf = childrenArray.slice(0, Math.ceil(childrenArray.length / 2))
+    const secondHalf = childrenArray.slice(Math.ceil(childrenArray.length / 2), childrenArray.length)
 
     return (
       <div
@@ -82,9 +87,17 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
           onLogout={this.handleLogout}
         />
 
+        <div className="second-half-of-children">
+          {secondHalf}
+        </div>
+
         <Link className="logo" to={logoLink}>
           <img src={Logo} className="logo-img" alt="logo" />
         </Link>
+
+        <div className="first-half-of-children">
+          {firstHalf}
+        </div>
 
         <UserIcon
           email={user && user.email}

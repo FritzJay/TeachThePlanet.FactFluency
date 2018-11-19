@@ -1,0 +1,23 @@
+.ClassListDropdown {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  select {
+    width: 100%;
+    border: 2px solid rgba(128, 128, 128, 0.425);
+    border-radius: 3px;
+
+    margin: .5em 0;
+  
+    font-weight: 500;
+    font-size: 1em;
+    color: rgb(80, 80, 80);
+  }
+
+  .join-class-button {
+    margin-left: 0.1em;
+    padding: 0.03em 0.25em;
+    border-radius: 5px;
+  }
+}

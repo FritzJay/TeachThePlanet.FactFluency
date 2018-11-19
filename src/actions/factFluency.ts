@@ -9,6 +9,7 @@ export const REMOVE_TEST = 'REMOVE_TEST'
 export const RECEIVE_TEST_RESULTS = 'RECEIVE_TEST_RESULTS'
 export const REMOVE_TEST_RESULTS = 'REMOVE_TEST_RESULTS'
 export const UPDATE_TEST = 'UPDATE_TEST'
+export const UPDATE_ACTIVE_CLASS = 'UPDATE_ACTIVE_CLASS'
 
 export function rehydrateFactFluency (factFluency: any) {
   return {
@@ -63,5 +64,12 @@ export function removeTestResults () {
   return {
     type: REMOVE_TEST_RESULTS,
     testResults: null,
+  }
+}
+
+export function updateActiveClass (id: string) {
+  return {
+    type: UPDATE_ACTIVE_CLASS,
+    id,
   }
 }
