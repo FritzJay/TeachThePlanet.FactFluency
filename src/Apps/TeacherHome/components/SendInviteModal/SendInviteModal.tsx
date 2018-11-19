@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { Button, Input, Modal, ModalContent, ModalHeader, Loading } from 'src/sharedComponents'
 import { handleCreateInvitation } from 'src/handlers/invitations'
-import './SelectStudentModal.css'
+import './SendInviteModal.css'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   token: string
@@ -13,19 +13,21 @@ interface IProps extends RouteComponentProps<{ id: string }> {
 
 interface IState {
   student: string
+  successMessage: string
   loading: boolean
   error: string
 }
 
-class SelectStudentsModal extends React.Component<IProps, IState> {
+class SendInviteModal extends React.Component<IProps, IState> {
   public state: IState = {
     student: '',
     loading: false,
     error: '',
+    successMessage: '',
   }
 
   public render() {
-    const { student, error, loading } = this.state
+    const { student, error, loading, successMessage } = this.state
 
     return (
       <Modal
@@ -41,6 +43,11 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
 
           {error !== ''
             ? <p className="error">{error}</p>
+            : null
+          }
+
+          {successMessage !== ''
+            ? <p className="success-message">{successMessage}</p>
             : null
           }
 
@@ -93,12 +100,17 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
     this.setState({ loading: true }, async () => {
       try {
         await dispatch(handleCreateInvitation(token, match.params.id, this.state.student))
-        this.setState({ loading: false })
+        this.setState({
+          loading: false,
+          error: '',
+          successMessage: 'Invitation was successfully submitted!'
+        })
       } catch (error) {
         console.warn(error)
         this.setState({
           loading: false,
           error: error.toString(),
+          successMessage: '',
         })
       }
     })
@@ -110,11 +122,15 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
     const { name, value } = e.target
     const newState = {}
     newState[name] = value
-    this.setState(newState)
+    this.setState({
+      ...newState,
+      error: '',
+      successMessage: '',
+    })
   }
 }
   
 
 const MapStateToProps = ({ user }: any, { match }: any) => ({ token: user.token })
 
-export const ConnectedSelectStudentsModal = connect(MapStateToProps)(SelectStudentsModal)
+export const ConnectedSendInviteModal = connect(MapStateToProps)(SendInviteModal)

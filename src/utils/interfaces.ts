@@ -35,6 +35,7 @@ export interface IClass {
   grade: string
   testParameters: ITestParameters
   students: IStudent[]
+  invitations?: any
 }
 
 export interface ITestParameters {

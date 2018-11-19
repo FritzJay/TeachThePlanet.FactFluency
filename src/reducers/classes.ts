@@ -75,7 +75,6 @@ export default function classes (state: any = {}, action: any) {
     }
 
     case ADD_INVITATION:
-      console.log('ADDING AN INVITATION', state, action)
       return {
         ...state,
         [action.classId]: {

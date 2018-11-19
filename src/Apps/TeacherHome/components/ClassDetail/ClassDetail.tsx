@@ -5,6 +5,17 @@ import { IClass, IStudent, getOperatorSymbol, ITest } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
 import './ClassDetail.css'
 
+interface IInvitationCardProps {
+  email: string
+}
+
+const InvitationCard = ({ email }: IInvitationCardProps) => (
+  <Card className="InvitationCard">
+    <h4>{email}</h4>
+  </Card>
+)
+
+
 interface IStudentNumberProps {
   num: number
   tests: ITest[]
@@ -182,6 +193,19 @@ class DisconnectedClassDetail extends React.Component<IProps> {
             : (
               <Link to={`${match.url}/add-students`}>
                 <NewCard text="Add your first student!" />
+              </Link>
+            )
+          }
+        </div>
+
+        <div className="invitations">
+          <h2>Pending Invitations</h2>
+
+          {selectedClass.invitations && selectedClass.invitations.length > 0
+            ? selectedClass.invitations.map((email: string) => <InvitationCard key={email} email={email} />)
+            : (
+              <Link to={`${match.url}/add-students/existing`}>
+                <NewCard className="new-invite-card" text="Invite a student!" />
               </Link>
             )
           }

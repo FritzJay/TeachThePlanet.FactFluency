@@ -4,10 +4,11 @@ import './NewCard.css'
 
 interface IProps {
   text?: string
+  className?: string
 }
 
-export const NewCard = ({ text }: IProps) => (
-  <Card className="CreateClassCard active">
+export const NewCard = ({ text, className }: IProps) => (
+  <Card className={`NewCard active${className ? ' ' + className : ''}`}>
     <h2 className="text">{text}</h2>
     <div className="plus-container active">
       <p className="plus">+</p>

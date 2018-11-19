@@ -6,19 +6,10 @@
     display: grid;
     grid-row-gap: 1em;
     grid-template-areas:
-        'classes  classes  name     name     name'
-        'buttons  buttons  buttons  buttons  buttons'
-        'buttons  buttons  buttons  buttons  buttons'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students'
-        'students students students students students';
+        'classes     classes     name        name        name'
+        'buttons     buttons     buttons     buttons     buttons'
+        'students    students    students    students    students'
+        'invitations invitations invitations invitations invitations';
     align-content: flex-start;
     justify-content: stretch;
 
@@ -223,5 +214,19 @@
         grid-column: 1 / -1;
         justify-self: center;
         align-self: center;
+    }
+
+    .invitations {
+        grid-area: invitations;
+
+        display: grid;
+        justify-content: stretch;
+
+        .InvitationCard {
+            padding: 0.25em 1em;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
     }
 }
