@@ -1,15 +1,28 @@
 import { showLoading, hideLoading } from 'react-redux-loading'
 import {
   saveCreateInvitation,
+  saveRemoveInvitation,
 } from '../utils/api'
-import { addInvitation } from '../actions/invitations'
+import { addInvitation, removeInvitation } from '../actions/invitations'
 
 export const handleCreateInvitation = (token: string, classId: string, email: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
     try {
-      await saveCreateInvitation(token, classId, email)
-      dispatch(addInvitation(classId, email))
+      const invitation = await saveCreateInvitation(token, classId, email)
+      dispatch(addInvitation(invitation.course.id, invitation))
+    } finally {
+      dispatch(hideLoading())
+    }
+  }
+}
+
+export const handleRemoveInvitation = (token: string, id: string) => {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+    try {
+      await saveRemoveInvitation(token, id)
+      dispatch(removeInvitation(id))
     } finally {
       dispatch(hideLoading())
     }

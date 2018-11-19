@@ -6,32 +6,51 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
   const query = `
     mutation createTeacher($input: CreateTeacherInput!) {
       createTeacher(input: $input) {
-        id,
-        name,
+        id
+        name
         courses {
-          id,
-          code,
-          grade,
-          name,
+          id
+          code
+          grade
+          name
           testParameters {
-            id,
-            duration,
-            numbers,
-            operators,
-            questions,
+            id
+            duration
+            numbers
+            operators
+            questions
             randomQuestions
-          },
+          }
           students {
-            id,
-            name
-          },
-          invitations {
             id
             name
+            tests {
+              id
+              number
+              operator
+              testResults {
+                id
+                total
+                needed
+                correct
+                createdAt
+              }
+            }
           }
-        },
+          courseInvitations {
+            id
+            student {
+              id
+              name
+            }
+            course {
+              id
+              name
+            }
+          }
+        }
         user {
-          email,
+          email
           role
         }
       }
@@ -55,15 +74,20 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
       })
     })
     const { data, errors } = await response.json()
-    const { courses, ...rest } = data.createTeacher
-    
+    const { courses, invitations, ...rest } = data.createTeacher
+    const { invitationCourses, ...invitationRest } = invitations
+
     if (errors !== undefined) {
       throw errors[0]
     }
-    
+
     return {
       ...rest,
-      classes: courses
+      classes: courses,
+      invitations: {
+        ...invitationRest,
+        classes: invitationCourses
+      }
     }
     
   } catch (error) {
@@ -77,48 +101,55 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
   const query = `
     query teacher($id: ObjID) {
       teacher(id: $id) {
-        id,
-        name,
+        id
+        name
         courses {
-          id,
-          code,
-          grade,
-          name,
+          id
+          code
+          grade
+          name
           testParameters {
-            id,
-            duration,
-            numbers,
-            operators,
-            questions,
+            id
+            duration
+            numbers
+            operators
+            questions
             randomQuestions
-          },
+          }
           students {
-            id,
-            name,
+            id
+            name
             tests {
-              id,
-              number,
-              operator,
+              id
+              number
+              operator
               testResults {
-                id,
-                total,
-                needed,
-                correct,
-                createdAt,
+                id
+                total
+                needed
+                correct
+                createdAt
               }
             }
           }
-          invitations {
+          courseInvitations {
             id
-            name
+            student {
+              id
+              name
+            }
+            course {
+              id
+              name
+            }
           }
-        },
+        }
         user {
-          email,
+          email
           role
         }
       }
-    }
+    }  
   `
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {

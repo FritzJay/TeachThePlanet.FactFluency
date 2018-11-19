@@ -16,7 +16,7 @@ import {
 } from '../actions/testParameters'
 import testParameters from '../reducers/testParameters'
 
-import { ADD_INVITATION } from 'src/actions/invitations'
+import { ADD_INVITATION, REMOVE_INVITATION } from 'src/actions/invitations'
 import invitations from './invitations'
 
 import { CLEAR_STORE } from '../actions/shared'
@@ -75,11 +75,14 @@ export default function classes (state: any = {}, action: any) {
     }
 
     case ADD_INVITATION:
+    case REMOVE_INVITATION:
+      console.log(state, action)
+      console.log(state[action.classId])
       return {
         ...state,
         [action.classId]: {
           ...state[action.classId],
-          invitations: invitations(state[action.classId].invitations, action)
+          courseInvitations: invitations(state[action.classId].courseInvitations, action)
         }
       }
 

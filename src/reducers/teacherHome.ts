@@ -26,7 +26,7 @@ import { UPDATE_TEST_PARAMETERS } from '../actions/testParameters'
 import { CLEAR_STORE } from '../actions/shared'
 
 import { IClass } from 'src/utils';
-import { ADD_INVITATION } from 'src/actions/invitations';
+import { ADD_INVITATION, REMOVE_INVITATION } from 'src/actions/invitations';
 
 export default function teacherHome (state: any = {}, action: any) {
   switch (action.type) {
@@ -41,12 +41,7 @@ export default function teacherHome (state: any = {}, action: any) {
 
     case SIGN_IN_TEACHER:
       const formattedClasses = action.teacher.classes
-        ? action.teacher.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: {
-            ...cls,
-            invitations: cls.invitations
-              ? cls.invitations.map(({ name }: any) => name)
-              : []
-          }}), {})
+        ? action.teacher.classes.reduce((acc: object, cls: IClass) => ({ ...acc, [cls.id]: { ...cls }}), {})
         : {}
       return {
         ...state,
@@ -66,6 +61,7 @@ export default function teacherHome (state: any = {}, action: any) {
     case REMOVE_STUDENT:
     case UPDATE_TEST_PARAMETERS:
     case ADD_INVITATION:
+    case REMOVE_INVITATION:
       return {
         ...state,
         classes: classes(state.classes, action)

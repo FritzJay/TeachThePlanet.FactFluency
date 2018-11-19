@@ -35,7 +35,7 @@ export interface IClass {
   grade: string
   testParameters: ITestParameters
   students: IStudent[]
-  invitations?: any
+  courseInvitations: any
 }
 
 export interface ITestParameters {
@@ -45,6 +45,14 @@ export interface ITestParameters {
   numbers: number[]
   questions: number
   randomQuestions: number
+}
+
+export interface ICourseInvitation {
+  id: string
+  student: IStudent
+  course: IClass
+  createdAt: number
+  updatedAt: number
 }
 
 

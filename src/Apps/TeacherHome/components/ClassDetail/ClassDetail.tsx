@@ -1,18 +1,18 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { IClass, IStudent, getOperatorSymbol, ITest } from 'src/utils'
+import { IClass, IStudent, getOperatorSymbol, ITest, ICourseInvitation } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
 import './ClassDetail.css'
 
 interface IInvitationCardProps {
-  email: string
+  invitation: ICourseInvitation
 }
 
-const InvitationCard = ({ email }: IInvitationCardProps) => (
+const InvitationCard = ({ invitation }: IInvitationCardProps) => (
   <Card className="InvitationCard">
-    <h3>{email}</h3>
-    <h4>Sent On: 11/19/2018</h4>
+    <h3>{invitation.student.name}</h3>
+    <h4>Sent On: {new Date(invitation.createdAt).getUTCDate()}</h4>
     <button className="delete">
       <i className="material-icons">delete</i>
     </button>
@@ -207,8 +207,8 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         <div className="invitations">
           <h2>Pending Invitations</h2>
 
-          {selectedClass.invitations && selectedClass.invitations.length > 0
-            ? selectedClass.invitations.map((email: string) => <InvitationCard key={email} email={email} />)
+          {selectedClass.courseInvitations && selectedClass.courseInvitations.length > 0
+            ? selectedClass.courseInvitations.map((invitation: ICourseInvitation) => <InvitationCard key={invitation.id} invitation={invitation} />)
             : null
           }
 
