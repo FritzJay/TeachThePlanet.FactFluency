@@ -146,7 +146,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         <div className="buttons">
           <Link
             className="detail-btn"
-            to={`/teacher/parent-invitations/${match.params.id}`}
+            to={`/teacher/parent-invitation/${match.params.id}`}
           >
             Parent Invites
           </Link>

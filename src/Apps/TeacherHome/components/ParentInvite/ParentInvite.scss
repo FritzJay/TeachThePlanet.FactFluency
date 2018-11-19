@@ -1,0 +1,16 @@
+@import 'src/StyleSheets/all';
+
+.ParentInvite {
+  grid-column: 2 / 2;
+
+  table {
+    border-collapse: collapse;
+
+    td, th {
+      border: 1px solid $gray;
+      text-align: center;
+      padding: 0.5em;
+    }
+  }
+
+}
