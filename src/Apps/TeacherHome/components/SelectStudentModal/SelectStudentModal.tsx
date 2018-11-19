@@ -2,24 +2,30 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { connect } from 'react-redux'
 
-import { Button, Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Button, Input, Modal, ModalContent, ModalHeader, Loading } from 'src/sharedComponents'
+import { handleCreateInvitation } from 'src/handlers/invitations'
 import './SelectStudentModal.css'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
-  classCode: string
+  token: string
+  classId: string
 }
 
 interface IState {
   student: string
+  loading: boolean
+  error: string
 }
 
 class SelectStudentsModal extends React.Component<IProps, IState> {
   public state: IState = {
-    student: ''
+    student: '',
+    loading: false,
+    error: '',
   }
 
   public render() {
-    const { student } = this.state
+    const { student, error, loading } = this.state
 
     return (
       <Modal
@@ -32,6 +38,16 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
 
         <ModalContent>
           <h3 className="sub-header">Send an invitation</h3>
+
+          {error !== ''
+            ? <p className="error">{error}</p>
+            : null
+          }
+
+          {loading
+            ? <Loading />
+            : null
+          }
 
           <label
             className="student-label"
@@ -72,7 +88,15 @@ class SelectStudentsModal extends React.Component<IProps, IState> {
       return
     }
 
-    console.log('Create an invitation!')
+    this.setState({ loading: true }, async () => {
+      try {
+        await handleCreateInvitation(this.props.token, this.props.classId, this.state.student)
+        this.setState({ loading: false })
+      } catch (error) {
+        console.warn(error)
+        this.setState({ error: error.toString() })
+      }
+    })
   }
 
   private handleCloseClick = () => this.props.history.replace(`/teacher/class-detail/${this.props.match.params.id}`)

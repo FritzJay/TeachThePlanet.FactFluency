@@ -4,12 +4,12 @@ import {
 } from '../utils/api'
 import { addInvitation } from '../actions/invitations'
 
-export const handleCreateInvitation = (token: string, classId: string, studentId: string) => {
+export const handleCreateInvitation = (token: string, classId: string, email: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
     try {
-      await saveCreateInvitation(token, classId, studentId)
-      dispatch(addInvitation(classId, studentId))
+      await saveCreateInvitation(token, classId, email)
+      dispatch(addInvitation(classId, email))
     } catch (error) {
       alert('There was an error saving your changes. Please try again later.')
     } finally {

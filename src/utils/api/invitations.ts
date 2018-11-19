@@ -1,6 +1,6 @@
 import { handleError } from "./request"
 
-export const saveCreateInvitation = async (token: string, classId: string, studentId: string): Promise<void> => {
+export const saveCreateInvitation = async (token: string, classId: string, email: string): Promise<void> => {
   const functionName = 'saveCreateInvitation'
   const query = `
     mutation createClassInvitation($input: CreateClassInvitationInput!) {
@@ -31,7 +31,7 @@ export const saveCreateInvitation = async (token: string, classId: string, stude
         variables: {
           input: {
             classId,
-            studentId,
+            email,
           },
         },
         operationName: 'createClassInvitation',

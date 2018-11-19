@@ -21,4 +21,10 @@
     display: flex;
     justify-content: space-around;
   }
+
+  .error {
+    color: $red;
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
 }

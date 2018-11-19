@@ -5,7 +5,7 @@ import {
 export default function invitations (state: any = [], action: any) {
   switch (action.type) {
     case ADD_INVITATION: {
-      return state.concat(action.studentId)
+      return state.concat(action.email)
     }
 
     default:
