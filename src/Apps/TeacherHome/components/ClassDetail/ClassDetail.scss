@@ -6,7 +6,7 @@
     display: grid;
     grid-row-gap: 1em;
     grid-template-areas:
-        'link     link     link     link    link'
+        'classes  classes  name     name     name'
         'buttons  buttons  buttons  buttons  buttons'
         'buttons  buttons  buttons  buttons  buttons'
         'students students students students students'
@@ -22,8 +22,24 @@
     align-content: flex-start;
     justify-content: stretch;
 
-    .link {
-        grid-area: link;
+    .classes {
+        grid-area: classes;
+        align-self: center;
+        
+        color: $gray;
+
+        a:visited {
+            color: $gray;
+        }
+
+        .material-icons {
+            transform: translateY(3px);
+        }
+    }
+
+    .name {
+        grid-area: name;
+        align-self: center;
     }
 
     .buttons {

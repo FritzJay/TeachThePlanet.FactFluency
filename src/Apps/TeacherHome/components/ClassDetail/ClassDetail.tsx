@@ -133,15 +133,15 @@ class DisconnectedClassDetail extends React.Component<IProps> {
 
     return (
       <div className="ClassDetail">
-        <div className="link">
-          <h2>
-            <Link className="classrooms" to="/teacher/classes">
-              <i className="material-icons big">arrow_back_ios</i>
-              Classes
-            </Link>
-            /{selectedClass.name}
-          </h2>
-        </div>
+        <h2 className="classes">
+          <Link className="classrooms" to="/teacher/classes">
+            <i className="material-icons big">arrow_back_ios</i>Classes
+          </Link>
+        </h2>
+        
+        <h1 className="name">
+          {selectedClass.name}
+        </h1>
 
         <div className="buttons">
           <Link
@@ -177,7 +177,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         </div>
 
         <div className="students">
-          {selectedClass.students
+          {selectedClass.students.length > 0
             ? selectedClass.students.map((student) => <StudentCard key={student.id} student={student} />)
             : <StudentCard />
           }
