@@ -3,7 +3,7 @@ import { IStudent } from '../utils/interfaces'
 
 export const handleUpdateStudent = (token: string, classId: string, updates: IStudent) => {
   return async (dispatch: any) => {
-    dispatch(showLoading)
+    dispatch(showLoading())
     try {
       /*
       const updatedStudent = await saveUpdateStudent(token, updates)
@@ -20,7 +20,7 @@ export const handleUpdateStudent = (token: string, classId: string, updates: ISt
 
 export const handleRemoveStudent = (token: string, classId: string, studentId: string) => {
   return async (dispatch: any) => {
-    dispatch(showLoading)
+    dispatch(showLoading())
     try {
       /*
       await saveRemoveStudent(token, classId, studentId)

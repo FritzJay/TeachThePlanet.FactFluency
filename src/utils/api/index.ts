@@ -1,4 +1,5 @@
 export * from './classes'
+export * from './invitations'
 export * from './students'
 export * from './teacher'
 export * from './testParameters'

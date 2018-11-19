@@ -15,7 +15,11 @@ import {
   UPDATE_TEST_PARAMETERS,
 } from '../actions/testParameters'
 import testParameters from '../reducers/testParameters'
-import { CLEAR_STORE } from '../actions/shared';
+
+import { ADD_INVITATION } from 'src/actions/invitations'
+import invitations from './invitations'
+
+import { CLEAR_STORE } from '../actions/shared'
 
 export default function classes (state: any = {}, action: any) {
   switch (action.type) {
@@ -69,6 +73,16 @@ export default function classes (state: any = {}, action: any) {
         }
       }
     }
+
+    case ADD_INVITATION:
+      console.log('ADDING AN INVITATION', state, action)
+      return {
+        ...state,
+        [action.classId]: {
+          ...state[action.classId],
+          invitations: invitations(state[action.classId].invitations, action)
+        }
+      }
 
     default:
       return state
