@@ -1,0 +1,57 @@
+@import 'src/Stylesheets/all';
+
+.CourseInvitations {
+  grid-column: 2 / -2;
+  text-align: center;
+
+  .header {
+    grid-column: 1 / -1;
+    grid-row: 1 / 1;
+
+    background-color: $green;
+    color: $white;
+    padding: 115px 3em 3em 3em;
+    margin-top: -50px;
+    border-radius: 5px;
+    box-shadow: $dp-four;
+  }
+
+  .invitations-container {
+    display: grid;
+    grid-template-rows: minmax(auto, auto);
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+    grid-auto-flow: column;
+    grid-gap: 1em;
+    align-items: center;
+    padding: 1em 2em;
+  }
+
+  .invitation-card {
+    display: grid;
+    grid-template-areas:
+      'header  header'
+      'teacher teacher'
+      'decline accept';
+
+    padding: 1em;
+    
+    .card-header {
+      grid-area: header;
+      margin: 0;
+    }
+
+    .teacher {
+      grid-area: teacher;
+    }
+
+    .decline {
+      grid-area: decline;
+      margin-right: 0.5em;
+    }
+
+    .accept {
+      grid-area: accept;
+      margin-left: 0.5em;
+    }
+  }
+}
