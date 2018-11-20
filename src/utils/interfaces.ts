@@ -16,12 +16,15 @@ export interface IStudentUser {
   classes: IClass[]
   tests: ITest[]
   user: IUser
+  createdAt: number
+  updatedAt: number
 }
 
 export interface IStudent {
   id: string
   name: string
   tests?: ITest[]
+  changePasswordRequired?: boolean
 }
 
 export interface IUser {
@@ -51,7 +54,7 @@ export interface ITestParameters {
 
 export interface ICourseInvitation {
   id: string
-  student: IStudent
+  student: IStudentUser
   course: IClass
   createdAt: number
   updatedAt: number

@@ -19,6 +19,10 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
             changePasswordRequired
             createdAt
             updatedAt
+            user {
+              id
+              email
+            }
           },
           teacher {
             id,
@@ -120,6 +124,10 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
             createdAt
             updatedAt
             changePasswordRequired
+            user {
+              id
+              email
+            }
           },
           teacher {
             id,

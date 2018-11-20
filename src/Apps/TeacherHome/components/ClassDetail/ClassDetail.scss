@@ -6,10 +6,11 @@
     display: grid;
     grid-row-gap: 1em;
     grid-template-areas:
-        'classes     classes     classname   filler      filler'
-        'buttons     buttons     buttons     buttons     buttons'
-        'students    students    students    students    students'
-        'invitations invitations invitations invitations invitations';
+        'classes         classes         classname       filler          filler'
+        'buttons         buttons         buttons         buttons         buttons'
+        'students        students        students        students        students'
+        'pendingstudents pendingstudents pendingstudents pendingstudents pendingstudents'
+        'invitations     invitations     invitations     invitations     invitations';
     align-content: flex-start;
     justify-content: stretch;
 
@@ -80,6 +81,16 @@
         grid-row-gap: 2em;
         justify-content: center;
 
+        .header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            h2 {
+                margin: 0;
+            }
+        }
+
         .new-student-card {
             width: 757px;
         }
@@ -103,32 +114,6 @@
             .name {
                 grid-area: name;
                 margin: 0;
-            }
-
-            .settings {
-                grid-area: settings;
-                justify-self: flex-end;
-
-                border: none;
-                background-color: transparent;
-                
-                margin: 0;
-
-                &:hover {
-                    cursor: pointer;
-                }
-
-                .confirmation {
-                    display: none;
-                }
-                
-                &.confirm {
-                    color: $red;
-
-                    .confirmation {
-                        display: inline;
-                    }
-                }
             }
 
             .OperatorRow {
@@ -185,54 +170,75 @@
                         background-color: $yellow;
                     }
                 }
-    
-                .number {
-                    margin: 0 0.5em 0.5em 0;
-
-                    display: flex;
-                    align-content: center;
-                    justify-content: center;
-    
-                    border: none;
-                    font-size: 24px;
-                    font-weight: 500;
-    
-                    width: 36px;
-                    height: 36px;
-    
-                    border-radius: 50%;
-    
-                    outline: none;
-
-                    &.not-taken {
-                        background-color: $very-light-gray;
-                        color: $white;
-                    }
-
-                    &.in-progress {
-                        background-color: $yellow;
-                        color: $white;
-                    }
-
-                    &.passed-once {
-                        background-color: $light-green;
-                        color: $white;
-                    }
-
-                    &.passed-twice {
-                        background-color: $light-green;
-                        color: $white;
-                    }
-
-                    &.passed {
-                        background-color: $green;
-                        color: $white;
-                    }
-                }
 
                 &:last-child {
                     border-bottom: none;
                 }
+            }
+        }
+    }
+
+    .pending-students {
+        grid-area: pendingstudents;
+        
+        width: 757px; // Match the size of the student cards
+        justify-self: center;
+        
+        display: grid;
+        grid-auto-flow: row;
+        grid-row-gap: 2em;
+        justify-content: stretch;
+    }
+    
+    .invitations {
+        grid-area: invitations;
+        
+        width: 757px; // Match the size of the student cards
+        justify-self: center;
+        
+        display: grid;
+        grid-auto-flow: row;
+        grid-row-gap: 2em;
+        justify-content: stretch;
+        
+        .new-invite-card {
+            height: 100px;
+            margin-bottom: 3em;
+            
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 3fr 3fr 1fr;
+            
+            h2 {
+                margin-top: 0;
+                grid-row: 1 / 1;
+                grid-column: 2 / 2;
+                align-self: flex-end;
+            }
+        }
+    }
+    
+    .delete {
+        grid-area: settings;
+        justify-self: flex-end;
+        
+        border: none;
+        background-color: transparent;
+        
+        margin: 0;
+        
+        &:hover {
+            cursor: pointer;
+        }
+        
+        .confirmation {
+            visibility: hidden;
+        }
+        
+        &.confirm {
+            color: $red;
+            
+            .confirmation {
+                visibility: visible;
             }
         }
     }
@@ -243,35 +249,105 @@
         align-self: center;
     }
 
-    .invitations {
-        grid-area: invitations;
-
-        width: 757px; // Match the size of the student cards
-        justify-self: center;
-
+    .pending-card {
         display: grid;
-        grid-auto-flow: row;
-        grid-row-gap: 2em;
-        justify-content: stretch;
+        grid-template-areas: 'studentname studentname date date delete';
+        align-items: center;
+        padding: 0.25em 1em;
+        
+        .student-name {
+            grid-area: studentname;
 
-        .InvitationCard {
-            padding: 0.25em 3em;
-            display: flex;
-            justify-content: space-between;
-            align-content: center;
-
-            .delete {
-                border: none;
-                background-color: transparent;
-                
-                &:hover {
-                    cursor: pointer;
-                }
-            }
+            justify-self: flex-start;
         }
 
-        .new-invite-card {
-            margin-bottom: 3em;
+        .email {
+            color: $gray;
+        }
+        
+        .date {
+            grid-area: date;
+
+            justify-self: center;
+            color: $gray;
+        }
+
+        .delete {
+            grid-area: delete;
+
+            justify-self: flex-end;
+            text-align: end;
+            border: none;
+            background-color: transparent;
+            
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+    
+    .description-button {
+        font-weight: bold;
+        padding: 0.25em 1em;
+        margin-left: 1em;
+    }
+
+    .description-card {
+        color: $gray;
+        font-weight: bold;
+        padding: 1em 2em;
+        margin-top: -1em;
+
+        ul {
+            list-style-type: none;
+
+            .number {
+                display: inline;
+            }
+        }
+    }
+
+    .number {
+        margin: 0 0.5em 0.5em 0;
+
+        display: flex;
+        align-content: center;
+        justify-content: center;
+
+        border: none;
+        font-size: 24px;
+        font-weight: 500;
+
+        width: 36px;
+        height: 36px;
+
+        border-radius: 50%;
+
+        outline: none;
+
+        &.not-taken {
+            background-color: $very-light-gray;
+            color: $white;
+        }
+
+        &.in-progress {
+            background-color: $light-red;
+            color: $white;
+        }
+
+        &.passed-once {
+            background-color: $light-yellow;
+            color: $white;
+        }
+
+        &.passed-twice {
+            background-color: $light-yellow;
+            color: $white;
+        }
+
+        &.passed {
+            background-color: $green;
+            color: $white;
         }
     }
 }

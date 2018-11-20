@@ -2,28 +2,71 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, RouteComponentProps, Route } from 'react-router-dom'
 
 import { IClass, getOperatorSymbol, ITest, ICourseInvitation, IStudentUser } from 'src/utils'
-import { Card, Loading, NewCard, ConfirmButton } from 'src/sharedComponents'
+import { Card, Loading, NewCard, ConfirmButton, Button } from 'src/sharedComponents'
 import { handleRemoveInvitation } from 'src/handlers/invitations'
 import { handleRemoveStudentFromCourse } from 'src/handlers/students'
 import './ClassDetail.css'
 
+interface IInactiveStudentCardProps {
+  className?: string
+  student: IStudentUser
+  onDelete: (id: string) => void
+}
+
+const InactiveStudentCard = ({ className, student, onDelete }: IInactiveStudentCardProps) => {
+  const date = new Date(student.createdAt)
+  return (
+    <Card className={`InactiveStudentCard${className ? ' ' + className : ''}`}>
+      <h3 className="student-name">
+        {student.name.length > 8
+          ? student.name.slice(0, 8) + '...'
+          : student.name}
+        &nbsp;&nbsp;
+        <span className="email">{student.user.email}</span>
+      </h3>
+      <h4 className="date">Sent On: {date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
+      <ConfirmButton
+        className="delete"
+        confirmClassName="confirm"
+        onClick={() => onDelete(student.id)}
+      >
+        <span className="confirmation">Remove new student?</span>
+        <i className="material-icons">delete</i>
+      </ConfirmButton>
+    </Card>
+  )
+}
+
+
 interface IInvitationCardProps {
+  className?: string
   invitation: ICourseInvitation
   onDelete: (id: string) => void
 }
 
-const InvitationCard = ({ invitation, onDelete }: IInvitationCardProps) => {
+const InvitationCard = ({ className, invitation, onDelete }: IInvitationCardProps) => {
   const date = new Date(invitation.createdAt)
   return (
-    <Card className="InvitationCard">
-      <h3>{invitation.student.name}</h3>
-      <h4>Sent On: {date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
-      <button onClick={() => onDelete(invitation.id)} className="delete">
+    <Card className={`InvitationCard${className ? ' ' + className : ''}`}>
+      <h3 className="student-name">
+        {invitation.student.name.length > 8
+          ? invitation.student.name.slice(0, 8) + '...'
+          : invitation.student.name}
+        &nbsp;&nbsp;
+        <span className="email">{invitation.student.user.email}</span>
+      </h3>
+      <h4 className="date">Sent On: {date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
+      <ConfirmButton
+        className="delete"
+        confirmClassName="confirm"
+        onClick={() => onDelete(invitation.id)}
+      >
+        <span className="confirmation">Remove invitation?</span>
         <i className="material-icons">delete</i>
-      </button>
+      </ConfirmButton>
     </Card>
   )
 }
@@ -136,11 +179,11 @@ const StudentCard = ({ student, onDelete }: IStudentCardProps) => {
         }
       </h3>
       <ConfirmButton
-        className="settings"
+        className="delete"
         confirmClassName="confirm"
         onClick={() => onDelete(id)}
       >
-        <span className="confirmation">Are you sure?</span>
+        <span className="confirmation">Remove student from this class?</span>
         <i className="material-icons">delete</i>
       </ConfirmButton>
       {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
@@ -149,15 +192,48 @@ const StudentCard = ({ student, onDelete }: IStudentCardProps) => {
 }
 
 
+const StudentsDescription = () => (
+  <Card className="description-card">
+    <p className="description">
+      Below is a list of students that are part of your class. Each students progress with operator/multiple combinations are displayed in a grid. The color of the numbers can indicate the students progress with the multiple:
+    </p>
+    <ul className="description-list">
+      <li>
+        <button className="number not-taken">0</button>
+        A gray number indicates the student has not taken the test.</li>
+      <li>
+        <button className="number in-progress">0</button>
+        Red means they have taken the test, but have yet to pass</li>
+      <li>
+        <button className="number passed-once">0</button>
+        Yellow shows they have passed the test at least once</li>
+      <li>
+        <button className="number passed">0</button>
+        Green indicates they have passed the test three or more times</li>
+    </ul>
+  </Card>
+)
+
+interface IState {
+  error: string
+  studentsDescription: boolean
+}
+
 interface IProps extends RouteComponentProps<{ id: string }> {
   selectedClass: IClass
   dispatch: any
   token: string
 }
 
-class DisconnectedClassDetail extends React.Component<IProps> {
+class DisconnectedClassDetail extends React.Component<IProps, IState> {
+  public state: IState = {
+    error: '',
+    studentsDescription: false,
+  }
+
   public render() {
     const { match, selectedClass } = this.props
+    const { studentsDescription } = this.state
 
     if (selectedClass === undefined) {
       return (
@@ -213,30 +289,81 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         </div>
 
         <div className="students">
-          <h2>Students</h2>
+          <div className="header">
+            <h2>Students</h2>
+            <Button
+              name="studentsDescription"
+              className="blue description-button"
+              onClick={this.toggleDescription}
+            >
+              {!studentsDescription
+                ? 'More info'
+                : 'Close'
+              }
+            </Button>
+          </div>
 
-          {selectedClass.students && Object.keys(selectedClass.students).length > 0
-            ? Object.keys(selectedClass.students).map((id) => (
-                <StudentCard
-                  key={id}
-                  student={selectedClass.students[id]}
-                  onDelete={this.handleDeleteStudent}
-                />
-              ))
-            : (
-              <Link to={`${match.url}/add-students`}>
-                <NewCard className="new-student-card" text="Add your first student!" />
-              </Link>
-            )
+          {studentsDescription
+            ? <StudentsDescription />
+            : null
+          }
+
+          <Route
+            exact={true}
+            path={`${this.props.match.path}/students-description`}
+            component={StudentsDescription}
+          />
+
+          {selectedClass.students
+            && Object.keys(selectedClass.students).length > 0
+            && Object.keys(selectedClass.students).filter((id) => !selectedClass.students[id].changePasswordRequired).length > 0
+              ? Object.keys(selectedClass.students)
+                  .filter((id) => !selectedClass.students[id].changePasswordRequired)
+                  .map((id) => (
+                    <StudentCard
+                      key={id}
+                      student={selectedClass.students[id]}
+                      onDelete={this.handleDeleteStudent}
+                    />
+                ))
+              : (
+                <Link to={`${match.url}/add-students`}>
+                  <NewCard className="new-student-card" text="Add your first student!" />
+                </Link>
+              )
+          }
+        </div>
+        
+        <div className="pending-students">
+          {selectedClass.students
+            && Object.keys(selectedClass.students).length > 0
+            && Object.keys(selectedClass.students).filter((id) => selectedClass.students[id].changePasswordRequired === true).length > 0
+              ? (
+                  <>
+                    <h2>Pending Students</h2>
+                    {Object.keys(selectedClass.students)
+                    .filter((id) => selectedClass.students[id].changePasswordRequired === true)
+                    .map((id: string) => (
+                      <InactiveStudentCard
+                        className="pending-card"
+                        key={id}
+                        student={selectedClass.students[id]}
+                        onDelete={this.handleInvitationDelete}
+                      />
+                    ))}
+                  </>
+                )
+              : null
           }
         </div>
 
         <div className="invitations">
           <h2>Pending Invitations</h2>
 
-          {selectedClass.courseInvitations
+          {selectedClass.students
             ? Object.keys(selectedClass.courseInvitations).map((id: string) => (
               <InvitationCard
+                className="pending-card"
                 key={id}
                 invitation={selectedClass.courseInvitations[id]}
                 onDelete={this.handleInvitationDelete}
@@ -269,6 +396,15 @@ class DisconnectedClassDetail extends React.Component<IProps> {
       console.warn(error)
       this.setState({ error: error.toString() })
     }
+  }
+
+  private toggleDescription = (e: any) => {
+    const { name } = e.target
+    this.setState((prevState) => {
+      const state = {}
+      state[name] = !prevState[name]
+      return state
+    })
   }
 }
 
