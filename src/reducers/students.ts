@@ -1,7 +1,7 @@
 import {
   ADD_STUDENT,
   UPDATE_STUDENT,
-  REMOVE_STUDENT_FROM_CLASS,
+  REMOVE_STUDENT_FROM_COURSE,
 } from '../actions/students'
 
 export default function students (state: any = {}, action: any) {
@@ -13,7 +13,7 @@ export default function students (state: any = {}, action: any) {
         [action.student.id]: { ...action.student },
       }
 
-    case REMOVE_STUDENT_FROM_CLASS:
+    case REMOVE_STUDENT_FROM_COURSE:
       const newState = Object.assign({}, state)
       delete newState[action.studentId]
       return newState

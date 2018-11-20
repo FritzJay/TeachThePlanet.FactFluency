@@ -1,7 +1,7 @@
 import { showLoading, hideLoading } from 'react-redux-loading'
 import { IStudent, ICreateAccountForStudentInput } from '../utils/interfaces'
-import { addStudent, removeStudentFromClass } from 'src/actions/students'
-import { saveCreateAccountForStudent, saveRemoveStudentFromClass } from 'src/utils/api'
+import { addStudent, removeFromCourse } from 'src/actions/students'
+import { saveCreateAccountForStudent, saveRemoveFromCourse } from 'src/utils/api'
 
 export const handleUpdateStudent = (token: string, classId: string, updates: IStudent) => {
   return async (dispatch: any) => {
@@ -20,12 +20,12 @@ export const handleUpdateStudent = (token: string, classId: string, updates: ISt
   }
 }
 
-export const handleRemoveStudentFromClass = (token: string, classId: string, studentId: string) => {
+export const handleRemoveFromCourse = (token: string, classId: string, studentId: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
     try {
-      await saveRemoveStudentFromClass(token, studentId, classId)
-      dispatch(removeStudentFromClass(classId, studentId))
+      await saveRemoveFromCourse(token, studentId, classId)
+      dispatch(removeFromCourse(classId, studentId))
     } finally {
       dispatch(hideLoading())
     }

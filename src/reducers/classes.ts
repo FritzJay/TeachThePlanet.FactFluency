@@ -7,7 +7,7 @@ import {
 import {
   ADD_STUDENT,
   UPDATE_STUDENT,
-  REMOVE_STUDENT_FROM_CLASS,
+  REMOVE_STUDENT_FROM_COURSE,
 } from '../actions/students'
 import students from '../reducers/students'
 
@@ -50,7 +50,7 @@ export default function classes (state: any = {}, action: any) {
 
     case ADD_STUDENT:
     case UPDATE_STUDENT:
-    case REMOVE_STUDENT_FROM_CLASS: {
+    case REMOVE_STUDENT_FROM_COURSE: {
       const { classId, ...remainingAction } = action
 
       return {
