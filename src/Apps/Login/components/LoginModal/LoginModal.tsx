@@ -120,7 +120,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
   private handleLoginClick = async () => {
     const { email, password, userType } = this.props
 
-    if (email === '' || password === '') {
+    if (email === '') {
       this.setState({ error: 'Please enter an email and password' })
       return
     }
@@ -144,9 +144,18 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
     try {
       switch (userType.toLowerCase()) {
         case 'student':
-          await dispatch(handleSignInStudent(email, password))
-          history.push('/fact-fluency')
-          return
+          try {
+            await dispatch(handleSignInStudent(email, password))
+            history.push('/fact-fluency')
+            return
+          } catch (error) {
+            console.log(error)
+            console.log(typeof error)
+            if (error.name === 'ChangePasswordRequiredError') {
+              history.push('/index/first-time-sign-in')
+              return
+            }
+          }
         case 'teacher':
           await dispatch(handleSignInTeacher(email, password))
           history.push('/teacher')

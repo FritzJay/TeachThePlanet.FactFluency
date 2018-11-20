@@ -1,3 +1,10 @@
+export class ChangePasswordRequiredError extends Error {
+  constructor() {
+    super('Password change is required')
+    this.name = 'ChangePasswordRequiredError'
+  }
+}
+
 export const padString = (str: any, length: number, char: string = ' ', left: boolean = true): string => {
   if (str === undefined || str === null || str.toString === undefined) {
     str = '';

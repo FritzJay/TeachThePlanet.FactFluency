@@ -1,7 +1,14 @@
 import { showLoading, hideLoading } from 'react-redux-loading'
 import { IStudent, ICreateAccountForStudentInput } from '../utils/interfaces'
-import { addStudent, removeStudentFromCourse } from 'src/actions/students'
-import { saveCreateAccountForStudent, saveRemoveStudentFromCourse } from 'src/utils/api'
+import { addStudent, removeStudentFromCourse, signInStudent } from 'src/actions/students'
+import {
+  saveCreateAccountForStudent,
+  saveRemoveStudentFromCourse,
+  saveSignInStudent,
+  saveChangeStudentPassword,
+  saveGetStudent
+} from 'src/utils/api'
+import { addUser } from 'src/actions/user'
 
 export const handleUpdateStudent = (token: string, classId: string, updates: IStudent) => {
   return async (dispatch: any) => {
@@ -38,6 +45,24 @@ export const handleCreateStudent = (token: string, courseId: string, input: ICre
     try {
       const student = await saveCreateAccountForStudent(token, courseId, input)
       dispatch(addStudent(courseId, student))
+    } finally {
+      dispatch(hideLoading())
+    }
+  }
+}
+
+export const handleChangeStudentPassword = (email: string, password: string) => {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+    try {
+      await saveChangeStudentPassword(email, password)
+      const token = await saveSignInStudent(email, password)
+      const student = await saveGetStudent(token)
+      dispatch(addUser({
+        ...student.user,
+        token,
+      }))
+      dispatch(signInStudent(student))
     } finally {
       dispatch(hideLoading())
     }

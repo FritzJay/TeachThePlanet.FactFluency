@@ -146,7 +146,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       return
     }
 
-    const { token, match } = this.props
+    const { token, match, history } = this.props
     
     await Promise.all(this.state.students.map(async (student) => {
       try {
@@ -162,6 +162,8 @@ class StudentCreationModal extends React.Component<IProps, IState> {
         console.warn(error)
       }
     }))
+
+    history.push(`/teacher/class-detail/${this.props.match.params.id}`)
   }
 
   private handleBack = () => {

@@ -1,4 +1,5 @@
 import { handleError } from './request'
+import { ChangePasswordRequiredError } from '..'
 import { IStudentUser, IStudent, ICreateAccountForStudentInput } from '../interfaces'
 
 export const saveSignUpStudent = async (email: string, password: string): Promise<IStudentUser> => {
@@ -210,13 +211,77 @@ export const saveSignInStudent = async (email: string, password: string): Promis
       },
       body: JSON.stringify({ email, password, role: 'student' })
     })
-    const { error, token } = await response.json()
+    const { error, token, changePasswordRequired } = await response.json()
 
     if (error !== undefined) {
       throw error
     }
 
+    if (changePasswordRequired) {
+      throw new ChangePasswordRequiredError()
+    }
+
     return token
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}
+
+export const saveChangeStudentPassword = async (email: string, password: string) => {
+  const functionName = 'saveChangeStudentPassword'
+  const query = `
+    mutation updateNewStudent($input: UpdateNewStudentInput!) {
+      updateNewStudent(input: $input) {
+        id
+        name
+        createdAt
+        updatedAt
+        tests {
+          id
+          number
+          operator
+          testResults {
+            id
+            total
+            needed
+            correct
+            createdAt
+          }
+        },
+        user {
+          email
+        }
+      }
+    }
+  `
+  try {
+    const user = {
+      email,
+      password
+    }
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        query,
+        variables: {
+          input: { user },
+        },
+        operationName: 'updateNewStudent',
+      })
+    })
+    const { data, errors } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.updateNewStudent
 
   } catch (error) {
     handleError(functionName, error)

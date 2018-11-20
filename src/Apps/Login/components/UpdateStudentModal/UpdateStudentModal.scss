@@ -1,0 +1,56 @@
+@import 'src/Stylesheets/all';
+
+.UpdateStudentModal {
+  .header {
+    color: $white;
+    background-color: $blue;
+    padding: 2em;
+  }
+
+  .inputs {
+    display: grid;
+    grid-gap: 1em;
+
+    padding: 2em;
+
+    .input {
+      font-family: 'Roboto', sans-serif;
+        font-size: 1em;
+        font-weight: 900;
+  
+        background-color: #FFFFFF;
+        
+        border: none;
+        border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+        
+        color: rgb(80, 80, 80);
+  
+        width: 90%;
+    }
+  }
+
+  .error {
+    color: $red;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0;
+  }
+    
+  .bottom-buttons {
+    width: 90%;
+    margin: auto auto;
+    border-top: solid 2px $light-gray;
+    padding: 2em 0;
+
+    .cancel-button {
+      margin-top: .5em;
+      border: none;
+    }
+  }
+
+  .loading {
+    grid-column: 1 / -1;
+    justify-self: center;
+    align-self: center;
+  }
+}

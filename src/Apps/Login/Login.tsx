@@ -1,6 +1,13 @@
 import * as React from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { LoginModal, Navbar, PageNotFound, SignupModal, TitleModal } from './components'
+import {
+  LoginModal,
+  Navbar,
+  PageNotFound,
+  SignupModal,
+  TitleModal,
+  ConnectedUpdateStudentModal
+} from './components'
 import './Login.css'
 
 interface IProps extends RouteComponentProps<any> { }
@@ -45,6 +52,12 @@ export default class Login extends React.Component<IProps, IState> {
           exact={true}
           path={`${match.path}/signup`}
           render={this.renderSignupModal}
+        />
+      
+        <Route
+          exact={true}
+          path={`${match.path}/first-time-sign-in`}
+          render={this.renderUpdateStudentModal}
         />
 
         <Route component={PageNotFound} />
@@ -103,5 +116,19 @@ export default class Login extends React.Component<IProps, IState> {
     state[name] = value
 
     this.setState(state)
+  }
+
+  private renderUpdateStudentModal = (props: any) => {
+    const { email, password, secondPassword } = this.state
+
+    return (
+      <ConnectedUpdateStudentModal
+        {...props}
+        email={email}
+        password={password}
+        secondPassword={secondPassword}
+        onChange={this.handleChange}
+      />
+    )
   }
 }
