@@ -22,12 +22,14 @@ export const fetchClass = async (token: string, classID: string): Promise<IClass
         students {
           id
           name
+          changePasswordRequired
         }
         courseInvitations {
           id
           student {
             id,
             name
+            changePasswordRequired
           }
           course {
             id,
@@ -87,12 +89,14 @@ export const saveAddClass = async (token: string, grade: string, name: string): 
         students {
           id
           name
+          changePasswordRequired
         }
         courseInvitations {
           id
           student {
             id,
-            name
+            name,
+            changePasswordRequired
           }
           course {
             id,
@@ -158,12 +162,14 @@ export const saveUpdateClass = async (token: string, classID: string, updates: I
           name
           createdAt
           updatedAt
+          changePasswordRequired
         }
         courseInvitations {
           id
           student {
             id,
-            name
+            name,
+            changePasswordRequired
           }
           course {
             id,

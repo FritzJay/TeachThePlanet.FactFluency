@@ -26,6 +26,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
             name
             createdAt
             updatedAt
+            changePasswordRequired
             tests {
               id
               number
@@ -48,6 +49,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
             student {
               id
               name
+              changePasswordRequired
             }
             course {
               id
@@ -127,6 +129,7 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
             name
             createdAt
             updatedAt
+            changePasswordRequired
             tests {
               id
               number
@@ -149,6 +152,7 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
             student {
               id
               name
+              changePasswordRequired
             }
             course {
               id

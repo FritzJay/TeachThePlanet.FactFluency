@@ -21,6 +21,7 @@ export const saveCreateInvitation = async (token: string, classId: string, email
           name
           createdAt
           updatedAt
+          changePasswordRequired
         }
       }
     }
@@ -104,6 +105,7 @@ export const saveAcceptInvitation = async (token: string, id: string): Promise<I
         name
         students {
           id
+          changePasswordRequired
         }
         teacher {
           id
