@@ -18,7 +18,7 @@ import classes from './classes'
 import {
   ADD_STUDENT,
   UPDATE_STUDENT,
-  REMOVE_STUDENT,
+  REMOVE_STUDENT_FROM_CLASS,
 } from '../actions/students'
 
 import { UPDATE_TEST_PARAMETERS } from '../actions/testParameters'
@@ -59,12 +59,10 @@ export default function teacherHome (state: any = {}, action: any) {
     case ADD_CLASS:
     case ADD_STUDENT:
     case UPDATE_STUDENT:
-    case REMOVE_STUDENT:
+    case REMOVE_STUDENT_FROM_CLASS:
     case UPDATE_TEST_PARAMETERS:
     case ADD_INVITATION:
     case REMOVE_INVITATION:
-      console.log(state)
-      console.log(action)
       return {
         ...state,
         classes: classes(state.classes, action)

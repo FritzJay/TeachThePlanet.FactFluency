@@ -280,3 +280,37 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
     throw error
   }
 }
+
+export const saveRemoveStudentFromClass = async (token: string, studentId: string, courseId: string): Promise<boolean> => {
+  const functionName = 'saveRemoveStudentFromClass'
+  const query = `
+    mutation removeStudentFromClass($studentId: ObjID!, $courseId: ObjID!) {
+      removeStudentFromClass(studentId: $courseId, )
+  }
+  `
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
+      },
+      body: JSON.stringify({
+        query,
+        variables: { token, courseId, studentId }
+      })
+    })
+    const { errors, data } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.removeStudentFromClass
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}

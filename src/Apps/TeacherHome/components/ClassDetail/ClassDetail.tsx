@@ -6,8 +6,9 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { IClass, getOperatorSymbol, ITest, ICourseInvitation, IStudentUser } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
+import { handleRemoveInvitation } from 'src/handlers/invitations'
+import { handleRemoveStudentFromClass } from 'src/handlers/students'
 import './ClassDetail.css'
-import { handleRemoveInvitation } from 'src/handlers/invitations';
 
 interface IInvitationCardProps {
   invitation: ICourseInvitation
@@ -85,10 +86,11 @@ const OperatorRow = ({ operator, symbol, color, tests }: IOperatorRowProps) => {
 
 interface IStudentCardProps {
   student: IStudentUser
+  onDelete: (id: string) => void
 }
 
-const StudentCard = ({ student }: IStudentCardProps) => {
-  const { name, tests, user } = student
+const StudentCard = ({ student, onDelete }: IStudentCardProps) => {
+  const { id, name, tests, user } = student
   const operators = [
     {
       operator: 'addition',
@@ -133,7 +135,10 @@ const StudentCard = ({ student }: IStudentCardProps) => {
           : ''
         }
       </h3>
-      <button className="settings">
+      <button
+        className="settings"
+        onClick={() => onDelete(id)}
+      >
         <i className="material-icons">delete</i>
       </button>
       {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
@@ -209,7 +214,13 @@ class DisconnectedClassDetail extends React.Component<IProps> {
           <h2>Students</h2>
 
           {selectedClass.students && Object.keys(selectedClass.students).length > 0
-            ? Object.keys(selectedClass.students).map((id) => <StudentCard key={id} student={selectedClass.students[id]} />)
+            ? Object.keys(selectedClass.students).map((id) => (
+                <StudentCard
+                  key={id}
+                  student={selectedClass.students[id]}
+                  onDelete={this.handleDeleteStudent}
+                />
+              ))
             : (
               <Link to={`${match.url}/add-students`}>
                 <NewCard className="new-student-card" text="Add your first student!" />
@@ -245,6 +256,16 @@ class DisconnectedClassDetail extends React.Component<IProps> {
       dispatch(handleRemoveInvitation(token, selectedClass.id, id))
     } catch (error) {
       alert(error.message())
+    }
+  }
+
+  private handleDeleteStudent = (id: string) => {
+    const { dispatch, token, selectedClass } = this.props
+    try {
+      dispatch(handleRemoveStudentFromClass(token, selectedClass.id, id))
+    } catch (error) {
+      console.warn(error)
+      this.setState({ error: error.toString() })
     }
   }
 }

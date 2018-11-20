@@ -3,7 +3,7 @@ import { IStudent } from '../utils'
 export const ADD_STUDENT = 'ADD_STUDENT'
 export const SIGN_IN_STUDENT = 'SIGN_IN_STUDENT'
 export const UPDATE_STUDENT = 'UPDATE_STUDENT'
-export const REMOVE_STUDENT = 'REMOVE_STUDENT'
+export const REMOVE_STUDENT_FROM_CLASS = 'REMOVE_STUDENT_FROM_CLASS'
 
 export const addStudent = (classId: string, student: IStudent) => ({
   type: ADD_STUDENT,
@@ -22,8 +22,8 @@ export const updateStudent = (classId: string, updates: IStudent) => ({
   student: updates,
 })
 
-export const removeStudent = (classId: string, studentId: string) => ({
-  type: REMOVE_STUDENT,
+export const removeStudentFromClass = (classId: string, studentId: string) => ({
+  type: REMOVE_STUDENT_FROM_CLASS,
   classId,
   studentId,
 })
