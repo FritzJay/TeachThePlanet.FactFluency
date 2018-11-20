@@ -38,7 +38,7 @@ class ClassListDropdown extends React.Component<IProps> {
             </option>
           ))}
         </select>
-        <Link className="join-class-link" to="/fact-fluency/join-class">
+        <Link className="join-class-link" to="/fact-fluency/join-class" title="View class invitations">
           <Button className={`join-class-button ${hasInvitations ? 'yellow' : 'gray'}`}>+</Button>
         </Link>
       </div>
