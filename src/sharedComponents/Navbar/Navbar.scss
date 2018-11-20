@@ -10,6 +10,7 @@
   padding: 1em 2em;
   
   display: grid;
+  grid-gap: 0.5em;
   grid-auto-flow: row;
   grid-template-columns: repeat(5, 1fr);
 
@@ -74,6 +75,30 @@
   
   .toggle-btn {
     display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .Navbar {
+    .LogoutLink {
+      grid-row: 1 / 1;
+      grid-column: 1 / 1;
+    }
+
+    .logo {
+      grid-row: 1 / 1;
+      grid-column: 2 / 2;
+    }
+
+    .first-half-of-children {
+      grid-row: 1 / 1;
+      grid-column: 3 / 5;
+    }
+
+    .UserIcon {
+      grid-row: 1 / 1;
+      grid-column: 5 / 5;
+    }
   }
 }
 
