@@ -117,6 +117,18 @@
                 &:hover {
                     cursor: pointer;
                 }
+
+                .confirmation {
+                    display: none;
+                }
+                
+                &.confirm {
+                    color: $red;
+
+                    .confirmation {
+                        display: inline;
+                    }
+                }
             }
 
             .OperatorRow {

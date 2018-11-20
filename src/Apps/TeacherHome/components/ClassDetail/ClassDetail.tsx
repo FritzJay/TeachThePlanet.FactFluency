@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { IClass, getOperatorSymbol, ITest, ICourseInvitation, IStudentUser } from 'src/utils'
-import { Card, Loading, NewCard } from 'src/sharedComponents'
+import { Card, Loading, NewCard, ConfirmButton } from 'src/sharedComponents'
 import { handleRemoveInvitation } from 'src/handlers/invitations'
 import { handleRemoveStudentFromCourse } from 'src/handlers/students'
 import './ClassDetail.css'
@@ -135,12 +135,14 @@ const StudentCard = ({ student, onDelete }: IStudentCardProps) => {
           : ''
         }
       </h3>
-      <button
+      <ConfirmButton
         className="settings"
+        confirmClassName="confirm"
         onClick={() => onDelete(id)}
       >
+        <span className="confirmation">Are you sure?</span>
         <i className="material-icons">delete</i>
-      </button>
+      </ConfirmButton>
       {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
     </Card>
   )
