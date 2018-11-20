@@ -261,8 +261,16 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       randomQuestions: parseInt(randomQuestions.toString(), 10),
     }
 
-    dispatch(handleUpdateTestParameters(token, match.params.id, updates))
-    history.goBack()
+    try {
+      dispatch(handleUpdateTestParameters(token, match.params.id, updates))
+      history.goBack()
+    } catch (error) {
+      console.warn(error)
+      this.setState({
+        loading: false,
+        error: error.message,
+      })
+    }
   }
   
   private handleCancelClick = () => this.props.history.goBack()

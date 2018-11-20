@@ -14,8 +14,6 @@ export const handleUpdateTestParameters = (token: string, classID: string, updat
       const { id, ...remainingUpdates } = updates
       const updatedTestParameters = await saveUpdateTestParameters(token, id, remainingUpdates)
       dispatch(updateTestParameters(classID, updatedTestParameters))
-    } catch (error) {
-      alert('There was an error saving your changes. Please try again later.')
     } finally {
       dispatch(hideLoading())
     }

@@ -33,7 +33,6 @@ import {
   formatCourseInvitations,
 } from './utils'
 
-import { UPDATE_TEST_PARAMETERS } from 'src/actions/testParameters'
 import { CLEAR_STORE } from '../actions/shared'
 
 export default function factFluency (state: any = {}, action: any) {
@@ -98,7 +97,6 @@ export default function factFluency (state: any = {}, action: any) {
     case ADD_STUDENT:
     case UPDATE_STUDENT:
     case REMOVE_STUDENT:
-    case UPDATE_TEST_PARAMETERS:
     case ADD_INVITATION:
     case REMOVE_INVITATION:
       return {
