@@ -81,16 +81,6 @@
         grid-row-gap: 2em;
         justify-content: center;
 
-        .header {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            h2 {
-                margin: 0;
-            }
-        }
-
         .new-student-card {
             width: 757px;
         }
@@ -176,6 +166,12 @@
                 }
             }
         }
+
+        .section-header {
+            h2 {
+                margin-top: 1em;
+            }
+        }
     }
 
     .pending-students {
@@ -251,31 +247,32 @@
 
     .pending-card {
         display: grid;
-        grid-template-areas: 'studentname studentname date date delete';
+        grid-template-areas: 'studentname studentname studentname email email email date delete';
         align-items: center;
+        justify-items: center;
         padding: 0.25em 1em;
         
         .student-name {
             grid-area: studentname;
 
-            justify-self: flex-start;
+            color: $black;
         }
 
         .email {
+            grid-area: email;
+
             color: $gray;
         }
         
         .date {
             grid-area: date;
 
-            justify-self: center;
             color: $gray;
         }
 
         .delete {
             grid-area: delete;
 
-            justify-self: flex-end;
             text-align: end;
             border: none;
             background-color: transparent;
@@ -285,17 +282,28 @@
             }
         }
     }
-    
-    .description-button {
-        font-weight: bold;
-        padding: 0.25em 1em;
-        margin-left: 1em;
+
+    .section-header {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+
+        h2 {
+            margin: 3em 0 0 0;
+        }
+        
+        .description-button {
+            font-weight: bold;
+            padding: 0.25em 1em;
+            margin-left: 1em;
+        }
     }
 
     .description-card {
+        max-width: 725px;
         color: $gray;
         font-weight: bold;
-        padding: 1em 2em;
+        padding: 1em;
         margin-top: -1em;
 
         ul {
@@ -304,6 +312,10 @@
             .number {
                 display: inline;
             }
+        }
+
+        .important {
+            color: $black;
         }
     }
 

@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Link, RouteComponentProps, Route } from 'react-router-dom'
+import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { IClass, getOperatorSymbol, ITest, ICourseInvitation, IStudentUser } from 'src/utils'
 import { Card, Loading, NewCard, ConfirmButton, Button } from 'src/sharedComponents'
@@ -21,19 +21,18 @@ const InactiveStudentCard = ({ className, student, onDelete }: IInactiveStudentC
   return (
     <Card className={`InactiveStudentCard${className ? ' ' + className : ''}`}>
       <h3 className="student-name">
-        {student.name.length > 8
-          ? student.name.slice(0, 8) + '...'
+        {student.name.length > 15
+          ? student.name.slice(0, 15) + '...'
           : student.name}
-        &nbsp;&nbsp;
-        <span className="email">{student.user.email}</span>
       </h3>
-      <h4 className="date">Sent On: {date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
+      <span className="email">{student.user.email}</span>
+      <h4 className="date">{date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
       <ConfirmButton
         className="delete"
         confirmClassName="confirm"
         onClick={() => onDelete(student.id)}
       >
-        <span className="confirmation">Remove new student?</span>
+        <span className="confirmation">Delete?</span>
         <i className="material-icons">delete</i>
       </ConfirmButton>
     </Card>
@@ -52,13 +51,12 @@ const InvitationCard = ({ className, invitation, onDelete }: IInvitationCardProp
   return (
     <Card className={`InvitationCard${className ? ' ' + className : ''}`}>
       <h3 className="student-name">
-        {invitation.student.name.length > 8
-          ? invitation.student.name.slice(0, 8) + '...'
+        {invitation.student.name.length > 15
+          ? invitation.student.name.slice(0, 15) + '...'
           : invitation.student.name}
-        &nbsp;&nbsp;
-        <span className="email">{invitation.student.user.email}</span>
       </h3>
-      <h4 className="date">Sent On: {date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
+      <span className="email">{invitation.student.user.email}</span>
+      <h4 className="date">{date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
       <ConfirmButton
         className="delete"
         confirmClassName="confirm"
@@ -214,9 +212,54 @@ const StudentsDescription = () => (
   </Card>
 )
 
+const PendingStudentsDescription = () => (
+  <Card className="description-card">
+    <p className="description">
+      The <span className="important">pending students</span> section lists the students who's accounts you've created for them. These students still need to sign in, using the username displayed on the card, and update their passwords.
+    </p>
+    <p>The <span className="important">pending students</span> card is broken into 4 sections:</p>
+    <ol>
+      <li><span className="important">Student Name:</span> The students name</li>
+      <li><span className="important">Username:</span> The username the student must use to login</li>
+      <li><span className="important">Send Date:</span> The date the invitation was sent</li>
+      <li><span className="important">Delete:</span> A button used to delete the invitation</li>
+    </ol>
+    <Card className="pending-card">
+      <h3 className="student-name">Student Name</h3>
+      <span className="email">Username</span>
+      <h4 className="date">Send Date</h4>
+      <span className="delete">Delete</span>
+    </Card>
+  </Card>
+)
+
+const InvitationsDescription = () => (
+  <Card className="description-card">
+    <p className="description">
+      The <span className="important">pending invitations</span> section lists the students who you've invited to join this class. These students still need to sign in and accept the invitation.
+    </p>
+    <p>The <span className="important">pending invitations</span> card is broken into 4 sections:</p>
+    <ol>
+      <li><span className="important">Student Name:</span> The students name</li>
+      <li><span className="important">Username:</span> The username the student must use to login</li>
+      <li><span className="important">Send Date:</span> The date the invitation was sent</li>
+      <li><span className="important">Delete:</span> A button used to delete the invitation</li>
+    </ol>
+    <Card className="pending-card">
+      <h3 className="student-name">Student Name</h3>
+      <span className="email">Username</span>
+      <h4 className="date">Send Date</h4>
+      <span className="delete">Delete</span>
+    </Card>
+  </Card>
+)
+
+
 interface IState {
   error: string
   studentsDescription: boolean
+  invitationsDescription: boolean
+  pendingStudentsDescription: boolean
 }
 
 interface IProps extends RouteComponentProps<{ id: string }> {
@@ -229,11 +272,13 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     studentsDescription: false,
+    invitationsDescription: false,
+    pendingStudentsDescription: false,
   }
 
   public render() {
     const { match, selectedClass } = this.props
-    const { studentsDescription } = this.state
+    const { studentsDescription, invitationsDescription, pendingStudentsDescription } = this.state
 
     if (selectedClass === undefined) {
       return (
@@ -289,7 +334,7 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
         </div>
 
         <div className="students">
-          <div className="header">
+          <div className="section-header">
             <h2>Students</h2>
             <Button
               name="studentsDescription"
@@ -307,12 +352,6 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
             ? <StudentsDescription />
             : null
           }
-
-          <Route
-            exact={true}
-            path={`${this.props.match.path}/students-description`}
-            component={StudentsDescription}
-          />
 
           {selectedClass.students
             && Object.keys(selectedClass.students).length > 0
@@ -340,7 +379,25 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
             && Object.keys(selectedClass.students).filter((id) => selectedClass.students[id].changePasswordRequired === true).length > 0
               ? (
                   <>
-                    <h2>Pending Students</h2>
+                    <div className="section-header">
+                      <h2>Pending Students</h2>
+                      <Button
+                        name="pendingStudentsDescription"
+                        className="blue description-button"
+                        onClick={this.toggleDescription}
+                      >
+                        {!pendingStudentsDescription
+                          ? 'More info'
+                          : 'Close'
+                        }
+                      </Button>
+                    </div>
+
+                    {pendingStudentsDescription
+                      ? <PendingStudentsDescription />
+                      : null
+                    }
+
                     {Object.keys(selectedClass.students)
                     .filter((id) => selectedClass.students[id].changePasswordRequired === true)
                     .map((id: string) => (
@@ -358,7 +415,24 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
         </div>
 
         <div className="invitations">
-          <h2>Pending Invitations</h2>
+          <div className="section-header">
+            <h2>Pending Invitations</h2>
+            <Button
+              name="invitationsDescription"
+              className="blue description-button"
+              onClick={this.toggleDescription}
+            >
+              {!invitationsDescription
+                ? 'More info'
+                : 'Close'
+              }
+            </Button>
+          </div>
+
+          {invitationsDescription
+            ? <InvitationsDescription />
+            : null
+          }
 
           {selectedClass.students
             ? Object.keys(selectedClass.courseInvitations).map((id: string) => (
