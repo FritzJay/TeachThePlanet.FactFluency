@@ -18,6 +18,11 @@
         background-size: 100%;
         transition: background 0s;
     }
+
+    &:focus {
+        box-shadow: $dp-two;
+        outline: none;
+    }
 }
 
 /* Colors Need To Be Dynamic */
