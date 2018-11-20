@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 
-import { Card, Button } from 'src/sharedComponents'
+import { Card, ConfirmButton } from 'src/sharedComponents'
 import { ICourseInvitation } from 'src/utils'
 import { handleAcceptInvitation, handleDeclineInvitation } from 'src/handlers/invitations'
 import './CourseInvitations.css'
@@ -30,20 +30,24 @@ class CourseInvitations extends React.Component<IProps> {
               >
                 <h3 className="card-header">{invitations[id].course.name}</h3>
                 <h4 className="teacher">{invitations[id].course.teacher.name}</h4>
-                <Button
+                <ConfirmButton
                   value={invitations[id].id}
                   onClick={this.handleDecline}
                   className="yellow decline"
+                  confirmClassName="confirm-button"
                 >
-                  Decline
-                </Button>
-                <Button
+                  <span className="default">Decline</span>
+                  <span className="confirmation">Are you sure?</span>
+                </ConfirmButton>
+                <ConfirmButton
                   value={invitations[id].id}
                   onClick={this.handleAccept}
                   className="green accept"
+                  confirmClassName="confirm-button"
                 >
-                  Accept
-                </Button>
+                  <span className="default">Accept</span>
+                  <span className="confirmation">Are you sure?</span>
+                </ConfirmButton>
               </Card>
             ))}
           </div>

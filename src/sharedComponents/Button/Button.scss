@@ -6,22 +6,28 @@
     color: $color;
     transition: background 0.25s, background-color 0s;
 
-    &:hover {
+    &:hover:enabled {
         border: solid 3px $very-light-color;
         background: $light-color radial-gradient(circle, transparent 1%, $light-color 1%) center / 15000%;
         color: #FFFFFF;
     }
 
-    &:active {
+    &:active:enabled {
         background-color: $light-color;
         border: solid 3px $light-color;
         background-size: 100%;
         transition: background 0s;
     }
 
-    &:focus {
+    &:focus:enabled {
         box-shadow: $dp-two;
         outline: none;
+    }
+
+    &:disabled {
+        color: $white;
+        background-color: $very-light-gray;
+        border-color: $very-light-gray;
     }
 }
 

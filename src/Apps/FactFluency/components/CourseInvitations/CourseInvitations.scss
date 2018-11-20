@@ -46,11 +46,29 @@
     .decline {
       grid-area: decline;
       margin-right: 0.5em;
+
+      .confirmation {
+        display: none;
+      }
     }
 
     .accept {
       grid-area: accept;
       margin-left: 0.5em;
+
+      .confirmation {
+        display: none;
+      }
+    }
+
+    .confirm-button {
+      .default {
+        display: none;
+      }
+
+      .confirmation {
+        display: inline;
+      }
     }
   }
 }

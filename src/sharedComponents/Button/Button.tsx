@@ -13,23 +13,36 @@ export const Button = (props: any) => {
   );
 }
 
+
 interface IState {
   confirm: boolean
+  disabled: boolean
 }
 
 export class ConfirmButton extends React.Component<any, IState> {
-  public state = {
-    confirm: false
+  public state: IState = {
+    confirm: false,
+    disabled: false
+  }
+
+  private confirmTimeout: any
+  private disabledTimeout: any
+
+  public componentWillUnmount() {
+    window.clearTimeout(this.confirmTimeout)
+    window.clearTimeout(this.disabledTimeout)
   }
 
   public render() {
-    const { className, children, confirmClassName } = this.props
+    const { className, children, confirmClassName, disableTimeout, ...rest } = this.props
+    const { confirm, disabled } = this.state
 
     return (
       <Button
-        {...this.props}
-        className={`${className ? className : ''}${confirmClassName ? ' ' + confirmClassName : ''}`}
+        {...rest}
+        className={`${className ? className : ''}${confirmClassName && confirm ? ' ' + confirmClassName : ''}`}
         onClick={this.handleClick}
+        disabled={disabled}
       >
         {children
           ? children
@@ -40,8 +53,25 @@ export class ConfirmButton extends React.Component<any, IState> {
   }
 
   private handleClick = (e: any) => {
-    this.setState({ confirm: true },
-      () => this.props.onClick && this.props.onClick(e)
-    )
+    if (this.state.disabled) { return }
+    
+    if (this.state.confirm) {
+      this.props.onClick(e)
+      this.setState({
+        disabled: true,
+        confirm: false,
+      }, () => {
+        this.disabledTimeout = this.props.disableTimeout && window.setTimeout(() => {
+          this.setState({ disabled:  false })
+        }, this.props.disableTimeout)
+      })
+      return
+    }
+
+    this.setState({ confirm: true }, () => {
+      this.confirmTimeout = window.setTimeout(() => {
+        this.setState({ confirm: false })
+      }, 2000)
+    })
   }
 }
