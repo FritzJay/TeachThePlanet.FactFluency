@@ -1,0 +1,83 @@
+@import 'src/Stylesheets/all';
+
+.StudentCard {
+  width: 725px;
+
+  grid-column: 1 / -1;
+  justify-self: center;
+
+  padding: 1em;
+  display: grid;
+  grid-gap: 1em;
+  grid-template-areas:
+      'name           name           name           settings       settings       settings'
+      'addition       addition       addition       addition       addition       addition'
+      'subtraction    subtraction    subtraction    subtraction    subtraction    subtraction'
+      'multiplication multiplication multiplication multiplication multiplication multiplication'
+      'division       division       division       division       division       division';
+
+  .name {
+      grid-area: name;
+      margin: 0;
+  }
+
+  .OperatorRow {
+      display: flex;
+      justify-content: center;
+
+      border-bottom: 1px solid rgba($color: #000000, $alpha: .25);
+      padding-bottom: .5em;
+
+      &.addition {
+          grid-area: addition;
+      }
+
+      &.subtraction {
+          grid-area: subtraction;
+      }
+
+      &.multiplication {
+          grid-area: multiplication;
+      }
+
+      &.division {
+          grid-area: division;
+      }
+      
+      .operator {
+          margin: 0 1em 0 0;
+
+          color: $white;
+          border: none;
+          font-size: 30px;
+          font-weight: 500;
+
+          width: 42px;
+          height: 42px;
+
+          border-radius: 12px;
+
+          outline: none;
+
+          &.red {
+              background-color: $red;
+          }
+
+          &.blue {
+              background-color: $blue;
+          }
+
+          &.green {
+              background-color: $green;
+          }
+
+          &.yellow {
+              background-color: $yellow;
+          }
+      }
+
+      &:last-child {
+          border-bottom: none;
+      }
+  }
+}
