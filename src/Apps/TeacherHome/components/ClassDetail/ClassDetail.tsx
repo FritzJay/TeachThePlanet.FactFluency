@@ -26,7 +26,7 @@ const PendingCard = ({ className, date, student, onDelete }: IPendingCardProps) 
           : student.name}
       </h3>
       <span className="email">{student.user.email}</span>
-      <h4 className="date">{date.getMonth()}/{date.getDay()}/{date.getFullYear()}</h4>
+      <h4 className="date">{date.getMonth()}/{date.getDate()}/{date.getFullYear()}</h4>
       <ConfirmButton
         className="delete"
         confirmClassName="confirm"
