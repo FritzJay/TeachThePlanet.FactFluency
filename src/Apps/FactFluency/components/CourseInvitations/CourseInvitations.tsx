@@ -51,7 +51,7 @@ class CourseInvitations extends React.Component<IProps> {
               </Card>
             ))}
           </div>
-          ) : <p>You don't have any invitations. Check back later!</p>
+          ) : <p>You don't have any invitations. Ask your teacher to create an invitation for "student2@email.com"!</p>
         }
       </div>
     )

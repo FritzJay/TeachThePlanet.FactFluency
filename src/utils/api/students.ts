@@ -298,6 +298,7 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
         name
         createdAt
         updatedAt
+        changePasswordRequired
         tests {
           id
           number
