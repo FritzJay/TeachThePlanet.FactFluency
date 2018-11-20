@@ -3,7 +3,7 @@ import {
   saveCreateInvitation,
   saveRemoveInvitation,
 } from '../utils/api'
-import { addInvitation, removeInvitation } from '../actions/invitations'
+import { addInvitation, removeInvitation, declineInvitation } from '../actions/invitations'
 
 export const handleCreateInvitation = (token: string, classId: string, email: string) => {
   return async (dispatch: any) => {
@@ -23,6 +23,33 @@ export const handleRemoveInvitation = (token: string, classId: string, id: strin
     try {
       await saveRemoveInvitation(token, id)
       dispatch(removeInvitation(classId, id))
+    } finally {
+      dispatch(hideLoading())
+    }
+  }
+}
+
+export const handleAcceptInvitation = (token: string, classId: string, courseInvitationId: string) => {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+    try {
+      /*
+      const invitation = await saveAcceptInvitation(token, courseInvitationId)
+      dispatch(addInvitation(classId, invitation))
+      */
+      console.log('SAVING INVITATION')
+    } finally {
+      dispatch(hideLoading())
+    }
+  }
+}
+
+export const handleDeclineInvitation = (token: string, courseInvitationId: string) => {
+  return async (dispatch: any) => {
+    dispatch(showLoading())
+    try {
+      await saveRemoveInvitation(token, courseInvitationId)
+      dispatch(declineInvitation(courseInvitationId))
     } finally {
       dispatch(hideLoading())
     }

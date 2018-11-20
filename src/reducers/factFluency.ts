@@ -25,7 +25,8 @@ import classes from './classes'
 
 import {
   ADD_INVITATION,
-  REMOVE_INVITATION
+  REMOVE_INVITATION,
+  DECLINE_INVITATION
 } from 'src/actions/invitations'
 
 import {
@@ -111,6 +112,15 @@ export default function factFluency (state: any = {}, action: any) {
           ? state.classes[action.id]
           : {}
       }
+
+    case DECLINE_INVITATION: {
+      const courseInvitations = Object.assign({}, state.courseInvitations)
+      delete courseInvitations[action.id]
+      return {
+        ...state,
+        courseInvitations 
+      }
+    }
 
     default:
       return state
