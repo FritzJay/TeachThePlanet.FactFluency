@@ -6,8 +6,14 @@ import { RouteComponentProps } from 'react-router'
 
 import { Modal, ModalHeader, ModalContent, Input, Button, Card, ConfirmButton } from 'src/sharedComponents'
 import './StudentCreationModal.css'
+import { IClass } from 'src/utils';
+import { handleCreateStudent } from 'src/handlers/students';
 
-interface IProps extends RouteComponentProps<{}> {}
+interface IProps extends RouteComponentProps<{ id: string }> {
+  token: string
+  dispatch: any
+  selectedClass: IClass
+}
 
 interface IState {
   error: string
@@ -65,7 +71,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
             {students.map((student) => (
               <Card key={student} className="student-card">
                 <h4 className="name">{student}</h4>
-                <h4 className="username">{student.replace(' ', '')}@Homeroom</h4>
+                <h4 className="username">{this.getUsername(student)}</h4>
                 <Button
                   className="remove remove-button"
                   onClick={() => this.handleRemoveStudent(student)}
@@ -115,9 +121,8 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       return
     }
 
-    const [ firstName, lastName ] = name.split(' ')
     this.setState((prevState) => ({
-      students: prevState.students.concat([`${firstName} ${lastName[0].toUpperCase()}`]),
+      students: prevState.students.concat([this.getDisplayName(name)]),
       name: '',
     }))
   }
@@ -134,18 +139,57 @@ class StudentCreationModal extends React.Component<IProps, IState> {
     }))
   }
 
-  private handleCreateAccounts = () => {
+  private handleCreateAccounts = async () => {
     if (this.state.students.length === 0) {
       this.setState({ error: 'At least one student is required' })
+      return
     }
-    console.log('CREATING ACCOUNTS')
+
+    const { token, match } = this.props
+    
+    await Promise.all(this.state.students.map(async (student) => {
+      try {
+        await this.props.dispatch(handleCreateStudent(token, match.params.id, {
+          name: this.getDisplayName(student),
+          user: {
+            email: this.getUsername(student),
+            firstName: this.getFirstName(student),
+            lastName: this.getLastInitial(student),
+          }
+        }))
+      } catch (error) {
+        console.warn(error)
+      }
+    }))
   }
 
   private handleBack = () => {
     this.props.history.goBack()
   }
+
+  private getDisplayName = (name: string): string => {
+    const [ firstName, lastName ] = name.split(' ')
+    return `${firstName} ${lastName[0].toUpperCase()}`
+  }
+
+  private getUsername = (name: string): string => {
+    return name.replace(' ', '') + '@' + this.props.selectedClass.name
+  }
+
+  private getFirstName = (name: string): string => {
+    return name.split(' ')[0]
+  }
+
+  private getLastInitial = (name: string): string => {
+    return name.split(' ')[1][0].toUpperCase()
+  }
 }
 
-const mapStateToProps = ({ user }: any) => ({ token: user.token })
+const mapStateToProps = ({ teacherHome, user }: any, { match }: IProps) => ({
+  token: user.token,
+  selectedClass: teacherHome.classes
+    ? teacherHome.classes[match.params.id]
+    : undefined,
+})
 
 export const ConnectedStudentCreationModal = connect(mapStateToProps)(StudentCreationModal)

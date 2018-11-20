@@ -77,6 +77,15 @@ export interface IUpdateTestParameters {
   randomQuestions: number
 }
 
+export interface ICreateAccountForStudentInput {
+  name: string,
+  user: {
+    email: string,
+    firstName: string,
+    lastName: string
+  }
+}
+
 /* Fact Fluency Interfaces */
 
 export interface ITest {

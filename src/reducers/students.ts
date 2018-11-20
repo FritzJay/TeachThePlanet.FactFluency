@@ -10,14 +10,13 @@ export default function students (state: any = {}, action: any) {
     case UPDATE_STUDENT:
       return {
         ...state,
-        [action.student.id]: action.student,
+        [action.student.id]: { ...action.student },
       }
 
     case REMOVE_STUDENT:
-      return {
-        ...state,
-        [action.studentId]: undefined,
-      }
+      const newState = Object.assign({}, state)
+      delete newState[action.studentId]
+      return newState
 
     default:
       return state

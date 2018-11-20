@@ -63,6 +63,8 @@ export default function teacherHome (state: any = {}, action: any) {
     case UPDATE_TEST_PARAMETERS:
     case ADD_INVITATION:
     case REMOVE_INVITATION:
+      console.log(state)
+      console.log(action)
       return {
         ...state,
         classes: classes(state.classes, action)

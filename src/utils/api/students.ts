@@ -1,5 +1,5 @@
 import { handleError } from './request'
-import { IStudentUser } from '../interfaces'
+import { IStudentUser, IStudent, ICreateAccountForStudentInput } from '../interfaces'
 
 export const saveSignUpStudent = async (email: string, password: string): Promise<IStudentUser> => {
   const functionName = 'saveSignUpStudent'
@@ -211,6 +211,66 @@ export const saveSignInStudent = async (email: string, password: string): Promis
     }
 
     return token
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}
+
+export const saveCreateAccountForStudent = async (token: string, courseId: string, input: ICreateAccountForStudentInput): Promise<IStudent> => {
+  const functionName = 'saveCreateAccountForStudent'
+  const query = `
+    mutation createAccountForStudent($input: CreateAccountForStudentInput!) {
+      createAccountForStudent(input: $input) {
+        id
+        name
+        tests {
+          id
+          number
+          operator
+          testResults {
+            id
+            total
+            needed
+            correct
+            createdAt
+          }
+        }
+      }
+    }
+  `
+  try {
+    const { user, ...rest } = input
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'jwt ' + token
+      },
+      body: JSON.stringify({
+        query,
+        variables: {
+          input: {
+            ...rest,
+            courseId,
+            user: {
+              ...user,
+              password: 'teachtheplanet',
+            },
+          }
+        },
+        operationName: 'createAccountForStudent',
+      })
+    })
+    const { data, errors } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.createAccountForStudent
 
   } catch (error) {
     handleError(functionName, error)

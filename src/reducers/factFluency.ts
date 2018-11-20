@@ -11,9 +11,6 @@ import {
 
 import {
   SIGN_IN_STUDENT,
-  ADD_STUDENT,
-  UPDATE_STUDENT,
-  REMOVE_STUDENT
 } from 'src/actions/students'
 
 import {
@@ -31,7 +28,7 @@ import {
 
 import {
   formatClasses,
-  formatCourseInvitations,
+  convertArrayOfObjectsWithIdsIntoObject,
 } from './utils'
 
 import { CLEAR_STORE } from '../actions/shared'
@@ -48,7 +45,7 @@ export default function factFluency (state: any = {}, action: any) {
         ...action.student,
         classes: formattedClasses,
         activeClass: Object.keys(formattedClasses)[0],
-        courseInvitations: formatCourseInvitations(action.student.courseInvitations),
+        courseInvitations: convertArrayOfObjectsWithIdsIntoObject(action.student.courseInvitations),
       }
 
     case SET_NEW_TEST_PARAMETERS:
@@ -95,9 +92,6 @@ export default function factFluency (state: any = {}, action: any) {
     case REMOVE_CLASS:
     case UPDATE_CLASS:
     case ADD_CLASS:
-    case ADD_STUDENT:
-    case UPDATE_STUDENT:
-    case REMOVE_STUDENT:
     case ADD_INVITATION:
     case REMOVE_INVITATION:
       return {

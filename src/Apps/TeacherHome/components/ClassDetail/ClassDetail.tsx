@@ -1,8 +1,9 @@
-import * as React from 'react'
 /* tslint:disable:jsx-no-lambda */
 
+import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
+
 import { IClass, IStudent, getOperatorSymbol, ITest, ICourseInvitation } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
 import './ClassDetail.css'
@@ -87,7 +88,7 @@ interface IStudentCardProps {
 }
 
 const StudentCard = ({ student }: IStudentCardProps) => {
-  if (student === undefined || student.tests === undefined) {
+  if (student === undefined) {
     return (
       <Card className="StudentCard">
         <div className="header-row">
@@ -103,25 +104,33 @@ const StudentCard = ({ student }: IStudentCardProps) => {
       operator: 'addition',
       symbol: '+',
       color: 'red',
-      tests: tests.filter((test) => test.operator === '+'),
+      tests: tests
+        ? tests.filter((test) => test.operator === '+')
+        : [],
     },
     {
       operator: 'subtraction',
       symbol: '-',
       color: 'blue',
-      tests: tests.filter((test) => test.operator === '-'),
+      tests: tests
+        ? tests.filter((test) => test.operator === '-')
+        : [],
     },
     {
       operator: 'multiplication',
       symbol: '*',
       color: 'green',
-      tests: tests.filter((test) => test.operator === '*'),
+      tests: tests
+        ? tests.filter((test) => test.operator === '*')
+        : [],
     },
     {
       operator: 'division',
       symbol: '/',
       color: 'yellow',
-      tests: tests.filter((test) => test.operator === '/'),
+      tests: tests
+        ? tests.filter((test) => test.operator === '/')
+        : [],
     },
   ]
 
@@ -203,8 +212,8 @@ class DisconnectedClassDetail extends React.Component<IProps> {
         <div className="students">
           <h2>Students</h2>
 
-          {selectedClass.students.length > 0
-            ? selectedClass.students.map((student) => <StudentCard key={student.id} student={student} />)
+          {selectedClass.students && Object.keys(selectedClass.students).length > 0
+            ? Object.keys(selectedClass.students).map((id) => <StudentCard key={id} student={selectedClass.students[id]} />)
             : (
               <Link to={`${match.url}/add-students`}>
                 <NewCard className="new-student-card" text="Add your first student!" />

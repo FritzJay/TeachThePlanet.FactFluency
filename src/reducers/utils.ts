@@ -1,15 +1,16 @@
-import { IClass, ICourseInvitation } from 'src/utils'
+import { IClass } from 'src/utils'
 
 export const formatClasses = (classes: IClass[]): { [id: string]: IClass } => {
   return classes
     ? classes.reduce((acc: object, cls) => ({ ...acc, [cls.id]: {
       ...cls,
-      courseInvitations: formatCourseInvitations(cls.courseInvitations)
+      courseInvitations: convertArrayOfObjectsWithIdsIntoObject(cls.courseInvitations),
+      students: convertArrayOfObjectsWithIdsIntoObject(cls.students),
     }}), {}) : {}
 }
 
-export const formatCourseInvitations = (courseInvitations: ICourseInvitation[]): { [id: string]: ICourseInvitation } => {
-  return courseInvitations
-    ? courseInvitations.reduce((acc: object, invitation) => ({ ...acc, [invitation.id]: invitation }), {}) 
+export const convertArrayOfObjectsWithIdsIntoObject = (arr: any[]): { [id: string]: any } => (
+  arr
+    ? arr.reduce((acc: object, o) => ({ ...acc, [o.id]: o }), {})
     : {}
-}
+)
