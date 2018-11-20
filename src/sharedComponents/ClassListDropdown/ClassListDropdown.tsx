@@ -3,22 +3,23 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { Button } from '..'
-import { IClass, IUser } from 'src/utils'
+import { IClass } from 'src/utils'
 import './ClassListDropdown.css'
 import { updateActiveClass } from 'src/actions/factFluency';
 
 interface IProps {
+  hasInvitations: boolean
   activeClass?: string
   classes?: IClass[]
   dispatch: any
-  user: IUser
+  userEmail: string
 }
 
 class ClassListDropdown extends React.Component<IProps> {
   public render() {
-    const { activeClass, classes, user } = this.props
+    const { activeClass, classes, userEmail, hasInvitations } = this.props
 
-    if (user.email === 'TTPStudent') {
+    if (userEmail === 'TTPStudent') {
       return null
     }
 
@@ -38,7 +39,7 @@ class ClassListDropdown extends React.Component<IProps> {
           ))}
         </select>
         <Link className="join-class-link" to="/fact-fluency/join-class">
-          <Button className="gray join-class-button">+</Button>
+          <Button className={`join-class-button ${hasInvitations ? 'yellow' : 'gray'}`}>+</Button>
         </Link>
       </div>
     )
@@ -55,7 +56,8 @@ const mapStateToProps = ({ factFluency, user }: any) => ({
     ? factFluency.activeClass.id
     : undefined,
   classes: factFluency.classes,
-  user
+  userEmail: user.email,
+  hasInvitations: factFluency.courseInvitations && Object.keys(factFluency.courseInvitations).length > 0,
 })
 
 export const ConnectedClassListDropdown = connect(mapStateToProps)(ClassListDropdown);
