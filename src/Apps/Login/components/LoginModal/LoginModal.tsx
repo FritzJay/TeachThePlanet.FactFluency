@@ -49,7 +49,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
       >
 
         <ModalHeader className="login-modal-header">
-          <h1>Sign Up or Login</h1>
+          <h1>Sign Up or Sign In</h1>
         </ModalHeader>
 
         <ModalContent className="user-types">
@@ -97,7 +97,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
               className="login-modal-button gray"
               onClick={this.handleLoginClick}
             >
-              Login
+              Sign In
             </Button>
           </div>
         </ModalContent>

@@ -31,7 +31,7 @@ export const PendingStudentsDescription = () => (
     <p>The pending students card is broken into 4 sections:</p>
     <ol>
       <li>Student Name: The students name</li>
-      <li>Username: The username the student must use to login</li>
+      <li>Username: The username the student may use to sign in</li>
       <li>Send Date: The date the invitation was sent</li>
       <li>Delete: A button used to delete the invitation</li>
     </ol>
@@ -52,7 +52,7 @@ export const InvitationsDescription = () => (
     <p>The pending invitations card is broken into 4 sections:</p>
     <ol>
       <li>Student Name: The students name</li>
-      <li>Username: The username the student must use to login</li>
+      <li>Username: The username the student may use to sign in</li>
       <li>Send Date: The date the invitation was sent</li>
       <li>Delete: A button used to delete the invitation</li>
     </ol>
