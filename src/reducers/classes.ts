@@ -30,7 +30,7 @@ export default function classes (state: any = {}, action: any) {
     case ADD_CLASS:
       return {
         ...state,
-        [action.class.id]: action.class,
+        [action.class.id]: { ...action.class },
       }
 
     case UPDATE_CLASS:

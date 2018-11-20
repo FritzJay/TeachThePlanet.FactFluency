@@ -1,5 +1,3 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
@@ -33,15 +31,15 @@ class CourseInvitations extends React.Component<IProps> {
                 <h3 className="card-header">{invitations[id].course.name}</h3>
                 <h4 className="teacher">{invitations[id].course.teacher.name}</h4>
                 <Button
-                  value={invitations[id]}
-                  onClick={() => this.handleDecline(invitations[id])}
+                  value={invitations[id].id}
+                  onClick={this.handleDecline}
                   className="yellow decline"
                 >
                   Decline
                 </Button>
                 <Button
-                  value={invitations[id]}
-                  onClick={() => this.handleAccept(invitations[id])}
+                  value={invitations[id].id}
+                  onClick={this.handleAccept}
                   className="green accept"
                 >
                   Accept
@@ -55,26 +53,28 @@ class CourseInvitations extends React.Component<IProps> {
     )
   }
 
-  private handleDecline = (invitation: ICourseInvitation) => {
+  private handleDecline = (e: any) => {
+    const id = e.target.value
     const token = this.props.token
     if (token === undefined) {
       return
     }
     try {
-      this.props.dispatch(handleDeclineInvitation(token, invitation.id))
+      this.props.dispatch(handleDeclineInvitation(token, id))
     } catch (error) {
       console.warn(error)
       alert(error.message)
     }
   }
 
-  private handleAccept = async (invitation: ICourseInvitation) => {
+  private handleAccept = async (e: any) => {
+    const id = e.target.value
     const token = this.props.token
     if (token === undefined) {
       return
     }
     try {
-      await this.props.dispatch(handleAcceptInvitation(token, invitation.course.id, invitation.id))
+      await this.props.dispatch(handleAcceptInvitation(token, id))
     } catch (error) {
       console.warn(error)
       alert(error.message)

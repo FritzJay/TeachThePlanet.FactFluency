@@ -2,8 +2,10 @@ import { showLoading, hideLoading } from 'react-redux-loading'
 import {
   saveCreateInvitation,
   saveRemoveInvitation,
+  saveAcceptInvitation,
 } from '../utils/api'
 import { addInvitation, removeInvitation, declineInvitation } from '../actions/invitations'
+import { addClass } from 'src/actions/classes';
 
 export const handleCreateInvitation = (token: string, classId: string, email: string) => {
   return async (dispatch: any) => {
@@ -29,15 +31,13 @@ export const handleRemoveInvitation = (token: string, classId: string, id: strin
   }
 }
 
-export const handleAcceptInvitation = (token: string, classId: string, courseInvitationId: string) => {
+export const handleAcceptInvitation = (token: string, courseInvitationId: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
     try {
-      /*
-      const invitation = await saveAcceptInvitation(token, courseInvitationId)
-      dispatch(addInvitation(classId, invitation))
-      */
-      console.log('SAVING INVITATION')
+      const course = await saveAcceptInvitation(token, courseInvitationId)
+      dispatch(declineInvitation(courseInvitationId))
+      dispatch(addClass(course))
     } finally {
       dispatch(hideLoading())
     }
