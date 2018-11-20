@@ -7,7 +7,7 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 import { IClass, getOperatorSymbol, ITest, ICourseInvitation, IStudentUser } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
 import { handleRemoveInvitation } from 'src/handlers/invitations'
-import { handleRemoveFromCourse } from 'src/handlers/students'
+import { handleRemoveStudentFromCourse } from 'src/handlers/students'
 import './ClassDetail.css'
 
 interface IInvitationCardProps {
@@ -262,7 +262,7 @@ class DisconnectedClassDetail extends React.Component<IProps> {
   private handleDeleteStudent = (id: string) => {
     const { dispatch, token, selectedClass } = this.props
     try {
-      dispatch(handleRemoveFromCourse(token, selectedClass.id, id))
+      dispatch(handleRemoveStudentFromCourse(token, selectedClass.id, id))
     } catch (error) {
       console.warn(error)
       this.setState({ error: error.toString() })

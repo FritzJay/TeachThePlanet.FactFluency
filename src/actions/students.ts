@@ -22,7 +22,7 @@ export const updateStudent = (classId: string, updates: IStudent) => ({
   student: updates,
 })
 
-export const removeFromCourse = (classId: string, studentId: string) => ({
+export const removeStudentFromCourse = (classId: string, studentId: string) => ({
   type: REMOVE_STUDENT_FROM_COURSE,
   classId,
   studentId,

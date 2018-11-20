@@ -281,11 +281,11 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
   }
 }
 
-export const saveRemoveFromCourse = async (token: string, studentId: string, courseId: string): Promise<boolean> => {
-  const functionName = 'saveRemoveFromCourse'
+export const saveRemoveStudentFromCourse = async (token: string, studentId: string, courseId: string): Promise<boolean> => {
+  const functionName = 'saveRemoveStudentFromCourse'
   const query = `
-    mutation removeFromCourse($studentId: ObjID!, $courseId: ObjID!) {
-      removeFromCourse(studentId: $courseId, )
+    mutation removeStudentFromCourse($studentId: ObjID!, $courseId: ObjID!) {
+      removeStudentFromCourse(studentId: $studentId, courseId: $courseId)
   }
   `
   try {
@@ -307,7 +307,7 @@ export const saveRemoveFromCourse = async (token: string, studentId: string, cou
       throw errors[0]
     }
 
-    return data.removeFromCourse
+    return data.removeStudentFromCourse
 
   } catch (error) {
     handleError(functionName, error)
