@@ -39,7 +39,9 @@ export default function classes (state: any = {}, action: any) {
         [action.class.id]: {
           ...state[action.class.id],
           ...action.class,
-          students: students(state[action.class.id].students, action)
+          students: state[action.class.id]
+            ? students(state[action.class.id].students, action)
+            : {}
         },
       }
 
