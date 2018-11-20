@@ -236,6 +236,9 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
             correct
             createdAt
           }
+        },
+        user {
+          email
         }
       }
     }

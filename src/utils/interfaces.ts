@@ -14,6 +14,7 @@ export interface IStudentUser {
   id: string
   name: string
   classes: IClass[]
+  tests: ITest[]
   user: IUser
 }
 

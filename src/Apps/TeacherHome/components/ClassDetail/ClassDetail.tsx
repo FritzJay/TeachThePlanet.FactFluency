@@ -4,7 +4,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { IClass, IStudent, getOperatorSymbol, ITest, ICourseInvitation } from 'src/utils'
+import { IClass, getOperatorSymbol, ITest, ICourseInvitation, IStudentUser } from 'src/utils'
 import { Card, Loading, NewCard } from 'src/sharedComponents'
 import './ClassDetail.css'
 import { handleRemoveInvitation } from 'src/handlers/invitations';
@@ -84,21 +84,11 @@ const OperatorRow = ({ operator, symbol, color, tests }: IOperatorRowProps) => {
 
 
 interface IStudentCardProps {
-  student?: IStudent
+  student: IStudentUser
 }
 
 const StudentCard = ({ student }: IStudentCardProps) => {
-  if (student === undefined) {
-    return (
-      <Card className="StudentCard">
-        <div className="header-row">
-          <h3 className="student-name">There doesn't appear to be any students here. Why don't you add one?</h3>
-        </div>
-      </Card>
-    )
-  }
-
-  const { name, tests } = student
+  const { name, tests, user } = student
   const operators = [
     {
       operator: 'addition',
@@ -136,7 +126,13 @@ const StudentCard = ({ student }: IStudentCardProps) => {
 
   return (
     <Card className="StudentCard">
-      <h3 className="name">{name}</h3>
+      <h3 className="name">
+        {name}
+        {user.email !== name
+          ? ` - ${user.email}`
+          : ''
+        }
+      </h3>
       <button className="settings">
         <i className="material-icons">delete</i>
       </button>

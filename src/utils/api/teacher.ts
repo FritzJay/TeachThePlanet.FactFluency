@@ -35,6 +35,9 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
                 correct
                 createdAt
               }
+            },
+            user {
+              email
             }
           }
           courseInvitations {
@@ -131,6 +134,9 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
                 correct
                 createdAt
               }
+            },
+            user {
+              email
             }
           }
           courseInvitations {
