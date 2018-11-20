@@ -26,6 +26,7 @@ export const fetchClass = async (token: string, classID: string): Promise<IClass
         }
         courseInvitations {
           id
+          createdAt
           student {
             id,
             name
@@ -101,6 +102,7 @@ export const saveAddClass = async (token: string, grade: string, name: string): 
         }
         courseInvitations {
           id
+          createdAt
           student {
             id,
             name,
@@ -182,6 +184,7 @@ export const saveUpdateClass = async (token: string, classID: string, updates: I
         }
         courseInvitations {
           id
+          createdAt
           student {
             id,
             name,
