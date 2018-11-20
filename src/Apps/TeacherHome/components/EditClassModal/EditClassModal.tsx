@@ -51,6 +51,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
       return (
         <Modal
           overlay={true}
+          closeTo="GO_BACK"
           className="EditClassModal"
         >
           <Loading className="loading" />
@@ -61,6 +62,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
     return (
       <Modal
         overlay={true}
+        closeTo="GO_BACK"
         className="EditClassModal"
       >
 

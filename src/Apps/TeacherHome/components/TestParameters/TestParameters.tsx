@@ -71,6 +71,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       return (
         <Modal
           overlay={true}
+          closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
           className="test-parameters-modal"
         >
 
@@ -90,6 +91,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       return (
         <Modal
           overlay={true}
+          closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
           className="test-parameters-modal"
         >
 
@@ -107,6 +109,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
+        closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
         className="TestParametersModal"
       >
 

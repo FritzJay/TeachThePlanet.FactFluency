@@ -59,7 +59,7 @@ const CreateAccountQuestionModal = () => (
 )
 */
 
-interface IProps extends RouteComponentProps<{}> {}
+interface IProps extends RouteComponentProps<{ id: string }> {}
 
 interface IState {
   haveAccounts?: boolean
@@ -74,6 +74,7 @@ export class AddStudentModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
+        closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
         className="AddStudentModal"
       >
         <ModalHeader className="header">

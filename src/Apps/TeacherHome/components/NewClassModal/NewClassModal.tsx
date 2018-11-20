@@ -32,6 +32,7 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
       return (
         <Modal
           overlay={true}
+          closeTo="/teacher"
           className="NewClassModal"
         >
           <Loading className="loading" />
@@ -42,6 +43,7 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
+        closeTo="/teacher"
         className="NewClassModal"
       >
 

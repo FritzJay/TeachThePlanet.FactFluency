@@ -32,6 +32,7 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
+        closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
         className="StudentInvitationModal"
       >
         <ModalHeader className="header">
