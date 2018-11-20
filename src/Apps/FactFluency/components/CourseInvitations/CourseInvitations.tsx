@@ -58,6 +58,7 @@ class CourseInvitations extends React.Component<IProps> {
   }
 
   private handleDecline = (e: any) => {
+    e.persist()
     const id = e.target.value
     const token = this.props.token
     if (token === undefined) {
@@ -72,6 +73,7 @@ class CourseInvitations extends React.Component<IProps> {
   }
 
   private handleAccept = async (e: any) => {
+    e.persist()
     const id = e.target.value
     const token = this.props.token
     if (token === undefined) {

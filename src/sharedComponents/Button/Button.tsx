@@ -1,3 +1,5 @@
+/* tslint:disable:variable-name */
+
 import * as React from 'react';
 import './Button.css';
 
@@ -27,14 +29,20 @@ export class ConfirmButton extends React.Component<any, IState> {
 
   private confirmTimeout: any
   private disabledTimeout: any
+  private _isMounted: boolean
+
+  public componentDidMount() {
+    this._isMounted = true
+  }
 
   public componentWillUnmount() {
+    this._isMounted = false
     window.clearTimeout(this.confirmTimeout)
     window.clearTimeout(this.disabledTimeout)
   }
 
   public render() {
-    const { className, children, confirmClassName, disableTimeout, ...rest } = this.props
+    const { className, children, confirmClassName, disableTimeout, onClick, ...rest } = this.props
     const { confirm, disabled } = this.state
 
     return (
@@ -52,25 +60,33 @@ export class ConfirmButton extends React.Component<any, IState> {
     )
   }
 
-  private handleClick = (e: any) => {
+  private handleClick = async (e: any) => {
+    e.persist() // Force the synthetic event to persist so we can pass it to props.onClick
+
     if (this.state.disabled) { return }
     
     if (this.state.confirm) {
-      this.props.onClick(e)
-      this.setState({
-        disabled: true,
-        confirm: false,
-      }, () => {
-        this.disabledTimeout = this.props.disableTimeout && window.setTimeout(() => {
-          this.setState({ disabled:  false })
-        }, this.props.disableTimeout)
-      })
+      await this.props.onClick(e)
+      if (this._isMounted) {
+          this.setState({
+          disabled: true,
+          confirm: false,
+        }, () => {
+          this.disabledTimeout = this.props.disableTimeout && window.setTimeout(() => {
+            if (this._isMounted) {
+              this.setState({ disabled:  false })
+            }
+          }, this.props.disableTimeout)
+        })
+      }
       return
     }
 
     this.setState({ confirm: true }, () => {
       this.confirmTimeout = window.setTimeout(() => {
-        this.setState({ confirm: false })
+        if (this._isMounted) {
+          this.setState({ confirm: false })
+        }
       }, 2000)
     })
   }

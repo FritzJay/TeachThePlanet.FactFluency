@@ -157,7 +157,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
     } catch(error) {
       console.warn(error)
       this.setState({
-        error: error.message,
+        error: error.toString(),
         loading: false,
       })
     }
