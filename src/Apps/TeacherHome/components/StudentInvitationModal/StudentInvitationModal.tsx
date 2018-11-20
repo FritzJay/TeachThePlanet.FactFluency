@@ -97,7 +97,10 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
 
     const { dispatch, token, match } = this.props
 
-    this.setState({ loading: true }, async () => {
+    this.setState({
+      loading: true,
+      error: ''
+    }, async () => {
       try {
         await dispatch(handleCreateInvitation(token, match.params.id, this.state.student))
         this.setState({
