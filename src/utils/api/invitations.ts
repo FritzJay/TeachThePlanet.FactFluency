@@ -19,6 +19,8 @@ export const saveCreateInvitation = async (token: string, classId: string, email
         student {
           id
           name
+          createdAt
+          updatedAt
         }
       }
     }

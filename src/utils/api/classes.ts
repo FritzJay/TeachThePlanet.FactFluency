@@ -156,6 +156,8 @@ export const saveUpdateClass = async (token: string, classID: string, updates: I
         students {
           id
           name
+          createdAt
+          updatedAt
         }
         courseInvitations {
           id
