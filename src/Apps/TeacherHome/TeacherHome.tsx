@@ -10,6 +10,7 @@ import {
   ParentInvite,
   AddStudentModal,
   ConnectedStudentInvitationModal,
+  ConnectedStudentCreationModal,
 } from './components'
 import './TeacherHome.css'
 
@@ -68,6 +69,11 @@ export class TeacherHome extends React.Component<IProps> {
         <Route
           path={`${match.url}/class-detail/:id/add-students/existing`}
           component={ConnectedStudentInvitationModal}
+        />
+
+        <Route
+          path={`${match.url}/class-detail/:id/add-students/new`}
+          component={ConnectedStudentCreationModal}
         />
 
         <Route

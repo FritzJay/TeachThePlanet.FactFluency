@@ -1,0 +1,131 @@
+@import 'src/Stylesheets/all';
+
+.StudentCreationModal {
+  min-width: 500px;
+  min-height: 500px;
+
+  .header {
+    background-color: $blue;
+    color: $white;
+    padding: 2em;
+  }
+
+  .content {
+    padding: 2em;
+
+    display: grid;
+    grid-template-areas:
+    'subheader   subheader   subheader   subheader   subheader'
+    'error       error       error       error       error'
+    'label       label       label       label       label'
+    'input       input       input       input       add'
+    'studentlist studentlist studentlist studentlist studentlist'
+    'back        back        back        create      create';
+
+    .sub-header {
+      grid-area: subheader;
+
+      margin: 0 0 2em 0;
+    }
+
+    .error {
+      grid-area: error;
+
+      margin: 0 0 2em 0;
+      
+      color: $red;
+      font-weight: bold;
+      text-align: center;
+    }
+  
+    .label {
+      grid-area: label;
+
+      justify-self: flex-start;
+    }
+  
+    .input {
+      grid-area: input;
+    }
+  
+    .add-button {
+      grid-area: add;
+
+      justify-self: stretch;
+      margin-left: 1em;
+      transform: translateY(-0.5em);
+    }
+  
+    .student-list {
+      grid-area: studentlist;
+
+      padding: 2em;
+      min-height: 200px;
+      justify-self: stretch;
+
+      .student-card {
+        display: grid;
+        grid-auto-flow: column;
+
+        padding: 0 1em;
+        margin-bottom: 1em;
+
+        .name {
+          justify-self: flex-start;
+        }
+
+        .username {
+          justify-self: center;
+        }
+
+        .remove {
+          justify-self: flex-end;
+        }
+
+        .remove-button {
+          color: $light-red;
+          font-weight: bold;
+
+          &:hover {
+            color: $red;
+          }
+
+          &:active {
+            transform: translateY(2px);
+          }
+        }
+
+        &.example {
+          margin-top: -1.5em;
+          margin-bottom: 0;
+
+          h4 {
+            color: $black;
+          }
+        }
+      }
+    }
+
+    .back-button {
+      grid-area: back;
+    }
+
+    .create-button {
+      grid-area: create;
+
+      .confirmation {
+        display: none;
+      }
+
+      &.confirm {
+        .default {
+          display: none;
+        }
+
+        .confirmation {
+          display: inline;
+        }
+      }
+    }
+  }
+}
