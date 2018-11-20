@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { Button } from '..'
 import { IClass, IUser } from 'src/utils'
 import './ClassListDropdown.css'
+import { updateActiveClass } from 'src/actions/factFluency';
 
 interface IProps {
   activeClass?: string
@@ -15,13 +16,11 @@ interface IProps {
 
 class ClassListDropdown extends React.Component<IProps> {
   public render() {
-    const { activeClass, classes } = this.props
+    const { activeClass, classes, user } = this.props
 
-    /* ENABLE AFTER DEV
     if (user.email === 'TTPStudent') {
       return null
     }
-    */
 
     return (
       <div className="ClassListDropdown">
@@ -45,8 +44,9 @@ class ClassListDropdown extends React.Component<IProps> {
     )
   }
 
-  private handleChange(e: any) {
-    console.log(e)
+  private handleChange = (e: any) => {
+    const id = e.target.value
+    this.props.dispatch(updateActiveClass(id))
   }
 }
 

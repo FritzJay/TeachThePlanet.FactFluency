@@ -91,16 +91,15 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
 
 const mapStateToProps = ({ factFluency }: any) => {
   const { classes, activeClass } = factFluency
-  const hasTestParameters = classes && classes[activeClass] && classes[activeClass].testParameters
 
   return {
     classes,
     activeClass,
-    availableNumbers: hasTestParameters
-      ? classes[activeClass].testParameters.numbers.sort((a: number, b: number) => a - b)
+    availableNumbers: activeClass && activeClass.testParameters
+      ? activeClass.testParameters.numbers.sort((a: number, b: number) => a - b)
       : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    availableOperators: hasTestParameters
-      ? classes[activeClass].testParameters.operators
+    availableOperators: activeClass && activeClass.testParameters
+      ? activeClass.testParameters.operators
       : ['+', '-', '*', '/'],
   }
 }
