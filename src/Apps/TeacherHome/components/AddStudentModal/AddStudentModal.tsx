@@ -5,28 +5,6 @@ import { Button, Card, Modal, ModalContent, ModalHeader } from 'src/sharedCompon
 import './AddStudentModal.css'
 
 /*
-const CreateAccountModal = () => (
-  <Modal className="add-student-modal">
-    <ModalHeader className="add-students">
-        <h1>Add Students</h1>
-      </ModalHeader>
-      <ModalContent>
-        <div className="sub-header">
-          <h3>Type in your students' names.</h3>
-        </div>
-        <div className="account-create-type">
-          <Input className="input-student" value="Fritz J" />
-          <button className="add-student-btn">Add</button>
-            <label>Enter a first name and last initial.</label>
-        </div>
-        <div className="btn-row">
-          <Button className="back">Back</Button>
-          <Button className="create-accounts">Create Accounts</Button>
-        </div>
-      </ModalContent>
-  </Modal>
-)
-
 const CreateAccountQuestionModal = () => (
   <Modal
     overlay={true}
