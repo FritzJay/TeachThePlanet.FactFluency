@@ -38,7 +38,7 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
         className="SignupModal"
       >
         <ModalHeader className="signup-modal-header">
-          <h1>Sign Up or Sign In</h1>
+          <h1>Sign Up</h1>
         </ModalHeader>
 
         <ModalContent className="user-types">

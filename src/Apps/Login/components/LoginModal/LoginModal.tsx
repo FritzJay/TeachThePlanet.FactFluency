@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+
 import { handleSignInStudent } from 'src/handlers/factFluency'
-import { handleSignInTeacher } from 'src/handlers/teacherHome';
+import { handleSignInTeacher } from 'src/handlers/teacherHome'
 import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import './LoginModal.css'
@@ -49,7 +50,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
       >
 
         <ModalHeader className="login-modal-header">
-          <h1>Sign Up or Sign In</h1>
+          <h1>Sign In</h1>
         </ModalHeader>
 
         <ModalContent className="user-types">
@@ -87,14 +88,7 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
           <div className="button-row">
 
             <Button
-              className="login-modal-button gray"
-              onClick={this.redirectToSignup}
-            >
-              Sign up
-            </Button>
-
-            <Button
-              className="login-modal-button gray"
+              className="login-modal-button green"
               onClick={this.handleLoginClick}
             >
               Sign In
@@ -104,7 +98,14 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
 
         <ModalContent className="bottom-content">
           <Button
-            className="green practice-button"
+            className="green sign-up-button"
+            onClick={this.redirectToSignup}
+          >
+            Not a user? Create an account!
+          </Button>
+
+          <Button
+            className="yellow practice-button"
             onClick={this.handlePracticeClick}
           >
             Practice Without an Account
