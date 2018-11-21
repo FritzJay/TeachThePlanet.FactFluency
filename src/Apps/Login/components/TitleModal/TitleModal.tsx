@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import * as React from 'react'
+import { Link, RouteComponentProps } from 'react-router-dom'
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 
 import './TitleModal.css';
@@ -22,7 +22,7 @@ export class TitleModal extends React.Component<IProps, any> {
         className="TitleModal"
       >
         <ModalHeader> 
-          <p className="title-header">Practice Your Math Facts Here</p>
+          <p className="title-header">Teach the Planet Fact Fluency</p>
         </ModalHeader>
 
         <ModalContent className="title-content">

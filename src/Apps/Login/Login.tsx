@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import {
   LoginModal,
-  Navbar,
   PageNotFound,
   SignupModal,
   TitleModal,
@@ -32,8 +31,6 @@ export default class Login extends React.Component<IProps, IState> {
 
     return (
      <div className="Login">
-
-      <Navbar logoLink={'/'} />
 
       <Switch>
         <Route
