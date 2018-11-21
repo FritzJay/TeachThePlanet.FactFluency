@@ -218,7 +218,7 @@
     }
 
     .description-card {
-        max-width: 725px;
+        width: 725px; // Match the size of the student cards
         color: $gray;
         font-weight: bold;
         padding: 1em;
