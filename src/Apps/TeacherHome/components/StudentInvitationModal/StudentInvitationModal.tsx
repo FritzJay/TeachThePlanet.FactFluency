@@ -40,6 +40,10 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent className="content">
+          <h3>Share you class code: <span className="classCode">TODO: CLASS CODE</span></h3>
+          
+          <h2 className="or">Or</h2>
+      
           <h3 className="sub-header">Enter the email or username of an existing student</h3>
 
           {error !== ''
@@ -69,9 +73,9 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
           <div className="btn-row">
             <Button
               className="gray"
-              onClick={this.handleCloseClick}
+              onClick={this.handleBackClick}
             >
-              Close
+              Back
             </Button>
             <Button
               className="green"
@@ -120,7 +124,7 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
     })
   }
 
-  private handleCloseClick = () => this.props.history.replace(`/teacher/class-detail/${this.props.match.params.id}`)
+  private handleBackClick = () => this.props.history.goBack()
 
   private handleChange = (e: any) => {
     const { name, value } = e.target

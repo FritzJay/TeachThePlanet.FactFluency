@@ -86,17 +86,10 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
 
           <div className="buttons">
             <Button
-              className="create-class"
+              className="create-class green"
               onClick={this.handleCreateClassClick}
             >
               Create Class
-            </Button>
-
-            <Button
-              className="red cancel"
-              onClick={this.handleCancelClick}
-            >
-              Cancel
             </Button>
           </div>
 
@@ -127,11 +120,6 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
         })
       }
     })
-
-  }
-
-  private handleCancelClick = () => {
-    this.props.history.push('/teacher')
   }
 
   private handleChange = (e: any) => {

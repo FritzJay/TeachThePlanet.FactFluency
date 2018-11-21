@@ -39,7 +39,7 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
       >
         {closeTo
           ? (
-            <Button className={`close-modal-button${closeColor ? ' ' + closeColor : ' white'}`}>
+            <Button onClick={this.closeModal} className={`close-modal-button${closeColor ? ' ' + closeColor : ' white'}`}>
               <i className="material-icons">clear</i>
             </Button>
           ): null}
@@ -53,14 +53,18 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
   }
 
   private handleClickOutside = (event: any) => {
-    const { history, closeTo, overlay } = this.props
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      if (closeTo && overlay) {
-        if (closeTo === 'GO_BACK') {
-          history.goBack()
-        } else {
-          history.push(closeTo)
-        }
+      this.closeModal()
+    }
+  }
+
+  private closeModal = () => {
+    const { history, closeTo, overlay } = this.props
+    if (closeTo && overlay) {
+      if (closeTo === 'GO_BACK') {
+        history.goBack()
+      } else {
+        history.push(closeTo)
       }
     }
   }

@@ -7,9 +7,12 @@
       padding: 2em 3em;
   }
 
-  .sub-header {
-    margin: 0 0 2em 0;
+  .or {
+    padding: 0.25em;
     text-align: center;
+    justify-self: stretch;
+    border-top: 2px solid $gray;
+    border-bottom: 2px solid $gray;
   }
 
   .content {

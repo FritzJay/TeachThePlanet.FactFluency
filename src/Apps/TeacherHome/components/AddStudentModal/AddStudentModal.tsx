@@ -60,13 +60,13 @@ export class AddStudentModal extends React.Component<IProps, IState> {
         </ModalHeader>
     
         <ModalContent>
-          <h3>Do your students have accounts?</h3>
+          <h2>Do your students have accounts?</h2>
     
           <Card
             className={`account-card${haveAccounts === true ? ' selected' : ''}`}
             onClick={this.handleSelectYes}
           >
-            <h4>Yes, they already have accounts.</h4>
+            <h3>Yes, they already have accounts.</h3>
             <p>If your students already practice with Fact Fluency, they can log in and connect to your classroom.</p>
           </Card>
     
@@ -74,14 +74,11 @@ export class AddStudentModal extends React.Component<IProps, IState> {
             className={`account-card${haveAccounts === false ? ' selected' : '' }`}
             onClick={this.handleSelectNo}
           >
-            <h4>No, they need new accounts.</h4>
+            <h3>No, they need new accounts.</h3>
             <p>If your students don't have accounts, they can make new ones or your can do it for them.</p>
           </Card>
     
-          <div className="btn-row">
-            <Button onClick={this.handleCancelClick} className="red cancel-button">Cancel</Button>
-            <Button onClick={this.handleContinueClick} className="continue">Continue</Button>
-          </div>
+          <Button onClick={this.handleContinueClick} className="green continue-button">Continue</Button>
         </ModalContent>
       </Modal>
     )
@@ -93,10 +90,6 @@ export class AddStudentModal extends React.Component<IProps, IState> {
 
   private handleSelectNo = () => {
     this.setState({ haveAccounts: false })
-  }
-
-  private handleCancelClick = () => {
-    this.props.history.goBack()
   }
 
   private handleContinueClick = () => {

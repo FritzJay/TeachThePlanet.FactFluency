@@ -1,13 +1,12 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 
-import { Modal, ModalHeader, ModalContent, Input, Button, Card, ConfirmButton } from 'src/sharedComponents'
+import { Modal, ModalHeader, ModalContent, Input, Button, ConfirmButton } from 'src/sharedComponents'
+import { IClass } from 'src/utils'
+import { handleCreateStudent } from 'src/handlers/students'
+import { StudentCreationCard } from './StudentCreationCard'
 import './StudentCreationModal.css'
-import { IClass } from 'src/utils';
-import { handleCreateStudent } from 'src/handlers/students';
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   token: string
@@ -73,16 +72,13 @@ class StudentCreationModal extends React.Component<IProps, IState> {
                 </div>
               ) : null}
             {students.map((student) => (
-              <Card key={student} className="student-card">
-                <h4 className="username">{this.getUsername(student)}</h4>
-                <h4 className="password">TODO: CLASS CODE GOES HERE</h4>
-                <Button
-                  className="remove remove-button"
-                  onClick={() => this.handleRemoveStudent(student)}
-                >
-                  X
-                </Button>
-              </Card>
+              <StudentCreationCard
+                key={student}
+                name={student}
+                username={this.getUsername(student)}
+                classCode={this.props.selectedCourse.code}
+                onDelete={this.handleRemoveStudent}
+              />
             ))}
           </div>
           <Button
@@ -125,9 +121,10 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       return
     }
 
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       students: prevState.students.concat([this.getDisplayName(name)]),
       name: '',
+      error: '',
     }))
   }
 
@@ -137,8 +134,8 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 
   private handleRemoveStudent = (student: string) => {
-    this.setState((prevState) => ({
-      students: prevState.students.filter((name) => name !== student),
+    this.setState(prevState => ({
+      students: prevState.students.filter(name => name !== student),
       error: '',
     }))
   }
