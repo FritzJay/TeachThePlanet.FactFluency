@@ -5,7 +5,7 @@ import { clearCached } from 'src/utils'
 import { clearStore } from 'src/actions/shared'
 import { Button, Dropdown } from 'src/sharedComponents'
 import { IUser } from '../../utils'
-import Logo from 'src/images/logo.png'
+import Logo from 'src/images/logo-medium.png'
 import './Navbar.css'
 
 interface ILogoutLinkProps {
