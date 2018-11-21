@@ -88,11 +88,7 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
             Sign up
           </Button>
 
-          <Link to='/index/login'>
-            <Button className="red cancel-button">
-              Cancel
-            </Button>
-          </Link>
+          <p className="sign-up-link"><Link to="/index/login">Already have an account?</Link></p>
         </ModalContent>
       </Modal>
     )
