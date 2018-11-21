@@ -82,7 +82,7 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
 
         <ModalContent className="bottom-buttons">
           <Button
-            className="signup-modal-button gray"
+            className="signup-modal-button green"
             onClick={this.handleSignupClick}
           >
             Sign up
