@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { withRouter, RouteComponentProps } from 'react-router'
 
+import { Button } from '..'
 import './Modal.css'
 
 interface IModalProps extends RouteComponentProps<{}> {
@@ -10,6 +11,7 @@ interface IModalProps extends RouteComponentProps<{}> {
   color?: string
   overlay?: boolean
   closeTo?: string
+  closeColor?: string
 }
 
 class ModalWithoutRouter extends React.Component<IModalProps> {
@@ -29,12 +31,18 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
   }
 
   public render() {
-    const { className, overlay, children } = this.props
+    const { className, closeTo, closeColor, overlay, children } = this.props
     return (
       <div
         ref={this.setWrapperRef}
         className={`modal${className ? ' ' + className : ''}${overlay ? ' overlay' : ''}`}
       >
+        {closeTo
+          ? (
+            <Button className={`close-modal-button${closeColor ? ' ' + closeColor : ' white'}`}>
+              <i className="material-icons">clear</i>
+            </Button>
+          ): null}
         {children}
       </div>
     )

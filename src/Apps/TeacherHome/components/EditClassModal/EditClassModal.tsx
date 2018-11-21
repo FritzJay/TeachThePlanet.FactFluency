@@ -113,13 +113,6 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
                     {deleteText}
                   </Button>
 
-                  <button
-                    className="gray cancel"
-                    onClick={this.handleCancelClick}
-                  >
-                    Cancel
-                  </button>
-
                   <Button
                     className="green save-changes"
                     onClick={this.handleSaveChangesClick}
@@ -196,10 +189,6 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
         })
       }
     })
-  }
-
-  private handleCancelClick = () => {
-    this.props.history.goBack()
   }
   
   private handleChange = (e: any) => {

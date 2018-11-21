@@ -31,6 +31,20 @@
     align-items: center;
     padding: 1rem;
   }
+
+  .close-modal-button {
+    position: absolute;
+    right: -5px;
+    top: 0px;
+
+    &.white {
+      color: $white;
+    }
+
+    &.black {
+      color: $black;
+    }
+  }
 }
 
 @media (max-width: 25em) {
