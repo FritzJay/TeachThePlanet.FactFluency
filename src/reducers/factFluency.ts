@@ -19,10 +19,12 @@ export default function factFluency (state: any = {}, action: any) {
       return {}
 
     case SIGN_IN_STUDENT:
+      console.log(state)
+      console.log(action)
       return {
         ...state,
         activeClass: action.student.courses && action.student.courses.length > 0
-          ? action.student.course[0].id
+          ? action.student.courses[0].id
           : {},
         id: action.student.id,
       }
