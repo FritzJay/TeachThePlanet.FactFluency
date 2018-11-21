@@ -74,6 +74,20 @@
         }
       }
     }
+
+    &.disabled {
+      color: $light-gray;
+
+      &.active {
+        &:hover {
+          background-color: transparent;
+        }
+        &.selected {
+          color: $light-gray;
+          background-color: transparent;
+        }
+      }
+    }
   }
 
   &:hover {

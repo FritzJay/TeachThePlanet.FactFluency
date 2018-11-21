@@ -1,9 +1,11 @@
 import * as React from 'react'
+
 import { getOperatorSymbol } from 'src/utils'
 import './Operator.css'
 
 interface IProps {
   active: boolean;
+  disabled?: boolean
   selected: boolean;
   operator: string;
   color: string;
@@ -12,13 +14,13 @@ interface IProps {
 
 export class Operator extends React.Component<IProps> {
   public render() {
-    const { active, color, selected, operator } = this.props
+    const { active, disabled, color, selected, operator } = this.props
     const symbol = getOperatorSymbol(operator)
 
     return (
       <div className="Operator">
-        <a 
-          className={`operator-inner ${color} ${active ? 'active' : 'inactive'} ${selected ? 'selected' : ''}`}
+        <a
+          className={`operator-inner ${color} ${active ? 'active' : 'inactive'}${selected ? ' selected' : ''}${disabled ? ' disabled' : ''}`}
           onClick={this.handleClick}
         >
           {symbol}
@@ -28,8 +30,9 @@ export class Operator extends React.Component<IProps> {
   }
 
   private handleClick = () => {
-    if (this.props.active) {
-      this.props.onClick(this.props.operator);
+    const { active, disabled, onClick, operator } = this.props
+    if (active && !disabled) {
+      onClick(operator);
     }
   }
 }

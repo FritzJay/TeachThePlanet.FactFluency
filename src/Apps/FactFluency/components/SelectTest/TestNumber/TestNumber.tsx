@@ -3,6 +3,8 @@ import { themeColors } from 'src/utils'
 import { Button, Card, Operator } from 'src/sharedComponents'
 import './TestNumber.css'
 
+const OPERATORS = ['+', '-', '*', '/']
+
 interface IProps {
   active: boolean
   color: string
@@ -35,13 +37,15 @@ export class TestNumber extends React.Component <IProps, IState> {
         </div>
 
         <div className="operators-container">
-          {operators.map((operator, i) => {
+          {OPERATORS.map((operator, i) => {
             const themeColor = themeColors[i % themeColors.length]
             const selected = (active && this.state.operator === operator)
+            const disabled = (!operators.includes(operator))
             return (
               <Operator
                 key={i}
                 active={active}
+                disabled={disabled}
                 selected={selected}
                 operator={operator}
                 color={themeColor}
