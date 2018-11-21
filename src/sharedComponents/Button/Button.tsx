@@ -3,7 +3,13 @@
 import * as React from 'react';
 import './Button.css';
 
-export const Button = (props: any) => {
+interface IButtonProps {
+  className?: string
+  children?: any
+  onClick?: (event: any) => void
+}
+
+export const Button = (props: IButtonProps | any) => {
   return (
     <button
       {...props}
@@ -16,12 +22,20 @@ export const Button = (props: any) => {
 }
 
 
+interface IConfirmButtonProps {
+  className?: string
+  confirmClassName?: string
+  children?: any
+  disableTimeout?: number
+  onClick?: (event: any) => void
+}
+
 interface IState {
   confirm: boolean
   disabled: boolean
 }
 
-export class ConfirmButton extends React.Component<any, IState> {
+export class ConfirmButton extends React.Component<IConfirmButtonProps | any, IState> {
   public state: IState = {
     confirm: false,
     disabled: false
