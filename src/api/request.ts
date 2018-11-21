@@ -38,6 +38,7 @@ export const validateResponse = (name: string, response: IResponse) => {
 
 export const handleError = (name: string, error: Error) => {
   console.warn(`${name} failed with error:`, error.message)
+  console.warn(error)
 }
 
 export const handleErrors = (name: string, errors: Error[]) => {
