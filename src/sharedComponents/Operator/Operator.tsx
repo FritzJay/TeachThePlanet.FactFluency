@@ -20,6 +20,7 @@ export class Operator extends React.Component<IProps> {
     return (
       <div className="Operator">
         <a
+          title={disabled && active ? 'Your teacher has disabled this operator for now' : ''}
           className={`operator-inner ${color} ${active ? 'active' : 'inactive'}${selected ? ' selected' : ''}${disabled ? ' disabled' : ''}`}
           onClick={this.handleClick}
         >

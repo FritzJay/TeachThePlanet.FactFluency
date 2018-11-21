@@ -71,10 +71,18 @@
   .green {
     color: $green;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .TestNumber.active {
   max-height: 250px;
+
+  &:hover {
+    cursor: auto;
+  }
 
   .header {
     opacity: 1;

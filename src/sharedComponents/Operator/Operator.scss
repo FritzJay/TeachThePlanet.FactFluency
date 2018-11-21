@@ -81,6 +81,7 @@
       &.active {
         &:hover {
           background-color: transparent;
+          cursor: auto;
         }
         &.selected {
           color: $light-gray;
