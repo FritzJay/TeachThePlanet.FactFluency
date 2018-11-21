@@ -357,6 +357,41 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
   }
 }
 
+export const saveRemovePendingStudent = async (token: string, studentId: string, courseId: string): Promise<boolean> => {
+  const functionName = 'saveRemovePendingStudent'
+  const query = `
+    mutation removePendingStudent($studentId: ObjID!, $courseId: ObjID!) {
+      removePendingStudent(studentId: $studentId, courseId: $courseId)
+    }
+  `
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'jwt ' + token,
+      },
+      body: JSON.stringify({
+        query,
+        variables: { studentId, courseId },
+        operationName: 'removePendingStudent'
+      })
+    })
+    const { errors, data } = await response.json()
+
+    if (errors !== undefined) {
+      throw errors[0]
+    }
+
+    return data.removePendingStudent
+
+  } catch (error) {
+    handleError(functionName, error)
+    throw error
+  }
+}
+
 export const saveRemoveStudentFromCourse = async (token: string, studentId: string, courseId: string): Promise<boolean> => {
   const functionName = 'saveRemoveStudentFromCourse'
   const query = `
