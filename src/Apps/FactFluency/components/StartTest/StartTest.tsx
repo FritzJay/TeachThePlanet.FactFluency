@@ -11,13 +11,13 @@ import './StartTest.css'
 interface IProps extends RouteComponentProps<{}> {
   dispatch: any
   newTestParameters: {
-    classID: string
+    courseId: string
     num: number
     operator: string
   }
   test: ITest
   token: string
-  studentID: string
+  studentId: string
 }
 
 interface IState {
@@ -30,14 +30,14 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
   public state: IState = { error: '' }
 
   public async componentDidMount() {
-    const { dispatch, newTestParameters, studentID, token } = this.props
+    const { dispatch, newTestParameters, studentId, token } = this.props
 
     if (newTestParameters === undefined || token === undefined) {
       return
     }
 
     try {
-      await dispatch(handleReceiveTest(token, studentID, newTestParameters))
+      await dispatch(handleReceiveTest(token, studentId, newTestParameters))
       this.setState({ error: '' })
 
     } catch (error) {
@@ -105,7 +105,7 @@ const mapStateToProps = ({ factFluency, user }: any) => ({
   newTestParameters: factFluency.newTestParameters,
   test: factFluency.test,
   token: user.token,
-  studentID: factFluency.id
+  studentId: factFluency.id
 })
 
 export const StartTest = connect(mapStateToProps)(DisconnectedStartTest)

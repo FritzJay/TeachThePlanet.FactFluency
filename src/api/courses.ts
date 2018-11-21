@@ -1,4 +1,4 @@
-import { IClass, INewClassParameters } from ".."
+import { IClass, INewClassParameters } from "src/utils"
 import { handleError } from "./request"
 
 

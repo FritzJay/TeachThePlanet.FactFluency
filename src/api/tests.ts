@@ -1,13 +1,13 @@
 import { handleError } from './request'
-import { ITest, ITestResults } from '../interfaces';
+import { ITest, ITestResults } from 'src/utils/interfaces';
 
 export interface INewTestParameters {
-  classID: string
+  courseId: string
   num: number
   operator: string
 }
 
-export const saveNewTest = async (token: string, studentID: string, { classID, num, operator }: INewTestParameters): Promise<ITest> => {
+export const saveNewTest = async (token: string, studentId: string, { courseId, num, operator }: INewTestParameters): Promise<ITest> => {
   const functionName = 'saveNewTest'
   const query = `
     mutation createTest($input:CreateTestInput!) {
@@ -39,8 +39,8 @@ export const saveNewTest = async (token: string, studentID: string, { classID, n
         query,
         variables: { 
           input: {
-            courseId: classID,
-            studentId: studentID,
+            courseId,
+            studentId,
             number: num,
             operator,
           }

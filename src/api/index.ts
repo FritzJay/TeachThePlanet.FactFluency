@@ -1,4 +1,4 @@
-export * from './classes'
+export * from './courses'
 export * from './invitations'
 export * from './students'
 export * from './teacher'

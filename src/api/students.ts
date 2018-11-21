@@ -1,6 +1,6 @@
 import { handleError } from './request'
-import { ChangePasswordRequiredError } from '..'
-import { IStudentUser, IStudent, ICreateAccountForStudentInput } from '../interfaces'
+import { ChangePasswordRequiredError } from 'src/utils'
+import { IStudentUser, IStudent, ICreateAccountForStudentInput } from 'src/utils/interfaces'
 
 export const saveSignUpStudent = async (email: string, password: string): Promise<IStudentUser> => {
   const functionName = 'saveSignUpStudent'
@@ -91,16 +91,12 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
       })
     })
     const { data, errors } = await response.json()
-    const { courses, ...rest } = data.createStudent
     
     if (errors !== undefined) {
       throw errors[0]
     }
     
-    return {
-      ...rest,
-      classes: courses
-    }
+    return data.createStudent
     
   } catch (error) {
     handleError(functionName, error)
@@ -193,16 +189,12 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
       })
     })
     const { data, errors } = await response.json()
-    const { courses, ...rest } = data.student
 
     if (errors !== undefined) {
       throw errors[0]
     }
 
-    return {
-      ...rest,
-      classes: courses
-    }
+    return data.student
 
   } catch (error) {
     handleError(functionName, error)

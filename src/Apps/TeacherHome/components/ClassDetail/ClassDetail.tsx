@@ -4,17 +4,18 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { IClass, IStudentUser } from 'src/utils'
-import { Card, Loading, NewCard, ConfirmButton, Button, ConnectedStudentCard } from 'src/sharedComponents'
-import { handleRemoveInvitation } from 'src/handlers/invitations'
 import { StudentsDescription, PendingStudentsDescription, InvitationsDescription } from './descriptions'
+import { Card, Loading, NewCard, ConfirmButton, Button, ConnectedStudentCard } from 'src/sharedComponents'
+import { handleRemoveInvitation } from 'src/handlers/courseInvitations'
+import { handleRemoveStudent } from 'src/handlers/students'
+import { IClass, IStudentUser } from 'src/utils'
 import './ClassDetail.css'
 
 interface IPendingCardProps {
   className?: string
   date: Date
   student: IStudentUser
-  onDelete: (id: string) => void
+  onDelete: () => void
 }
 
 const PendingCard = ({ className, date, student, onDelete }: IPendingCardProps) => {
@@ -30,7 +31,7 @@ const PendingCard = ({ className, date, student, onDelete }: IPendingCardProps) 
       <ConfirmButton
         className="delete"
         confirmClassName="confirm"
-        onClick={() => onDelete(student.id)}
+        onClick={onDelete}
       >
         <span className="confirmation">Delete?</span>
         <i className="material-icons">delete</i>
@@ -48,7 +49,7 @@ interface IState {
 }
 
 interface IProps extends RouteComponentProps<{ id: string }> {
-  selectedClass: IClass
+  selectedCourse: IClass
   dispatch: any
   token: string
 }
@@ -62,10 +63,10 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { match, selectedClass } = this.props
+    const { match, selectedCourse } = this.props
     const { studentsDescription, invitationsDescription, pendingStudentsDescription } = this.state
 
-    if (selectedClass === undefined) {
+    if (selectedCourse === undefined) {
       return (
         <div className="ClassDetail">
           <Loading className="loading" />
@@ -82,7 +83,7 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
         </h2>
         
         <h1 className="class-name">
-          {selectedClass.name}
+          {selectedCourse.name}
         </h1>
 
         <div className="buttons">
@@ -138,16 +139,16 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
             : null
           }
 
-          {selectedClass.students
-            && Object.keys(selectedClass.students).length > 0
-            && Object.keys(selectedClass.students).filter((id) => !selectedClass.students[id].changePasswordRequired).length > 0
-              ? Object.keys(selectedClass.students)
-                  .filter((id) => !selectedClass.students[id].changePasswordRequired)
+          {selectedCourse.students
+            && Object.keys(selectedCourse.students).length > 0
+            && Object.keys(selectedCourse.students).filter((id) => !selectedCourse.students[id].changePasswordRequired).length > 0
+              ? Object.keys(selectedCourse.students)
+                  .filter((id) => !selectedCourse.students[id].changePasswordRequired)
                   .map((id) => (
                     <ConnectedStudentCard
                       key={id}
-                      courseId={selectedClass.id}
-                      student={selectedClass.students[id]}
+                      courseId={selectedCourse.id}
+                      student={selectedCourse.students[id]}
                     />
                 ))
               : (
@@ -159,9 +160,9 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
         </div>
         
         <div className="pending-students">
-          {selectedClass.students
-            && Object.keys(selectedClass.students).length > 0
-            && Object.keys(selectedClass.students).filter((id) => selectedClass.students[id].changePasswordRequired === true).length > 0
+          {selectedCourse.students
+            && Object.keys(selectedCourse.students).length > 0
+            && Object.keys(selectedCourse.students).filter((id) => selectedCourse.students[id].changePasswordRequired === true).length > 0
               ? (
                   <>
                     <div className="section-header">
@@ -183,16 +184,16 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
                       : null
                     }
 
-                    {Object.keys(selectedClass.students)
-                    .filter((id) => selectedClass.students[id].changePasswordRequired === true)
-                    .map((id: string) => (
-                      <PendingCard
-                        className="pending-card"
-                        date={new Date(selectedClass.students[id].createdAt)}
-                        key={id}
-                        student={selectedClass.students[id]}
-                        onDelete={this.handleInvitationDelete}
-                      />
+                    {Object.keys(selectedCourse.students)
+                      .filter((id) => selectedCourse.students[id].changePasswordRequired === true)
+                      .map((id: string) => (
+                        <PendingCard
+                          key={id}
+                          className="pending-card"
+                          date={new Date(selectedCourse.students[id].createdAt)}
+                          student={selectedCourse.students[id]}
+                          onDelete={() => this.handleStudentDelete(id)}
+                        />
                     ))}
                   </>
                 )
@@ -220,14 +221,14 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
             : null
           }
 
-          {selectedClass.students
-            ? Object.keys(selectedClass.courseInvitations).map((id: string) => (
+          {selectedCourse.students
+            ? Object.keys(selectedCourse.courseInvitations).map((id: string) => (
               <PendingCard
                 className="pending-card"
-                date={new Date(selectedClass.courseInvitations[id].createdAt)}
+                date={new Date(selectedCourse.courseInvitations[id].createdAt)}
                 key={id}
-                student={selectedClass.courseInvitations[id].student}
-                onDelete={this.handleInvitationDelete}
+                student={selectedCourse.courseInvitations[id].student}
+                onDelete={() => this.handleInvitationDelete(id)}
               />
             )) : null
           }
@@ -241,11 +242,20 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
   }
 
   private handleInvitationDelete = (id: string) => {
-    const { dispatch, token, selectedClass } = this.props
+    const { dispatch, token, selectedCourse } = this.props
     try {
-      dispatch(handleRemoveInvitation(token, selectedClass.id, id))
+      dispatch(handleRemoveInvitation(token, selectedCourse.id, id))
     } catch (error) {
-      alert(error.message())
+      alert(error)
+    }
+  }
+
+  private handleStudentDelete = (id: string) => {
+    const { dispatch, token, selectedCourse } = this.props
+    try {
+      dispatch(handleRemoveStudent(token, selectedCourse.id, id))
+    } catch (error) {
+      alert(error)
     }
   }
 
@@ -259,11 +269,13 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ teacherHome, user }: any, { match }: any) => ({
-  selectedClass: teacherHome.classes
-    ? teacherHome.classes[match.params.id]
+const mapStateToProps = ({ courses, user }: any, { match }: any) => ({
+  selectedCourse: courses
+    ? courses[match.params.id]
     : undefined,
-  token: user.token,
+  token: user
+    ? user.token
+    : undefined,
 })
 
 export const ClassDetail = connect(mapStateToProps)(DisconnectedClassDetail)

@@ -1,4 +1,4 @@
-import { ITestParameters, IUpdateTestParameters } from ".."
+import { ITestParameters, IUpdateTestParameters } from "src/utils"
 import { handleError } from "./request"
 
 export const saveUpdateTestParameters = async (token: string, testParametersID: string, input: IUpdateTestParameters): Promise<ITestParameters> => {

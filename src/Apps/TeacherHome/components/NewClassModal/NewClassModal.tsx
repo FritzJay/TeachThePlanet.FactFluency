@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { handleAddClass } from 'src/handlers/classes';
+import { handleAddClass } from 'src/handlers/courses';
 import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './NewClassModal.css'
 

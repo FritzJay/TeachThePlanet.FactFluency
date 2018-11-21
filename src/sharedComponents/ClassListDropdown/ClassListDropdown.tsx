@@ -10,14 +10,14 @@ import { updateActiveClass } from 'src/actions/factFluency';
 interface IProps {
   hasInvitations: boolean
   activeClass?: string
-  classes?: IClass[]
+  courses?: IClass[]
   dispatch: any
   userEmail: string
 }
 
 class ClassListDropdown extends React.Component<IProps> {
   public render() {
-    const { activeClass, classes, userEmail, hasInvitations } = this.props
+    const { activeClass, courses, userEmail, hasInvitations } = this.props
 
     if (userEmail === 'TTPStudent') {
       return null
@@ -29,12 +29,12 @@ class ClassListDropdown extends React.Component<IProps> {
           value={activeClass}
           onChange={this.handleChange}
         >
-          {classes !== undefined && Object.keys(classes).map((id) => (
+          {courses !== undefined && Object.keys(courses).map((id) => (
             <option
               key={id}
               value={id}
             >
-              {classes[id].name} - {classes[id].teacher.name}
+              {courses[id].name} - {courses[id].teacher.name}
             </option>
           ))}
         </select>
@@ -51,13 +51,11 @@ class ClassListDropdown extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ factFluency, user }: any) => ({
-  activeClass: factFluency.activeClass
-    ? factFluency.activeClass.id
-    : undefined,
-  classes: factFluency.classes,
+const mapStateToProps = ({ factFluency, courses, courseInvitations, user }: any) => ({
+  activeClass: factFluency.activeClass,
+  courses,
   userEmail: user.email,
-  hasInvitations: factFluency.courseInvitations && Object.keys(factFluency.courseInvitations).length > 0,
+  hasInvitations: Object.keys(courseInvitations).length > 0,
 })
 
 export const ConnectedClassListDropdown = connect(mapStateToProps)(ClassListDropdown);

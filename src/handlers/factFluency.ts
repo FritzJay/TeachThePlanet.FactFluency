@@ -6,7 +6,7 @@ import {
   saveGetStudent,
   saveNewTest,
   INewTestParameters
-} from "src/utils/api"
+} from "src/api"
 import { 
   receiveTest,
   receiveTestResults,
@@ -44,11 +44,11 @@ export const handleSignInStudent = (email: string, password: string) => {
   }
 }
 
-export function handleReceiveTest (token: string, studentID: string, { classID, num, operator }: INewTestParameters) {
+export function handleReceiveTest (token: string, studentID: string, { courseId, num, operator }: INewTestParameters) {
   return async (dispatch: any) => {
     dispatch(showLoading())
     const test = await saveNewTest(token, studentID, {
-      classID,
+      courseId,
       num,
       operator
     })

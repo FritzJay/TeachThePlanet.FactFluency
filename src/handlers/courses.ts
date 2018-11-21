@@ -3,12 +3,12 @@ import {
   saveAddClass,
   saveUpdateClass,
   saveRemoveClass,
-} from '../utils/api'
+} from '../api'
 import { 
   addClass,
   updateClass,
   removeClass,
-} from '../actions/classes'
+} from '../actions/courses'
 import { INewClassParameters } from '../utils'
 
 export const handleAddClass = (token: string, { grade, name }: INewClassParameters) => {

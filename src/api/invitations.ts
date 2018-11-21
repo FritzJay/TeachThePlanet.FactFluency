@@ -1,5 +1,5 @@
 import { handleError } from "./request"
-import { ICourseInvitation, IClass } from "../interfaces"
+import { ICourseInvitation, IClass } from "src/utils/interfaces"
 
 export const saveCreateInvitation = async (token: string, classId: string, email: string): Promise<ICourseInvitation> => {
   const functionName = 'saveCreateInvitation'

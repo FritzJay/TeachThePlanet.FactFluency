@@ -1,5 +1,5 @@
 import { handleError } from './request'
-import { ITeacherUser } from '../interfaces'
+import { ITeacherUser } from 'src/utils/interfaces'
 
 export const saveSignUpTeacher = async (email: string, password: string): Promise<ITeacherUser> => {
   const functionName = 'saveSignUpTeacher'
@@ -87,21 +87,12 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
       })
     })
     const { data, errors } = await response.json()
-    const { courses, invitations, ...rest } = data.createTeacher
-    const { invitationCourses, ...invitationRest } = invitations
 
     if (errors !== undefined) {
       throw errors[0]
     }
 
-    return {
-      ...rest,
-      classes: courses,
-      invitations: {
-        ...invitationRest,
-        classes: invitationCourses
-      }
-    }
+    return data.createTeacher
     
   } catch (error) {
     handleError(functionName, error)

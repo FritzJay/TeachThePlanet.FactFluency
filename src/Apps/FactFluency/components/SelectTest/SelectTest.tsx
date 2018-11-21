@@ -8,7 +8,7 @@ import './SelectTest.css'
 import { TestNumber } from './TestNumber/TestNumber'
 
 interface IProps extends RouteComponentProps<{}>  {
-  classes?: IClass[]
+  courses?: IClass[]
   dispatch: any
   activeClass: string
   availableOperators?: string[]
@@ -34,9 +34,9 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const { availableNumbers, availableOperators, classes } = this.props
+    const { availableNumbers, availableOperators, courses } = this.props
 
-    if (classes === undefined || availableNumbers === undefined || availableOperators === undefined) {
+    if (courses === undefined || availableNumbers === undefined || availableOperators === undefined) {
       return (
         <div className="SelectTest">
           <Loading className="loading" />
@@ -70,7 +70,7 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
     const { activeClass, history, dispatch } = this.props
 
     dispatch(setNewTestParameters({
-      classID: activeClass,
+      courseId: activeClass,
       num,
       operator,
     }))
@@ -89,12 +89,14 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ factFluency }: any) => {
-  const { classes, activeClass } = factFluency
+const mapStateToProps = ({ factFluency, courses }: any) => {
+  const activeClass = factFluency.activeClass
+    ? courses[factFluency.activeClass]
+    : undefined
 
   return {
-    classes,
-    activeClass,
+    courses,
+    activeClass: factFluency.activeClass,
     availableNumbers: activeClass && activeClass.testParameters
       ? activeClass.testParameters.numbers.sort((a: number, b: number) => a - b)
       : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { IClass } from 'src/utils'
-import { handleRemoveClass, handleUpdateClass } from 'src/handlers/classes'
+import { handleRemoveClass, handleUpdateClass } from 'src/handlers/courses'
 import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'
@@ -12,7 +12,7 @@ const CONFIRM_DELETE_TEXT = 'Confirm'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
   dispatch: any
-  selectedClass?: IClass
+  selectedCourse?: IClass
   token?: string
 }
 
@@ -29,11 +29,11 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
     deleteText: DEFAULT_DELETE_TEXT,
     error: '',
     loading: false,
-    grade: this.props.selectedClass
-      ? this.props.selectedClass.grade
+    grade: this.props.selectedCourse
+      ? this.props.selectedCourse.grade
       : undefined,
-    name: this.props.selectedClass
-      ? this.props.selectedClass.name
+    name: this.props.selectedCourse
+      ? this.props.selectedCourse.name
       : undefined,
   }
 
@@ -44,10 +44,10 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 
   public render() {
-    const { selectedClass, token } = this.props
+    const { selectedCourse, token } = this.props
     const { deleteText, error, loading, name, grade } = this.state
 
-    if (token === undefined || selectedClass === undefined || loading) {
+    if (token === undefined || selectedCourse === undefined || loading) {
       return (
         <Modal
           overlay={true}
@@ -94,7 +94,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
             <Input
               name="name"
               className="class-name"
-              placeholder={selectedClass.name}
+              placeholder={selectedCourse.name}
               value={name}
               onChange={this.handleChange}
             />
@@ -144,9 +144,9 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
   
   private handleDeleteClick = () => {
-    const { dispatch, token, history, selectedClass } = this.props
+    const { dispatch, token, history, selectedCourse } = this.props
 
-    if (token === undefined || selectedClass === undefined) {
+    if (token === undefined || selectedCourse === undefined) {
       return
     }
 
@@ -162,7 +162,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
     this.setState({ loading: true }, () => {
       try {
-        dispatch(handleRemoveClass(token, selectedClass.id))
+        dispatch(handleRemoveClass(token, selectedCourse.id))
         history.push('/teacher')
   
       } catch (error) {
@@ -176,12 +176,12 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 
   private handleSaveChangesClick = async () => {
-    const { dispatch, token, history, selectedClass } = this.props
+    const { dispatch, token, history, selectedCourse } = this.props
     const { grade, name } = this.state
-    if (token === undefined || selectedClass === undefined || grade === undefined || name === undefined) {
+    if (token === undefined || selectedCourse === undefined || grade === undefined || name === undefined) {
       return
     }
-    const { id } = selectedClass
+    const { id } = selectedCourse
 
     this.setState({ loading: true }, async () => {
       try {
@@ -212,11 +212,11 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 }
 
-const mapStateToProps = ({ user, teacherHome }: any, { match }: any) => ({
+const mapStateToProps = ({ user, courses }: any, { match }: any) => ({
   token: user.token,
-  selectedClass: teacherHome.classes
-    ? teacherHome.classes[match.params.id]
-    : undefined
+  selectedCourse: courses
+    ? courses[match.params.id]
+    : undefined,
 })
 
 export const EditClassModal = connect(mapStateToProps)(DisconnectedEditClassModal)

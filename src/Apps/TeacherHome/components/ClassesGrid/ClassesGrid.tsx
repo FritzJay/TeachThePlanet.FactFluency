@@ -7,7 +7,7 @@ import { ClassCard } from '../ClassCard/ClassCard'
 import './ClassesGrid.css'
 
 interface IProps extends RouteComponentProps<{}> {
-  classes?: IClass[]
+  courses?: IClass[]
   dispatch: any
 }
 
@@ -19,7 +19,7 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   public state = { error: '' }
 
   public render() {
-    const { classes, match } = this.props
+    const { courses, match } = this.props
     const { error } = this.state
 
     if (error !== '') {
@@ -31,7 +31,7 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
       )
     }
 
-    if (classes === undefined || classes === null) {
+    if (courses === undefined || courses === null) {
       return (
         <div className="ClassesGrid">
           <Loading className="loading" />
@@ -44,10 +44,10 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   
         <h2 className="title">Classes</h2>
   
-        {Object.keys(classes).map((key) => (
+        {Object.keys(courses).map((key) => (
           <ClassCard
             key={key}
-            cls={classes[key]}
+            cls={courses[key]}
             onCardClick={this.handleCardClick}
             onSettingsClick={this.handleSettingsClick}
           />
@@ -71,6 +71,6 @@ class DisconnectedClassesGrid extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ teacherHome }: any) => ({ classes: teacherHome.classes })
+const mapStateToProps = ({ courses }: any) => ({ courses })
 
 export const ClassesGrid = connect(mapStateToProps)(DisconnectedClassesGrid)

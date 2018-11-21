@@ -1,5 +1,5 @@
 import { ITest, ITestResults } from "src/utils/interfaces"
-import { INewTestParameters } from "src/utils/api"
+import { INewTestParameters } from "src/api"
 
 export const REHYDRATE_FACT_FLUENCY = 'REHYDRATE_FACT_FLUENCY'
 export const SET_NEW_TEST_PARAMETERS = 'SET_NEW_TEST_PARAMETERS'

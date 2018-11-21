@@ -2,30 +2,38 @@ import {
   ADD_CLASS,
   UPDATE_CLASS,
   REMOVE_CLASS,
-} from '../actions/classes'
+} from '../actions/courses'
 
 import {
   ADD_STUDENT,
   UPDATE_STUDENT,
   REMOVE_STUDENT_FROM_COURSE,
+  SIGN_IN_STUDENT,
 } from '../actions/students'
-import students from '../reducers/students'
+import students from './students'
 
 import { 
   UPDATE_TEST_PARAMETERS,
 } from '../actions/testParameters'
-import testParameters from '../reducers/testParameters'
+import testParameters from './testParameters'
 
-import { ADD_INVITATION, REMOVE_INVITATION } from 'src/actions/invitations'
-import invitations from './invitations'
+import { ADD_INVITATION, REMOVE_INVITATION } from 'src/actions/courseInvitations'
+import invitations from './courseInvitations'
 
 import { CLEAR_STORE } from '../actions/shared'
+import { formatCourses } from './utils'
+import { SIGN_IN_TEACHER } from 'src/actions/teacherHome';
 
-export default function classes (state: any = {}, action: any) {
+export default function courses (state: any = {}, action: any) {
   switch (action.type) {
-    case CLEAR_STORE: {
+    case SIGN_IN_STUDENT:
+      return formatCourses(action.student.courses)
+
+    case SIGN_IN_TEACHER:
+      return formatCourses(action.teacher.courses)
+
+    case CLEAR_STORE:
       return {}
-    }
 
     case ADD_CLASS:
       return {

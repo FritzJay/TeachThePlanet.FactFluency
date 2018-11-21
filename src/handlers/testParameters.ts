@@ -1,7 +1,7 @@
 import { showLoading, hideLoading } from 'react-redux-loading'
 import {
   saveUpdateTestParameters,
-} from '../utils/api'
+} from '../api'
 import { 
   updateTestParameters,
 } from '../actions/testParameters'

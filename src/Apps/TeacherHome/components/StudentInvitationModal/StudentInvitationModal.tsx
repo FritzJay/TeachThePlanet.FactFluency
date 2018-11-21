@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router'
 import { connect } from 'react-redux'
 
 import { Button, Input, Modal, ModalContent, ModalHeader, Loading } from 'src/sharedComponents'
-import { handleCreateInvitation } from 'src/handlers/invitations'
+import { handleCreateInvitation } from 'src/handlers/courseInvitations'
 import './StudentInvitationModal.css'
 
 interface IProps extends RouteComponentProps<{ id: string }> {

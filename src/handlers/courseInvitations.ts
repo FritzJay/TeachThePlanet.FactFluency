@@ -3,9 +3,9 @@ import {
   saveCreateInvitation,
   saveRemoveInvitation,
   saveAcceptInvitation,
-} from '../utils/api'
-import { addInvitation, removeInvitation, declineInvitation } from '../actions/invitations'
-import { addClass } from 'src/actions/classes';
+} from '../api'
+import { addInvitation, removeInvitation, declineInvitation } from '../actions/courseInvitations'
+import { addClass } from 'src/actions/courses';
 
 export const handleCreateInvitation = (token: string, classId: string, email: string) => {
   return async (dispatch: any) => {

@@ -3,7 +3,7 @@ import {
   saveSignInTeacher,
   saveSignUpTeacher,
   saveGetTeacher,
-} from '../utils/api'
+} from '../api'
 import { addUser } from '../actions/user'
 import { signInTeacher } from 'src/actions/teacherHome'
 

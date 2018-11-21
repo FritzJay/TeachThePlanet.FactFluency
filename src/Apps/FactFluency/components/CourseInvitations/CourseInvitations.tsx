@@ -4,34 +4,34 @@ import { RouteComponentProps } from 'react-router'
 
 import { Card, ConfirmButton } from 'src/sharedComponents'
 import { ICourseInvitation } from 'src/utils'
-import { handleAcceptInvitation, handleDeclineInvitation } from 'src/handlers/invitations'
+import { handleAcceptInvitation, handleDeclineInvitation } from 'src/handlers/courseInvitations'
 import './CourseInvitations.css'
 
 interface IProps extends RouteComponentProps<{}> {
-  invitations?: ICourseInvitation[]
+  courseInvitations?: ICourseInvitation[]
   token?: string
   dispatch: any
 }
 
 class CourseInvitations extends React.Component<IProps> {
   public render() {
-    const { invitations } = this.props
+    const { courseInvitations } = this.props
 
     return (
       <div className="CourseInvitations">
         <h2 className="header">Select an invitation to join the classroom!</h2>
-        {invitations && Object.keys(invitations).length > 0
+        {courseInvitations && Object.keys(courseInvitations).length > 0
           ? (
-          <div className="invitations-container">
-            {Object.keys(invitations).map((id) => (
+          <div className="courseInvitations-container">
+            {Object.keys(courseInvitations).map((id) => (
               <Card
                 key={id}
                 className="invitation-card"
               >
-                <h3 className="card-header">{invitations[id].course.name}</h3>
-                <h4 className="teacher">{invitations[id].course.teacher.name}</h4>
+                <h3 className="card-header">{courseInvitations[id].course.name}</h3>
+                <h4 className="teacher">{courseInvitations[id].course.teacher.name}</h4>
                 <ConfirmButton
-                  value={invitations[id].id}
+                  value={courseInvitations[id].id}
                   onClick={this.handleDecline}
                   className="yellow decline"
                   confirmClassName="confirm-button"
@@ -40,7 +40,7 @@ class CourseInvitations extends React.Component<IProps> {
                   <span className="confirmation">Are you sure?</span>
                 </ConfirmButton>
                 <ConfirmButton
-                  value={invitations[id].id}
+                  value={courseInvitations[id].id}
                   onClick={this.handleAccept}
                   className="green accept"
                   confirmClassName="confirm-button"
@@ -51,7 +51,7 @@ class CourseInvitations extends React.Component<IProps> {
               </Card>
             ))}
           </div>
-          ) : <p>You don't have any invitations. Ask your teacher to create an invitation for "student2@email.com"!</p>
+          ) : <p>You don't have any courseInvitations. Ask your teacher to create an invitation for "student2@email.com"!</p>
         }
       </div>
     )
@@ -88,8 +88,8 @@ class CourseInvitations extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ factFluency, user }: any) => ({
-  invitations: factFluency.courseInvitations,
+const mapStateToProps = ({ courseInvitations, user }: any) => ({
+  courseInvitations,
   token: user.token,
 })
 

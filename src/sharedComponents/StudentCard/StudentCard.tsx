@@ -127,10 +127,10 @@ class StudentCard extends React.Component<IStudentCardProps> {
     )
   }
 
-  private handleDeleteStudent = (id: string) => {
-    const { dispatch, token, courseId } = this.props
+  private handleDeleteStudent = () => {
+    const { dispatch, token, courseId, student } = this.props
     try {
-      dispatch(handleRemoveStudentFromCourse(token, courseId, id))
+      dispatch(handleRemoveStudentFromCourse(token, courseId, student.id))
     } catch (error) {
       console.warn(error)
       this.setState({ error: error.toString() })
@@ -138,6 +138,6 @@ class StudentCard extends React.Component<IStudentCardProps> {
   }
 }
 
-const mapStateToProps = ({ teacherHome, user }: any) => ({ token: user.token })
+const mapStateToProps = ({ user }: any) => ({ token: user.token })
 
 export const ConnectedStudentCard = connect(mapStateToProps)(StudentCard)

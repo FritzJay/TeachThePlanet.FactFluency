@@ -9,27 +9,7 @@ import {
   UPDATE_ACTIVE_CLASS,
 } from '../actions/factFluency'
 
-import {
-  SIGN_IN_STUDENT,
-} from 'src/actions/students'
-
-import {
-  REMOVE_CLASS,
-  UPDATE_CLASS,
-  ADD_CLASS
-} from 'src/actions/classes'
-import classes from './classes'
-
-import {
-  ADD_INVITATION,
-  REMOVE_INVITATION,
-  DECLINE_INVITATION
-} from 'src/actions/invitations'
-
-import {
-  formatClasses,
-  convertArrayOfObjectsWithIdsIntoObject,
-} from './utils'
+import { SIGN_IN_STUDENT } from 'src/actions/students'
 
 import { CLEAR_STORE } from '../actions/shared'
 
@@ -39,13 +19,18 @@ export default function factFluency (state: any = {}, action: any) {
       return {}
 
     case SIGN_IN_STUDENT:
-      const formattedClasses = formatClasses(action.student.classes)
       return {
         ...state,
-        ...action.student,
-        classes: formattedClasses,
-        activeClass: Object.keys(formattedClasses)[0],
-        courseInvitations: convertArrayOfObjectsWithIdsIntoObject(action.student.courseInvitations),
+        activeClass: action.student.courses && action.student.courses.length > 0
+          ? action.student.course[0].id
+          : {},
+        id: action.student.id,
+      }
+
+    case UPDATE_ACTIVE_CLASS:
+      return {
+        ...state,
+        activeClass: action.id,
       }
 
     case SET_NEW_TEST_PARAMETERS:
@@ -87,33 +72,6 @@ export default function factFluency (state: any = {}, action: any) {
     case REMOVE_TEST_RESULTS: {
       const { testResults, ...rest } = state
       return rest
-    }
-
-    case REMOVE_CLASS:
-    case UPDATE_CLASS:
-    case ADD_CLASS:
-    case ADD_INVITATION:
-    case REMOVE_INVITATION:
-      return {
-        ...state,
-        classes: classes(state.classes, action)
-      }
-
-    case UPDATE_ACTIVE_CLASS:
-      return {
-        ...state,
-        activeClass: state.classes
-          ? state.classes[action.id]
-          : {}
-      }
-
-    case DECLINE_INVITATION: {
-      const courseInvitations = Object.assign({}, state.courseInvitations)
-      delete courseInvitations[action.id]
-      return {
-        ...state,
-        courseInvitations 
-      }
     }
 
     default:
