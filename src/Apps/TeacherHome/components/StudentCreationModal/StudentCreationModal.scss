@@ -78,11 +78,8 @@
           justify-self: center;
         }
 
-        .remove {
-          justify-self: flex-end;
-        }
-
         .remove-button {
+          justify-self: flex-end;
           color: $light-red;
           font-weight: bold;
 
