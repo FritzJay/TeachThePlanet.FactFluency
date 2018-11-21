@@ -35,6 +35,9 @@
       font-size: 1.25em;
   
       span {
+        display: flex;
+        justify-content: center;
+        align-content: center;
         border-radius: 0.25em;
         padding: 0.25em;
         color: $white;

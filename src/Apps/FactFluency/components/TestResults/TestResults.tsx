@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { removeTest, removeTestResults } from 'src/actions/factFluency';
 import { handleReceiveTestResults } from 'src/handlers/factFluency';
 import { Button, Card, Loading } from 'src/sharedComponents'
-import { IQuestion, ITest, ITestResults, padString } from 'src/utils'
+import { IQuestion, ITest, ITestResults } from 'src/utils'
 import './TestResults.css'
 
 interface IQuickestCardProps {
@@ -112,7 +112,7 @@ class DisconnectedTestResults extends React.Component<IProps, IState> {
     return (
       <div className="TestResults">
         <h1 className="amount-correct-text">
-          You got <span className={correct >= needed ? 'pass' : 'fail'}>{padString(correct, 2, '\xa0')}</span> out of <span className="pass">{padString(total, 2, '\xa0')}</span> correct!
+          You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
         </h1>
 
         <p>Remember you need {needed}/{total} to pass.</p>
