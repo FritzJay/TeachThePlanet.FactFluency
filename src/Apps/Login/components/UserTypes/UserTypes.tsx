@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { Button } from 'src/sharedComponents'
 import './UserTypes.css'
+import { USER_TYPES } from '../../Login';
 
 interface IProps {
   currentType: string
@@ -18,21 +19,24 @@ export const UserTypes = ({ currentType, onSelect }: IProps) => {
   return (
     <div className="UserTypes">
       <Button
-        className={getClassName('Teacher')}
+        name={USER_TYPES.teacher}
+        className={getClassName(USER_TYPES.teacher)}
         onClick={onSelect}
       >
         Teacher
       </Button>
 
       <Button
-        className={getClassName('Student')}
+        name={USER_TYPES.student}
+        className={getClassName(USER_TYPES.student)}
         onClick={onSelect}
       >
         Student
       </Button>
 
       <Button
-        className={getClassName('Parent')}
+        name={USER_TYPES.parent}
+        className={getClassName(USER_TYPES.parent)}
         onClick={onSelect}
       >
         Parent

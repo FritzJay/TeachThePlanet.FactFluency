@@ -6,6 +6,7 @@ import { handleSignInStudent } from 'src/handlers/factFluency'
 import { handleSignInTeacher } from 'src/handlers/teacherHome'
 import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
+import { USER_TYPES } from '../../Login'
 import './LoginModal.css'
 
 interface IProps extends RouteComponentProps<any> {
@@ -95,20 +96,24 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
           <p className="sign-up-link">Looking to <Link to="/index/signup">create an account?</Link></p>
         </ModalContent>
 
-        <ModalContent className="bottom-content">
-          <Button
-            className="green practice-button"
-            onClick={this.handlePracticeClick}
-          >
-            Practice Without an Account
-          </Button>
-        </ModalContent>
+        {userType === USER_TYPES.student
+          ? (
+            <ModalContent className="bottom-content">
+              <Button
+                className="green practice-button"
+                onClick={this.handlePracticeClick}
+              >
+                Practice Without an Account
+              </Button>
+            </ModalContent>
+          ): null}
+        
 
       </Modal>
     )
   }
   
-  private handlePracticeClick = async () => this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, 'password', 'Student')
+  private handlePracticeClick = async () => this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, 'password', USER_TYPES.student)
 
   private handleLoginClick = async () => {
     const { email, password, userType } = this.props
@@ -135,21 +140,19 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
     const { dispatch, history } = this.props
 
     try {
-      switch (userType.toLowerCase()) {
-        case 'student':
+      switch (userType) {
+        case USER_TYPES.student:
           try {
             await dispatch(handleSignInStudent(email, password))
             history.push('/fact-fluency')
             return
           } catch (error) {
-            console.log(error)
-            console.log(typeof error)
             if (error.name === 'ChangePasswordRequiredError') {
               history.push('/index/first-time-sign-in')
               return
             }
           }
-        case 'teacher':
+        case USER_TYPES.teacher:
           await dispatch(handleSignInTeacher(email, password))
           history.push('/teacher')
           return

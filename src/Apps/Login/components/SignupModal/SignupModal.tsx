@@ -1,11 +1,13 @@
 import * as React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
+
 import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
-import { UserTypes } from '../UserTypes/UserTypes'
+import { UserTypes } from '..'
+import { handleSignUpTeacher } from 'src/handlers/teacherHome'
+import { handleSignUpStudent } from 'src/handlers/factFluency'
+import { USER_TYPES } from '../../Login'
 import './SignupModal.css'
-import { handleSignUpTeacher } from 'src/handlers/teacherHome';
-import { handleSignUpStudent } from 'src/handlers/factFluency';
 
 interface IProps extends RouteComponentProps<any> {
   dispatch: any
@@ -113,12 +115,12 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
     }
 
     try {
-      switch (userType.toLowerCase()) {
-        case 'student':
+      switch (userType) {
+        case USER_TYPES.student:
           await dispatch(handleSignUpStudent(email, password))
           history.push('/fact-fluency')
           return
-        case 'teacher':
+        case USER_TYPES.teacher:
           await dispatch(handleSignUpTeacher(email, password))
           history.push('/teacher')
           return

@@ -9,6 +9,12 @@ import {
 } from './components'
 import './Login.css'
 
+export const USER_TYPES = {
+  student: 'STUDENT',
+  teacher: 'TEACHER',
+  parent: 'PARENT',
+}
+
 interface IProps extends RouteComponentProps<any> { }
 
 interface IState {
@@ -23,7 +29,7 @@ export default class Login extends React.Component<IProps, IState> {
     email: '',
     password: '',
     secondPassword: '',
-    userType: 'Student',
+    userType: USER_TYPES.student,
   }
 
   public render() {
@@ -97,8 +103,7 @@ export default class Login extends React.Component<IProps, IState> {
   }
 
   private handleUserTypeSelect = (e: any) => {
-    const value = e.target.innerText
-    
+    const value = e.target.name
     if (value !== this.state.userType) {
       this.setState({
         userType: value
