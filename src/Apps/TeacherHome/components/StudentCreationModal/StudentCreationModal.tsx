@@ -12,7 +12,7 @@ import { handleCreateStudent } from 'src/handlers/students';
 interface IProps extends RouteComponentProps<{ id: string }> {
   token: string
   dispatch: any
-  selectedClass: IClass
+  selectedCourse: IClass
 }
 
 interface IState {
@@ -64,15 +64,18 @@ class StudentCreationModal extends React.Component<IProps, IState> {
             Add
           </Button>
           <div className="student-list">
-            <div className="student-card example">
-              <h4 className="name">Name</h4>
-              <h4 className="username">Username</h4>
-              <h4 className="remove">Remove</h4>
-            </div>
+            {students.length > 0
+              ? (
+                <div className="student-card example">
+                  <h4 className="username">Username</h4>
+                  <h4 className="password">Password</h4>
+                  <h4 className="remove">Remove</h4>
+                </div>
+              ) : null}
             {students.map((student) => (
               <Card key={student} className="student-card">
-                <h4 className="name">{student}</h4>
                 <h4 className="username">{this.getUsername(student)}</h4>
+                <h4 className="password">TODO: CLASS CODE GOES HERE</h4>
                 <Button
                   className="remove remove-button"
                   onClick={() => this.handleRemoveStudent(student)}
@@ -176,7 +179,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 
   private getUsername = (name: string): string => {
-    return name.replace(' ', '') + '@' + this.props.selectedClass.name
+    return name.replace(' ', '') + '@' + this.props.selectedCourse.name
   }
 
   private getFirstName = (name: string): string => {
@@ -188,10 +191,10 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ teacherHome, user }: any, { match }: IProps) => ({
+const mapStateToProps = ({ courses, user }: any, { match }: IProps) => ({
   token: user.token,
-  selectedClass: teacherHome.classes
-    ? teacherHome.classes[match.params.id]
+  selectedCourse: courses
+    ? courses[match.params.id]
     : undefined,
 })
 
