@@ -6,7 +6,7 @@ import { INVITATION_TYPES } from './ClassDetail'
 export const StudentsDescription = () => (
   <Card className="description-card">
     <p className="description">
-      Below is a list of students who are in this class. Each student's progress is displayed in a grid. The color of the numbers indicates the student's progress with each multiple.
+      Below is a list of students' progression in Fact Fluency. Each student's progress is displayed in a grid. The color of the numbers indicates the student's progress with each multiple.
     </p>
     <ul className="description-list">
       <li>

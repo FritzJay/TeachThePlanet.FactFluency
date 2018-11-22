@@ -14,6 +14,7 @@ import './ClassDetail.css'
 
 import PendingStudent from 'src/images/pending-student-icon.svg'
 import ExistingStudent from 'src/images/existing-student-icon.svg'
+import { Links } from './Links'
 
 export const INVITATION_TYPES = {
   pendingStudent: {
@@ -122,35 +123,7 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
             {selectedCourse.name}
           </h1>
 
-          <div className="buttons">
-            <Button onClick={this.handleParentInvitesClick} className="detail-btn">
-              Parent Invites
-            </Button>
-            <Link
-              className="detail-btn"
-              to={`${match.url}/add-students`}
-            >
-              Add Student
-            </Link>
-            <Link
-              className="detail-btn"
-              to={`${match.url}/remove-students`}
-            >
-              Remove Student
-            </Link>
-            <Link
-              className="detail-btn"
-              to={`${match.url}/test-parameters`}
-            >
-              Test Settings
-            </Link>
-            <Link
-              className="detail-btn"
-              to={`${match.url}/class-settings`}
-            >
-              Class Settings
-            </Link>
-          </div>
+          <Links match={match} onParentInvitesClick={this.handleParentInvitesClick} />
 
           <div className="students">
             <div className="section-header">
