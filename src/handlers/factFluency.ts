@@ -19,64 +19,73 @@ import { signInStudent } from "src/actions/students"
 export const handleSignUpStudent = (email: string, password: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
-
-    const student = await saveSignUpStudent(email, password)
-    const token = await saveSignInStudent(email, password)
-    dispatch(addUser({
-      ...student.user,
-      token,
-    }))
-    dispatch(signInStudent(student))
-    
-    dispatch(hideLoading())
+    try {
+      const student = await saveSignUpStudent(email, password)
+      const token = await saveSignInStudent(email, password)
+      dispatch(addUser({
+        ...student.user,
+        token,
+      }))
+      dispatch(signInStudent(student))
+    } finally {
+      dispatch(hideLoading())
+    }
   }
 }
 
 export const handleSignInStudent = (email: string, password: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
-    const token = await saveSignInStudent(email, password)
-    const student = await saveGetStudent(token)
-    dispatch(addUser({
-      ...student.user,
-      token,
-    }))
-    dispatch(signInStudent(student))
-    dispatch(hideLoading())
+    try {
+      const token = await saveSignInStudent(email, password)
+      const student = await saveGetStudent(token)
+      dispatch(addUser({
+        ...student.user,
+        token,
+      }))
+      dispatch(signInStudent(student))
+    } finally {
+      dispatch(hideLoading())
+    }
   }
 }
 
 export function handleReceiveTest (token: string, studentID: string, { courseId, num, operator }: INewTestParameters) {
   return async (dispatch: any) => {
     dispatch(showLoading())
-    const test = await saveNewTest(token, studentID, {
-      courseId,
-      num,
-      operator
-    })
-    dispatch(receiveTest(test))
-    dispatch(hideLoading())
+    try {
+      const test = await saveNewTest(token, studentID, {
+        courseId,
+        num,
+        operator
+      })
+      dispatch(receiveTest(test))
+    } finally {
+      dispatch(hideLoading())
+    }
   }
 }
 
 export function handleReceiveTestResults (token: string, test: ITest, cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
-
-    const testResults = await saveTestResults(token, test)
-    dispatch(receiveTestResults(testResults))
-
-    dispatch(hideLoading())
+    try {
+      const testResults = await saveTestResults(token, test)
+      dispatch(receiveTestResults(testResults))
+    } finally {
+      dispatch(hideLoading())
+    }
   }
 }
 
 export function handleRehydrateFactFluency (cb?: any) {
   return async (dispatch: any) => {
     dispatch(showLoading())
-
-    const factFluency = await getCached('factFluency')
-    dispatch(rehydrateFactFluency(factFluency))
-
-    dispatch(hideLoading())
+    try {
+      const factFluency = await getCached('factFluency')
+      dispatch(rehydrateFactFluency(factFluency))
+    } finally {
+      dispatch(hideLoading())
+    }
   }
 }
