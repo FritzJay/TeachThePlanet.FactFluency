@@ -35,18 +35,19 @@ export const PendingInvitationsDescription = () => (
       <li>Student Name - The student's name</li>
       <li>Username - The username the student uses to sign in</li>
       <li>Send Date - The date the invitation was sent</li>
-      <li>
+      <li className="invitation-type">
         Invitation Type - There are multiple types of invitations indicated by the following icons:
         <ul className="description-list">
           {Object.keys(INVITATION_TYPES).map((t) => (
-            <li>
+            <li className="invitation-type-item">
               <img
                 key={t}
                 className={`icon ${INVITATION_TYPES[t].color}`}
                 src={INVITATION_TYPES[t].icon}
                 alt={INVITATION_TYPES[t].alt}
                 title={INVITATION_TYPES[t].title}
-              /> - {INVITATION_TYPES[t].title}
+              />
+              <span className="text"> - {INVITATION_TYPES[t].title}</span>
             </li>
           ))}
         </ul>

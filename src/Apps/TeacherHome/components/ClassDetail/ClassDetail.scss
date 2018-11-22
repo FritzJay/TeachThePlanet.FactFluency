@@ -193,6 +193,28 @@
         .important {
             color: $black;
         }
+
+        .invitation-type {
+            .invitation-type-item {
+                display: grid;
+                grid-template-columns: repeat(12, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                margin-top: 0.25em;
+
+                // .icon is supposed to be defined twice
+                // This part is nested to target the pending card
+                .icon {
+                    grid-column: 1 / 1;
+                    grid-row: 1 / 1;
+                }
+
+                .text {
+                    margin-top: 0.5em;
+                    grid-column: 2 / -1;
+                    grid-row: 1 / - 1;
+                }
+            }
+        }
     }
     
     .pending-card {
@@ -221,7 +243,7 @@
         }
 
         // .delete is supposed to be defined twice
-        // This part is nested to target the description card
+        // This part is nested to target the pending card
         .delete {
             grid-area: delete;
 
@@ -242,16 +264,16 @@
         width: 24px;
 
         padding: 5px;
-        border-radius: 5px;
+        border-radius: 50%;
 
         &.yellow {
-            background-color: $very-light-yellow;
-            border: 3px solid $yellow;
+            background-color: $very-light-gray;
+            border: 3px solid $gray;
         }
 
         &.green {
-            background-color: $very-light-green;
-            border: 3px solid $green;
+            background-color: $very-light-gray;
+            border: 3px solid $gray;
         }
     }
     
