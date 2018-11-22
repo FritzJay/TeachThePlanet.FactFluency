@@ -1,18 +1,10 @@
 import * as React from 'react'
 import './ParentInvite.css'
-import { Button } from 'src/sharedComponents';
 
 export class ParentInvite extends React.Component<any> {
   public render() {
     return (
       <div className="ParentInvite">
-        <Button
-          onClick={this.print}
-          className="green print-button"
-        >
-          Print!
-        </Button>
-
         <h2>Teach The Planet: Fact Fluency</h2>
         
         <h4>Dear Parents,</h4>
@@ -54,9 +46,5 @@ export class ParentInvite extends React.Component<any> {
         </table>
       </div>
     )
-  }
-
-  private print = () => {
-    window.print()
   }
 }

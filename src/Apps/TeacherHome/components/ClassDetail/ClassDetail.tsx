@@ -8,6 +8,7 @@ import { StudentsDescription, PendingStudentsDescription, InvitationsDescription
 import { Card, Loading, NewCard, ConfirmButton, Button, ConnectedStudentCard } from 'src/sharedComponents'
 import { handleRemoveInvitation } from 'src/handlers/courseInvitations'
 import { handleRemovePendingStudent } from 'src/handlers/students'
+import { ParentInvite } from '../ParentInvite/ParentInvite'
 import { IClass, IStudentUser } from 'src/utils'
 import './ClassDetail.css'
 
@@ -75,169 +76,170 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
     }
 
     return (
-      <div className="ClassDetail">
-        <h2 className="classes">
-          <Link className="classrooms" to="/teacher/classes">
-            <i className="material-icons big">arrow_back_ios</i>Classes
-          </Link>
-        </h2>
-        
-        <h1 className="class-name">
-          {selectedCourse.name}
-        </h1>
+      <>
+        <div className="ClassDetail">
+          <h2 className="classes">
+            <Link className="classrooms" to="/teacher/classes">
+              <i className="material-icons big">arrow_back_ios</i>Classes
+            </Link>
+          </h2>
+          
+          <h1 className="class-name">
+            {selectedCourse.name}
+          </h1>
 
-        <div className="buttons">
-          <Link
-            className="detail-btn"
-            to={`/teacher/parent-invitation/${match.params.id}`}
-          >
-            Parent Invites
-          </Link>
-          <Link
-            className="detail-btn"
-            to={`${match.url}/add-students`}
-          >
-            Add Student
-          </Link>
-          <Link
-            className="detail-btn"
-            to={`${match.url}/remove-students`}
-          >
-            Remove Student
-          </Link>
-          <Link
-            className="detail-btn"
-            to={`${match.url}/test-parameters`}
-          >
-            Test Settings
-          </Link>
-          <Link
-            className="detail-btn"
-            to={`${match.url}/class-settings`}
-          >
-            Class Settings
-          </Link>
-        </div>
-
-        <div className="students">
-          <div className="section-header">
-            <h2>Students</h2>
-            <Button
-              name="studentsDescription"
-              className="blue description-button"
-              onClick={this.toggleDescription}
-            >
-              {!studentsDescription
-                ? 'More info'
-                : 'Close'
-              }
+          <div className="buttons">
+            <Button onClick={this.handleParentInvitesClick} className="detail-btn">
+              Parent Invites
             </Button>
+            <Link
+              className="detail-btn"
+              to={`${match.url}/add-students`}
+            >
+              Add Student
+            </Link>
+            <Link
+              className="detail-btn"
+              to={`${match.url}/remove-students`}
+            >
+              Remove Student
+            </Link>
+            <Link
+              className="detail-btn"
+              to={`${match.url}/test-parameters`}
+            >
+              Test Settings
+            </Link>
+            <Link
+              className="detail-btn"
+              to={`${match.url}/class-settings`}
+            >
+              Class Settings
+            </Link>
           </div>
 
-          {studentsDescription
-            ? <StudentsDescription />
-            : null
-          }
+          <div className="students">
+            <div className="section-header">
+              <h2>Students</h2>
+              <Button
+                name="studentsDescription"
+                className="blue description-button"
+                onClick={this.toggleDescription}
+              >
+                {!studentsDescription
+                  ? 'More info'
+                  : 'Close'
+                }
+              </Button>
+            </div>
 
-          {selectedCourse.students
-            && Object.keys(selectedCourse.students).length > 0
-            && Object.keys(selectedCourse.students).filter((id) => !selectedCourse.students[id].changePasswordRequired).length > 0
-              ? Object.keys(selectedCourse.students)
-                  .filter((id) => !selectedCourse.students[id].changePasswordRequired)
-                  .map((id) => (
-                    <ConnectedStudentCard
-                      key={id}
-                      courseId={selectedCourse.id}
-                      student={selectedCourse.students[id]}
-                    />
-                ))
-              : (
-                <Link to={`${match.url}/add-students`}>
-                  <NewCard className="new-student-card" text="Add your first student!" />
-                </Link>
-              )
-          }
-        </div>
-        
-        <div className="pending-students">
-          {selectedCourse.students
-            && Object.keys(selectedCourse.students).length > 0
-            && Object.keys(selectedCourse.students).filter((id) => selectedCourse.students[id].changePasswordRequired === true).length > 0
-              ? (
-                  <>
-                    <div className="section-header">
-                      <h2>Pending Students</h2>
-                      <Button
-                        name="pendingStudentsDescription"
-                        className="blue description-button"
-                        onClick={this.toggleDescription}
-                      >
-                        {!pendingStudentsDescription
-                          ? 'More info'
-                          : 'Close'
-                        }
-                      </Button>
-                    </div>
-
-                    {pendingStudentsDescription
-                      ? <PendingStudentsDescription />
-                      : null
-                    }
-
-                    {Object.keys(selectedCourse.students)
-                      .filter((id) => selectedCourse.students[id].changePasswordRequired === true)
-                      .map((id: string) => (
-                        <PendingCard
-                          key={id}
-                          className="pending-card"
-                          date={new Date(selectedCourse.students[id].createdAt)}
-                          student={selectedCourse.students[id]}
-                          onDelete={() => this.handleStudentDelete(id)}
-                        />
-                    ))}
-                  </>
-                )
+            {studentsDescription
+              ? <StudentsDescription />
               : null
-          }
-        </div>
+            }
 
-        <div className="invitations">
-          <div className="section-header">
-            <h2>Pending Invitations</h2>
-            <Button
-              name="invitationsDescription"
-              className="blue description-button"
-              onClick={this.toggleDescription}
-            >
-              {!invitationsDescription
-                ? 'More info'
-                : 'Close'
-              }
-            </Button>
+            {selectedCourse.students
+              && Object.keys(selectedCourse.students).length > 0
+              && Object.keys(selectedCourse.students).filter((id) => !selectedCourse.students[id].changePasswordRequired).length > 0
+                ? Object.keys(selectedCourse.students)
+                    .filter((id) => !selectedCourse.students[id].changePasswordRequired)
+                    .map((id) => (
+                      <ConnectedStudentCard
+                        key={id}
+                        courseId={selectedCourse.id}
+                        student={selectedCourse.students[id]}
+                      />
+                  ))
+                : (
+                  <Link to={`${match.url}/add-students`}>
+                    <NewCard className="new-student-card" text="Add your first student!" />
+                  </Link>
+                )
+            }
+          </div>
+          
+          <div className="pending-students">
+            {selectedCourse.students
+              && Object.keys(selectedCourse.students).length > 0
+              && Object.keys(selectedCourse.students).filter((id) => selectedCourse.students[id].changePasswordRequired === true).length > 0
+                ? (
+                    <>
+                      <div className="section-header">
+                        <h2>Pending Students</h2>
+                        <Button
+                          name="pendingStudentsDescription"
+                          className="blue description-button"
+                          onClick={this.toggleDescription}
+                        >
+                          {!pendingStudentsDescription
+                            ? 'More info'
+                            : 'Close'
+                          }
+                        </Button>
+                      </div>
+
+                      {pendingStudentsDescription
+                        ? <PendingStudentsDescription />
+                        : null
+                      }
+
+                      {Object.keys(selectedCourse.students)
+                        .filter((id) => selectedCourse.students[id].changePasswordRequired === true)
+                        .map((id: string) => (
+                          <PendingCard
+                            key={id}
+                            className="pending-card"
+                            date={new Date(selectedCourse.students[id].createdAt)}
+                            student={selectedCourse.students[id]}
+                            onDelete={() => this.handleStudentDelete(id)}
+                          />
+                      ))}
+                    </>
+                  )
+                : null
+            }
           </div>
 
-          {invitationsDescription
-            ? <InvitationsDescription />
-            : null
-          }
+          <div className="invitations">
+            <div className="section-header">
+              <h2>Pending Invitations</h2>
+              <Button
+                name="invitationsDescription"
+                className="blue description-button"
+                onClick={this.toggleDescription}
+              >
+                {!invitationsDescription
+                  ? 'More info'
+                  : 'Close'
+                }
+              </Button>
+            </div>
 
-          {selectedCourse.students
-            ? Object.keys(selectedCourse.courseInvitations).map((id: string) => (
-              <PendingCard
-                className="pending-card"
-                date={new Date(selectedCourse.courseInvitations[id].createdAt)}
-                key={id}
-                student={selectedCourse.courseInvitations[id].student}
-                onDelete={() => this.handleInvitationDelete(id)}
-              />
-            )) : null
-          }
+            {invitationsDescription
+              ? <InvitationsDescription />
+              : null
+            }
 
-          <Link to={`${match.url}/add-students/existing`}>
-            <NewCard className="new-invite-card" text="Invite a student!" />
-          </Link>
+            {selectedCourse.students
+              ? Object.keys(selectedCourse.courseInvitations).map((id: string) => (
+                <PendingCard
+                  className="pending-card"
+                  date={new Date(selectedCourse.courseInvitations[id].createdAt)}
+                  key={id}
+                  student={selectedCourse.courseInvitations[id].student}
+                  onDelete={() => this.handleInvitationDelete(id)}
+                />
+              )) : null
+            }
+
+            <Link to={`${match.url}/add-students/existing`}>
+              <NewCard className="new-invite-card" text="Invite a student!" />
+            </Link>
+          </div>
         </div>
-      </div>
+
+        <ParentInvite email={'Temp'} password={'Temp'} />
+      </>
     )
   }
 
@@ -266,6 +268,10 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
       state[name] = !prevState[name]
       return state
     })
+  }
+
+  private handleParentInvitesClick = () => {
+    window.print()
   }
 }
 

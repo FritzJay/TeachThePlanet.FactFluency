@@ -281,3 +281,13 @@
         }
     }
 }
+
+.ParentInvite {
+    display: none;
+}
+
+@media print {
+    .ClassDetail {
+        display: none;
+    }
+  }
