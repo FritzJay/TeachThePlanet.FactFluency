@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { connect } from 'react-redux'
 
-import { Button, Input, Modal, ModalContent, ModalHeader, Loading } from 'src/sharedComponents'
+import { Button, CopyToClipboard, Input, Modal, ModalContent, ModalHeader, Loading, Card } from 'src/sharedComponents'
 import { handleCreateInvitation } from 'src/handlers/courseInvitations'
 import './StudentInvitationModal.css'
 
@@ -40,50 +40,62 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent className="content">
-          <h3>Share you class code: <span className="classCode">TODO: CLASS CODE</span></h3>
+          <Card className="option-card">
+            <CopyToClipboard
+              text={'TEMP'}
+              className="copy-to-clipboard"
+            >
+              <h3 className="header">Let your students join your class using your class code:</h3>
+              <div className="class-code">
+                <h3>{'TEMP'}</h3>
+                <i className="material-icons">assignment</i>
+              </div>
+            </CopyToClipboard>
+          </Card>
           
           <h2 className="or">Or</h2>
       
-          <h3 className="sub-header">Enter the email or username of an existing student</h3>
+          <Card className="option-card">
+            <h3 className="header">Enter the email or username of a student and send them an invite</h3>
+  
+            {error !== ''
+              ? <p className="error">{error}</p>
+              : null
+            }
+  
+            {successMessage !== ''
+              ? <p className="success-message">{successMessage}</p>
+              : null
+            }
+  
+            <Input
+              className="student-input"
+              name="student"
+              value={student}
+              placeholder="Email/Username"
+              onChange={this.handleChange}
+              />
 
-          {error !== ''
-            ? <p className="error">{error}</p>
-            : null
-          }
-
-          {successMessage !== ''
-            ? <p className="success-message">{successMessage}</p>
-            : null
-          }
+              <Button
+                className="green send-button"
+                onClick={this.handleSendClick}
+              >
+                Send Invitation
+              </Button>
+          </Card>
 
           {loading
             ? <Loading />
             : null
           }
-
-          <Input
-            className="student-input"
-            name="student"
-            value={student}
-            placeholder="Email/Username"
-            onChange={this.handleChange}
-          />
           
 
-          <div className="btn-row">
-            <Button
-              className="gray"
-              onClick={this.handleBackClick}
-            >
-              Back
-            </Button>
-            <Button
-              className="green"
-              onClick={this.handleSendClick}
-            >
-              Send
-            </Button>
-          </div>
+          <Button
+            className="gray back-button"
+            onClick={this.handleBackClick}
+          >
+            Back
+          </Button>
         </ModalContent>
       </Modal>
     )

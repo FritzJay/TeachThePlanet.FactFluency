@@ -2,33 +2,76 @@
 
 .StudentInvitationModal {
   .header {
-      background-color: $blue;
-      color: $white;
-      padding: 2em 3em;
-  }
-
-  .or {
-    padding: 0.25em;
-    text-align: center;
-    justify-self: stretch;
-    border-top: 2px solid $gray;
-    border-bottom: 2px solid $gray;
+    background-color: $blue;
+    color: $white;
+    padding: 2em 3em;
   }
 
   .content {
     padding: 2em;
-  }
+  
+    .option-card {
+      width: 100%;
+      display: grid;
+      grid-gap: 1em;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
 
-  .btn-row {
-    width: 100%;
-    margin: 2em 0.5em 0.5em 0.5em;
-    display: flex;
-    justify-content: space-around;
-  }
+      .header {
+        margin: 0;
+        padding: 1em;
+        background-color: $green;
+      }
 
-  .error {
-    color: $red;
-    grid-column: 1 / -1;
-    justify-self: center;
+      .class-code {
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 1em;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+
+        &:hover {
+          color: $blue;
+        }
+
+        &:active {
+          transform: translateY(2px);
+        }
+      }
+
+      .send-button {
+        justify-self: center;
+        margin-bottom: 1em;
+      }
+
+      .student-input {
+        width: 85%;
+        justify-self: center;
+      }
+
+      .error {
+        color: $red;
+        font-weight: bold;
+        justify-self: center;
+        margin: 0;
+      }
+
+      .success-message {
+        margin: 0;
+        justify-self: center;
+      }
+    }
+
+    .or {
+      text-align: center;
+      justify-self: stretch;
+    }
+
+    .back-button {
+      margin-top: 2em;
+    }
   }
 }

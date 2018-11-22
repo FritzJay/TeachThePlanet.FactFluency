@@ -1,6 +1,8 @@
 @import 'src/Stylesheets/all';
 
 .CopyToClipboard {
+  cursor: pointer;
+
   .notification {
     position: absolute;
     border-radius: 3px;
