@@ -1,5 +1,7 @@
 import * as React from 'react'
+
 import { Card } from 'src/sharedComponents'
+import { INVITATION_TYPES } from './ClassDetail'
 
 export const StudentsDescription = () => (
   <Card className="description-card">
@@ -23,44 +25,40 @@ export const StudentsDescription = () => (
   </Card>
 )
 
-export const PendingStudentsDescription = () => (
+export const PendingInvitationsDescription = () => (
   <Card className="description-card">
     <p className="description">
-      Listed below are the students who's accounts you've created for them. These students still need to sign in, using the username displayed on the card, and update their passwords.
+      Listed below are the students currently invited to join this class.
     </p>
-    <p>The pending students card is broken into 4 sections:</p>
+    <p>The pending invitation cards consist of five sections:</p>
     <ol>
       <li>Student Name - The student's name</li>
-      <li>Username - The username the student may use to sign in</li>
-      <li>Invite Date - The date the invitation was sent</li>
+      <li>Username - The username the student uses to sign in</li>
+      <li>Send Date - The date the invitation was sent</li>
+      <li>
+        Invitation Type - There are multiple types of invitations indicated by the following icons:
+        <ul className="description-list">
+          {Object.keys(INVITATION_TYPES).map((t) => (
+            <li>
+              <img
+                key={t}
+                className={`icon ${INVITATION_TYPES[t].color}`}
+                src={INVITATION_TYPES[t].icon}
+                alt={INVITATION_TYPES[t].alt}
+                title={INVITATION_TYPES[t].title}
+              /> - {INVITATION_TYPES[t].title}
+            </li>
+          ))}
+        </ul>
+      </li>
       <li>Delete - A button used to delete the invitation</li>
-    </ol>
-    <Card className="pending-card">
-      <h3 className="student-name">Student Name</h3>
-      <span className="email">Username</span>
-      <h4 className="date">Invite Date</h4>
-      <span className="delete">Delete</span>
-    </Card>
-  </Card>
-)
-
-export const InvitationsDescription = () => (
-  <Card className="description-card">
-    <p className="description">
-      The pending invitations section lists existing students who you've invited to join this class. These students still need to sign in and accept the invitation.
-    </p>
-    <p>The pending invitations card is broken into 4 sections:</p>
-    <ol>
-      <li>Student Name: The students name</li>
-      <li>Username: The username the student may use to sign in</li>
-      <li>Send Date: The date the invitation was sent</li>
-      <li>Delete: A button used to delete the invitation</li>
     </ol>
     <Card className="pending-card">
       <h3 className="student-name">Student Name</h3>
       <span className="email">Username</span>
       <h4 className="date">Send Date</h4>
       <span className="delete">Delete</span>
+      <h4>Invitation Type</h4>
     </Card>
   </Card>
 )

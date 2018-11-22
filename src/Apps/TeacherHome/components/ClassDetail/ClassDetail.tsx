@@ -4,7 +4,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { StudentsDescription, PendingStudentsDescription, InvitationsDescription } from './descriptions'
+import { PendingInvitationsDescription, StudentsDescription } from './descriptions'
 import { Card, Loading, NewCard, ConfirmButton, Button, ConnectedStudentCard } from 'src/sharedComponents'
 import { handleRemoveInvitation } from 'src/handlers/courseInvitations'
 import { handleRemovePendingStudent } from 'src/handlers/students'
@@ -12,14 +12,40 @@ import { ParentInvite } from '../ParentInvite/ParentInvite'
 import { IClass, IStudentUser } from 'src/utils'
 import './ClassDetail.css'
 
+import PendingStudent from 'src/images/pending-student-icon.svg'
+import ExistingStudent from 'src/images/existing-student-icon.svg'
+
+export const INVITATION_TYPES = {
+  pendingStudent: {
+    alt: 'Pending student',
+    color: 'yellow',
+    icon: PendingStudent,
+    title: 'You have created an account for this student and they still need to sign in for the first time using the username displayed on the card. They must use the password that you designated. If you did not designate a password for the student, they must use this class code.',
+  },
+  existingStudent: {
+    alt: 'Existing student',
+    color: 'green',
+    icon: ExistingStudent,
+    title: 'This pre-existing student has been invited to join the class and can accept the invitation at any time.',
+  },
+}
+
+interface IInvitationType {
+  alt: string
+  icon: string
+  title: string
+  color: string
+}
+
 interface IPendingCardProps {
   className?: string
   date: Date
   student: IStudentUser
+  invitationType: IInvitationType
   onDelete: () => void
 }
 
-const PendingCard = ({ className, date, student, onDelete }: IPendingCardProps) => {
+const PendingCard = ({ className, date, student, onDelete, invitationType }: IPendingCardProps) => {
   return (
     <Card className={`InactiveStudentCard${className ? ' ' + className : ''}`}>
       <h3 className="student-name">
@@ -27,8 +53,18 @@ const PendingCard = ({ className, date, student, onDelete }: IPendingCardProps) 
           ? student.name.slice(0, 15) + '...'
           : student.name}
       </h3>
+
       <span className="email">{student.user.email}</span>
+
       <h4 className="date">{date.getMonth()}/{date.getDate()}/{date.getFullYear()}</h4>
+
+      <img
+        className={`icon ${invitationType.color}`}
+        src={invitationType.icon}
+        alt={invitationType.alt}
+        title={invitationType.title}
+      />
+
       <ConfirmButton
         className="delete"
         confirmClassName="confirm"
@@ -45,8 +81,7 @@ const PendingCard = ({ className, date, student, onDelete }: IPendingCardProps) 
 interface IState {
   error: string
   studentsDescription: boolean
-  invitationsDescription: boolean
-  pendingStudentsDescription: boolean
+  pendingInvitationsDescription: boolean
 }
 
 interface IProps extends RouteComponentProps<{ id: string }> {
@@ -59,13 +94,12 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     studentsDescription: false,
-    invitationsDescription: false,
-    pendingStudentsDescription: false,
+    pendingInvitationsDescription: false,
   }
 
   public render() {
     const { match, selectedCourse } = this.props
-    const { studentsDescription, invitationsDescription, pendingStudentsDescription } = this.state
+    const { studentsDescription, pendingInvitationsDescription } = this.state
 
     if (selectedCourse === undefined) {
       return (
@@ -158,86 +192,66 @@ class DisconnectedClassDetail extends React.Component<IProps, IState> {
             }
           </div>
           
-          <div className="pending-students">
-            {selectedCourse.students
-              && Object.keys(selectedCourse.students).length > 0
-              && Object.keys(selectedCourse.students).filter((id) => selectedCourse.students[id].changePasswordRequired === true).length > 0
-                ? (
-                    <>
-                      <div className="section-header">
-                        <h2>Pending Students</h2>
-                        <Button
-                          name="pendingStudentsDescription"
-                          className="blue description-button"
-                          onClick={this.toggleDescription}
-                        >
-                          {!pendingStudentsDescription
-                            ? 'More info'
-                            : 'Close'
-                          }
-                        </Button>
-                      </div>
-
-                      {pendingStudentsDescription
-                        ? <PendingStudentsDescription />
-                        : null
-                      }
-
-                      {Object.keys(selectedCourse.students)
-                        .filter((id) => selectedCourse.students[id].changePasswordRequired === true)
-                        .map((id: string) => (
-                          <PendingCard
-                            key={id}
-                            className="pending-card"
-                            date={new Date(selectedCourse.students[id].createdAt)}
-                            student={selectedCourse.students[id]}
-                            onDelete={() => this.handleStudentDelete(id)}
-                          />
-                      ))}
-                    </>
-                  )
-                : null
-            }
-          </div>
-
-          <div className="invitations">
+          <div className="pending-invitations">
             <div className="section-header">
               <h2>Pending Invitations</h2>
               <Button
-                name="invitationsDescription"
+                name="pendingInvitationsDescription"
                 className="blue description-button"
                 onClick={this.toggleDescription}
               >
-                {!invitationsDescription
+                {!pendingInvitationsDescription
                   ? 'More info'
                   : 'Close'
                 }
               </Button>
             </div>
 
-            {invitationsDescription
-              ? <InvitationsDescription />
+            {pendingInvitationsDescription
+              ? <PendingInvitationsDescription />
               : null
             }
 
             {selectedCourse.students
-              ? Object.keys(selectedCourse.courseInvitations).map((id: string) => (
-                <PendingCard
-                  className="pending-card"
-                  date={new Date(selectedCourse.courseInvitations[id].createdAt)}
-                  key={id}
-                  student={selectedCourse.courseInvitations[id].student}
-                  onDelete={() => this.handleInvitationDelete(id)}
-                />
-              )) : null
+              ? (
+                  <>
+
+                    {Object.keys(selectedCourse.students).length > 0
+                      ? Object.keys(selectedCourse.students)
+                          .filter((id) => selectedCourse.students[id].changePasswordRequired === true)
+                          .map((id: string) => (
+                            <PendingCard
+                              key={id}
+                              className="pending-card"
+                              date={new Date(selectedCourse.students[id].createdAt)}
+                              student={selectedCourse.students[id]}
+                              invitationType={INVITATION_TYPES.pendingStudent}
+                              onDelete={() => this.handleStudentDelete(id)}
+                            />
+                      )) : null}
+
+                    {selectedCourse.courseInvitations && Object.keys(selectedCourse.courseInvitations).length > 0
+                      ? Object.keys(selectedCourse.courseInvitations).map((id: string) => (
+                          <PendingCard
+                            className="pending-card"
+                            date={new Date(selectedCourse.courseInvitations[id].createdAt)}
+                            key={id}
+                            student={selectedCourse.courseInvitations[id].student}
+                            invitationType={INVITATION_TYPES.existingStudent}
+                            onDelete={() => this.handleInvitationDelete(id)}
+                          />
+                      )) : null
+                    }
+                  </>
+                )
+              : null
             }
 
-            <Link to={`${match.url}/add-students/existing`}>
+            <Link to={`${match.url}/add-students`}>
               <NewCard className="new-invite-card" text="Invite a student!" />
             </Link>
           </div>
         </div>
-
         <ParentInvite email={'Temp'} password={'Temp'} />
       </>
     )
