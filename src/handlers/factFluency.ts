@@ -1,4 +1,4 @@
-import { hideLoading, showLoading } from "react-redux-loading"
+import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import {
   saveTestResults,
   saveSignUpStudent,
@@ -19,6 +19,7 @@ import { signInStudent } from "src/actions/students"
 export const handleSignUpStudent = (email: string, password: string) => {
   return async (dispatch: any) => {
     dispatch(showLoading())
+
     const student = await saveSignUpStudent(email, password)
     const token = await saveSignInStudent(email, password)
     dispatch(addUser({
@@ -26,6 +27,7 @@ export const handleSignUpStudent = (email: string, password: string) => {
       token,
     }))
     dispatch(signInStudent(student))
+    
     dispatch(hideLoading())
   }
 }
@@ -65,10 +67,6 @@ export function handleReceiveTestResults (token: string, test: ITest, cb?: any) 
     dispatch(receiveTestResults(testResults))
 
     dispatch(hideLoading())
-
-    if (cb !== undefined) {
-      cb()
-    }
   }
 }
 
@@ -80,9 +78,5 @@ export function handleRehydrateFactFluency (cb?: any) {
     dispatch(rehydrateFactFluency(factFluency))
 
     dispatch(hideLoading())
-
-    if (cb !== undefined) {
-      cb()
-    }
   }
 }

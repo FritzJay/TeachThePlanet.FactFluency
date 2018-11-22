@@ -6,8 +6,9 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom'
+import LoadingBar from 'react-redux-loading-bar'
 import Login from 'src/Apps/Login/Login'
-import { LoadingBar, PageNotFound } from 'src/sharedComponents'
+import { PageNotFound } from 'src/sharedComponents'
 import './App.css'
 import { TeacherHome } from './TeacherHome/TeacherHome'
 import { FactFluency } from './FactFluency/FactFluency'
@@ -36,7 +37,7 @@ class App extends React.Component<IProps> {
   public render() {
     return (
       <div className="App">
-        <LoadingBar />
+        <LoadingBar className="LoadingBar" />
         
         <Switch>
           <Route

@@ -1,4 +1,4 @@
-import { loadingBarReducer } from 'react-redux-loading'
+import { loadingBarReducer } from 'react-redux-loading-bar'
 import { combineReducers } from 'redux'
 import teacherHome from './teacherHome'
 import user from './user'

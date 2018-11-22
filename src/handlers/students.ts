@@ -1,4 +1,4 @@
-import { showLoading, hideLoading } from 'react-redux-loading'
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { IStudent, ICreateAccountForStudentInput } from '../utils/interfaces'
 import { addStudent, removeStudentFromCourse, signInStudent } from 'src/actions/students'
 import {
