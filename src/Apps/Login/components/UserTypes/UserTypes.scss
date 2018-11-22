@@ -13,13 +13,13 @@
 
     &.active {
       background-color: $blue;
-      border: solid 3px $light-blue;
+      border: solid 3px transparent;
       color: $white;
 
       &:hover {
         background: none;
         background-color: $light-blue;
-        border: solid 3px $very-light-blue;
+        border: solid 3px transparent;
       }
     }
   }
