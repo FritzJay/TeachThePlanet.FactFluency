@@ -82,10 +82,11 @@ export interface IUpdateTestParameters {
 }
 
 export interface ICreateAccountForStudentInput {
-  name: string,
+  name: string
   user: {
-    email: string,
-    firstName: string,
+    email: string
+    password: string
+    firstName: string
     lastName: string
   }
 }

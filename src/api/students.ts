@@ -219,7 +219,7 @@ export const saveSignInStudent = async (email: string, password: string): Promis
       throw error
     }
 
-    if (changePasswordRequired) {
+    if (changePasswordRequired === true) {
       throw new ChangePasswordRequiredError()
     }
 
@@ -336,7 +336,6 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
             courseId,
             user: {
               ...user,
-              password: 'teachtheplanet',
             },
           }
         },

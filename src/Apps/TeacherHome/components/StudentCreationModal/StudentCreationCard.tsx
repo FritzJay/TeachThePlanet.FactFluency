@@ -4,21 +4,14 @@ import { Card, Button, Input } from 'src/sharedComponents';
 interface IProps {
   name: string
   username: string
-  classCode: string
+  password: string
+  onPasswordChange: (name: string, password: string) => void
   onDelete: (name: string) => void
 }
 
-interface IState {
-  password: string
-}
-
-export class StudentCreationCard extends React.Component<IProps, IState> {
-  public state: IState = {
-    password: this.props.classCode
-  }
-
+export class StudentCreationCard extends React.Component<IProps> {
   public render() {
-    const { username } = this.props
+    const { username, password } = this.props
 
     return (
       <Card className="student-card">
@@ -26,7 +19,7 @@ export class StudentCreationCard extends React.Component<IProps, IState> {
         <Input
           className="password"
           name="password"
-          value={this.state.password}
+          value={password}
           onChange={this.handleChange}
         />
         <Button
@@ -39,8 +32,10 @@ export class StudentCreationCard extends React.Component<IProps, IState> {
     )
   }
 
+  
   private handleChange = (e: any) => {
-    this.setState({ password: e.target.value })
+    const password = e.target.value
+    this.props.onPasswordChange(this.props.name, password)
   }
 
   private handleDelete = () => {

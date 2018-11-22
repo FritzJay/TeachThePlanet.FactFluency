@@ -16,7 +16,9 @@ interface IProps extends RouteComponentProps<{ id: string }> {
 
 interface IState {
   error: string
-  students: string[]
+  students: {
+    [id: string]: string
+  }
   name: string
 }
 
@@ -24,7 +26,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     name: '',
-    students: []
+    students: {}
   }
 
   public render() {
@@ -66,7 +68,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
             Add
           </Button>
           <div className="student-list">
-            {students.length > 0
+            {Object.keys(students).length > 0
               ? (
                 <div className="student-card example">
                   <h4 className="username">Username</h4>
@@ -74,12 +76,13 @@ class StudentCreationModal extends React.Component<IProps, IState> {
                   <h4 className="remove">Remove</h4>
                 </div>
               ) : null}
-            {students.map((student) => (
+            {Object.keys(students).map((id) => (
               <StudentCreationCard
-                key={student}
-                name={student}
-                username={this.getUsername(student)}
-                classCode={this.props.selectedCourse.code}
+                key={id}
+                name={id}
+                password={students[id]}
+                username={this.getUsername(id)}
+                onPasswordChange={this.handlePasswordChange}
                 onDelete={this.handleRemoveStudent}
               />
             ))}
@@ -125,45 +128,63 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       this.setState({ error: 'Please enter first name and last initial only' })
       return
     }
+
+    const displayName = this.getDisplayName(name)
     
-    if (students.includes(this.getDisplayName(name))) {
-      this.setState({ error: `You have already added ${this.getDisplayName(name)} to the list of invitations` })
+    if (Object.keys(students).includes(displayName)) {
+      this.setState({ error: `You have already added ${displayName} to the list of invitations` })
       return
     }
 
     this.setState(prevState => ({
-      students: prevState.students.concat([this.getDisplayName(name)]),
+      students: { ...prevState.students, [displayName]: this.props.selectedCourse.code },
       name: '',
       error: '',
     }))
   }
+  
+    private handleRemoveStudent = (student: string) => {
+      this.setState(prevState => {
+        const newStudents = { ...prevState.students }
+        delete newStudents[student]
+        return {
+          students: newStudents,
+          error: '',
+        }
+      })
+    }
 
   private handleChange = (e: any) => {
     const value = e.target.value
     this.setState({ name: value })
   }
 
-  private handleRemoveStudent = (student: string) => {
+  private handlePasswordChange = (student: string, password: string) => {
     this.setState(prevState => ({
-      students: prevState.students.filter(name => name !== student),
-      error: '',
-    }));
+      students: {
+        ...prevState.students,
+        [student]: password,
+      }
+    }))
   }
 
   private handleCreateAccounts = async () => {
-    if (this.state.students.length === 0) {
+    const { students } = this.state
+
+    if (Object.keys(students).length === 0) {
       this.setState({ error: 'At least one student is required' })
       return
     }
 
     const { token, match, history } = this.props
     
-    await Promise.all(this.state.students.map(async (student) => {
+    await Promise.all(Object.keys(students).map(async (student) => {
       try {
         await this.props.dispatch(handleCreateStudent(token, match.params.id, {
           name: this.getDisplayName(student),
           user: {
             email: this.getUsername(student),
+            password: students[student],
             firstName: this.getFirstName(student),
             lastName: this.getLastInitial(student),
           }
