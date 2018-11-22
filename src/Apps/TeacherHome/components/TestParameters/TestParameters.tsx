@@ -202,14 +202,6 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
               Save
             </Button>
 
-            <Button 
-              className="cancel red"
-              type="button"
-              onClick={this.handleCancelClick}
-            >
-              Cancel
-            </Button>
-
           </form>
         </ModalContent>
       </Modal>
@@ -275,8 +267,6 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       })
     }
   }
-  
-  private handleCancelClick = () => this.props.history.goBack()
 }
 
 const mapStateToProps = ({ user, courses }: any, { match }: any) => ({

@@ -41,8 +41,7 @@
             "durationheader  durationheader  durationheader  durationheader  durationheader"
             "minuteslabel    minuteslabel      minuteslabel     secondslabel    secondslabel"
             "minutes          minutes          separator        seconds          seconds"
-            "save             save             save             save             save"
-            "cancel           cancel           cancel           cancel           cancel";
+            "save             save             save             save             save";
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: auto;
             
@@ -168,23 +167,10 @@
             .save {
                 grid-area: save;
                 
-                margin: 1.75em 0 1em 0;
+                margin: 1.75em 0 0 0;
                 justify-self: center;
                 padding-right: 5em;
                 padding-left: 5em;
-            }
-            
-            .cancel {
-                grid-area: cancel;
-                justify-self: center;
-
-                color: $light-red;
-                border: none;
-              
-                &:hover {
-                    color: $red;
-                    background-color: transparent;
-                }
             }
         }
     }
