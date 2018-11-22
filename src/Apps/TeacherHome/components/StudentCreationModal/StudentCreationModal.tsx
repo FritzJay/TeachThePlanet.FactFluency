@@ -70,7 +70,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
               ? (
                 <div className="student-card example">
                   <h4 className="username">Username</h4>
-                  <h4 className="password">Password</h4>
+                  <h4 className="password">Temporary Password</h4>
                   <h4 className="remove">Remove</h4>
                 </div>
               ) : null}
@@ -181,8 +181,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 
   private getDisplayName = (name: string): string => {
-    const [ firstName, lastName ] = name.split(' ')
-    return `${firstName} ${lastName[0].toUpperCase()}`
+    return `${this.getFirstName(name)} ${this.getLastInitial(name)}`
   }
 
   private getUsername = (name: string): string => {
@@ -190,7 +189,8 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 
   private getFirstName = (name: string): string => {
-    return name.split(' ')[0]
+    const firstName = name.split(' ')[0]
+    return firstName[0].toUpperCase() + firstName.slice(1, firstName.length)
   }
 
   private getLastInitial = (name: string): string => {

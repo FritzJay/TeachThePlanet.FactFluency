@@ -75,8 +75,12 @@
           justify-self: flex-start;
         }
 
-        .password {
+        input.password {
           justify-self: center;
+          align-self: center;
+          padding: 0.25em 0.5em;
+          background-color: $very-very-light-gray;
+          border-radius: 5px;
         }
 
         .remove {

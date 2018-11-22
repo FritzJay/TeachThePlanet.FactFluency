@@ -56,6 +56,7 @@
 
             background-color: $white;
             color: $gray;
+            opacity: 1;
 
             border: 3px solid $gray;
 
@@ -288,6 +289,10 @@
 
 @media print {
     .ClassDetail {
-        display: none;
+        display: none !important;
+    }
+    
+    .ParentInvite {
+        display: inherit !important;
     }
   }

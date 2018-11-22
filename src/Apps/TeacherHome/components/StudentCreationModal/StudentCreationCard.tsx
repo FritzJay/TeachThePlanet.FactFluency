@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Card, Button } from 'src/sharedComponents';
+import { Card, Button, Input } from 'src/sharedComponents';
 
 interface IProps {
   name: string
@@ -8,14 +8,27 @@ interface IProps {
   onDelete: (name: string) => void
 }
 
-export class StudentCreationCard extends React.Component<IProps> {
+interface IState {
+  password: string
+}
+
+export class StudentCreationCard extends React.Component<IProps, IState> {
+  public state: IState = {
+    password: this.props.classCode
+  }
+
   public render() {
-    const { username, classCode } = this.props
+    const { username } = this.props
 
     return (
       <Card className="student-card">
         <h4 className="username">{username}</h4>
-        <h4 className="password">{classCode}</h4>
+        <Input
+          className="password"
+          name="password"
+          value={this.state.password}
+          onChange={this.handleChange}
+        />
         <Button
           className="remove"
           onClick={this.handleDelete}
@@ -24,6 +37,10 @@ export class StudentCreationCard extends React.Component<IProps> {
         </Button>
       </Card>
     )
+  }
+
+  private handleChange = (e: any) => {
+    this.setState({ password: e.target.value })
   }
 
   private handleDelete = () => {

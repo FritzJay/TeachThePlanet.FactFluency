@@ -1,20 +1,14 @@
-.framework-input {
+.Input {
   font-family: 'Roboto', sans-serif;
-  font-size: 1em;
-  font-weight: 700;
-  
-  background-color: #FFFFFF;
-  
-  border: none;
-  border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-  
-  color: rgb(80, 80, 80);
-  
-  width: 100%;
+    font-size: 1em;
+    font-weight: 900;
 
-  /* Hide HTML5 Up and Down arrows. */
-  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+    background-color: #FFFFFF;
+    
+    border: none;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.425);
+    
+    color: rgb(80, 80, 80);
+
+    width: 90%;
 }
