@@ -17,7 +17,7 @@ export class StudentCreationCard extends React.Component<IProps> {
         <h4 className="username">{username}</h4>
         <h4 className="password">{classCode}</h4>
         <Button
-          className="remove-button"
+          className="remove"
           onClick={this.handleDelete}
         >
           <i className="material-icons">clear</i>

@@ -33,11 +33,14 @@ class StudentCreationModal extends React.Component<IProps, IState> {
     return (
       <Modal
         overlay={true}
-        closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
         className="StudentCreationModal"
       >
         <ModalHeader className="header">
           <h1>Create Accounts</h1>
+
+          <Button onClick={this.closeModal} className="close-modal-button white">
+            <i className="material-icons">clear</i>
+          </Button>
         </ModalHeader>
 
         <ModalContent className="content">
@@ -102,7 +105,9 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 
   private handleAddStudent = () => {
-    const { name } = this.state
+    const { name, students } = this.state
+
+    const splitName = name.split(' ')
 
     this.setState({ error: '' })
 
@@ -111,13 +116,18 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       return
     }
 
-    if (name.split(' ').length < 2) {
+    if (splitName.length < 2) {
       this.setState({ error: 'Both first name and last initial are required' })
       return
     }
 
-    if (name.split(' ').length > 2) {
+    if (splitName.length > 2) {
       this.setState({ error: 'Please enter first name and last initial only' })
+      return
+    }
+    
+    if (students.includes(this.getDisplayName(name))) {
+      this.setState({ error: `You have already added ${this.getDisplayName(name)} to the list of invitations` })
       return
     }
 
@@ -137,7 +147,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
     this.setState(prevState => ({
       students: prevState.students.filter(name => name !== student),
       error: '',
-    }))
+    }));
   }
 
   private handleCreateAccounts = async () => {
@@ -186,10 +196,16 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   private getLastInitial = (name: string): string => {
     return name.split(' ')[1][0].toUpperCase()
   }
+
+  private closeModal = () => {
+    this.props.history.push(`/teacher/class-detail/${this.props.match.params.id}`)
+  }
 }
 
 const mapStateToProps = ({ courses, user }: any, { match }: IProps) => ({
-  token: user.token,
+  token: user
+    ? user.token
+    : undefined,
   selectedCourse: courses
     ? courses[match.params.id]
     : undefined,

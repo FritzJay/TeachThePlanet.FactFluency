@@ -66,6 +66,7 @@
       .student-card {
         display: grid;
         grid-auto-flow: column;
+        grid-template-columns: 2fr 1fr 1fr;
 
         padding: 0 1em;
         margin-bottom: 1em;
@@ -78,7 +79,7 @@
           justify-self: center;
         }
 
-        .remove-button {
+        .remove {
           justify-self: flex-end;
           color: $light-red;
           font-weight: bold;
