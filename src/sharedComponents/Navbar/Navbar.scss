@@ -19,12 +19,18 @@
   box-shadow: $dp-six;
 
   .second-half-of-children {
+    display: flex;
+    justify-content: flex-end;
+
     width: 100%;
     grid-column: 2 / 2;
     justify-self: center;
   }
 
   .first-half-of-children {
+    display: flex;
+    justify-content: flex-end;
+
     width: 100%;
     grid-column: 4 / 4;
     justify-self: center;
@@ -75,30 +81,6 @@
   
   .toggle-btn {
     display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  .Navbar {
-    .LogoutLink {
-      grid-row: 1 / 1;
-      grid-column: 1 / 1;
-    }
-
-    .logo {
-      grid-row: 1 / 1;
-      grid-column: 2 / 2;
-    }
-
-    .first-half-of-children {
-      grid-row: 1 / 1;
-      grid-column: 3 / 5;
-    }
-
-    .UserIcon {
-      grid-row: 1 / 1;
-      grid-column: 5 / 5;
-    }
   }
 }
 

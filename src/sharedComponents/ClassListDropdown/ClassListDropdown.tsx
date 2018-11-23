@@ -1,13 +1,19 @@
+/* tslint:disable:jsx-no-lambda */
+
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 
-import { Button } from '..'
+import { updateActiveClass } from 'src/actions/factFluency'
+import { Button, Modal, ModalHeader, ModalContent } from '..'
 import { IClass } from 'src/utils'
 import './ClassListDropdown.css'
-import { updateActiveClass } from 'src/actions/factFluency';
 
-interface IProps {
+interface IState {
+  active: boolean
+}
+
+interface IProps extends RouteComponentProps {
   hasInvitations: boolean
   activeClass?: string
   courses?: IClass[]
@@ -15,39 +21,75 @@ interface IProps {
   userEmail: string
 }
 
-class ClassListDropdown extends React.Component<IProps> {
+class ClassListDropdown extends React.Component<IProps, IState> {
+  public state: IState = {
+    active: false
+  }
+
   public render() {
     const { activeClass, courses, userEmail, hasInvitations } = this.props
+    const { active } = this.state
 
     if (userEmail === 'TTPStudent') {
       return null
     }
 
     return (
-      <div className="ClassListDropdown">
-        <select
-          value={activeClass}
-          onChange={this.handleChange}
-        >
-          {courses !== undefined && Object.keys(courses).map((id) => (
-            <option
-              key={id}
-              value={id}
-            >
-              {courses[id].name} - {courses[id].teacher.name}
-            </option>
-          ))}
-        </select>
-        <Link className="join-class-link" to="/fact-fluency/join-class" title="View class invitations">
-          <Button className={`join-class-button ${hasInvitations ? 'yellow' : 'gray'}`}>+</Button>
-        </Link>
-      </div>
+      <>
+        <Button
+          className="ClassListDropdown-button green"
+          onClick={this.toggleDropdown}
+        />
+          
+        {active
+          ?
+            <Modal className="ClassListDropdown">
+              <ModalHeader className="header">
+                <h2>Classes</h2>
+              </ModalHeader>
+              <ModalContent className="content">
+                <ul>
+                  {courses && Object.keys(courses).map((id) => (
+                    <li key={id}>
+                      <Button
+                        className={activeClass === id ? 'active' : ''}
+                        onClick={() => this.handleSelect(id)}
+                      >
+                        {courses[id].name} - {courses[id].teacher.name}
+                      </Button>
+                    </li>
+                  ))}
+                  <li
+                    onClick={this.handleJoinClassClick}
+                    className="join-class"
+                  >
+                    <Button className={`join-class-button ${hasInvitations ? 'yellow' : 'gray'}`}>+</Button>
+                    <Button className="join-class-link">
+                      Join Class
+                    </Button>
+                  </li>
+                </ul>
+              </ModalContent>
+            </Modal>
+          : null}
+      </>
     )
   }
 
-  private handleChange = (e: any) => {
-    const id = e.target.value
-    this.props.dispatch(updateActiveClass(id))
+  private toggleDropdown = () => {
+    this.setState(prevState => ({ active: !prevState.active }))
+  }
+
+  private handleJoinClassClick = () => {
+    this.props.history.push('/fact-fluency/join-class')
+    this.toggleDropdown()
+  }
+
+  private handleSelect = (id: string) => {
+    if (this.props.activeClass !== id) {
+      this.props.dispatch(updateActiveClass(id))
+    }
+    this.toggleDropdown()
   }
 }
 
@@ -58,4 +100,4 @@ const mapStateToProps = ({ factFluency, courses, courseInvitations, user }: any)
   hasInvitations: Object.keys(courseInvitations).length > 0,
 })
 
-export const ConnectedClassListDropdown = connect(mapStateToProps)(ClassListDropdown);
+export const ConnectedClassListDropdown = connect(mapStateToProps)(withRouter(ClassListDropdown));
