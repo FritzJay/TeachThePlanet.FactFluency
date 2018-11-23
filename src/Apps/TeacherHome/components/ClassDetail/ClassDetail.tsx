@@ -8,6 +8,7 @@ import { ConnectedPendingInvitations } from './components/PendingInvitations/Pen
 import { StudentReports } from './components/StudentReports/StudentReports'
 import { IClass } from 'src/utils'
 import { Header } from './components/Header/Header'
+import { CopyToClipboard } from 'src/sharedComponents'
 
 import PendingStudent from 'src/images/pending-student-icon.svg'
 import ExistingStudent from 'src/images/existing-student-icon.svg'
@@ -58,6 +59,14 @@ class ClassDetail extends React.Component<IProps> {
           <h1 className="class-name">
             {selectedCourse.name}
           </h1>
+
+          <CopyToClipboard
+            text={selectedCourse.code}
+            className="class-code"
+          >
+            <h3>{selectedCourse.code}</h3>
+            <i className="material-icons">assignment</i>
+          </CopyToClipboard>
 
           <Header
             match={match}

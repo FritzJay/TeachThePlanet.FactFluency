@@ -6,7 +6,8 @@
     display: grid;
     grid-row-gap: 1em;
     grid-template-areas:
-        'classes         classes         classname       filler          filler'
+        'classes         classes         classes       filler          filler'
+        'classcode       classcode       classcode       classcode       classcode'
         'links           links           links           links           links'
         'students        students        students        students        students'
         'pendinginvitations pendinginvitations pendinginvitations pendinginvitations pendinginvitations';
@@ -44,6 +45,27 @@
         grid-row: 1 / 1;
         align-self: center;
         justify-self: center;
+    }
+    
+    .class-code {
+        grid-area: classcode;
+        display: flex;
+        align-items: center;
+        margin-top: -2em;
+
+        .material-icons {
+            margin-left: 0.5em;
+            height: 24px;
+        }
+
+        &:hover {
+            color: $blue;
+            cursor: pointer;
+        }
+
+        &:active {
+            transform: translateY(2px);
+        }
     }
 
     .Header {
