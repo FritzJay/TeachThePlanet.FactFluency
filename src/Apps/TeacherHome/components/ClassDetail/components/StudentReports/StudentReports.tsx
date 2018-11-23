@@ -25,7 +25,6 @@ export class StudentReports extends React.Component<IProps> {
   public render() {
     const { students, courseId, match } = this.props
     const { activeDescription } = this.state
-    const numberOfStudents = students.length
 
     return (
       <div className="StudentReports">
@@ -48,9 +47,13 @@ export class StudentReports extends React.Component<IProps> {
           : null
         }
 
-        <LinkList students={students} />
+        {students.length > 0
+          ? <LinkList
+            links={students.map(({ id, name }) => ({ id, text: name }))}
+          /> : null
+        }
 
-        {numberOfStudents > 0
+        {students.length > 0
           ? students.sort((a, b) => a.name > b.name ? 1 : -1).map((student) => (
             <ConnectedStudentCard
               key={student.id}

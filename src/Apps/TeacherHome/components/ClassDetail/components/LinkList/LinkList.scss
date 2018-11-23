@@ -7,13 +7,13 @@
 
   .link {
     font-weight: bold;
-    color: $blue;
-    border-right: 2px solid $blue;
+    color: $yellow;
+    border-right: 2px solid $gray;
     padding-right: 1em;
     padding-left: 1em;
     
     &:first-child {
-      border-left: 2px solid $blue;
+      border-left: 2px solid $gray;
     }
 
     &:hover {

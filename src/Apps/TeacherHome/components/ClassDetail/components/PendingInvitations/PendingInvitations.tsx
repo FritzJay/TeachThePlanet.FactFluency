@@ -11,6 +11,7 @@ import { Button, NewCard } from 'src/sharedComponents'
 import { PendingInvitationsDescription } from '../PendingInvitationsDescription/PendingInvitationsDescription'
 import { PendingCard } from '../PendingCard/PendingCard'
 import { ICourseInvitation, IStudentUser, IClass } from 'src/utils'
+import { LinkList } from '../LinkList/LinkList'
 import './PendingInvitations.css'
 
 interface IState {
@@ -55,6 +56,13 @@ class PendingInvitations extends React.Component<IProps, IState> {
         {activeDescription
           ? <PendingInvitationsDescription />
           : null
+        }
+
+        {students.length + courseInvitations.length > 0
+          ? <LinkList links={
+            students.map(({ id, name }) => ({ id, text: name }))
+            .concat(courseInvitations.map(({ student }) => ({ id: student.id, text: student.name })))}
+          /> : null
         }
 
         {students.map((student) => (

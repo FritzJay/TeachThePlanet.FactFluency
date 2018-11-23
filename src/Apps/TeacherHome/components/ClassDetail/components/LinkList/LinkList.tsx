@@ -1,17 +1,21 @@
 import * as React from 'react'
 import { Link } from 'react-scroll'
 
-import { IStudentUser } from 'src/utils'
 import './LinkList.css'
 
-interface IProps {
-  students: IStudentUser[]
+interface ILink {
+  id: string
+  text: string
 }
 
-export const LinkList = ({ students }: IProps) => {
+interface IProps {
+  links: ILink[]
+}
+
+export const LinkList = ({ links }: IProps) => {
   return (
     <div className="LinkList">
-      {students.map(({ id, name }) => (
+      {links.map(({ id, text }) => (
         <Link
           className="link"
           key={id}
@@ -21,7 +25,7 @@ export const LinkList = ({ students }: IProps) => {
           isDynamic={true}
           offset={-100}
         >
-          {name}
+          {text}
         </Link>
       ))}
     </div>
