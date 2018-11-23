@@ -6,7 +6,7 @@
   display: grid;
   grid-auto-flow: row;
   grid-row-gap: 2em;
-  justify-content: center;
+  justify-content: stretch;
 
   .new-invite-card {
       height: 69px;

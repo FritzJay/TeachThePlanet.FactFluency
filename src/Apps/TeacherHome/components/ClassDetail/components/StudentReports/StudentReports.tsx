@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { Button, ConnectedStudentCard, NewCard } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
+import { StudentLinks } from '../StudentLinks/StudentLinks'
 import { IStudentUser } from 'src/utils'
 import './StudentReports.css'
 
@@ -24,6 +25,7 @@ export class StudentReports extends React.Component<IProps> {
   public render() {
     const { students, courseId, match } = this.props
     const { activeDescription } = this.state
+    const numberOfStudents = students.length
 
     return (
       <div className="StudentReports">
@@ -33,7 +35,7 @@ export class StudentReports extends React.Component<IProps> {
             name="activeDescription"
             className="blue description-button"
             onClick={this.toggleDescription}
-          >
+            >
             {!activeDescription
               ? 'More info'
               : 'Close'
@@ -45,15 +47,17 @@ export class StudentReports extends React.Component<IProps> {
           ? <StudentsDescription />
           : null
         }
-    
-        {students.length > 0
+
+        <StudentLinks students={students} />
+
+        {numberOfStudents > 0
           ? students.sort((a, b) => a.name > b.name ? 1 : -1).map((student) => (
             <ConnectedStudentCard
               key={student.id}
               courseId={courseId}
               student={student}
             />
-          )) : (
+            )) : (
             <Link to={`${match.url}/add-students`}>
               <NewCard className="new-student-card" text="Add your first student!" />
             </Link>

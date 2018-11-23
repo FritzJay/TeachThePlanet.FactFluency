@@ -1,0 +1,23 @@
+@import 'src/Stylesheets/all';
+
+.StudentLinks {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 2em;
+
+  a {
+    font-weight: bold;
+    color: $blue;
+    border-right: 2px solid $blue;
+    padding-right: 1em;
+    padding-left: 1em;
+    
+    &:first-child {
+      border-left: 2px solid $blue;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
