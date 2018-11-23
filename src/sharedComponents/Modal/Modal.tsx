@@ -12,6 +12,7 @@ interface IModalProps extends RouteComponentProps<{}> {
   overlay?: boolean
   closeTo?: string
   closeColor?: string
+  onClose?: (e: any) => void
 }
 
 class ModalWithoutRouter extends React.Component<IModalProps> {
@@ -19,8 +20,8 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
   private timeout: any
 
   public componentDidMount() {
-    const { closeTo, overlay } = this.props
-    if (closeTo && overlay) {
+    const { closeTo, overlay, onClose } = this.props
+    if ((closeTo && overlay) || (onClose && overlay)) {
       this.timeout = window.setTimeout(() => window.addEventListener('click', this.handleClickOutside), 200)
     }
   }
@@ -31,13 +32,13 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
   }
 
   public render() {
-    const { className, closeTo, closeColor, overlay, children } = this.props
+    const { className, closeTo, closeColor, overlay, children, onClose } = this.props
     return (
       <div
         ref={this.setWrapperRef}
         className={`modal${className ? ' ' + className : ''}${overlay ? ' overlay' : ''}`}
       >
-        {closeTo
+        {closeTo || onClose
           ? (
             <Button onClick={this.closeModal} className={`close-modal-button${closeColor ? ' ' + closeColor : ' white'}`}>
               <i className="material-icons">clear</i>
@@ -58,14 +59,29 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
     }
   }
 
-  private closeModal = () => {
-    const { history, closeTo, overlay } = this.props
-    if (closeTo && overlay) {
+  private closeModal = (e?: any) => {
+    if (e) {
+      e.persist()
+    }
+    this.handleCloseTo()
+    this.handleOnClose(e)
+  }
+
+  private handleCloseTo = () => {
+    const { history, location, closeTo, overlay } = this.props
+
+    if (closeTo && overlay && location.pathname !== closeTo) {
       if (closeTo === 'GO_BACK') {
         history.goBack()
       } else {
         history.push(closeTo)
       }
+    }
+  }
+
+  private handleOnClose = (e: any) => {
+    if (this.props.onClose) {
+      this.props.onClose(e)
     }
   }
 }

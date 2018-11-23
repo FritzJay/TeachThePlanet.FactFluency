@@ -7,6 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { updateActiveClass } from 'src/actions/factFluency'
 import { Button, Modal, ModalHeader, ModalContent } from '..'
 import { IClass } from 'src/utils'
+import CoursesListIcon from 'src/images/courses-list-icon.svg'
 import './ClassListDropdown.css'
 
 interface IState {
@@ -37,13 +38,19 @@ class ClassListDropdown extends React.Component<IProps, IState> {
     return (
       <>
         <Button
-          className="ClassListDropdown-button green"
+          className={`ClassListDropdown-button${active ? ' active' : ''}`}
           onClick={this.toggleDropdown}
-        />
+        >
+          <img src={CoursesListIcon} alt="list of courses" />
+        </Button>
           
         {active
           ?
-            <Modal className="ClassListDropdown">
+            <Modal
+              className="ClassListDropdown"
+              overlay={true}
+              onClose={this.toggleDropdown}
+            >
               <ModalHeader className="header">
                 <h2>Classes</h2>
               </ModalHeader>
@@ -88,8 +95,9 @@ class ClassListDropdown extends React.Component<IProps, IState> {
   private handleSelect = (id: string) => {
     if (this.props.activeClass !== id) {
       this.props.dispatch(updateActiveClass(id))
+    } else {
+      this.toggleDropdown()
     }
-    this.toggleDropdown()
   }
 }
 
