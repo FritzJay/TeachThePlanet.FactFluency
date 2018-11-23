@@ -25,6 +25,13 @@ class UpdateStudentModal extends React.Component<IProps, IState> {
     loading: false,
   }
 
+  public componentDidMount() {
+    this.props.onChange({
+      name: 'password',
+      value: '',
+    })
+  }
+
   public render() {
     const { email, password, secondPassword, onChange, history } = this.props
     const { error, loading } = this.state
