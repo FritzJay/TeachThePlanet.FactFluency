@@ -20,7 +20,7 @@ interface IProps {
 
 export const PendingCard = ({ date, student, onDelete, invitationType }: IProps) => {
   return (
-    <Card className="PendingCard">
+    <Card className="PendingCard" id={student.id}>
       <h3 className="student-name">
         {student.name.length > 15
           ? student.name.slice(0, 15) + '...'

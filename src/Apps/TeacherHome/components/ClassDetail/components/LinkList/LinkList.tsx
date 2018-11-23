@@ -2,17 +2,18 @@ import * as React from 'react'
 import { Link } from 'react-scroll'
 
 import { IStudentUser } from 'src/utils'
-import './StudentLinks.css'
+import './LinkList.css'
 
 interface IProps {
   students: IStudentUser[]
 }
 
-export const StudentLinks = ({ students }: IProps) => {
+export const LinkList = ({ students }: IProps) => {
   return (
-    <div className="StudentLinks">
+    <div className="LinkList">
       {students.map(({ id, name }) => (
         <Link
+          className="link"
           key={id}
           to={id}
           smooth={true}

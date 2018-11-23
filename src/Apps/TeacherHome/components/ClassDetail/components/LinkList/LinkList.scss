@@ -1,11 +1,11 @@
 @import 'src/Stylesheets/all';
 
-.StudentLinks {
+.LinkList {
   display: flex;
   justify-content: flex-start;
   padding: 0 2em;
 
-  a {
+  .link {
     font-weight: bold;
     color: $blue;
     border-right: 2px solid $blue;

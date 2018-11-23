@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { Button, ConnectedStudentCard, NewCard } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
-import { StudentLinks } from '../StudentLinks/StudentLinks'
+import { LinkList } from '../LinkList/LinkList'
 import { IStudentUser } from 'src/utils'
 import './StudentReports.css'
 
@@ -48,7 +48,7 @@ export class StudentReports extends React.Component<IProps> {
           : null
         }
 
-        <StudentLinks students={students} />
+        <LinkList students={students} />
 
         {numberOfStudents > 0
           ? students.sort((a, b) => a.name > b.name ? 1 : -1).map((student) => (

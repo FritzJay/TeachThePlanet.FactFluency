@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { Loading } from 'src/sharedComponents'
@@ -6,12 +7,11 @@ import { ParentInvite } from '../ParentInvite/ParentInvite'
 import { ConnectedPendingInvitations } from './components/PendingInvitations/PendingInvitations'
 import { StudentReports } from './components/StudentReports/StudentReports'
 import { IClass } from 'src/utils'
-import { Links } from './components/Links/Links'
+import { Header } from './components/Header/Header'
 
 import PendingStudent from 'src/images/pending-student-icon.svg'
 import ExistingStudent from 'src/images/existing-student-icon.svg'
 import './ClassDetail.css'
-import { connect } from 'react-redux';
 
 
 export const INVITATION_TYPES = {
@@ -59,7 +59,7 @@ class ClassDetail extends React.Component<IProps> {
             {selectedCourse.name}
           </h1>
 
-          <Links
+          <Header
             match={match}
             onParentInvitesClick={this.handleParentInvitesClick}
           />
