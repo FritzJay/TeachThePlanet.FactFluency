@@ -27,8 +27,10 @@ class UpdateStudentModal extends React.Component<IProps, IState> {
 
   public componentDidMount() {
     this.props.onChange({
-      name: 'password',
-      value: '',
+      target: {
+        name: 'password',
+        value: '',
+      }
     })
   }
 
