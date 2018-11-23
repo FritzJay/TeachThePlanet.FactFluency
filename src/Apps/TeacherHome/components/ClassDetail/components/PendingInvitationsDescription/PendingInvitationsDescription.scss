@@ -1,0 +1,32 @@
+@import 'src/Stylesheets/all';
+
+.PendingInvitationsDescription {
+  .invitation-type {
+    .invitation-type-item {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      margin-top: 0.25em;
+
+      .icon {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+
+        height: 24px;
+        width: 24px;
+
+        padding: 5px;
+        border-radius: 50%;
+        
+        background-color: $very-very-light-gray;
+        border: 3px solid $gray;
+      }
+
+      .text {
+        margin-top: 0.5em;
+        grid-column: 2 / -1;
+        grid-row: 1 / - 1;
+      }
+    }
+  }
+}

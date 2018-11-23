@@ -3,10 +3,10 @@ import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { Loading } from 'src/sharedComponents'
 import { ParentInvite } from '../ParentInvite/ParentInvite'
-import { ConnectedPendingInvitations } from './PendingInvitations'
-import { StudentReports } from './StudentReports'
+import { ConnectedPendingInvitations } from './components/PendingInvitations/PendingInvitations'
+import { StudentReports } from './components/StudentReports/StudentReports'
 import { IClass } from 'src/utils'
-import { Links } from './Links'
+import { Links } from './components/Links/Links'
 
 import PendingStudent from 'src/images/pending-student-icon.svg'
 import ExistingStudent from 'src/images/existing-student-icon.svg'

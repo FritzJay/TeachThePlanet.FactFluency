@@ -2,8 +2,9 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 
 import { Button, ConnectedStudentCard, NewCard } from 'src/sharedComponents'
-import { StudentsDescription } from './StudentsDescription'
+import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
 import { IStudentUser } from 'src/utils'
+import './StudentReports.css'
 
 interface IState {
   activeDescription: boolean
@@ -25,7 +26,7 @@ export class StudentReports extends React.Component<IProps> {
     const { activeDescription } = this.state
 
     return (
-      <div className="students">
+      <div className="StudentReports">
         <div className="section-header">
           <h2>Students</h2>
           <Button

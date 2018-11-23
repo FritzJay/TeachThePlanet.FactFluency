@@ -1,0 +1,70 @@
+@import 'src/Stylesheets/all';
+
+.PendingCard {
+  display: grid;
+  grid-template-areas: 'studentname studentname studentname email email email date icon delete';
+  align-items: center;
+  justify-items: center;
+  padding: 0.25em 1em;
+
+  .student-name {
+    grid-area: studentname;
+
+    color: $black;
+  }
+
+  .email {
+    grid-area: email;
+
+    color: $gray;
+  }
+
+  .date {
+    grid-area: date;
+
+    color: $gray;
+  }
+    
+  .icon {
+      grid-area: icon;
+
+      height: 24px;
+      width: 24px;
+
+      padding: 5px;
+      border-radius: 50%;
+      
+      background-color: $very-very-light-gray;
+      border: 3px solid $gray;
+  }
+  
+  .delete {
+    grid-area: delete;
+
+    text-align: end;
+    border: none;
+    background-color: transparent;
+    justify-self: flex-end;    
+    margin: 0;
+    
+    &:hover {
+        cursor: pointer;
+    }
+    
+    .confirmation {
+        visibility: hidden;
+    }
+    
+    &.confirm {
+        color: $red;
+        
+        .confirmation {
+            visibility: visible;
+        }
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

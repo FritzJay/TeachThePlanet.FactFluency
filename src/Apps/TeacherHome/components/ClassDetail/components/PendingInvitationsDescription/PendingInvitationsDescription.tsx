@@ -1,10 +1,11 @@
 import * as React from 'react'
 
 import { Card } from 'src/sharedComponents'
-import { INVITATION_TYPES } from './ClassDetail'
+import { INVITATION_TYPES } from '../../ClassDetail'
+import './PendingInvitationsDescription.css'
 
 export const PendingInvitationsDescription = () => (
-  <Card className="description-card">
+  <Card className="PendingInvitationsDescription">
     <p className="description">
       Listed below are the students currently invited to join this class.
     </p>
@@ -17,9 +18,8 @@ export const PendingInvitationsDescription = () => (
         Invitation Type - There are multiple types of invitations indicated by the following icons:
         <ul className="description-list">
           {Object.keys(INVITATION_TYPES).map((t) => (
-            <li className="invitation-type-item">
+            <li key={t} className="invitation-type-item">
               <img
-                key={t}
                 className={`icon ${INVITATION_TYPES[t].color}`}
                 src={INVITATION_TYPES[t].icon}
                 alt={INVITATION_TYPES[t].alt}
@@ -32,7 +32,7 @@ export const PendingInvitationsDescription = () => (
       </li>
       <li>Delete - A button used to delete the invitation</li>
     </ol>
-    <Card className="pending-card">
+    <Card className="PendingCard">
       <h3 className="student-name">Student Name</h3>
       <span className="email">Username</span>
       <h4 className="date">Send Date</h4>

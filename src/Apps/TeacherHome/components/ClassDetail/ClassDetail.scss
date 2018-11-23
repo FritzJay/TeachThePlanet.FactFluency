@@ -7,11 +7,12 @@
     grid-row-gap: 1em;
     grid-template-areas:
         'classes         classes         classname       filler          filler'
-        'buttons         buttons         buttons         buttons         buttons'
+        'links           links           links           links           links'
         'students        students        students        students        students'
         'pendinginvitations pendinginvitations pendinginvitations pendinginvitations pendinginvitations';
     align-content: flex-start;
     justify-content: stretch;
+    justify-items: center;
 
     padding-bottom: 3em;
 
@@ -45,118 +46,16 @@
         justify-self: center;
     }
 
-    .buttons {
-        grid-area: buttons;
-        display: flex;
-        flex-direction: row;
-        margin-right: -1em;
-
-        .detail-btn {
-            flex: 1 1 0;
-            margin-right: 1em;
-
-            background-color: $white;
-            color: $gray;
-            opacity: 1;
-
-            border: 3px solid $gray;
-
-            padding: 1em .5em;
-            font-size: 1em;
-            font-weight: 600;
-            border-radius: 12px;
-
-            text-align: center;
-
-            &:hover {
-                background-color: $blue;
-                color: $white;
-                border-color: $blue;
-            }
-        }
+    .Links {
+        grid-area: links;
     }
     
-    .students {
+    .StudentReports {
         grid-area: students;
-
-        display: grid;
-        grid-auto-flow: row;
-        grid-row-gap: 2em;
-        justify-content: center;
-
-        .new-student-card {
-            width: 757px;
-        }
-
-        .number {
-            margin: 0 0.5em 0.5em 0;
-
-            display: flex;
-            align-content: center;
-            justify-content: center;
-
-            border: none;
-            font-size: 24px;
-            font-weight: 500;
-
-            width: 36px;
-            height: 36px;
-
-            border-radius: 50%;
-
-            outline: none;
-
-            &.not-taken {
-                background-color: $very-light-gray;
-                color: $white;
-            }
-
-            &.in-progress {
-                background-color: $light-red;
-                color: $white;
-            }
-
-            &.passed-once {
-                background-color: $light-yellow;
-                color: $white;
-            }
-
-            &.passed-twice {
-                background-color: $light-yellow;
-                color: $white;
-            }
-
-            &.passed {
-                background-color: $green;
-                color: $white;
-            }
-        }
     }
 
-    .pending-invitations {
+    .PendingInvitations {
         grid-area: pendinginvitations;
-        
-        width: 757px; // Match the size of the student cards
-        justify-self: center;
-        
-        display: grid;
-        grid-auto-flow: row;
-        grid-row-gap: 2em;
-        justify-content: stretch;
-
-        .new-invite-card {
-            height: 69px;
-    
-            display: flex;
-            flex-direction: row;
-            align-content: center;
-            justify-content: center;
-            
-            .text {
-                margin: 0 1em 0 0;
-                align-self: center;
-            }
-        }
     }
     
     .section-header {
@@ -175,131 +74,73 @@
         }
     }
 
-    .description-card {
+    .loading {
+        grid-column: 1 / -1;
+        justify-self: center;
+        align-self: center;
+    }
+
+    // SHARED
+    .StudentsDescription, .PendingInvitationsDescription {
         width: 725px; // Match the size of the student cards
         color: $gray;
         font-weight: bold;
         padding: 1em;
         margin-top: -1em;
-
+        
         ul {
             list-style-type: none;
-
-            .number {
-                display: inline;
-            }
         }
-
+        
         .important {
             color: $black;
         }
-
-        .invitation-type {
-            .invitation-type-item {
-                display: grid;
-                grid-template-columns: repeat(12, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-                margin-top: 0.25em;
-
-                // .icon is supposed to be defined twice
-                // This part is nested to target the pending card
-                .icon {
-                    grid-column: 1 / 1;
-                    grid-row: 1 / 1;
-                }
-
-                .text {
-                    margin-top: 0.5em;
-                    grid-column: 2 / -1;
-                    grid-row: 1 / - 1;
-                }
-            }
-        }
     }
+
+    .StudentsDescription {
+        .number {
+            margin: 0 0.5em 0.5em 0;
     
-    .pending-card {
-        display: grid;
-        grid-template-areas: 'studentname studentname studentname email email email date icon delete';
-        align-items: center;
-        justify-items: center;
-        padding: 0.25em 1em;
-        
-        .student-name {
-            grid-area: studentname;
-
-            color: $black;
-        }
-
-        .email {
-            grid-area: email;
-
-            color: $gray;
-        }
-        
-        .date {
-            grid-area: date;
-
-            color: $gray;
-        }
-
-        // .delete is supposed to be defined twice
-        // This part is nested to target the pending card
-        .delete {
-            grid-area: delete;
-
-            text-align: end;
+            display: inline;
+            align-content: center;
+            justify-content: center;
+    
             border: none;
-            background-color: transparent;
-            
-            &:hover {
-                cursor: pointer;
+            font-size: 24px;
+            font-weight: 500;
+    
+            width: 36px;
+            height: 36px;
+    
+            border-radius: 50%;
+    
+            outline: none;
+    
+            &.not-taken {
+                background-color: $very-light-gray;
+                color: $white;
+            }
+    
+            &.in-progress {
+                background-color: $light-red;
+                color: $white;
+            }
+    
+            &.passed-once {
+                background-color: $light-yellow;
+                color: $white;
+            }
+    
+            &.passed-twice {
+                background-color: $light-yellow;
+                color: $white;
+            }
+    
+            &.passed {
+                background-color: $green;
+                color: $white;
             }
         }
-    }
-    
-    .icon {
-        grid-area: icon;
-
-        height: 24px;
-        width: 24px;
-
-        padding: 5px;
-        border-radius: 50%;
-        
-        background-color: $very-very-light-gray;
-        border: 3px solid $gray;
-    }
-    
-    .delete {
-        grid-area: settings;
-        justify-self: flex-end;
-        
-        border: none;
-        background-color: transparent;
-        
-        margin: 0;
-        
-        &:hover {
-            cursor: pointer;
-        }
-        
-        .confirmation {
-            visibility: hidden;
-        }
-        
-        &.confirm {
-            color: $red;
-            
-            .confirmation {
-                visibility: visible;
-            }
-        }
-    }
-
-    .loading {
-        grid-column: 1 / -1;
-        justify-self: center;
-        align-self: center;
     }
 }
 

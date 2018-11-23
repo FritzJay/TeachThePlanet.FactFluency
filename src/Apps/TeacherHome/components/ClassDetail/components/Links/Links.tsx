@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Button } from '..'
+import { Button } from 'src/sharedComponents'
+import './Links.css'
 
 export const Links = ({ match, onParentInvitesClick }: any) => (
-  <div className="buttons">
+  <div className="Links">
     <Button onClick={onParentInvitesClick} className="detail-btn">
       Parent Invites
     </Button>

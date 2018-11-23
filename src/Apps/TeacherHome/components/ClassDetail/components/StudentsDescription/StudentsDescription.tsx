@@ -1,9 +1,10 @@
 import * as React from 'react'
 
 import { Card } from 'src/sharedComponents'
+import './StudentsDescription.css'
 
 export const StudentsDescription = () => (
-  <Card className="description-card">
+  <Card className="StudentsDescription">
     <p className="description">
       Below is a list of students' progression in Fact Fluency. Each student's progress is displayed in a grid. The color of the numbers indicates the student's progress with each multiple.
     </p>

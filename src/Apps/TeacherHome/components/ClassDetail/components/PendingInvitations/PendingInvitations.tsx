@@ -4,13 +4,14 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { INVITATION_TYPES } from './ClassDetail'
+import { INVITATION_TYPES } from '../../ClassDetail'
 import { handleRemoveInvitation } from 'src/handlers/courseInvitations'
 import { handleRemovePendingStudent } from 'src/handlers/students' 
 import { Button, NewCard } from 'src/sharedComponents'
-import { PendingInvitationsDescription } from './PendingInvitationsDescription'
-import { PendingCard } from './PendingCard'
+import { PendingInvitationsDescription } from '../PendingInvitationsDescription/PendingInvitationsDescription'
+import { PendingCard } from '../PendingCard/PendingCard'
 import { ICourseInvitation, IStudentUser, IClass } from 'src/utils'
+import './PendingInvitations.css'
 
 interface IState {
   activeDescription: boolean
@@ -36,7 +37,7 @@ class PendingInvitations extends React.Component<IProps, IState> {
     const { activeDescription } = this.state
 
     return (
-      <div className="pending-invitations">
+      <div className="PendingInvitations">
         <div className="section-header">
           <h2>Pending Invitations</h2>
           <Button
@@ -59,7 +60,6 @@ class PendingInvitations extends React.Component<IProps, IState> {
         {students.map((student) => (
           <PendingCard
             key={student.id}
-            className="pending-card"
             date={new Date(student.createdAt)}
             student={student}
             invitationType={INVITATION_TYPES.pendingStudent}
@@ -69,7 +69,6 @@ class PendingInvitations extends React.Component<IProps, IState> {
 
         {courseInvitations.map(({ id, createdAt, student }) => (
             <PendingCard
-              className="pending-card"
               date={new Date(createdAt)}
               key={id}
               student={student}

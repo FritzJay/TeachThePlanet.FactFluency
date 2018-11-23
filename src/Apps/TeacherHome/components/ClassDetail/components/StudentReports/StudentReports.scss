@@ -1,0 +1,9 @@
+@import 'src/Stylesheets/all';
+
+.StudentReports {
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 2em;
+  justify-content: center;
+  justify-self: center;
+}

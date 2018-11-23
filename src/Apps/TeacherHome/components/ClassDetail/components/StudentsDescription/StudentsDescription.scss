@@ -1,0 +1,21 @@
+@import 'src/Stylesheets/all';
+
+.StudentsDescription {
+  width: 725px; // Match the size of the student cards
+  color: $gray;
+  font-weight: bold;
+  padding: 1em;
+  margin-top: -1em;
+
+  ul {
+    list-style-type: none;
+
+    .number {
+      display: inline;
+    }
+  }
+
+  .important {
+    color: $black;
+  }
+}

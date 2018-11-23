@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Card, ConfirmButton } from 'src/sharedComponents'
 import { IStudentUser } from 'src/utils'
-import './ClassDetail.css'
+import './PendingCard.css'
 
 interface IInvitationType {
   alt: string
@@ -12,16 +12,15 @@ interface IInvitationType {
 }
 
 interface IProps {
-  className?: string
   date: Date
   student: IStudentUser
   invitationType: IInvitationType
   onDelete: () => void
 }
 
-export const PendingCard = ({ className, date, student, onDelete, invitationType }: IProps) => {
+export const PendingCard = ({ date, student, onDelete, invitationType }: IProps) => {
   return (
-    <Card className={`InactiveStudentCard${className ? ' ' + className : ''}`}>
+    <Card className="PendingCard">
       <h3 className="student-name">
         {student.name.length > 15
           ? student.name.slice(0, 15) + '...'

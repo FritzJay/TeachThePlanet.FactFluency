@@ -1,0 +1,32 @@
+@import 'src/Stylesheets/all';
+
+.Links {
+  display: flex;
+  flex-direction: row;
+  margin-right: -1em;
+  justify-self: stretch;
+
+  .detail-btn {
+      flex: 1 1 0;
+      margin-right: 1em;
+
+      background-color: $white;
+      color: $gray;
+      opacity: 1;
+
+      border: 3px solid $gray;
+
+      padding: 1em .5em;
+      font-size: 1em;
+      font-weight: 600;
+      border-radius: 12px;
+
+      text-align: center;
+
+      &:hover {
+          background-color: $blue;
+          color: $white;
+          border-color: $blue;
+      }
+  }
+}
