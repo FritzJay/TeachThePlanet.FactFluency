@@ -4,7 +4,7 @@ import { RouteComponentProps, Link } from 'react-router-dom'
 
 import { handleSignInStudent } from 'src/handlers/factFluency'
 import { handleSignInTeacher } from 'src/handlers/teacherHome'
-import { Button, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Button, Loading, Modal, ModalContent, ModalHeader, Input } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import { USER_TYPES } from '../../Login'
 import './LoginModal.css'
@@ -67,16 +67,14 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
         <ModalContent className="inputs">
           {error !== '' ? <p className="error active">{error}</p> : null}
 
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={email}
             name="email"
             placeholder="Email or Username"
           />
 
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={password}
             name="password"

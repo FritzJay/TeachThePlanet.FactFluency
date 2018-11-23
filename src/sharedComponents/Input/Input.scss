@@ -1,14 +1,21 @@
+@import 'src/Stylesheets/all';
+
 .Input {
   font-family: 'Roboto', sans-serif;
-    font-size: 1em;
-    font-weight: 900;
+  font-size: 1em;
+  font-weight: 900;
 
-    background-color: #FFFFFF;
-    
-    border: none;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.425);
-    
-    color: rgb(80, 80, 80);
+  background-color: $white;
+  
+  border: none;
+  border-bottom: 2px solid $light-gray;
+  
+  color: rgb(80, 80, 80);
 
-    width: 90%;
+  width: 90%;
+
+  &:focus {
+    background-color: $very-very-light-gray;
+    outline: none;
+  }
 }

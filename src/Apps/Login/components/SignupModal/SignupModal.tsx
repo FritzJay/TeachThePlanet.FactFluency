@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { Button, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Button, Modal, ModalContent, ModalHeader, Input } from 'src/sharedComponents'
 import { UserTypes } from '..'
 import { handleSignUpTeacher } from 'src/handlers/teacherHome'
 import { handleSignUpStudent } from 'src/handlers/factFluency'
@@ -55,16 +55,14 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
         <ModalContent className="inputs">
           {error !== '' ? <p className="error active">{error}</p> : null}
           
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={email}
             name="email"
             placeholder="Email"
           />
 
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={password}
             name="password"
@@ -72,8 +70,7 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
             type="password"
           />
 
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={secondPassword}
             name="secondPassword"

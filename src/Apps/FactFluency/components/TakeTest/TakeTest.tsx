@@ -10,7 +10,7 @@ import {
 import { IDisplayQuestion, IQuestion, ITest } from "src/utils"
 import { getOperatorSymbol } from "src/utils"
 import { updateTest } from "src/actions/factFluency";
-import { Button, Card } from "src/sharedComponents"
+import { Button, Card, Input } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
 
@@ -76,7 +76,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
             <p className="operator">{operator}</p>
             <p className="number-bottom">{question.bottom}</p>
             <p className="equals">=</p>
-            <input type="text" dir="rtl" className="input-answer" value={answer}/>
+            <Input type="text" dir="rtl" className="input-answer" value={answer} />
           </div>
           <div className="button-container">
               <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>

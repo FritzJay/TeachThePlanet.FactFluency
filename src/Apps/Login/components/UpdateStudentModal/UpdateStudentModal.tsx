@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { Modal, ModalHeader, ModalContent, Button, Loading } from '..'
+import { Modal, ModalHeader, ModalContent, Button, Loading, Input } from '..'
 import { handleChangeStudentPassword } from 'src/handlers/students'
 import './UpdateStudentModal.css'
 
@@ -72,8 +72,7 @@ class UpdateStudentModal extends React.Component<IProps, IState> {
         <ModalContent className="inputs">
           {error !== '' ? <p className="error active">{error}</p> : null}
 
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={password}
             name="password"
@@ -81,8 +80,7 @@ class UpdateStudentModal extends React.Component<IProps, IState> {
             type="password"
           />
 
-          <input
-            className="input"
+          <Input
             onChange={onChange}
             value={secondPassword}
             name="secondPassword"
