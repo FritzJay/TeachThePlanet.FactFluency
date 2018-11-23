@@ -4,10 +4,10 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 
+import { ConnectedClassListNotification } from './components/ConnectedClassListNotification/ClassListNotification'
 import { updateActiveClass } from 'src/actions/factFluency'
 import { Button, Modal, ModalHeader, ModalContent } from '..'
 import { IClass } from 'src/utils'
-import CoursesListIcon from 'src/images/courses-list-icon.svg'
 import './ClassListDropdown.css'
 
 interface IState {
@@ -15,7 +15,7 @@ interface IState {
 }
 
 interface IProps extends RouteComponentProps {
-  hasInvitations: boolean
+  numberOfInvitations: number
   activeClass?: string
   courses?: IClass[]
   dispatch: any
@@ -28,7 +28,7 @@ class ClassListDropdown extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { activeClass, courses, userEmail, hasInvitations } = this.props
+    const { activeClass, courses, userEmail, numberOfInvitations } = this.props
     const { active } = this.state
 
     if (userEmail === 'TTPStudent') {
@@ -41,7 +41,8 @@ class ClassListDropdown extends React.Component<IProps, IState> {
           className={`ClassListDropdown-button${active ? ' active' : ''}`}
           onClick={this.toggleDropdown}
         >
-          <img src={CoursesListIcon} alt="list of courses" />
+          <i className="material-icons">school</i>
+          <ConnectedClassListNotification />
         </Button>
           
         {active
@@ -66,12 +67,25 @@ class ClassListDropdown extends React.Component<IProps, IState> {
                       </Button>
                     </li>
                   ))}
+
+                  {numberOfInvitations > 0
+                    ? <li
+                        onClick={this.handleInvitationsClick}
+                        className="invitations"
+                      >
+                        <Button className="button">{numberOfInvitations}</Button>
+                        <Button className="link">
+                          Invitations
+                        </Button>
+                      </li>
+                    : null}
+
                   <li
                     onClick={this.handleJoinClassClick}
-                    className="join-class"
+                    className={`join-class${numberOfInvitations > 0 ? ' with-invitations' : ''}`}
                   >
-                    <Button className={`join-class-button ${hasInvitations ? 'yellow' : 'gray'}`}>+</Button>
-                    <Button className="join-class-link">
+                    <Button className="button">+</Button>
+                    <Button className="link">
                       Join Class
                     </Button>
                   </li>
@@ -88,6 +102,10 @@ class ClassListDropdown extends React.Component<IProps, IState> {
   }
 
   private handleJoinClassClick = () => {
+    console.log('HANDLE JOIN CLASS CLICK')
+  }
+  
+  private handleInvitationsClick = () => {
     this.props.history.push('/fact-fluency/join-class')
     this.toggleDropdown()
   }
@@ -105,7 +123,7 @@ const mapStateToProps = ({ factFluency, courses, courseInvitations, user }: any)
   activeClass: factFluency.activeClass,
   courses,
   userEmail: user.email,
-  hasInvitations: Object.keys(courseInvitations).length > 0,
+  numberOfInvitations: Object.keys(courseInvitations).length,
 })
 
 export const ConnectedClassListDropdown = connect(mapStateToProps)(withRouter(ClassListDropdown));

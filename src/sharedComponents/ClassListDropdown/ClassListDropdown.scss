@@ -2,7 +2,7 @@
 
 .ClassListDropdown-button {
   margin: 0;
-  padding: 0.25em 0.25em 0.5em 0.25em;
+  padding: 0.25em;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -53,7 +53,7 @@
         }
       }
 
-      .join-class {
+      .join-class, .invitations {
         margin-top: 0.5em;
         padding: 0;
         height: 1.5em;
@@ -62,26 +62,48 @@
         justify-content: stretch;
         align-content: center;
         
-        .join-class-link {
+        .link {
           width: 100%;
           height: 2em;
           padding-left: 0.5em;
           border-radius: 5px;
-
-          background-color: $very-light-green;
           opacity: 1;
         }
         
-        .join-class-button {
+        .button {
           padding: 0;
           margin: -5px -10px 0 0;
           width: 3em;
           height: 2.5em;
 
           color: $white;
+          opacity: 1;
+        }
+      }
+      
+      .invitations {
+        .link {
+          background-color: $very-light-yellow;
+        }
+
+        .button {
+          background-color: $yellow;
+          border-color: $yellow;
+        }
+      }
+
+      .join-class {
+        .link {
+          background-color: $very-light-green;
+        }
+
+        .button {
           background-color: $green;
           border-color: $green;
-          opacity: 1;
+        }
+
+        &.with-invitations {
+          margin-top: 1.25em;
         }
       }
     }
