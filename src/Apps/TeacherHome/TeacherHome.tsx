@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
 import {
-  ClassDetail,
+  ConnectedClassDetail,
   ClassesGrid,
   EditClassModal,
   Navbar,
@@ -47,7 +47,7 @@ export class TeacherHome extends React.Component<IProps> {
 
         <Route
           path={`${match.path}/class-detail/:id`}
-          component={ClassDetail}
+          component={ConnectedClassDetail}
         />
 
         <Route

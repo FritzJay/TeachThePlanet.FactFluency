@@ -18,6 +18,7 @@ export interface IStudentUser {
   user: IUser
   createdAt: number
   updatedAt: number
+  changePasswordRequired?: boolean
 }
 
 export interface IStudent {
