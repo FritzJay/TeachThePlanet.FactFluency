@@ -70,7 +70,7 @@ interface IStudentCardProps {
 
 class StudentCard extends React.Component<IStudentCardProps> {
   public render() {
-    const { name, tests, user } = this.props.student
+    const { id, name, tests, user } = this.props.student
     const operators = [
       {
         operator: 'addition',
@@ -106,7 +106,7 @@ class StudentCard extends React.Component<IStudentCardProps> {
       },
     ]
     return (
-      <Card className="StudentCard">
+      <Card className="StudentCard" id={id}>
         <h3 className="name">
           {name}
           {user.email !== name
