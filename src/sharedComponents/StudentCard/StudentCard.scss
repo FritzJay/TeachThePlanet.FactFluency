@@ -10,7 +10,7 @@
     display: grid;
     grid-gap: 1em;
     grid-template-areas:
-        'name           name           name           delete         delete         delete'
+        'name           name           name           newtests       newtests       delete'
         'addition       addition       addition       addition       addition       addition'
         'subtraction    subtraction    subtraction    subtraction    subtraction    subtraction'
         'multiplication multiplication multiplication multiplication multiplication multiplication'
@@ -19,6 +19,12 @@
     .name {
         grid-area: name;
         margin: 0;
+    }
+
+    .NewTestsIndicator {
+        grid-area: newtests;
+
+        justify-self: center;
     }
 
     .OperatorRow {

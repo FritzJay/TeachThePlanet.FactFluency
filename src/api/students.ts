@@ -244,6 +244,8 @@ export const saveChangeStudentPassword = async (email: string, password: string)
           id
           number
           operator
+          start
+          end
           testResults {
             id
             total
@@ -305,6 +307,8 @@ export const saveCreateAccountForStudent = async (token: string, courseId: strin
           id
           number
           operator
+          start
+          end
           testResults {
             id
             total

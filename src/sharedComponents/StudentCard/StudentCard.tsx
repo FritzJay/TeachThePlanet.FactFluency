@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { ITest, getOperatorSymbol, IStudentUser } from 'src/utils'
 import { Card, ConfirmButton } from '..'
 import { handleRemoveStudentFromCourse } from 'src/handlers/students'
+import { NewTestsIndicator } from './NewTestsIndicator/NewTestsIndicator'
 import './StudentCard.css'
 
 interface IStudentNumberProps {
@@ -114,6 +115,9 @@ class StudentCard extends React.Component<IStudentCardProps> {
             : ''
           }
         </h3>
+
+        <NewTestsIndicator tests={tests} />
+
         <ConfirmButton
           className="delete"
           confirmClassName="confirm"
@@ -122,6 +126,7 @@ class StudentCard extends React.Component<IStudentCardProps> {
           <span className="confirmation">Remove student from this class?</span>
           <i className="material-icons">delete</i>
         </ConfirmButton>
+
         {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
       </Card>
     )

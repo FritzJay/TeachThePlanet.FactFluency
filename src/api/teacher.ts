@@ -31,6 +31,8 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
               id
               number
               operator
+              start
+              end
               testResults {
                 id
                 total
@@ -130,6 +132,8 @@ export const saveGetTeacher = async (token: string): Promise<ITeacherUser> => {
               id
               number
               operator
+              start
+              end
               testResults {
                 id
                 total
