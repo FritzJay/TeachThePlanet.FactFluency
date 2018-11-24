@@ -12,16 +12,18 @@ export const saveNewTest = async (token: string, studentId: string, { courseId, 
   const query = `
     mutation createTest($input:CreateTestInput!) {
       createTest(input: $input) {
-        id,
-        duration,
-        start,
-        end,
+        id
+        duration
+        start
+        end
+        operator
+        number
         questions {
-          id,
-          question,
-          studentAnswer,
-          correctAnswer,
-          start,
+          id
+          question
+          studentAnswer
+          correctAnswer
+          start
           end
         }
       }

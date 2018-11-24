@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { removeTest, removeTestResults } from 'src/actions/factFluency';
 import { handleReceiveTestResults } from 'src/handlers/factFluency';
 import { Button, Card, Loading } from 'src/sharedComponents'
-import { IQuestion, ITest, ITestResults } from 'src/utils'
+import { IQuestion, ITest, ITestResults, getOperatorSymbol } from 'src/utils'
 import './TestResults.css'
 
 interface IQuickestCardProps {
@@ -18,7 +18,7 @@ const QuickestCard = ({ question }: IQuickestCardProps) => {
     return (
       <Card className="QuickestCard">
         <div className="header">
-          <p>You Rocked This Problem!</p>
+          <h3>You Rocked This Problem!</h3>
         </div>
         <div className="card-main-content">
           <h3>{question.question} = {question.correctAnswer}</h3>
@@ -43,7 +43,7 @@ const IncorrectCard = ({ question }: IIncorrectCardProps) => {
     return (
       <Card className="IncorrectCard">
         <div className="header">
-          <p>This Gave You Some Trouble.</p>
+          <h3>This Gave You Some Trouble.</h3>
         </div>
         <div className="card-main-content">
             <h3>{question.question} = {question.correctAnswer}</h3>
@@ -108,35 +108,37 @@ class DisconnectedTestResults extends React.Component<IProps, IState> {
     }
 
     const { correct, needed, total, quickest, incorrect } = this.props.testResults
+    const { operator, number: num } = this.props.test
 
     return (
       <div className="TestResults">
-        <h1 className="amount-correct-text">
+        <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
+
+        <h2 className="subheader">
           You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
-        </h1>
+        </h2>
 
-        <p>Remember you need {needed}/{total} to pass.</p>
+        <p className="detail">Remember you need {needed}/{total} to pass.</p>
 
-        <div className="cards-container">
-          <QuickestCard question={quickest} />
-          <IncorrectCard question={incorrect} />
-        </div>
+        <QuickestCard question={quickest} />
 
-        <div className="buttons-container">
-          <Button className="blue" onClick={this.handleRetryClick}>
-            <span className="btn-text">Retry</span>
-            <span className="btn-icon">
-              <i className="material-icons">replay</i>
-            </span>
-          </Button>
+        <IncorrectCard question={incorrect} />
 
-          <Button className="blue" onClick={this.handleHomeClick}>
-            <span className="btn-text">Home</span>
-            <span className="btn-icon">
-              <i className="material-icons">home</i>
-            </span>
-          </Button>
-        </div>
+        <hr />
+
+        <Button className="blue retry" onClick={this.handleRetryClick}>
+          <span className="btn-text">Retry</span>
+          <span className="btn-icon">
+            <i className="material-icons">replay</i>
+          </span>
+        </Button>
+
+        <Button className="blue home" onClick={this.handleHomeClick}>
+          <span className="btn-text">Home</span>
+          <span className="btn-icon">
+            <i className="material-icons">home</i>
+          </span>
+        </Button>
       </div>
     )
   }
