@@ -17,12 +17,6 @@ export const Header = ({ match, onParentInvitesClick }: any) => (
     </Link>
     <Link
       className="detail-btn"
-      to={`${match.url}/remove-students`}
-    >
-      Remove Student
-    </Link>
-    <Link
-      className="detail-btn"
       to={`${match.url}/test-parameters`}
     >
       Test Settings
