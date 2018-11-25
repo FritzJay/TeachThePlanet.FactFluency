@@ -1,10 +1,13 @@
 
 import * as React from 'react'
+import { ApolloProvider } from 'react-apollo'
+import ApolloClient from 'apollo-boost'
 import * as ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { createStore } from 'redux'
 import * as WebFont from 'webfontloader'
+
 import App from './Apps/App'
 import middleware from './middleware'
 import reducer from './reducers'
@@ -21,11 +24,17 @@ WebFont.load({
 
 const store = createStore(reducer, middleware)
 
+const client = new ApolloClient({
+  uri: "http://localhost:3000/graphql"
+})
+
 ReactDOM.render((
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>),
+  <ApolloProvider client={client}>
+    <ReduxProvider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ReduxProvider>
+  </ApolloProvider>),
   document.getElementById('root') as HTMLElement
 )
