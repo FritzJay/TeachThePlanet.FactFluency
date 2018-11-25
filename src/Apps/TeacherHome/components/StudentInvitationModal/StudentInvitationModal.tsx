@@ -40,20 +40,18 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent className="content">
-          <Card className="option-card">
+          <Card className="option-card top">
             <CopyToClipboard
               text={'TEMP'}
               className="copy-to-clipboard"
             >
               <h3 className="header">Let your students join your class using your class code:</h3>
               <div className="class-code">
-                <h3>{'TEMP'}</h3>
                 <i className="material-icons">assignment</i>
+                <p>{'TEMP'}</p>
               </div>
             </CopyToClipboard>
           </Card>
-          
-          <h2 className="or">Or</h2>
       
           <Card className="option-card">
             <h3 className="header">Enter the email or username of a student and send them an invite</h3>

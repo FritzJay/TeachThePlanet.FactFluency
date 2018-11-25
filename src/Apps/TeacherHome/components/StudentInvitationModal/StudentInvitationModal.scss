@@ -8,30 +8,38 @@
   }
 
   .content {
-    padding: 2em;
+    padding: 1em;
   
     .option-card {
       width: 100%;
       display: grid;
-      grid-gap: 1em;
       align-content: center;
       align-items: center;
       justify-content: center;
+     
+      &.top {
+        margin-bottom: 1em;
+      }
 
       .header {
         margin: 0;
         padding: 1em;
-        background-color: $green;
+        background-color: $white;
+        text-align: start;
+        color: $gray;
       }
 
       .class-code {
         display: grid;
         grid-auto-flow: column;
-        grid-gap: 1em;
+        grid-gap: .25em;
         align-content: center;
         align-items: center;
-        justify-content: center;
-        justify-items: center;
+        justify-content: flex-start;
+        justify-items: flex-start;
+
+        padding: 0 1em 0 1em;
+
 
         &:hover {
           color: $blue;
@@ -44,7 +52,7 @@
 
       .send-button {
         justify-self: center;
-        margin-bottom: 1em;
+        margin: 1em 0; 
       }
 
       .student-input {
@@ -63,11 +71,6 @@
         margin: 0;
         justify-self: center;
       }
-    }
-
-    .or {
-      text-align: center;
-      justify-self: stretch;
     }
 
     .back-button {
