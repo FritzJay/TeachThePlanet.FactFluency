@@ -1,8 +1,9 @@
 
 import * as React from 'react'
-import { ApolloProvider } from 'react-apollo'
-import ApolloClient from 'apollo-boost'
 import * as ReactDOM from 'react-dom'
+
+import { ApolloProvider } from 'react-apollo'
+import ApolloClient, { InMemoryCache, Operation } from 'apollo-boost'
 import { Provider as ReduxProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { createStore } from 'redux'
@@ -25,7 +26,14 @@ WebFont.load({
 const store = createStore(reducer, middleware)
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql"
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache(),
+  request: async (operation: Operation) => {
+    const token = localStorage.getItem('token')
+    operation.setContext({ headers: {
+      authorization: token ? `jwt ${token}` : ''
+    } })
+  }
 })
 
 ReactDOM.render((

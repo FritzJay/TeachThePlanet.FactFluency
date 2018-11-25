@@ -1,29 +1,37 @@
 import * as React from "react"
+import { Query } from "react-apollo"
+import gql from "graphql-tag"
 import { connect } from 'react-redux'
 import { RouteComponentProps } from "react-router-dom"
-import { themeColors, IClass } from "src/utils"
+
+import { TestNumber } from './TestNumber/TestNumber'
+import { themeColors } from "src/utils"
 import { setNewTestParameters } from 'src/actions/factFluency'
 import { Loading } from "src/sharedComponents"
 import './SelectTest.css'
-import { TestNumber } from './TestNumber/TestNumber'
 
-interface IProps extends RouteComponentProps<{}>  {
-  courses?: IClass[]
+const GET_TEST_PARAMETERS = gql`
+  query course($courseId: ObjID!) {
+    course(id: $courseId) {
+      testParameters {
+        operators
+        numbers
+      }
+    }
+  }
+`
+
+interface IProps extends RouteComponentProps<{}> {
+  courseId: string
   dispatch: any
-  activeClass: string
-  availableOperators?: string[]
-  availableNumbers?: number[]
 }
 
 interface IState {
-  error: string
   selectedNumber?: number
 }
 
 class DisconnectedSelectTest extends React.Component<IProps, IState> {
-  public state: IState = {
-    error: '',
-  }
+  public state: IState = {}
   
   public async componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
@@ -34,43 +42,61 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const { availableNumbers, availableOperators, courses } = this.props
-
-    if (courses === undefined || availableNumbers === undefined || availableOperators === undefined) {
-      return (
-        <div className="SelectTest">
-          <Loading className="loading" />
-        </div>
-      )
-    }
-
     return (
-      <div className="SelectTest">
-        {availableNumbers.map((num, i) => {
-          const color = themeColors[i % themeColors.length]
-          const active = (num === this.state.selectedNumber)
+      <Query
+        query={GET_TEST_PARAMETERS}
+        variables={{ courseId: this.props.courseId }}
+        pollInterval={5 * 1000 * 60}
+      >
+        {({ loading, error, data: { course } }: any) => {
+          if (loading) {
+            return (
+              <div className="SelectTest">
+                <Loading className="loading" />
+              </div>
+            ) 
+          }
+          
+          if (error) {
+            return (
+              <div className="SelectTest">
+                <h3 className="error">Error! {error.message}</h3>
+              </div>
+            )
+          }
 
+          const { numbers, operators } = course.testParameters
+          
           return (
-            <TestNumber
-              active={active}
-              color={color}
-              key={num}
-              num={num}
-              operators={availableOperators}
-              onClick={this.handleTestNumberClick}
-              onSubmit={this.handleSubmit}
-            />
+            <div className="SelectTest">
+              {numbers.map((num: number, i: number) => {
+                const color = themeColors[i % themeColors.length]
+                const active = (num === this.state.selectedNumber)
+                
+                return (
+                  <TestNumber
+                  active={active}
+                  color={color}
+                  key={num}
+                  num={num}
+                    operators={operators}
+                    onClick={this.handleTestNumberClick}
+                    onSubmit={this.handleSubmit}
+                  />
+                )
+              })}
+            </div>
           )
-        })}
-      </div>
+        }}
+      </Query>
     )
   }
 
   private handleSubmit = (num: number, operator: string) => {
-    const { activeClass, history, dispatch } = this.props
+    const { courseId, history, dispatch } = this.props
 
     dispatch(setNewTestParameters({
-      courseId: activeClass,
+      courseId,
       num,
       operator,
     }))
@@ -89,21 +115,8 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ factFluency, courses }: any) => {
-  const activeClass = factFluency.activeClass
-    ? courses[factFluency.activeClass]
-    : undefined
-
-  return {
-    courses,
-    activeClass: factFluency.activeClass,
-    availableNumbers: activeClass && activeClass.testParameters
-      ? activeClass.testParameters.numbers.sort((a: number, b: number) => a - b)
-      : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    availableOperators: activeClass && activeClass.testParameters
-      ? activeClass.testParameters.operators
-      : ['+', '-', '*', '/'],
-  }
-}
+const mapStateToProps = ({ factFluency }: any) =>  ({
+  courseId: factFluency.activeClass
+})
 
 export const SelectTest = connect(mapStateToProps)(DisconnectedSelectTest)

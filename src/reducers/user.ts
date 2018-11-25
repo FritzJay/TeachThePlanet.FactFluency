@@ -14,6 +14,7 @@ export default function user (state: any = {}, action: any) {
 
     case ADD_USER:
     case UPDATE_USER:
+      localStorage.setItem('token', action.user ? action.user.token : '')
       return {
         ...state,
         ...action.user
