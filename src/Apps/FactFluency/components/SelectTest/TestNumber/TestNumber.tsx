@@ -10,7 +10,7 @@ interface IProps {
   color: string
   num: number
   operators: string[]
-  onSubmit: (num: number, operator: string) => void
+  onSubmit: (operator: string) => void
   onClick: (selectedNumber: number) => void
 }
 
@@ -90,11 +90,11 @@ export class TestNumber extends React.Component <IProps, IState> {
   }
 
   private handleStartClick = () => {
-    const { onSubmit, num } = this.props
+    const { onSubmit } = this.props
     const operator = this.state.operator
 
     if (operator) {
-      onSubmit(num, operator)
+      onSubmit(operator)
     } else {
       this.setState({ error: true })
     }

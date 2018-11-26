@@ -3,66 +3,19 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { removeTest, removeTestResults } from 'src/actions/factFluency';
-import { handleReceiveTest } from 'src/handlers/factFluency';
 import { ITest } from 'src/utils'
-import { Button, Card, Loading } from 'src/sharedComponents'
+import { Button, Card } from 'src/sharedComponents'
 import './StartTest.css'
 
 interface IProps extends RouteComponentProps<{}> {
-  dispatch: any
-  newTestParameters: {
-    courseId: string
-    num: number
-    operator: string
-  }
   test: ITest
-  token: string
-  studentId: string
-}
-
-interface IState {
-  error: string
+  dispatch: any
 }
 
 const encouragingTexts = ['We know you got this!', 'Keep calm and rock this test!', 'You can do it!']
 
-export class DisconnectedStartTest extends React.Component<IProps, IState> {
-  public state: IState = { error: '' }
-
-  public async componentDidMount() {
-    const { dispatch, newTestParameters, studentId, token } = this.props
-
-    if (newTestParameters === undefined || token === undefined) {
-      return
-    }
-
-    try {
-      await dispatch(handleReceiveTest(token, studentId, newTestParameters))
-      this.setState({ error: '' })
-
-    } catch (error) {
-      this.setState({ error: error.toString() })
-    }
-  }
-
+export class DisconnectedStartTest extends React.Component<IProps> {
   public render() {
-    if (this.state.error !== '') {
-      return (
-        <div className="StartTest">
-          <h1 className="error">{this.state.error}</h1>
-          <h2 className="error">Please Try Again Later</h2>
-        </div>
-      )
-    }
-
-    if (this.props.test === undefined || this.props.test === null) {
-      return (
-        <div className="StartTest">
-          <Loading className="loading" />
-        </div>
-      )
-    }
-
     const headerText = encouragingTexts[Math.floor(Math.random() * encouragingTexts.length)]
 
     return (
@@ -102,10 +55,7 @@ export class DisconnectedStartTest extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = ({ factFluency, user }: any) => ({
-  newTestParameters: factFluency.newTestParameters,
-  test: factFluency.test,
-  token: user.token,
-  studentId: factFluency.id
+  test: factFluency.test
 })
 
 export const StartTest = connect(mapStateToProps)(DisconnectedStartTest)

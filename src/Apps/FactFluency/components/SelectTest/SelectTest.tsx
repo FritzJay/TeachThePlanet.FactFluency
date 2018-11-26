@@ -1,12 +1,14 @@
+/* tslint:disable:jsx-no-lambda */
+
 import * as React from "react"
-import { Query } from "react-apollo"
+import { Query, Mutation } from "react-apollo"
 import gql from "graphql-tag"
 import { connect } from 'react-redux'
 import { RouteComponentProps } from "react-router-dom"
 
 import { TestNumber } from './TestNumber/TestNumber'
 import { themeColors } from "src/utils"
-import { setNewTestParameters } from 'src/actions/factFluency'
+import { receiveTest } from 'src/actions/factFluency'
 import { Loading } from "src/sharedComponents"
 import './SelectTest.css'
 
@@ -21,8 +23,36 @@ const GET_TEST_PARAMETERS = gql`
   }
 `
 
+const CREATE_TEST = gql`
+  mutation createTest($input: CreateTestInput!) {
+    createTest(input: $input) {
+      id
+      duration
+      number
+      operator
+      randomQuestions
+      start
+      end
+      student {
+        id
+      }
+      course {
+        id
+      }
+      questions {
+        id
+        question
+        studentAnswer
+        start
+        end
+      }
+    }
+  }
+`
+
 interface IProps extends RouteComponentProps<{}> {
   courseId: string
+  studentId: string
   dispatch: any
 }
 
@@ -48,60 +78,86 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
         variables={{ courseId: this.props.courseId }}
         pollInterval={5 * 1000 * 60}
       >
-        {({ loading, error, data: { course } }: any) => {
-          if (loading) {
+        {({ error: queryError, loading: queryLoading, data: { course } }: any) => {
+
+          if (queryLoading) {
             return (
               <div className="SelectTest">
                 <Loading className="loading" />
               </div>
-            ) 
+            )
           }
-          
-          if (error) {
+
+          if (queryError) {
             return (
               <div className="SelectTest">
-                <h3 className="error">Error! {error.message}</h3>
+                <h3 className="error">Error! {queryError.message}</h3>
               </div>
             )
           }
 
-          const { numbers, operators } = course.testParameters
-          
           return (
-            <div className="SelectTest">
-              {numbers.map((num: number, i: number) => {
-                const color = themeColors[i % themeColors.length]
-                const active = (num === this.state.selectedNumber)
+            <Mutation
+              mutation={CREATE_TEST}
+              onCompleted={({ createTest }) => {
+                this.props.dispatch(receiveTest(createTest))
+                this.props.history.push('/fact-fluency/start-test')
+              }}
+            >
+              {(createTest, { loading: mutationLoading, error: mutationError }: any ) => {
+                if (mutationLoading) {
+                  return (
+                    <div className="SelectTest">
+                      <Loading className="loading" />
+                    </div>
+                  ) 
+                }
                 
+                if (mutationError) {
+                  return (
+                    <div className="SelectTest">
+                      <h3 className="error">Error! {mutationError.message}</h3>
+                    </div>
+                  )
+                }
+
+                const { numbers, operators } = course.testParameters
+
                 return (
-                  <TestNumber
-                  active={active}
-                  color={color}
-                  key={num}
-                  num={num}
-                    operators={operators}
-                    onClick={this.handleTestNumberClick}
-                    onSubmit={this.handleSubmit}
-                  />
+                  <div className="SelectTest">
+                    {numbers.map((num: number, i: number) => {
+                      const color = themeColors[i % themeColors.length]
+                      const active = (num === this.state.selectedNumber)
+                      
+                      return (
+                        <TestNumber
+                          active={active}
+                          color={color}
+                          key={num}
+                          num={num}
+                          operators={operators}
+                          onClick={this.handleTestNumberClick}
+                          onSubmit={(operator: string) => {
+                            const { courseId, studentId } = this.props
+                            createTest({
+                              variables: {
+                                input: {
+                                  number: num,
+                                  operator,
+                                  studentId,
+                                  courseId,
+                            }}})
+                          }}
+                        />
+                      )
+                    })}
+                  </div>
                 )
-              })}
-            </div>
-          )
-        }}
+              }}
+            </Mutation>
+        )}}
       </Query>
     )
-  }
-
-  private handleSubmit = (num: number, operator: string) => {
-    const { courseId, history, dispatch } = this.props
-
-    dispatch(setNewTestParameters({
-      courseId,
-      num,
-      operator,
-    }))
-
-    history.push('/fact-fluency/start-test')
   }
 
   private handleTestNumberClick = (selectedNumber: number) => {
@@ -116,7 +172,8 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
 }
 
 const mapStateToProps = ({ factFluency }: any) =>  ({
-  courseId: factFluency.activeClass
+  courseId: factFluency.activeClass,
+  studentId: factFluency.id,
 })
 
 export const SelectTest = connect(mapStateToProps)(DisconnectedSelectTest)
