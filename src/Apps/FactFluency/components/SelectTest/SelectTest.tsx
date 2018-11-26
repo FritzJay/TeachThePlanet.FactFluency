@@ -5,8 +5,8 @@ import { Query, Mutation } from "react-apollo"
 import gql from "graphql-tag"
 
 import { TestNumber } from './TestNumber/TestNumber'
-import { themeColors } from "src/utils"
-import { Loading } from "src/sharedComponents"
+import { themeColors, IClass } from "src/utils"
+import { Loading, GET_ACTIVE_COURSE_ID } from "src/sharedComponents"
 import './SelectTest.css'
 
 const GET_STUDENT = gql`
@@ -23,6 +23,7 @@ const GET_STUDENT = gql`
         name
         code
         teacher {
+          id
           name
         }
         testParameters {
@@ -79,13 +80,9 @@ export class SelectTest extends React.Component<any, IState> {
   
   public render() {
     return (
-      <Query
-        query={GET_STUDENT}
-        pollInterval={5 * 1000 * 60}
-      >
-        {({ client, error: queryError, loading: queryLoading, data: { student } }: any) => {
-
-          if (queryLoading) {
+      <Query query={GET_ACTIVE_COURSE_ID}>
+        {({ error: courseIdError, loading: courseIdLoading, data: activeCourseData }) => {
+          if (courseIdLoading) {
             return (
               <div className="SelectTest">
                 <Loading className="loading" />
@@ -93,84 +90,114 @@ export class SelectTest extends React.Component<any, IState> {
             )
           }
 
-          if (queryError) {
+          if (courseIdError) {
             return (
               <div className="SelectTest">
-                <h3 className="error">Error! {queryError.message}</h3>
+                <h3 className="error">Error! {courseIdError.message}</h3>
               </div>
             )
           }
 
+          const { activeCourseId } = activeCourseData
+
           return (
-            <Mutation
-              mutation={CREATE_TEST}
-              onCompleted={async ({ createTest }) => {
-                client.writeData({ data: {
-                  test: createTest.id
-                } })
-                this.props.history.push('/fact-fluency/start-test')
-              }}
+            <Query
+              query={GET_STUDENT}
+              pollInterval={5 * 1000 * 60}
             >
-              {(createTest, { loading: mutationLoading, error: mutationError }: any ) => {
-                if (mutationLoading) {
+              {({ client, error: queryError, loading: queryLoading, data }: any) => {
+
+                if (queryLoading) {
                   return (
                     <div className="SelectTest">
                       <Loading className="loading" />
                     </div>
-                  ) 
-                }
-                
-                if (mutationError) {
-                  return (
-                    <div className="SelectTest">
-                      <h3 className="error">Error! {mutationError.message}</h3>
-                    </div>
                   )
                 }
 
-                const activeCourse = student.courses.length > 0 && student.courses[0]
-                client.writeData({ data: { activeCourse } })
-  
-                const numbers = activeCourse
-                  ? activeCourse.testParameters.numbers
-                  : new Array(13).fill(0).map((n, i) => i)
-  
-                const operators = activeCourse
-                  ? activeCourse.testParameters.operators
-                  : ['+', '-', '*', '/']
+                if (queryError) {
+                  return (
+                    <div className="SelectTest">
+                      <h3 className="error">Error! {queryError.message}</h3>
+                    </div>
+                  )
+                }
+                
+                const { student } = data
+                const { courses } = student
 
                 return (
-                  <div className="SelectTest">
-                    {numbers.map((num: number, i: number) => {
-                      const color = themeColors[i % themeColors.length]
-                      const active = (num === this.state.selectedNumber)
+                  <Mutation
+                    mutation={CREATE_TEST}
+                    onCompleted={async ({ createTest }) => {
+                      client.writeData({ data: { testId: createTest.id } })
+                      this.props.history.push('/fact-fluency/start-test')
+                    }}
+                  >
+                    {(createTest, { loading: mutationLoading, error: mutationError }: any ) => {
+                      if (mutationLoading) {
+                        return (
+                          <div className="SelectTest">
+                            <Loading className="loading" />
+                          </div>
+                        ) 
+                      }
                       
+                      if (mutationError) {
+                        return (
+                          <div className="SelectTest">
+                            <h3 className="error">Error! {mutationError.message}</h3>
+                          </div>
+                        )
+                      }
+
+                      const activeCourse = activeCourseId
+                        ? courses && courses.find((course: IClass) => course.id === activeCourseId)
+                        : courses && courses[0]
+        
+                      const numbers = activeCourse
+                        ? activeCourse.testParameters.numbers
+                        : new Array(13).fill(0).map((n, i) => i)
+        
+                      const operators = activeCourse
+                        ? activeCourse.testParameters.operators
+                        : ['+', '-', '*', '/']
+
                       return (
-                        <TestNumber
-                          active={active}
-                          color={color}
-                          key={num}
-                          num={num}
-                          operators={operators}
-                          onClick={this.handleTestNumberClick}
-                          onSubmit={(operator: string) => {
-                            createTest({
-                              variables: {
-                                input: {
-                                  number: num,
-                                  operator,
-                                  studentId: student.id,
-                                  courseId: activeCourse.id,
-                            }}})
-                          }}
-                        />
+                        <div className="SelectTest">
+                          {numbers.map((num: number, i: number) => {
+                            const color = themeColors[i % themeColors.length]
+                            const active = (num === this.state.selectedNumber)
+                            
+                            return (
+                              <TestNumber
+                                active={active}
+                                color={color}
+                                key={num}
+                                num={num}
+                                operators={operators}
+                                onClick={this.handleTestNumberClick}
+                                onSubmit={(operator: string) => {
+                                  createTest({
+                                    variables: {
+                                      input: {
+                                        number: num,
+                                        operator,
+                                        studentId: student.id,
+                                        courseId: activeCourse.id,
+                                  }}})
+                                }}
+                              />
+                            )
+                          })}
+                        </div>
                       )
-                    })}
-                  </div>
-                )
-              }}
-            </Mutation>
-        )}}
+                    }}
+                  </Mutation>
+              )}}
+            </Query>
+          )
+        }}
       </Query>
     )
   }

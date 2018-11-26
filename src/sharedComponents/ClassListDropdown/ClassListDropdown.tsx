@@ -1,99 +1,179 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Query } from 'react-apollo'
 
 import { ConnectedClassListNotification } from './components/ConnectedClassListNotification/ClassListNotification'
-import { updateActiveClass } from 'src/actions/factFluency'
-import { Button, Modal, ModalHeader, ModalContent } from '..'
+import { Button, Modal, ModalHeader, ModalContent, Loading } from '..'
 import { IClass } from 'src/utils'
 import './ClassListDropdown.css'
+
+export const GET_ACTIVE_COURSE_ID = gql`
+  {
+    activeCourseId @client
+  }
+`
+
+const GET_STUDENT = gql`
+  query student {
+    student {
+      id
+      user {
+        id
+        email
+      }
+      courses {
+        id
+        name
+        code
+        teacher {
+          id
+          name
+        }
+      }
+      courseInvitations {
+        id
+      }
+    }
+  }
+`
 
 interface IState {
   active: boolean
 }
 
-interface IProps extends RouteComponentProps {
-  numberOfInvitations: number
-  activeClass?: string
-  courses?: IClass[]
-  dispatch: any
-  userEmail: string
-}
-
-class ClassListDropdown extends React.Component<IProps, IState> {
+class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
   public state: IState = {
     active: false
   }
-
+  
   public render() {
-    const { activeClass, courses, userEmail, numberOfInvitations } = this.props
     const { active } = this.state
 
-    if (userEmail === 'TTPStudent') {
-      return null
-    }
-
     return (
-      <>
-        <Button
-          className={`ClassListDropdown-button${active ? ' active' : ''}`}
-          onClick={this.toggleDropdown}
-        >
-          <i className="material-icons">school</i>
-          <ConnectedClassListNotification />
-        </Button>
-          
-        {active
-          ?
-            <Modal
-              className="ClassListDropdown"
-              overlay={true}
-              onClose={this.toggleDropdown}
+      <Query query={GET_ACTIVE_COURSE_ID}>
+        {({ data: { activeCourseId }, loading: firstLoading, error: firstError }) => {
+          if (firstLoading) {
+            return active ? (
+              <div className="ClassListDropdown">
+                <Loading className="loading" />
+              </div>
+            ) : null
+          }
+
+          if (firstError) {
+            return active ? (
+              <div className="ClassListDropdown">
+                <h3 className="error">{firstError.message}</h3>
+              </div>
+            ) : null
+          }
+
+          return (
+            <Query
+              query={GET_STUDENT}
+              pollInterval={30000}
             >
-              <ModalHeader className="header">
-                <h2>Classes</h2>
-              </ModalHeader>
-              <ModalContent className="content">
-                <ul>
-                  {courses && Object.keys(courses).map((id) => (
-                    <li key={id}>
-                      <Button
-                        className={activeClass === id ? 'active' : ''}
-                        onClick={() => this.handleSelect(id)}
-                      >
-                        {courses[id].name} - {courses[id].teacher.name}
-                      </Button>
-                    </li>
-                  ))}
+              {({ client, error, loading, data }) => {
+                if (loading) {
+                  return active ? (
+                    <div className="ClassListDropdown">
+                      <Loading className="loading" />
+                    </div>
+                  ) : null
+                }
 
-                  {numberOfInvitations > 0
-                    ? <li
-                        onClick={this.handleInvitationsClick}
-                        className="invitations"
-                      >
-                        <Button className="button">{numberOfInvitations}</Button>
-                        <Button className="link">
-                          Invitations
-                        </Button>
-                      </li>
-                    : null}
+                if (error) {
+                  return active ? (
+                    <div className="ClassListDropdown">
+                      <h3 className="error">{error.message}</h3>
+                    </div>
+                  ) : null
+                }
 
-                  <li
-                    onClick={this.handleJoinClassClick}
-                    className={`join-class${numberOfInvitations > 0 ? ' with-invitations' : ''}`}
-                  >
-                    <Button className="button">+</Button>
-                    <Button className="link">
-                      Join Class
+                const { user, courses, courseInvitations } = data.student
+
+                if (user.email === 'TTPStudent') {
+                  return null
+                }
+
+                activeCourseId = activeCourseId || (courses && courses[0].id)
+
+                const numberOfInvitations = courseInvitations
+                  ? courseInvitations.length
+                  : 0
+
+                return (
+                  <>
+                    <Button
+                      className={`ClassListDropdown-button${active ? ' active' : ''}`}
+                      onClick={this.toggleDropdown}
+                    >
+                      <i className="material-icons">school</i>
+                      <ConnectedClassListNotification />
                     </Button>
-                  </li>
-                </ul>
-              </ModalContent>
-            </Modal>
-          : null}
-      </>
+                      
+                    {active
+                      ?
+                        <Modal
+                          className="ClassListDropdown"
+                          overlay={true}
+                          onClose={this.toggleDropdown}
+                        >
+                          <ModalHeader className="header">
+                            <h2>Classes</h2>
+                          </ModalHeader>
+                          <ModalContent className="content">
+                            <ul>
+                              {courses && courses.map(({ id, name: courseName, teacher : { name: teacherName } }: IClass) => (
+                                <li key={id}>
+                                  <Button
+                                    className={activeCourseId === id ? 'active' : ''}
+                                    onClick={() => {
+                                      if (activeCourseId !== id) {
+                                        client.writeData({ data: { activeCourseId: id } })
+                                      } else {
+                                        this.toggleDropdown()
+                                      }
+                                    }}
+                                  >
+                                    {courseName} - {teacherName}
+                                  </Button>
+                                </li>
+                              ))}
+
+                              {numberOfInvitations > 0
+                                ? <li
+                                    onClick={this.handleInvitationsClick}
+                                    className="invitations"
+                                  >
+                                    <Button className="button">{numberOfInvitations}</Button>
+                                    <Button className="link">
+                                      Invitations
+                                    </Button>
+                                  </li>
+                                : null}
+
+                              <li
+                                onClick={this.handleJoinClassClick}
+                                className={`join-class${numberOfInvitations > 0 ? ' with-invitations' : ''}`}
+                              >
+                                <Button className="button">+</Button>
+                                <Button className="link">
+                                  Join Class
+                                </Button>
+                              </li>
+                            </ul>
+                          </ModalContent>
+                        </Modal>
+                      : null}
+                  </>
+                )
+              }}
+            </Query>
+          )
+        }}
+      </Query>
     )
   }
 
@@ -102,7 +182,6 @@ class ClassListDropdown extends React.Component<IProps, IState> {
   }
 
   private handleJoinClassClick = () => {
-    console.log('HANDLE JOIN CLASS CLICK')
     this.props.history.push('/fact-fluency/join-class')
     this.toggleDropdown()
   }
@@ -111,21 +190,6 @@ class ClassListDropdown extends React.Component<IProps, IState> {
     this.props.history.push('/fact-fluency/join-class')
     this.toggleDropdown()
   }
-
-  private handleSelect = (id: string) => {
-    if (this.props.activeClass !== id) {
-      this.props.dispatch(updateActiveClass(id))
-    } else {
-      this.toggleDropdown()
-    }
-  }
 }
 
-const mapStateToProps = ({ factFluency, courses, courseInvitations, user }: any) => ({
-  activeClass: factFluency.activeClass,
-  courses,
-  userEmail: user.email,
-  numberOfInvitations: Object.keys(courseInvitations).length,
-})
-
-export const ConnectedClassListDropdown = connect(mapStateToProps)(withRouter(ClassListDropdown));
+export const ConnectedClassListDropdown = withRouter(ClassListDropdown)

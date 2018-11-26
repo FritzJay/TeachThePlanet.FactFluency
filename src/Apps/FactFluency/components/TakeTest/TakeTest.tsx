@@ -19,7 +19,7 @@ import './TakeTest.css'
 
 const GET_TEST_ID = gql`
   {
-    test @client
+    testId @client
   }
 `
 
@@ -52,7 +52,7 @@ const GET_TEST = gql`
 
 export const TakeTestContainer = (props: any) => (
   <Query query={GET_TEST_ID}>
-    {({ data: { test: id }, loading: firstLoading, error: firstError }) => {
+    {({ data: { testId }, loading: firstLoading, error: firstError }) => {
       if (firstLoading) {
         return (
           <div className="TakeTest">
@@ -68,7 +68,7 @@ export const TakeTestContainer = (props: any) => (
         )
       }
       return (
-        <Query query={GET_TEST} variables={{ id }}>
+        <Query query={GET_TEST} variables={{ testId }}>
           {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
             if (secondLoading) {
               return (
@@ -87,11 +87,7 @@ export const TakeTestContainer = (props: any) => (
             return (
               <Mutation
                 mutation={GRADE_TEST}
-                onCompleted={async ({ gradeTest }: any) => {
-                  client.writeData({ data: {
-                    testResults: gradeTest.testResults
-                  }})
-                  props.history.push('/fact-fluency/test-results')}}
+                onCompleted={async () => {props.history.push('/fact-fluency/test-results')}}
               >
                 {(gradeTest, { loading, error }) => {
                   if (loading) {

@@ -12,7 +12,7 @@ import * as WebFont from 'webfontloader'
 import App from './Apps/App'
 import middleware from './middleware'
 import reducer from './reducers'
-import { factFluencyDefaults, factFluencyResolvers, factFluencyTypeDefs } from './Apps/FactFluency/clientState'
+import { factFluencyDefaults, factFluencyResolvers } from './Apps/FactFluency/clientState'
 
 WebFont.load({
   google: {
@@ -37,10 +37,10 @@ const client = new ApolloClient({
   },
   clientState: {
     defaults: {
-      ...factFluencyDefaults,
+      ...factFluencyDefaults(),
     },
     resolvers: {
-      ...factFluencyResolvers,
+      ...factFluencyResolvers(),
     }
   }
 })

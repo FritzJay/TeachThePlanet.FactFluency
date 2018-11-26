@@ -103,8 +103,8 @@ const GET_TEST = gql`
 
 export const TestResultsContainer = (props: any) => (
   <Query query={GET_TEST_ID}>
-    {({ data: { test: id }, loading: firstLoading, error: firstError }) => (
-      <Query query={GET_TEST} variables={{ id }}>
+    {({ data: { testId }, loading: firstLoading, error: firstError }) => (
+      <Query query={GET_TEST} variables={{ testId }}>
         {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
           if (firstLoading || secondLoading) {
             return (
@@ -150,10 +150,7 @@ const TestResults = ({ history, test, client }: IProps) => {
     <Mutation
       mutation={CREATE_TEST}
       onCompleted={async ({ createTest }) => {
-        await client.writeData({ data: {
-          test: createTest.id,
-          testResults: null,
-        } })
+        await client.writeData({ data: { testId: createTest.id } })
         history.push('/fact-fluency/start-test')
       }}
     >
@@ -207,10 +204,7 @@ const TestResults = ({ history, test, client }: IProps) => {
             </Button>
 
             <Button className="blue home" onClick={async () => {
-              await client.writeData({ data: {
-                test: null,
-                testResults: null,
-              }})
+              await client.writeData({ data: { testId: null }})
               history.push('/fact-fluency')
             }}>
               <span className="btn-text">Home</span>

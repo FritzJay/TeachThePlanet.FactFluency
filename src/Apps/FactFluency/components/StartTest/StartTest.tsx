@@ -21,10 +21,7 @@ export const StartTest = ({ history }: RouteComponentProps) => {
             <Button
               className="green"
               autoFocus={true}
-              onClick={() => {
-                client.writeData({ data: { testResults: null } })
-                history.push('/fact-fluency/take-test')
-              }}
+              onClick={() => history.push('/fact-fluency/take-test')}
             >
               Start Test
             </Button>
@@ -32,7 +29,7 @@ export const StartTest = ({ history }: RouteComponentProps) => {
             <Button
               className="cancel-button"
               onClick={() => {
-                client.writeData({ data: { test: null } })
+                client.writeData({ data: { testId: null } })
                 history.push('/fact-fluency')
               }}
             >
