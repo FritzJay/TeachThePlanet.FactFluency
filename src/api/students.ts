@@ -111,31 +111,8 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
       student(id: $id) {
         id
         name
-        courses {
-          id
-          code
-          grade
-          name
-          teacher {
-            id
-            name
-          }
-        }
         user {
           email
-        }
-        courseInvitations {
-          id,
-          createdAt
-          course {
-            id
-            name
-            createdAt
-            teacher {
-              id
-              name
-            }
-          }
         }
       }
     }

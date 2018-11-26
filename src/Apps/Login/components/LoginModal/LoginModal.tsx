@@ -1,16 +1,15 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { RouteComponentProps, Link } from 'react-router-dom'
 
-import { handleSignInStudent } from 'src/handlers/factFluency'
-import { handleSignInTeacher } from 'src/handlers/teacherHome'
+import { saveSignInStudent } from 'src/api/students'
+import { saveSignInTeacher } from 'src/api'
+
 import { Button, Loading, Modal, ModalContent, ModalHeader, Input } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
 import { USER_TYPES } from '../../Login'
 import './LoginModal.css'
 
 interface IProps extends RouteComponentProps<any> {
-  dispatch: any
   email: string
   password: string
   userType: string
@@ -23,7 +22,7 @@ interface IState {
   loading: boolean
 }
 
-class DisconnectedLoginModal extends React.Component<IProps, IState> {
+export class LoginModal extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     loading: false,
@@ -135,13 +134,14 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
   }
 
   private async loginForUserType(email: string, password: string, userType: string) {
-    const { dispatch, history } = this.props
+    const { history } = this.props
 
     try {
       switch (userType) {
-        case USER_TYPES.student:
+        case USER_TYPES.student: {
           try {
-            await dispatch(handleSignInStudent(email, password))
+            const token = await saveSignInStudent(email, password)
+            await localStorage.setItem('token', token)
             history.push('/fact-fluency')
             return
           } catch (error) {
@@ -150,10 +150,13 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
               return
             }
           }
-        case USER_TYPES.teacher:
-          await dispatch(handleSignInTeacher(email, password))
+        }
+        case USER_TYPES.teacher: {
+          const token = await saveSignInTeacher(email, password)
+          await localStorage.setItem('token', token)
           history.push('/teacher')
           return
+        }
         default:
           throw new Error('Invalid user type!')
       }
@@ -166,5 +169,3 @@ class DisconnectedLoginModal extends React.Component<IProps, IState> {
     }
   }
 }
-
-export const LoginModal = connect()(DisconnectedLoginModal)

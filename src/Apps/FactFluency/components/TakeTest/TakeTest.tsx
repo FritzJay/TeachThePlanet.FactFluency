@@ -1,9 +1,7 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from "react"
 import gql from 'graphql-tag'
-import { Mutation } from "react-apollo"
-import { connect } from 'react-redux'
+import { Mutation, Query } from "react-apollo"
+import { ApolloClient } from "apollo-boost"
 import { RouteComponentProps } from "react-router-dom"
 
 import {
@@ -11,13 +9,76 @@ import {
   randomizeQuestions,
   sortQuestions,
   startQuestion,
+  ITest,
 } from 'src/utils'
-import { IDisplayQuestion, IQuestion, ITest } from "src/utils"
+import { IDisplayQuestion, IQuestion } from "src/utils"
 import { getOperatorSymbol } from "src/utils"
-import { receiveTestResults, removeTestResults } from "src/actions/factFluency"
 import { Button, Card, Input, Loading } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
+
+const GET_TEST_ID = gql`
+  {
+    test @client
+  }
+`
+
+const GET_TEST = gql`
+  query Test($id: ObjID!) {
+    test(id: $id) {
+      id
+      duration
+      number
+      operator
+      randomQuestions
+      start
+      end
+      student {
+        id
+      }
+      course {
+        id
+      }
+      questions {
+        id
+        question
+        studentAnswer
+        start
+        end
+      }
+    }
+  }
+`
+
+export const TakeTestContainer = (props: any) => (
+  <Query query={GET_TEST_ID}>
+    {({ data: { test: id }, loading: firstLoading, error: firstError }) => (
+      <Query query={GET_TEST} variables={{ id }}>
+        {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
+          if (firstLoading || secondLoading) {
+            return (
+              <div className="TakeTest">
+                <Loading className="loading" />
+              </div>
+            )
+          }
+          if (firstError || secondError) {
+            return (
+              <div className="TakeTest">
+                <h3 className="error">{firstError ? firstError.message : secondError ? secondError.message : ''}</h3>
+              </div>
+            )
+          }
+          return <TakeTest
+            {...props}
+            client={client}
+            test={test}
+          />
+        }}
+      </Query>
+    )}
+  </Query>
+)
 
 const GRADE_TEST = gql`
   mutation gradeTest($id: ObjID!, $input: GradeTestInput!) {
@@ -47,8 +108,8 @@ const GRADE_TEST = gql`
 `
 
 interface IProps extends RouteComponentProps<{}> {
-  dispatch: any
   history: any
+  client: ApolloClient<any>
   test: ITest
 }
 
@@ -61,7 +122,7 @@ interface IState {
   questions?: IQuestion[]
 }
 
-export class DisconnectedTakeTest extends React.Component<IProps, IState> {
+class TakeTest extends React.Component<IProps, IState> {
   public state: IState = {
     answer: '',
     keyboard: false,
@@ -105,8 +166,9 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
       <Mutation
         mutation={GRADE_TEST}
         onCompleted={async ({ gradeTest }: any) => {
-          await this.props.dispatch(removeTestResults())
-          await this.props.dispatch(receiveTestResults(gradeTest.testResults))
+          this.props.client.writeData({ data: {
+            testResults: gradeTest.testResults
+          }})
           this.props.history.push('/fact-fluency/test-results')}}
       >
         {(gradeTest, { loading, error }) => {
@@ -265,7 +327,3 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     })
   }
 }
-
-const mapStateToProps = ({ factFluency }: any) => ({ test: factFluency.test })
-
-export const TakeTest = connect(mapStateToProps)(DisconnectedTakeTest)

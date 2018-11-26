@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Route, RouteComponentProps, Redirect } from 'react-router-dom'
 import { Navbar, ConnectedClassListDropdown } from 'src/sharedComponents'
-import { ConnectedCourseInvitations, SelectTest, StartTest, TakeTest, TestResults } from './components'
+import { ConnectedCourseInvitations, SelectTest, StartTest, TakeTestContainer, TestResultsContainer } from './components'
 import './FactFluency.css'
 
 export const FactFluency = ({ match }: RouteComponentProps) => {
@@ -33,12 +33,12 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
 
         <Route
           path={`${match.path}/take-test`}
-          component={TakeTest}
+          component={TakeTestContainer}
         />
 
         <Route
           path={`${match.path}/test-results`}
-          component={TestResults}
+          component={TestResultsContainer}
         />
         
         <Route

@@ -103,6 +103,8 @@ export interface ITest {
   testResults?: ITestResults
   number: number
   operator: string
+  student: IStudentUser
+  course: IClass
 }
 
 export interface IQuestion {

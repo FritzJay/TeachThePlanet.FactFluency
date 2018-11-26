@@ -1,15 +1,15 @@
 /* tslint:disable:jsx-no-lambda */
 
 import * as React from 'react'
-import { Mutation } from 'react-apollo'
-import { connect } from 'react-redux'
+import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { removeTest, removeTestResults, receiveTest } from 'src/actions/factFluency'
-import { IQuestion, ITestResults, getOperatorSymbol } from 'src/utils'
+import { IQuestion, getOperatorSymbol, ITest } from 'src/utils'
 import { Button, Card, Loading } from 'src/sharedComponents'
 import { CREATE_TEST } from '../SelectTest/SelectTest'
 import './TestResults.css'
+import gql from 'graphql-tag';
+import { ApolloClient } from 'apollo-boost';
 
 interface IQuickestCardProps {
   question?: IQuestion
@@ -61,108 +61,166 @@ const IncorrectCard = ({ question }: IIncorrectCardProps) => {
   }
 }
 
-interface IProps extends RouteComponentProps<{}> {
-  studentId: string
-  courseId: string
-  operator: string
-  number: number
-  testResults: ITestResults
-  dispatch: any
-}
 
-class DisconnectedTestResults extends React.Component<IProps> {
-  public render() {
-    const { operator, number: num } = this.props
-    const { correct, needed, total, quickest, incorrect } = this.props.testResults
 
-    return (
-      <Mutation
-        mutation={CREATE_TEST}
-        onCompleted={async ({ createTest }) => {
-          await this.props.dispatch(removeTest())
-          await this.props.dispatch(receiveTest(createTest))
-          this.props.history.push('/fact-fluency/start-test')
-        }}
-      >
-        {(createTest, { loading, error }: any ) => {
-          if (loading) {
+const GET_TEST_ID = gql`
+  {
+    test @client
+  }
+`
+
+const GET_TEST = gql`
+  query Test($id: ObjID!) {
+    test(id: $id) {
+      id
+      number
+      operator
+      student {
+        id
+      }
+      course {
+        id
+      }
+      testResults {
+        id
+        total
+        needed
+        correct
+        incorrect {
+          start
+          end
+          question
+        }
+        quickest {
+          start
+          end
+          question
+        }
+      }
+    }
+  }
+`
+
+export const TestResultsContainer = (props: any) => (
+  <Query query={GET_TEST_ID}>
+    {({ data: { test: id }, loading: firstLoading, error: firstError }) => (
+      <Query query={GET_TEST} variables={{ id }}>
+        {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
+          if (firstLoading || secondLoading) {
             return (
               <div className="TestResults">
                 <Loading className="loading" />
               </div>
             )
           }
-
-          if (error) {
+          if (firstError || secondError) {
             return (
               <div className="TestResults">
-                <h3 className="error">{error}</h3>
+                <h3 className="error">{firstError ? firstError.message : secondError ? secondError.message : ''}</h3>
               </div>
             )
           }
-
-          return (
-            <div className="TestResults">
-              <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
-
-              <h2 className="subheader">
-                You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
-              </h2>
-
-              <p className="detail">Remember you need {needed}/{total} to pass.</p>
-
-              <QuickestCard question={quickest} />
-
-              <IncorrectCard question={incorrect} />
-
-              <hr />
-
-              <Button className="blue retry" onClick={() => createTest({
-                variables: {
-                  input: {
-                    number: num,
-                    operator,
-                    studentId: this.props.studentId,
-                    courseId: this.props.courseId,
-                  }
-                }
-              })}>
-                <span className="btn-text">Retry</span>
-                <span className="btn-icon">
-                  <i className="material-icons">replay</i>
-                </span>
-              </Button>
-
-              <Button className="blue home" onClick={this.handleHomeClick}>
-                <span className="btn-text">Home</span>
-                <span className="btn-icon">
-                  <i className="material-icons">home</i>
-                </span>
-              </Button>
-            </div>
-          )
+          return <TestResults
+            {...props}
+            client={client}
+            test={test}
+          />
         }}
-      </Mutation>
-    )
-  }
+      </Query>
+    )}
+  </Query>
+)
 
-  private handleHomeClick = () => {
-    this.props.dispatch(removeTestResults())
-    this.props.dispatch(removeTest())
-    this.props.history.push('/fact-fluency')
-  }
+interface IProps extends RouteComponentProps<{}> {
+  test: ITest
+  client: ApolloClient<any>
 }
 
-const mapStateToProps = ({ factFluency }: any) => ({
-  studentId: factFluency.id,
-  courseId: factFluency.activeClass,
-  testResults: factFluency.testResults,
-  number: factFluency.test
-    ? factFluency.test.number
-    : undefined,
-  operator: factFluency.test
-    ? factFluency.test.operator
-    : undefined,
-})
+const TestResults = ({ history, test, client }: IProps) => {
+  const { student, course, operator, number: num, testResults } = test
 
-export const TestResults = connect(mapStateToProps)(DisconnectedTestResults)
+  if (testResults === undefined) {
+    history.goBack()
+    return null
+  }
+  
+  const { total, needed, correct, incorrect, quickest } = testResults
+
+  return (
+    <Mutation
+      mutation={CREATE_TEST}
+      onCompleted={async ({ createTest }) => {
+        await client.writeData({ data: {
+          test: createTest.id,
+          testResults: null,
+        } })
+        history.push('/fact-fluency/start-test')
+      }}
+    >
+      {(createTest, { loading, error }: any ) => {
+        if (loading) {
+          return (
+            <div className="TestResults">
+              <Loading className="loading" />
+            </div>
+          )
+        }
+
+        if (error) {
+          return (
+            <div className="TestResults">
+              <h3 className="error">{error}</h3>
+            </div>
+          )
+        }
+
+        return (
+          <div className="TestResults">
+            <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
+
+            <h2 className="subheader">
+              You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
+            </h2>
+
+            <p className="detail">Remember you need {needed}/{total} to pass.</p>
+
+            <QuickestCard question={quickest} />
+
+            <IncorrectCard question={incorrect} />
+
+            <hr />
+
+            <Button className="blue retry" onClick={async () => await createTest({
+              variables: {
+                input: {
+                  number: num,
+                  operator,
+                  studentId: student.id,
+                  courseId: course.id,
+                }
+              }
+            })}>
+              <span className="btn-text">Retry</span>
+              <span className="btn-icon">
+                <i className="material-icons">replay</i>
+              </span>
+            </Button>
+
+            <Button className="blue home" onClick={async () => {
+              await client.writeData({ data: {
+                test: null,
+                testResults: null,
+              }})
+              history.push('/fact-fluency')
+            }}>
+              <span className="btn-text">Home</span>
+              <span className="btn-icon">
+                <i className="material-icons">home</i>
+              </span>
+            </Button>
+          </div>
+        )
+      }}
+    </Mutation>
+  )
+}

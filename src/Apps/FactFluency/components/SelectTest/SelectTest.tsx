@@ -3,21 +3,33 @@
 import * as React from "react"
 import { Query, Mutation } from "react-apollo"
 import gql from "graphql-tag"
-import { connect } from 'react-redux'
-import { RouteComponentProps } from "react-router-dom"
 
 import { TestNumber } from './TestNumber/TestNumber'
 import { themeColors } from "src/utils"
-import { receiveTest, removeTest } from 'src/actions/factFluency'
 import { Loading } from "src/sharedComponents"
 import './SelectTest.css'
 
-const GET_TEST_PARAMETERS = gql`
-  query course($courseId: ObjID!) {
-    course(id: $courseId) {
-      testParameters {
-        operators
-        numbers
+const GET_STUDENT = gql`
+  query student {
+    student {
+      id
+      name
+      user {
+        id
+        email
+      }
+      courses {
+        id
+        name
+        code
+        teacher {
+          name
+        }
+        testParameters {
+          id
+          operators
+          numbers
+        }
       }
     }
   }
@@ -50,17 +62,11 @@ export const CREATE_TEST = gql`
   }
 `
 
-interface IProps extends RouteComponentProps<{}> {
-  courseId: string
-  studentId: string
-  dispatch: any
-}
-
 interface IState {
   selectedNumber?: number
 }
 
-class DisconnectedSelectTest extends React.Component<IProps, IState> {
+export class SelectTest extends React.Component<any, IState> {
   public state: IState = {}
   
   public async componentDidMount() {
@@ -74,11 +80,10 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
   public render() {
     return (
       <Query
-        query={GET_TEST_PARAMETERS}
-        variables={{ courseId: this.props.courseId }}
+        query={GET_STUDENT}
         pollInterval={5 * 1000 * 60}
       >
-        {({ error: queryError, loading: queryLoading, data: { course } }: any) => {
+        {({ client, error: queryError, loading: queryLoading, data: { student } }: any) => {
 
           if (queryLoading) {
             return (
@@ -100,8 +105,9 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
             <Mutation
               mutation={CREATE_TEST}
               onCompleted={async ({ createTest }) => {
-                await this.props.dispatch(removeTest())
-                await this.props.dispatch(receiveTest(createTest))
+                client.writeData({ data: {
+                  test: createTest.id
+                } })
                 this.props.history.push('/fact-fluency/start-test')
               }}
             >
@@ -122,7 +128,16 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
                   )
                 }
 
-                const { numbers, operators } = course.testParameters
+                const activeCourse = student.courses.length > 0 && student.courses[0]
+                client.writeData({ data: activeCourse })
+  
+                const numbers = activeCourse
+                  ? activeCourse.testParameters.numbers
+                  : new Array(13).fill(0).map((n, i) => i)
+  
+                const operators = activeCourse
+                  ? activeCourse.testParameters.operators
+                  : ['+', '-', '*', '/']
 
                 return (
                   <div className="SelectTest">
@@ -139,14 +154,13 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
                           operators={operators}
                           onClick={this.handleTestNumberClick}
                           onSubmit={(operator: string) => {
-                            const { courseId, studentId } = this.props
                             createTest({
                               variables: {
                                 input: {
                                   number: num,
                                   operator,
-                                  studentId,
-                                  courseId,
+                                  studentId: student.id,
+                                  courseId: activeCourse.id,
                             }}})
                           }}
                         />
@@ -171,10 +185,3 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
     }
   }
 }
-
-const mapStateToProps = ({ factFluency }: any) =>  ({
-  courseId: factFluency.activeClass,
-  studentId: factFluency.id,
-})
-
-export const SelectTest = connect(mapStateToProps)(DisconnectedSelectTest)
