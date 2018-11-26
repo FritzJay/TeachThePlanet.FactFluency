@@ -103,6 +103,8 @@ class ClassListDropdown extends React.Component<IProps, IState> {
 
   private handleJoinClassClick = () => {
     console.log('HANDLE JOIN CLASS CLICK')
+    this.props.history.push('/fact-fluency/join-class')
+    this.toggleDropdown()
   }
   
   private handleInvitationsClick = () => {

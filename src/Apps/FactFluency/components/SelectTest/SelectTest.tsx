@@ -129,7 +129,7 @@ export class SelectTest extends React.Component<any, IState> {
                 }
 
                 const activeCourse = student.courses.length > 0 && student.courses[0]
-                client.writeData({ data: activeCourse })
+                client.writeData({ data: { activeCourse } })
   
                 const numbers = activeCourse
                   ? activeCourse.testParameters.numbers
