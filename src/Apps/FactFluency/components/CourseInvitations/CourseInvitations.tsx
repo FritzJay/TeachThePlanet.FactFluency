@@ -44,17 +44,17 @@ const ACCEPT_INVITATION = gql`
     }
   }
 `
-/*
+
 const REMOVE_INVITATION = gql`
   mutation removeCourseInvitation($id: ObjID!) {
     removeCourseInvitation(id: $id)
 }
 `
-*/
+
 export const CourseInvitations = () => (
   <Query
     query={GET_COURSE_INVITATIONS}
-    pollInterval={5 * 1000 * 60}
+    pollInterval={120000}
   >
     {({ error, loading, data }: any) => {
       if (loading) {
@@ -103,28 +103,47 @@ export const CourseInvitations = () => (
                   }}
                 >
                   {acceptCourseInvitation => (
-                    <Card className="invitation-card">
-                      <h3 className="card-header">{course.name}</h3>
-                      <h4 className="teacher">{course.teacher.name}</h4>
-                      <ConfirmButton
-                        value={id}
-                        onClick={() => console.log('TEST')}
-                        className="yellow decline"
-                        confirmClassName="confirm-button"
-                      >
-                        <span className="default">Decline</span>
-                        <span className="confirmation">Are you sure?</span>
-                      </ConfirmButton>
-                      <ConfirmButton
-                        value={id}
-                        onClick={() => acceptCourseInvitation()}
-                        className="green accept"
-                        confirmClassName="confirm-button"
-                      >
-                        <span className="default">Accept</span>
-                        <span className="confirmation">Are you sure?</span>
-                      </ConfirmButton>
-                    </Card>
+                    <Mutation
+                      mutation={REMOVE_INVITATION}
+                      variables={{ id }}
+                      update={(cache) => {
+                        const { student }: any = cache.readQuery({ query: GET_COURSE_INVITATIONS })
+                        cache.writeQuery({
+                          query: GET_COURSE_INVITATIONS,
+                          data: {
+                            student: {
+                              ...student,
+                              courseInvitations: student.courseInvitations.filter((inv: ICourseInvitation) => inv.id !== id),
+                            }
+                          }
+                        })
+                      }}
+                    >
+                      {removeCourseInvitation => (
+                        <Card className="invitation-card">
+                          <h3 className="card-header">{course.name}</h3>
+                          <h4 className="teacher">{course.teacher.name}</h4>
+                          <ConfirmButton
+                            value={id}
+                            onClick={() => removeCourseInvitation()}
+                            className="yellow decline"
+                            confirmClassName="confirm-button"
+                          >
+                            <span className="default">Decline</span>
+                            <span className="confirmation">Are you sure?</span>
+                          </ConfirmButton>
+                          <ConfirmButton
+                            value={id}
+                            onClick={() => acceptCourseInvitation()}
+                            className="green accept"
+                            confirmClassName="confirm-button"
+                          >
+                            <span className="default">Accept</span>
+                            <span className="confirmation">Are you sure?</span>
+                          </ConfirmButton>
+                        </Card>
+                      )}
+                    </Mutation>
                   )}
                 </Mutation>
               ))}
