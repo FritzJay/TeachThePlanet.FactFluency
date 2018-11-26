@@ -1,10 +1,14 @@
+/* tslint:disable:jsx-no-lambda */
+
 import * as React from 'react'
+import { Mutation } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { removeTest, removeTestResults } from 'src/actions/factFluency';
-import { handleReceiveTestResults } from 'src/handlers/factFluency';
+
+import { removeTest, removeTestResults, receiveTest } from 'src/actions/factFluency'
+import { IQuestion, ITestResults, getOperatorSymbol } from 'src/utils'
 import { Button, Card, Loading } from 'src/sharedComponents'
-import { IQuestion, ITest, ITestResults, getOperatorSymbol } from 'src/utils'
+import { CREATE_TEST } from '../SelectTest/SelectTest'
 import './TestResults.css'
 
 interface IQuickestCardProps {
@@ -57,96 +61,89 @@ const IncorrectCard = ({ question }: IIncorrectCardProps) => {
   }
 }
 
-
 interface IProps extends RouteComponentProps<{}> {
-  test: ITest
+  studentId: string
+  courseId: string
+  operator: string
+  number: number
   testResults: ITestResults
-  token: string
   dispatch: any
 }
 
-interface IState {
-  error: string
-}
-
-class DisconnectedTestResults extends React.Component<IProps, IState> {
-  public state: IState = {
-    error: ''
-  }
-
-  public async componentDidMount() {
-    const { test, token } = this.props
-
-    try {
-      await this.props.dispatch(handleReceiveTestResults(token, test))
-
-      this.setState({
-        error: '',
-      })
-
-    } catch (error) {
-      this.setState({ error: error.toString() })
-    }
-  }
-
+class DisconnectedTestResults extends React.Component<IProps> {
   public render() {
-    if (this.state.error !== '') {
-      return (
-        <div className="TestResults">
-          <h1 className="error">{this.state.error}</h1>
-          <h2 className="error">Please Try Again Later</h2>
-        </div>
-      )
-    }
-
-    if (this.props.testResults === undefined) {
-      return (
-        <div className="TestResults">
-          <Loading className="loading" />
-        </div>
-      )
-    }
-
+    const { operator, number: num } = this.props
     const { correct, needed, total, quickest, incorrect } = this.props.testResults
-    const { operator, number: num } = this.props.test
 
     return (
-      <div className="TestResults">
-        <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
+      <Mutation
+        mutation={CREATE_TEST}
+        onCompleted={({ createTest }) => {
+          this.props.dispatch(removeTestResults())
+          this.props.dispatch(receiveTest(createTest))
+          this.props.history.push('/fact-fluency/start-test')
+        }}
+      >
+        {(createTest, { loading, error }: any ) => {
+          if (loading) {
+            return (
+              <div className="TestResults">
+                <Loading className="loading" />
+              </div>
+            )
+          }
 
-        <h2 className="subheader">
-          You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
-        </h2>
+          if (error) {
+            return (
+              <div className="TestResults">
+                <h3 className="error">{error}</h3>
+              </div>
+            )
+          }
 
-        <p className="detail">Remember you need {needed}/{total} to pass.</p>
+          return (
+            <div className="TestResults">
+              <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
 
-        <QuickestCard question={quickest} />
+              <h2 className="subheader">
+                You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
+              </h2>
 
-        <IncorrectCard question={incorrect} />
+              <p className="detail">Remember you need {needed}/{total} to pass.</p>
 
-        <hr />
+              <QuickestCard question={quickest} />
 
-        <Button className="blue retry" onClick={this.handleRetryClick}>
-          <span className="btn-text">Retry</span>
-          <span className="btn-icon">
-            <i className="material-icons">replay</i>
-          </span>
-        </Button>
+              <IncorrectCard question={incorrect} />
 
-        <Button className="blue home" onClick={this.handleHomeClick}>
-          <span className="btn-text">Home</span>
-          <span className="btn-icon">
-            <i className="material-icons">home</i>
-          </span>
-        </Button>
-      </div>
+              <hr />
+
+              <Button className="blue retry" onClick={() => createTest({
+                variables: {
+                  input: {
+                    number: num,
+                    operator,
+                    studentId: this.props.studentId,
+                    courseId: this.props.courseId,
+                  }
+                }
+              })}>
+                <span className="btn-text">Retry</span>
+                <span className="btn-icon">
+                  <i className="material-icons">replay</i>
+                </span>
+              </Button>
+
+              <Button className="blue home" onClick={this.handleHomeClick}>
+                <span className="btn-text">Home</span>
+                <span className="btn-icon">
+                  <i className="material-icons">home</i>
+                </span>
+              </Button>
+            </div>
+          )
+        }}
+      </Mutation>
     )
-  }
-
-  private handleRetryClick = () => {
-    this.props.dispatch(removeTestResults())
-    this.props.dispatch(removeTest())
-    this.props.history.replace('/fact-fluency/start-test')
   }
 
   private handleHomeClick = () => {
@@ -156,10 +153,16 @@ class DisconnectedTestResults extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ factFluency, user }: any) => ({
-  test: factFluency.test,
+const mapStateToProps = ({ factFluency }: any) => ({
+  studentId: factFluency.id,
+  courseId: factFluency.activeClass,
   testResults: factFluency.testResults,
-  token: user.token,
+  number: factFluency.test
+    ? factFluency.test.number
+    : undefined,
+  operator: factFluency.test
+    ? factFluency.test.operator
+    : undefined,
 })
 
 export const TestResults = connect(mapStateToProps)(DisconnectedTestResults)

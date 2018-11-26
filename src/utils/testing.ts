@@ -1,10 +1,11 @@
 import { IQuestion } from './interfaces'
 import { IDisplayQuestion } from './tempInterfaces'
 
-export const initializeQuestions = (questions: IQuestion[]): void => {
-  questions.forEach((q: any) => {
-    q.start = null;
-    q.end = null;
+export const initializeQuestions = (questions: IQuestion[]): IQuestion[] => {
+  return questions.map((q: any) => {
+    q.start = null
+    q.end = null
+    return q
   });
 }
 

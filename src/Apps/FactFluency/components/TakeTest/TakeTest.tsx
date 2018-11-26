@@ -1,6 +1,9 @@
 import * as React from "react"
+import gql from 'graphql-tag'
+import { Mutation } from "react-apollo"
 import { connect } from 'react-redux'
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom"
+
 import {
   initializeQuestions,
   randomizeQuestions,
@@ -9,10 +12,37 @@ import {
 } from 'src/utils'
 import { IDisplayQuestion, IQuestion, ITest } from "src/utils"
 import { getOperatorSymbol } from "src/utils"
-import { updateTest } from "src/actions/factFluency";
-import { Button, Card, Input } from "src/sharedComponents"
+import { receiveTestResults } from "src/actions/factFluency"
+import { Button, Card, Input, Loading } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
+
+const GRADE_TEST = gql`
+  mutation gradeTest($id: ObjID!, $input: GradeTestInput!) {
+    gradeTest(id: $id, input: $input) {
+      id,
+      testResults {
+        total,
+        needed,
+        correct,
+        incorrect {
+          question,
+          studentAnswer,
+          correctAnswer,
+          start,
+          end
+        },
+        quickest {
+          question,
+          studentAnswer,
+          correctAnswer,
+          start,
+          end
+        },
+      }
+    }
+  }
+`
 
 interface IProps extends RouteComponentProps<{}> {
   dispatch: any
@@ -21,6 +51,7 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
+  start: number
   answer: string
   keyboard: boolean
   question: IDisplayQuestion
@@ -30,16 +61,18 @@ interface IState {
 
 export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   private submitTestOnTimeout: any
+  private gradeTest: any
 
   public constructor(props: IProps) {
     super(props)
-
-    this.props.test.start = new Date().getTime()
-    initializeQuestions(this.props.test.questions)
-    const questions = randomizeQuestions(this.props.test.questions)
+    
+    const questions = randomizeQuestions(
+      initializeQuestions(this.props.test.questions)
+    )
     const question = startQuestion(questions[0])
 
     this.state = {
+      start: new Date().getTime(),
       answer: '',
       keyboard: false,
       question,
@@ -50,7 +83,6 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
 
   public componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown)
-
     if (this.props.test.duration) {
       this.submitTestOnTimeout = setTimeout(this.submitTest, this.props.test.duration * 1000)
     }
@@ -65,33 +97,60 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { answer, keyboard, question } = this.state
+    return (
+      <Mutation
+        mutation={GRADE_TEST}
+        onCompleted={this.handleReceiveTestResults}
+      >
+        {(gradeTest, { loading, error }) => {
+          this.gradeTest = gradeTest
 
-    if (question) {
-      const operator = getOperatorSymbol(question.operator)
-      return (
-        <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
-          <div className="question-problem">
-            <p className="number-top">{question.top}</p>
-            <p className="operator">{operator}</p>
-            <p className="number-bottom">{question.bottom}</p>
-            <p className="equals">=</p>
-            <Input type="text" dir="rtl" className="input-answer" value={answer} />
-          </div>
-          <div className="button-container">
-              <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
-          </div>
-          <Keyboard
-            onDeleteClick={this.handleDeleteClick}
-            onSubmitClick={this.handleSubmitClick}
-            onNumberClick={this.handleNumberClick}
-            onToggle={this.handleKeyboardToggle}
-          />
-        </Card>
-      )
-    } else {
-      return <div/>
-    }
+          if (loading) {
+            return (
+              <div className="TakeTest">
+                <Loading className="loading" />
+              </div>
+            )
+          }
+
+          if (error) {
+            return (
+              <div className="TakeTest">
+                <h3 className="error">{error.message}</h3>
+              </div>
+            )
+          }
+
+          const { answer, keyboard, question } = this.state
+
+          if (question) {
+            const operator = getOperatorSymbol(question.operator)
+            return (
+              <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
+                <div className="question-problem">
+                  <p className="number-top">{question.top}</p>
+                  <p className="operator">{operator}</p>
+                  <p className="number-bottom">{question.bottom}</p>
+                  <p className="equals">=</p>
+                  <Input type="text" dir="rtl" className="input-answer" value={answer} />
+                </div>
+                <div className="button-container">
+                    <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
+                </div>
+                <Keyboard
+                  onDeleteClick={this.handleDeleteClick}
+                  onSubmitClick={this.handleSubmitClick}
+                  onNumberClick={this.handleNumberClick}
+                  onToggle={this.handleKeyboardToggle}
+                />
+              </Card>
+            )
+          } else {
+            return null
+          }
+        }}
+      </Mutation>
+    )
   }
 
   private handleKeyDown = (event: any) => {
@@ -167,11 +226,26 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
 
   private submitTest = async () => {
     const questions = sortQuestions(this.state.questions)
-    const test = this.props.test
-    test.questions = questions
-    test.end = new Date().getTime()
+      .map(({ id, studentAnswer, start, end }) => ({
+        id,
+        studentAnswer,
+        start,
+        end
+      }))
+    await this.gradeTest({
+      variables: { 
+        id: this.props.test.id,
+        input: {
+          start: this.state.start,
+          end: new Date().getTime(),
+          questions,
+        }
+      }
+    })
+  }
 
-    await this.props.dispatch(updateTest(test))
+  private handleReceiveTestResults = async ({ gradeTest }: any) => {
+    await this.props.dispatch(receiveTestResults(gradeTest.testResults))
     this.props.history.push('/fact-fluency/test-results')
   }
 }

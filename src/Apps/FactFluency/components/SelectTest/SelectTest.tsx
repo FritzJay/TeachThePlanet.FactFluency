@@ -23,7 +23,7 @@ const GET_TEST_PARAMETERS = gql`
   }
 `
 
-const CREATE_TEST = gql`
+export const CREATE_TEST = gql`
   mutation createTest($input: CreateTestInput!) {
     createTest(input: $input) {
       id
