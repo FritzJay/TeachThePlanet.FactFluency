@@ -78,9 +78,9 @@ class DisconnectedTestResults extends React.Component<IProps> {
     return (
       <Mutation
         mutation={CREATE_TEST}
-        onCompleted={({ createTest }) => {
-          this.props.dispatch(removeTestResults())
-          this.props.dispatch(receiveTest(createTest))
+        onCompleted={async ({ createTest }) => {
+          await this.props.dispatch(removeTest())
+          await this.props.dispatch(receiveTest(createTest))
           this.props.history.push('/fact-fluency/start-test')
         }}
       >

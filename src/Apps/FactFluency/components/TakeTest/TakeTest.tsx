@@ -1,3 +1,5 @@
+/* tslint:disable:jsx-no-lambda */
+
 import * as React from "react"
 import gql from 'graphql-tag'
 import { Mutation } from "react-apollo"
@@ -12,7 +14,7 @@ import {
 } from 'src/utils'
 import { IDisplayQuestion, IQuestion, ITest } from "src/utils"
 import { getOperatorSymbol } from "src/utils"
-import { receiveTestResults } from "src/actions/factFluency"
+import { receiveTestResults, removeTestResults } from "src/actions/factFluency"
 import { Button, Card, Input, Loading } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
@@ -51,37 +53,39 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
-  start: number
+  start?: number
   answer: string
   keyboard: boolean
-  question: IDisplayQuestion
+  question?: IDisplayQuestion
   questionIndex: number
-  questions: IQuestion[]
+  questions?: IQuestion[]
 }
 
 export class DisconnectedTakeTest extends React.Component<IProps, IState> {
+  public state: IState = {
+    answer: '',
+    keyboard: false,
+    questionIndex: 0,
+  }
+
   private submitTestOnTimeout: any
   private gradeTest: any
 
-  public constructor(props: IProps) {
-    super(props)
-    
+  public componentDidMount() {
     const questions = randomizeQuestions(
       initializeQuestions(this.props.test.questions)
     )
     const question = startQuestion(questions[0])
 
-    this.state = {
+    this.setState ({
       start: new Date().getTime(),
       answer: '',
       keyboard: false,
       question,
       questionIndex: 0,
       questions,
-    }
-  }
+    })
 
-  public componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown)
     if (this.props.test.duration) {
       this.submitTestOnTimeout = setTimeout(this.submitTest, this.props.test.duration * 1000)
@@ -100,11 +104,12 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
     return (
       <Mutation
         mutation={GRADE_TEST}
-        onCompleted={this.handleReceiveTestResults}
+        onCompleted={async ({ gradeTest }: any) => {
+          await this.props.dispatch(removeTestResults())
+          await this.props.dispatch(receiveTestResults(gradeTest.testResults))
+          this.props.history.push('/fact-fluency/test-results')}}
       >
         {(gradeTest, { loading, error }) => {
-          this.gradeTest = gradeTest
-
           if (loading) {
             return (
               <div className="TakeTest">
@@ -112,7 +117,7 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
               </div>
             )
           }
-
+          
           if (error) {
             return (
               <div className="TakeTest">
@@ -120,9 +125,10 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
               </div>
             )
           }
-
+          
+          this.gradeTest = gradeTest
           const { answer, keyboard, question } = this.state
-
+          
           if (question) {
             const operator = getOperatorSymbol(question.operator)
             return (
@@ -197,10 +203,17 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   }
 
   private handleSubmitClick = () => {
+    const { questions, questionIndex } = this.state
+    const { test } = this.props
+
+    if (questions === undefined) {
+      return
+    }
+
     this.answerCurrentQuestion()
-    const nextQuestionIndex = this.state.questionIndex + 1
-    if (nextQuestionIndex < this.props.test.questions.length) {
-      const nextQuestion = startQuestion(this.state.questions[nextQuestionIndex])
+    const nextQuestionIndex = questionIndex + 1
+    if (nextQuestionIndex < test.questions.length) {
+      const nextQuestion = startQuestion(questions[nextQuestionIndex])
       this.setState({
         answer: '',
         question: nextQuestion,
@@ -212,12 +225,16 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   }
 
   private answerCurrentQuestion = () => {
-    const questions = this.state.questions
-    const question = questions[this.state.questionIndex]
+    const { questions, question } = this.state
+    if (questions === undefined || question === undefined) {
+      return
+    }
+
+    const nextQuestion = questions[this.state.questionIndex]
     const answer = parseInt(this.state.answer, 10)
-    question.studentAnswer = answer
-    question.start = this.state.question.start
-    question.end = new Date().getTime()
+    nextQuestion.studentAnswer = answer
+    nextQuestion.start = question.start
+    nextQuestion.end = new Date().getTime()
     this.setState({
       answer: '',
       questions
@@ -225,7 +242,11 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
   }
 
   private submitTest = async () => {
-    const questions = sortQuestions(this.state.questions)
+    const { questions } = this.state
+    if (questions === undefined) {
+      return
+    }
+    const sortedQuestions = sortQuestions(questions)
       .map(({ id, studentAnswer, start, end }) => ({
         id,
         studentAnswer,
@@ -238,15 +259,10 @@ export class DisconnectedTakeTest extends React.Component<IProps, IState> {
         input: {
           start: this.state.start,
           end: new Date().getTime(),
-          questions,
+          questions: sortedQuestions,
         }
       }
     })
-  }
-
-  private handleReceiveTestResults = async ({ gradeTest }: any) => {
-    await this.props.dispatch(receiveTestResults(gradeTest.testResults))
-    this.props.history.push('/fact-fluency/test-results')
   }
 }
 

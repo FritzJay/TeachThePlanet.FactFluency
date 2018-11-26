@@ -8,7 +8,7 @@ import { RouteComponentProps } from "react-router-dom"
 
 import { TestNumber } from './TestNumber/TestNumber'
 import { themeColors } from "src/utils"
-import { receiveTest } from 'src/actions/factFluency'
+import { receiveTest, removeTest } from 'src/actions/factFluency'
 import { Loading } from "src/sharedComponents"
 import './SelectTest.css'
 
@@ -99,8 +99,9 @@ class DisconnectedSelectTest extends React.Component<IProps, IState> {
           return (
             <Mutation
               mutation={CREATE_TEST}
-              onCompleted={({ createTest }) => {
-                this.props.dispatch(receiveTest(createTest))
+              onCompleted={async ({ createTest }) => {
+                await this.props.dispatch(removeTest())
+                await this.props.dispatch(receiveTest(createTest))
                 this.props.history.push('/fact-fluency/start-test')
               }}
             >

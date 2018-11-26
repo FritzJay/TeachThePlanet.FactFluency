@@ -109,56 +109,21 @@ export const saveGetStudent = async (token: string): Promise<IStudentUser> => {
   const query = `
     query student($id: ObjID) {
       student(id: $id) {
-        id,
-        name,
+        id
+        name
         courses {
-          id,
-          code,
-          grade,
-          name,
-          students {
-            id
-            createdAt
-            updatedAt
-            changePasswordRequired
-            user {
-              id
-              email
-            }
-          },
+          id
+          code
+          grade
+          name
           teacher {
-            id,
+            id
             name
           }
-          testParameters {
-            id
-            duration
-            numbers
-            operators
-            questions
-            randomQuestions
-          }
-        },
-        tests {
-          id,
-          duration,
-          start,
-          end,
-          questions {
-            question,
-            studentAnswer,
-            correctAnswer,
-            start,
-            end,
-          }
-        },
+        }
         user {
-          email,
-          firstName,
-          lastName,
-          title,
-          role
-        },
+          email
+        }
         courseInvitations {
           id,
           createdAt
