@@ -52,31 +52,77 @@ const GET_TEST = gql`
 
 export const TakeTestContainer = (props: any) => (
   <Query query={GET_TEST_ID}>
-    {({ data: { test: id }, loading: firstLoading, error: firstError }) => (
-      <Query query={GET_TEST} variables={{ id }}>
-        {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
-          if (firstLoading || secondLoading) {
+    {({ data: { test: id }, loading: firstLoading, error: firstError }) => {
+      if (firstLoading) {
+        return (
+          <div className="TakeTest">
+            <Loading className="loading" />
+          </div>
+        )
+      }
+      if (firstError) {
+        return (
+          <div className="TakeTest">
+            <h3 className="error">{firstError.message}</h3>
+          </div>
+        )
+      }
+      return (
+        <Query query={GET_TEST} variables={{ id }}>
+          {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
+            if (secondLoading) {
+              return (
+                <div className="TakeTest">
+                  <Loading className="loading" />
+                </div>
+              )
+            }
+            if (secondError) {
+              return (
+                <div className="TakeTest">
+                  <h3 className="error">{secondError.message}</h3>
+                </div>
+              )
+            }
             return (
-              <div className="TakeTest">
-                <Loading className="loading" />
-              </div>
+              <Mutation
+                mutation={GRADE_TEST}
+                onCompleted={async ({ gradeTest }: any) => {
+                  client.writeData({ data: {
+                    testResults: gradeTest.testResults
+                  }})
+                  props.history.push('/fact-fluency/test-results')}}
+              >
+                {(gradeTest, { loading, error }) => {
+                  if (loading) {
+                    return (
+                      <div className="TakeTest">
+                        <Loading className="loading" />
+                      </div>
+                    )
+                  }
+                  if (error) {
+                    return (
+                      <div className="TakeTest">
+                        <h3 className="error">{error.message}</h3>
+                      </div>
+                    )
+                  }
+                  return (
+                    <TakeTest
+                      {...props}
+                      client={client}
+                      test={test}
+                      gradeTest={gradeTest}
+                    />
+                  )
+                }}
+              </Mutation>
             )
-          }
-          if (firstError || secondError) {
-            return (
-              <div className="TakeTest">
-                <h3 className="error">{firstError ? firstError.message : secondError ? secondError.message : ''}</h3>
-              </div>
-            )
-          }
-          return <TakeTest
-            {...props}
-            client={client}
-            test={test}
-          />
-        }}
-      </Query>
-    )}
+          }}
+        </Query>
+      )
+    }}
   </Query>
 )
 
@@ -111,6 +157,7 @@ interface IProps extends RouteComponentProps<{}> {
   history: any
   client: ApolloClient<any>
   test: ITest
+  gradeTest: () => void
 }
 
 interface IState {
@@ -162,63 +209,34 @@ class TakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    return (
-      <Mutation
-        mutation={GRADE_TEST}
-        onCompleted={async ({ gradeTest }: any) => {
-          this.props.client.writeData({ data: {
-            testResults: gradeTest.testResults
-          }})
-          this.props.history.push('/fact-fluency/test-results')}}
-      >
-        {(gradeTest, { loading, error }) => {
-          if (loading) {
-            return (
-              <div className="TakeTest">
-                <Loading className="loading" />
-              </div>
-            )
-          }
-          
-          if (error) {
-            return (
-              <div className="TakeTest">
-                <h3 className="error">{error.message}</h3>
-              </div>
-            )
-          }
-          
-          this.gradeTest = gradeTest
-          const { answer, keyboard, question } = this.state
-          
-          if (question) {
-            const operator = getOperatorSymbol(question.operator)
-            return (
-              <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
-                <div className="question-problem">
-                  <p className="number-top">{question.top}</p>
-                  <p className="operator">{operator}</p>
-                  <p className="number-bottom">{question.bottom}</p>
-                  <p className="equals">=</p>
-                  <Input type="text" dir="rtl" className="input-answer" value={answer} />
-                </div>
-                <div className="button-container">
-                    <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
-                </div>
-                <Keyboard
-                  onDeleteClick={this.handleDeleteClick}
-                  onSubmitClick={this.handleSubmitClick}
-                  onNumberClick={this.handleNumberClick}
-                  onToggle={this.handleKeyboardToggle}
-                />
-              </Card>
-            )
-          } else {
-            return null
-          }
-        }}
-      </Mutation>
-    )
+    this.gradeTest = this.props.gradeTest
+    const { answer, keyboard, question } = this.state
+    
+    if (question) {
+      const operator = getOperatorSymbol(question.operator)
+      return (
+        <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
+          <div className="question-problem">
+            <p className="number-top">{question.top}</p>
+            <p className="operator">{operator}</p>
+            <p className="number-bottom">{question.bottom}</p>
+            <p className="equals">=</p>
+            <Input type="text" dir="rtl" className="input-answer" value={answer} readOnly={true} />
+          </div>
+          <div className="button-container">
+              <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
+          </div>
+          <Keyboard
+            onDeleteClick={this.handleDeleteClick}
+            onSubmitClick={this.handleSubmitClick}
+            onNumberClick={this.handleNumberClick}
+            onToggle={this.handleKeyboardToggle}
+          />
+        </Card>
+      )
+    } else {
+      return null
+    }
   }
 
   private handleKeyDown = (event: any) => {

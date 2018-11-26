@@ -1,5 +1,3 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from 'react'
 import { Mutation, Query } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
@@ -90,11 +88,13 @@ const GET_TEST = gql`
           start
           end
           question
+          correctAnswer
         }
         quickest {
           start
           end
           question
+          correctAnswer
         }
       }
     }
