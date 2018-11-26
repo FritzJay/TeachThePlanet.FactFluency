@@ -32,7 +32,7 @@ export const StartTest = ({ history }: RouteComponentProps) => {
             <Button
               className="cancel-button"
               onClick={() => {
-                client.writeData({ data: { test } })
+                client.writeData({ data: { test: null } })
                 history.push('/fact-fluency')
               }}
             >
