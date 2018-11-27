@@ -72,7 +72,7 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
           return (
             <Query
               query={GET_STUDENT}
-              pollInterval={30000}
+              pollInterval={10000}
             >
               {({ client, error, loading, data }) => {
                 if (loading) {
@@ -97,7 +97,7 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
                   return null
                 }
 
-                activeCourseId = activeCourseId || (courses && courses[0].id)
+                activeCourseId = activeCourseId || (courses && courses[0] && courses[0].id)
 
                 const numberOfInvitations = courseInvitations
                   ? courseInvitations.length

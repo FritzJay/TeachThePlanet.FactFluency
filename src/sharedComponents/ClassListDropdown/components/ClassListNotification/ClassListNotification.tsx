@@ -6,10 +6,12 @@ interface IProps {
   numberOfNotifications: number
 }
 
-export const ClassListNotification = ({ numberOfNotifications }: IProps) => (
-  <div className="ClassListNotification">
-    {numberOfNotifications > 0
-      ? numberOfNotifications
-      : null}
-  </div>
-)
+export const ClassListNotification = ({ numberOfNotifications }: IProps) => {
+  if (numberOfNotifications <= 0) {
+    return null
+  }
+  return (
+    <div className="ClassListNotification">{numberOfNotifications}</div>
+  )
+}
+
