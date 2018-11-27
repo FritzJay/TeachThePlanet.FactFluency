@@ -1,41 +1,64 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 import { Link } from 'react-router-dom'
 
-import { INVITATION_TYPES } from '../../ClassDetail'
-import { handleRemoveInvitation } from 'src/handlers/courseInvitations'
-import { handleRemovePendingStudent } from 'src/handlers/students' 
+import { GET_COURSE } from '../../ClassDetail'
 import { Button, NewCard } from 'src/sharedComponents'
 import { PendingInvitationsDescription } from '../PendingInvitationsDescription/PendingInvitationsDescription'
 import { PendingCard } from '../PendingCard/PendingCard'
-import { ICourseInvitation, IStudentUser, IClass } from 'src/utils'
 import { LinkList } from '../LinkList/LinkList'
+import { ICourseInvitation, IStudentUser } from 'src/utils'
+
+import PendingStudent from 'src/images/pending-student-icon.svg'
+import ExistingStudent from 'src/images/existing-student-icon.svg'
 import './PendingInvitations.css'
+
+export const INVITATION_TYPES = {
+  pendingStudent: {
+    alt: 'Pending student',
+    color: 'yellow',
+    icon: PendingStudent,
+    title: 'You have created an account for this student and they still need to sign in for the first time using the username displayed on the card. They must use the password that you designated. If you did not designate a password for the student, they must use this class code.',
+  },
+  existingStudent: {
+    alt: 'Existing student',
+    color: 'green',
+    icon: ExistingStudent,
+    title: 'This pre-existing student has been invited to join the class and can accept the invitation at any time.',
+  },
+}
+
+const REMOVE_COURSE_INVITATION = gql`
+  mutation removeCourseInvitation($id: ObjID!) {
+    removeCourseInvitation(id: $id)
+  }
+`
+
+const REMOVE_PENDING_STUDENT = gql`
+  mutation removePendingStudent($studentId: ObjID!, $courseId: ObjID!) {
+    removePendingStudent(studentId: $studentId, courseId: $courseId)
+  }
+`
+
+interface IProps {
+  pendingStudents: IStudentUser[]
+  courseInvitations: ICourseInvitation[]
+  match: any
+}
 
 interface IState {
   activeDescription: boolean
 }
 
-interface IProps {
-  selectedCourse: IClass
-  students: IStudentUser[]
-  match: any
-  courseInvitations: ICourseInvitation[]
-  courseId?: string
-  dispatch: any
-  token?: string
-}
-
-class PendingInvitations extends React.Component<IProps, IState> {
+export class PendingInvitations extends React.Component<IProps, IState> {
   public state = {
     activeDescription: false
   }
 
   public render() {
-    const { students, courseInvitations, match } = this.props
     const { activeDescription } = this.state
+    const { pendingStudents, courseInvitations, match } = this.props
 
     return (
       <div className="PendingInvitations">
@@ -58,31 +81,87 @@ class PendingInvitations extends React.Component<IProps, IState> {
           : null
         }
 
-        {students.length + courseInvitations.length > 0
-          ? <LinkList links={
-            students.map(({ id, name }) => ({ id, text: name }))
-            .concat(courseInvitations.map(({ student }) => ({ id: student.id, text: student.name })))}
-          /> : null
+        {pendingStudents.length + courseInvitations.length > 0
+          ? <LinkList links={pendingStudents
+              .map(({ id, name }) => ({ id, text: name }))
+              .concat(courseInvitations
+                .map(({ student }) => ({ id: student.id, text: student.name }))
+            )}/>
+          : null
         }
 
-        {students.map((student) => (
-          <PendingCard
+        {pendingStudents.map((student) => (
+          <Mutation
             key={student.id}
-            date={new Date(student.createdAt)}
-            student={student}
-            invitationType={INVITATION_TYPES.pendingStudent}
-            onDelete={() => this.handleStudentDelete(student.id)}
-          />
+            mutation={REMOVE_PENDING_STUDENT}
+            optimisticResponse={{
+              __typename: 'Mutation',
+              removePendingStudent: true
+            }}
+            update={cache => {
+              const { course }: any = cache.readQuery({
+                query: GET_COURSE,
+                variables: { id: match.params.id },
+              })
+              cache.writeQuery({
+                query: GET_COURSE,
+                data: {
+                  course: {
+                    ...course,
+                    students: course
+                      ? course.students.filter((s: IStudentUser) => s.id !== student.id)
+                      : []
+                  }
+                }
+              })
+            }}
+          >
+            {removePendingStudent => (
+              <PendingCard
+                date={new Date(student.createdAt)}
+                student={student}
+                invitationType={INVITATION_TYPES.pendingStudent}
+                onDelete={() => removePendingStudent({ variables: { id: student.id } })}
+              />
+            )}
+          </Mutation>
         ))}
 
         {courseInvitations.map(({ id, createdAt, student }) => (
-            <PendingCard
-              date={new Date(createdAt)}
-              key={id}
-              student={student}
-              invitationType={INVITATION_TYPES.existingStudent}
-              onDelete={() => this.handleInvitationDelete(id)}
-            />
+          <Mutation
+            key={id}
+            mutation={REMOVE_COURSE_INVITATION}
+            optimisticResponse={{
+              __typename: 'Mutation',
+              removeCourseInvitation: true
+            }}
+            update={cache => {
+              const { course }: any = cache.readQuery({
+                query: GET_COURSE,
+                variables: { id: match.params.id },
+              })
+              cache.writeQuery({
+                query: GET_COURSE,
+                data: {
+                  course: {
+                    ...course,
+                    courseInvitations: course
+                      ? course.courseInvitations.filter((inv: ICourseInvitation) => inv.id !== id)
+                      : []
+                  }
+                }
+              })
+            }}
+          >
+            {removeCourseInvitation => (
+              <PendingCard
+                date={new Date(createdAt)}
+                student={student}
+                invitationType={INVITATION_TYPES.existingStudent}
+                onDelete={() => removeCourseInvitation({ variables: { id } })}
+              />
+            )}
+          </Mutation>
         ))}
 
         <Link to={`${match.url}/add-students`}>
@@ -90,34 +169,6 @@ class PendingInvitations extends React.Component<IProps, IState> {
         </Link>
       </div>
     )
-  }
-
-  private handleInvitationDelete = (id: string) => {
-    const { dispatch, token, courseId } = this.props
-
-    if (token === undefined || token === null || courseId === undefined || courseId === null) {
-      return
-    }
-
-    try {
-      dispatch(handleRemoveInvitation(token, courseId, id))
-    } catch (error) {
-      alert(error)
-    }
-  }
-
-  private handleStudentDelete = (id: string) => {
-    const { dispatch, token, courseId } = this.props
-
-    if (token === undefined || token === null || courseId === undefined || courseId === null) {
-      return
-    }
-
-    try {
-      dispatch(handleRemovePendingStudent(token, courseId, id))
-    } catch (error) {
-      alert(error)
-    }
   }
 
   private toggleDescription = (e: any) => {
@@ -129,27 +180,3 @@ class PendingInvitations extends React.Component<IProps, IState> {
     })
   }
 }
-
-const mapStateToProps = ({ user }: any, { selectedCourse }: any) => {
-  const students = selectedCourse
-    ? selectedCourse.students
-    : {}
-
-  return {
-    students: Object.keys(students)
-                .map((id) => students[id])
-                .filter(({ changePasswordRequired }) => changePasswordRequired === true),
-    courseInvitations: selectedCourse
-      ? Object.keys(selectedCourse.courseInvitations)
-        .map((id) => selectedCourse.courseInvitations[id])
-      : [],
-    courseId: selectedCourse
-      ? selectedCourse.id
-      : undefined,
-    token: user
-      ? user.token
-      : undefined,
-  }
-}
-
-export const ConnectedPendingInvitations = connect(mapStateToProps)(PendingInvitations)

@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Card } from 'src/sharedComponents'
-import { INVITATION_TYPES } from '../../ClassDetail'
+import { INVITATION_TYPES } from '../PendingInvitations/PendingInvitations'
 import './PendingInvitationsDescription.css'
 
 export const PendingInvitationsDescription = () => (

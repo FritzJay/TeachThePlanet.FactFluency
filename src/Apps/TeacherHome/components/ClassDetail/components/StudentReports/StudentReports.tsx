@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Button, ConnectedStudentCard, NewCard } from 'src/sharedComponents'
+import { Button, StudentCard, NewCard } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
 import { LinkList } from '../LinkList/LinkList'
 import { IStudentUser } from 'src/utils'
@@ -55,12 +55,12 @@ export class StudentReports extends React.Component<IProps> {
 
         {students.length > 0
           ? students.sort((a, b) => a.name > b.name ? 1 : -1).map((student) => (
-            <ConnectedStudentCard
+            <StudentCard
               key={student.id}
-              courseId={courseId}
               student={student}
+              courseId={courseId}
             />
-            )) : (
+          )) : (
             <Link to={`${match.url}/add-students`}>
               <NewCard className="new-student-card" text="Add your first student!" />
             </Link>

@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 
+import { GET_COURSE } from 'src/Apps/TeacherHome/components'
 import { ITest, getOperatorSymbol, IStudentUser } from 'src/utils'
 import { Card, ConfirmButton } from '..'
-import { handleRemoveStudentFromCourse } from 'src/handlers/students'
 import { NewTestsIndicator } from './NewTestsIndicator/NewTestsIndicator'
 import './StudentCard.css'
 
@@ -61,88 +62,100 @@ const OperatorRow = ({ operator, symbol, color, tests }: IOperatorRowProps) => {
   )
 }
 
+const REMOVE_STUDENT_FROM_COURSE = gql`
+  mutation removeStudentFromCourse($studentId: ObjID!, $courseId: ObjID!) {
+    removeStudentFromCourse(studentId: $studentId, courseId: $courseId)
+  }
+`
 
 interface IStudentCardProps {
-  dispatch: any
-  token: string
   courseId: string
   student: IStudentUser
 }
 
-class StudentCard extends React.Component<IStudentCardProps> {
-  public render() {
-    const { id, name, tests, user } = this.props.student
-    const operators = [
-      {
-        operator: 'addition',
-        symbol: '+',
-        color: 'red',
-        tests: tests
-          ? tests.filter((test) => test.operator === '+')
-          : [],
-      },
-      {
-        operator: 'subtraction',
-        symbol: '-',
-        color: 'blue',
-        tests: tests
-          ? tests.filter((test) => test.operator === '-')
-          : [],
-      },
-      {
-        operator: 'multiplication',
-        symbol: '*',
-        color: 'green',
-        tests: tests
-          ? tests.filter((test) => test.operator === '*')
-          : [],
-      },
-      {
-        operator: 'division',
-        symbol: '/',
-        color: 'yellow',
-        tests: tests
-          ? tests.filter((test) => test.operator === '/')
-          : [],
-      },
-    ]
-    return (
-      <Card className="StudentCard" id={id}>
-        <h3 className="name">
-          {name}
-          {user.email !== name
-            ? ` - ${user.email}`
-            : ''
+export const StudentCard = ({ courseId, student: { id, name, tests, user } }: IStudentCardProps) => {
+  const operators = [
+    {
+      operator: 'addition',
+      symbol: '+',
+      color: 'red',
+      tests: tests
+        ? tests.filter((test) => test.operator === '+')
+        : [],
+    },
+    {
+      operator: 'subtraction',
+      symbol: '-',
+      color: 'blue',
+      tests: tests
+        ? tests.filter((test) => test.operator === '-')
+        : [],
+    },
+    {
+      operator: 'multiplication',
+      symbol: '*',
+      color: 'green',
+      tests: tests
+        ? tests.filter((test) => test.operator === '*')
+        : [],
+    },
+    {
+      operator: 'division',
+      symbol: '/',
+      color: 'yellow',
+      tests: tests
+        ? tests.filter((test) => test.operator === '/')
+        : [],
+    },
+  ]
+  return (
+    <Mutation
+      mutation={REMOVE_STUDENT_FROM_COURSE}
+      optimisticResponse={{ removeStudentFromCourse: true }}
+      update={cache => {
+        const { course }: any = cache.readQuery({
+          query: GET_COURSE,
+          variables: { id: courseId },
+        })
+        cache.writeQuery({
+          query: GET_COURSE,
+          data: {
+            course: {
+              ...course,
+              students: course && course.students
+                ? course.students.filter((student: IStudentUser) => student.id !== id)
+                : []
+            }
           }
-        </h3>
+        })
+      }}
+    >
+      {removeStudentFromCourse => (
+        <Card className="StudentCard" id={id}>
+          <h3 className="name">
+            {name}
+            {user.email !== name
+              ? ` - ${user.email}`
+              : ''
+            }
+          </h3>
 
-        <NewTestsIndicator tests={tests} />
+          <NewTestsIndicator tests={tests} />
 
-        <ConfirmButton
-          className="delete"
-          confirmClassName="confirm"
-          onClick={this.handleDeleteStudent}
-        >
-          <span className="confirmation">Remove student from this class?</span>
-          <i className="material-icons">delete</i>
-        </ConfirmButton>
+          <ConfirmButton
+            className="delete"
+            confirmClassName="confirm"
+            onClick={() => removeStudentFromCourse({
+              variables: { studentId: id, courseId }
+            })}
+          >
+            <span className="confirmation">Remove student from this class?</span>
+            <i className="material-icons">delete</i>
+          </ConfirmButton>
 
-        {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
-      </Card>
-    )
-  }
-
-  private handleDeleteStudent = () => {
-    const { dispatch, token, courseId, student } = this.props
-    try {
-      dispatch(handleRemoveStudentFromCourse(token, courseId, student.id))
-    } catch (error) {
-      console.warn(error)
-      this.setState({ error: error.toString() })
-    }
-  }
+          {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
+        </Card>
+      )}
+    </Mutation>
+  )
 }
-
-const mapStateToProps = ({ user }: any) => ({ token: user.token })
-
-export const ConnectedStudentCard = connect(mapStateToProps)(StudentCard)

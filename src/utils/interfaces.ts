@@ -40,8 +40,8 @@ export interface IClass {
   grade: string
   testParameters: ITestParameters
   teacher: ITeacher
-  students: IStudent[]
-  courseInvitations: any
+  students: IStudentUser[]
+  courseInvitations: ICourseInvitation[]
 }
 
 export interface ITestParameters {
