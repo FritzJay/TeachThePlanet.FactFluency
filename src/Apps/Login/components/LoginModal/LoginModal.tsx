@@ -1,5 +1,7 @@
 import * as React from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
+import { withApollo } from 'react-apollo'
+import { ApolloClient } from 'apollo-boost'
 
 import { saveSignInStudent } from 'src/api/students'
 import { saveSignInTeacher } from 'src/api'
@@ -10,6 +12,7 @@ import { USER_TYPES } from '../../Login'
 import './LoginModal.css'
 
 interface IProps extends RouteComponentProps<any> {
+  client: ApolloClient<any>
   email: string
   password: string
   userType: string
@@ -22,7 +25,7 @@ interface IState {
   loading: boolean
 }
 
-export class LoginModal extends React.Component<IProps, IState> {
+class LoginModal extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     loading: false,
@@ -134,11 +137,12 @@ export class LoginModal extends React.Component<IProps, IState> {
   }
 
   private async loginForUserType(email: string, password: string, userType: string) {
-    const { history } = this.props
+    const { client, history } = this.props
 
     try {
       switch (userType) {
         case USER_TYPES.student: {
+          await client.resetStore()
           try {
             const token = await saveSignInStudent(email, password)
             await localStorage.setItem('token', token)
@@ -152,6 +156,7 @@ export class LoginModal extends React.Component<IProps, IState> {
           }
         }
         case USER_TYPES.teacher: {
+          await client.resetStore()
           const token = await saveSignInTeacher(email, password)
           await localStorage.setItem('token', token)
           history.push('/teacher')
@@ -169,3 +174,5 @@ export class LoginModal extends React.Component<IProps, IState> {
     }
   }
 }
+
+export const LoginModalWithData = withApollo(LoginModal)

@@ -1,5 +1,3 @@
-/* tslint:disable:jsx-no-lambda */
-
 import * as React from "react"
 import { Query, Mutation } from "react-apollo"
 import gql from "graphql-tag"
@@ -104,6 +102,7 @@ export class SelectTest extends React.Component<any, IState> {
             <Query
               query={GET_STUDENT}
               pollInterval={5 * 1000 * 60}
+              fetchPolicy="network-only"
             >
               {({ client, error: queryError, loading: queryLoading, data }: any) => {
 

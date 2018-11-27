@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import {
-  LoginModal,
+  LoginModalWithData,
   PageNotFound,
   SignupModal,
   TitleModal,
@@ -74,7 +74,7 @@ export default class Login extends React.Component<IProps, IState> {
     const { email, password, secondPassword, userType } = this.state
 
     return (
-      <LoginModal
+      <LoginModalWithData
         {...props}
         email={email}
         password={password}
