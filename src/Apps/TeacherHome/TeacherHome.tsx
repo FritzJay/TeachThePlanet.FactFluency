@@ -22,7 +22,12 @@ export class TeacherHome extends React.Component<IProps> {
 
     return (
       <div className="TeacherHome">
-        <Navbar logoLink={`${match.url}/classes`} />
+        
+        <Route
+          render={(props) => (
+            <Navbar {...props} logoLink={match.url} />
+          )}
+        />
 
         <Route
           exact={true}

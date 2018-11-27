@@ -9,9 +9,13 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
 
   return (
     <div>
-      <Navbar logoLink={match.url}>
-        <ConnectedClassListDropdown />
-      </Navbar>
+      <Route
+        render={(props) => (
+          <Navbar {...props} logoLink={match.url}>
+            <ConnectedClassListDropdown />
+          </Navbar>
+        )}
+      />
 
       <div className="FactFluency">
 

@@ -1,12 +1,12 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
+import { gql } from 'apollo-boost'
+import { Link, RouteComponentProps } from 'react-router-dom'
+
 import { clearCached } from 'src/utils'
-import { clearStore } from 'src/actions/shared'
 import { Button, Dropdown } from 'src/sharedComponents'
-import { IUser } from '../../utils'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
+import { Query } from 'react-apollo';
 
 interface ILogoutLinkProps {
   active: boolean
@@ -47,17 +47,26 @@ const UserIcon = ({ email, onClick }: IUserIconProps) => {
 }
 
 
+const GET_USER = gql`
+  query user {
+    user {
+      id
+      lastName
+      firstName
+      email
+    }
+}
+`
+
 interface IProps extends RouteComponentProps<{}> {
   logoLink: string
-  dispatch: any
-  user?: IUser
 }
 
 interface IState {
   activeDropdown: boolean
 }
 
-class DisconnectedNavbar extends React.Component<IProps, IState> {
+export class Navbar extends React.Component<IProps, IState> {
   public state: IState = {
     activeDropdown: false,
   }
@@ -69,7 +78,7 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { user, logoLink, children } = this.props
+    const { logoLink, children } = this.props
     const { activeDropdown } = this.state
 
     const childrenArray = React.Children.toArray(children)
@@ -77,47 +86,62 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
     const secondHalf = childrenArray.slice(Math.ceil(childrenArray.length / 2), childrenArray.length)
 
     return (
-      <div
-        ref={this.setWrapperRef}
-        className="Navbar"
+      <Query
+        query={GET_USER}
+        pollInterval={60000}
       >
-
-        <LogoutLink
-          active={user !== undefined && user.email !== undefined}
-          onLogout={this.handleLogout}
-        />
-
-        <div className="second-half-of-children">
-          {secondHalf}
-        </div>
-
-        <Link className="logo" to={logoLink}>
-          <img src={Logo} className="logo-img" alt="logo" />
-        </Link>
-
-        <div className="first-half-of-children">
-          {firstHalf}
-        </div>
-
-        <UserIcon
-          email={user && user.email}
-          onClick={this.handleToggleButtonClick}
-        />
-
-        <button
-          className="toggle-btn"
-          onClick={this.handleToggleButtonClick}
-        >
-          <i className="material-icons">menu</i>
-        </button>
-
-        <Dropdown active={activeDropdown}>
-          <LogoutLink
-            active={user !== undefined && user.email !== undefined}
-            onLogout={this.handleLogout}
-          />
-        </Dropdown>
-      </div>
+        {({ client, data: { user } }) => (
+          <div
+            ref={this.setWrapperRef}
+            className="Navbar"
+          >
+    
+            <LogoutLink
+              active={user !== undefined && user.email !== undefined}
+              onLogout={async () => {
+                this.props.history.push('/index')
+                await client.clearStore()
+                await clearCached()
+              }}
+            />
+    
+            <div className="second-half-of-children">
+              {secondHalf}
+            </div>
+    
+            <Link className="logo" to={logoLink}>
+              <img src={Logo} className="logo-img" alt="logo" />
+            </Link>
+    
+            <div className="first-half-of-children">
+              {firstHalf}
+            </div>
+    
+            <UserIcon
+              email={user && user.email}
+              onClick={this.handleToggleButtonClick}
+            />
+    
+            <button
+              className="toggle-btn"
+              onClick={this.handleToggleButtonClick}
+            >
+              <i className="material-icons">menu</i>
+            </button>
+    
+            <Dropdown active={activeDropdown}>
+              <LogoutLink
+                active={user !== undefined && user.email !== undefined}
+                onLogout={async () => {
+                  this.props.history.push('/index')
+                  await client.clearStore()
+                  await clearCached()
+                }}
+              />
+            </Dropdown>
+          </div>
+        )}
+      </Query>
     )
   }
 
@@ -142,14 +166,4 @@ class DisconnectedNavbar extends React.Component<IProps, IState> {
       activeDropdown: !prevState.activeDropdown
     }))
   }
-
-  private handleLogout = async () => {
-    this.props.history.push('/index')
-    this.props.dispatch(clearStore())
-    await clearCached()
-  }
 }
-
-const mapStateToProps = ({ user }: any) => ({ user })
-
-export const Navbar = withRouter(connect(mapStateToProps)(DisconnectedNavbar))

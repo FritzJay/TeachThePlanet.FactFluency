@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Query } from 'react-apollo'
 
-import { ConnectedClassListNotification } from './components/ConnectedClassListNotification/ClassListNotification'
+import { ClassListNotification } from './components/ClassListNotification/ClassListNotification'
 import { Button, Modal, ModalHeader, ModalContent, Loading } from '..'
 import { IClass } from 'src/utils'
 import './ClassListDropdown.css'
@@ -110,7 +110,7 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
                       onClick={this.toggleDropdown}
                     >
                       <i className="material-icons">school</i>
-                      <ConnectedClassListNotification />
+                      <ClassListNotification numberOfNotifications={numberOfInvitations} />
                     </Button>
                       
                     {active
