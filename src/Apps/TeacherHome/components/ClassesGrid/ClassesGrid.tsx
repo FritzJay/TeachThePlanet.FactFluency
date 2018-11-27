@@ -1,76 +1,74 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
+import { Query } from 'react-apollo'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { IClass } from 'src/utils'
-import { Loading, NewCard } from 'src/sharedComponents'
+
+import { NewCard, Loading } from 'src/sharedComponents'
 import { ClassCard } from '../ClassCard/ClassCard'
+import { IClass } from 'src/utils'
 import './ClassesGrid.css'
 
-interface IProps extends RouteComponentProps<{}> {
-  courses?: IClass[]
-  dispatch: any
-}
+const GET_COURSES = gql`
+  query teacher {
+    teacher {
+      id
+      name
+      user {
+        id
+        email
+      }
+      courses {
+        id
+        name
+        grade
+        code
+      }
+    }
+  }
+`
 
-interface IState {
-  error: string
-}
+interface IProps extends RouteComponentProps<{}> {}
 
-class DisconnectedClassesGrid extends React.Component<IProps, IState> {
-  public state = { error: '' }
+export const ClassesGrid = ({ history, match }: IProps) => (
+  <Query
+    query={GET_COURSES}
+    pollInterval={15000}
+  >
+    {({ error, loading, data }) => {
+      if (loading) {
+        return (
+          <div className="ClassesGrid">
+            <Loading className="loading" />
+          </div>
+        )
+      }
 
-  public render() {
-    const { courses, match } = this.props
-    const { error } = this.state
+      if (error) {
+        return (
+          <div className="ClassesGrid">
+            <h3 className="error">{error.message}</h3>
+          </div>
+        )
+      }
 
-    if (error !== '') {
+      const courses = data && data.teacher && data.teacher.courses
+
       return (
         <div className="ClassesGrid">
-          <h1 className="error">{error}</h1>
-          <h2 className="error">Please Try Again Later</h2>
+          <h2 className="title">Classes</h2>
+          {courses.map((course: IClass) => (
+            <ClassCard
+              key={course.id}
+              cls={course}
+              onCardClick={() => history.push(`/teacher/class-detail/${course.id}`)}
+              onSettingsClick={() => history.push(`/teacher/classes/edit/${course.id}`)}
+            />
+            ))}
+          <Link to={`${match.url}/new`}>
+            <NewCard />
+          </Link>
         </div>
       )
-    }
-
-    if (courses === undefined || courses === null) {
-      return (
-        <div className="ClassesGrid">
-          <Loading className="loading" />
-        </div>
-      )
-    }
-  
-    return (
-      <div className="ClassesGrid">
-  
-        <h2 className="title">Classes</h2>
-  
-        {Object.keys(courses).map((key) => (
-          <ClassCard
-            key={key}
-            cls={courses[key]}
-            onCardClick={this.handleCardClick}
-            onSettingsClick={this.handleSettingsClick}
-          />
-          ))}
-  
-        <Link to={`${match.url}/new`}>
-          <NewCard />
-        </Link>
-      </div>
-    )
-  }
-
-  private handleCardClick = async (id: string) => {
-    const { history } = this.props
-    history.push(`/teacher/class-detail/${id}`)
-  }
-
-  private handleSettingsClick = async (id: string) => {
-    const { history } = this.props
-    history.push(`/teacher/classes/edit/${id}`)
-  }
-}
-
-const mapStateToProps = ({ courses }: any) => ({ courses })
-
-export const ClassesGrid = connect(mapStateToProps)(DisconnectedClassesGrid)
+    }}
+  </Query>
+)
