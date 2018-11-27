@@ -10,12 +10,11 @@ export const initializeQuestions = (questions: IQuestion[]): IQuestion[] => {
 }
 
 export const randomizeQuestions = (questions: IQuestion[]): IQuestion[] => {
-  return JSON.parse(JSON.stringify(questions))    // Deep Copy
-  .map((question: any, i: number) => {
+  return questions.map((question: any, i: number) => {
     question.index = i;
     return question;
   })
-  .sort(() => 0.5 - Math.random())                // Randomize
+  .sort(() => 0.5 - Math.random())
 }
 
 export const sortQuestions = (questions: IQuestion[]): IQuestion[] => {
@@ -24,10 +23,10 @@ export const sortQuestions = (questions: IQuestion[]): IQuestion[] => {
   });
 }
 
-export const startQuestion = (question: IQuestion): IQuestion => {
-  question.start = new Date().getTime();
-  return question
-}
+export const startQuestion = (question: IQuestion): IQuestion => ({
+  ...question,
+  start: new Date().getTime(),
+})
 
 export const randomlyFlipQuestion = (question: IQuestion, seed: number): IDisplayQuestion => {
   const randomNumber = ((seed * 9301 + 49297) % 233280) / 233280

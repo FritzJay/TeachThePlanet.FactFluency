@@ -173,16 +173,17 @@ class TakeTest extends React.Component<IProps, IState> {
   }
 
   private answerCurrentQuestion = () => {
+    const { questionIndex, answer, questionStarted } = this.state
     const question = {
-      ...this.props.data.test.questions[this.state.questionIndex]
+      ...this.props.data.test.questions[questionIndex]
     }
     if (question === undefined) {
       return
     }
     return {
       ...question,
-      studentAnswer: parseInt(this.state.answer, 10),
-      start: this.state.questionStarted,
+      studentAnswer: parseInt(answer, 10),
+      start: question.start || questionStarted,
       end: new Date().getTime()
     }
   }
@@ -220,7 +221,7 @@ const GET_TEST_ID = gql`
 `
 
 const GET_TEST = gql`
-  query Test($id: ObjID!) {
+  query test($id: ObjID!) {
     test(id: $id) {
       id
       duration
@@ -301,8 +302,7 @@ export const TakeTestWithData = compose(
     GET_TEST,
     {
       options: ({ data }: any) => ({
-        variables: { id: data.testId },
-        name: 'test',
+        variables: { id: data.testId }
       }),
       skip: ({ data: { noTest } }) => noTest === true,
       props: (props: any) => {
@@ -320,7 +320,13 @@ export const TakeTestWithData = compose(
             test: {
               ...data.test,
               start: new Date().getTime(),
-              questions
+              questions: [
+                {
+                  ...questions[0],
+                  start: new Date().getTime()
+                },
+                ...questions.slice(1, questions.length)
+              ]
             }
           }
         })

@@ -1,24 +1,25 @@
 import * as React from 'react'
-import { Mutation, Query } from 'react-apollo'
-import { RouteComponentProps } from 'react-router-dom'
+import { ApolloClient } from 'apollo-boost'
+import { Mutation, compose, graphql, withApollo } from 'react-apollo'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 
 import { IQuestion, getOperatorSymbol, ITest } from 'src/utils'
 import { Button, Card, Loading } from 'src/sharedComponents'
 import { CREATE_TEST } from '../SelectTest/SelectTest'
 import './TestResults.css'
 import gql from 'graphql-tag';
-import { ApolloClient } from 'apollo-boost';
 
 interface IQuickestCardProps {
   question?: IQuestion
+  shareWidth: boolean
 }
 
-const QuickestCard = ({ question }: IQuickestCardProps) => {
+const QuickestCard = ({ question, shareWidth }: IQuickestCardProps) => {
   if (question && question.start && question.end) {
     const durationInSeconds = (new Date(question.end).getTime() - new Date(question.start).getTime()) / 1000
     
     return (
-      <Card className="QuickestCard">
+      <Card className={`QuickestCard${shareWidth ? ' share-width' : ''}`}>
         <div className="header">
           <h3>You Rocked This Problem!</h3>
         </div>
@@ -36,14 +37,15 @@ const QuickestCard = ({ question }: IQuickestCardProps) => {
 
 interface IIncorrectCardProps {
   question?: IQuestion
+  shareWidth: boolean
 }
 
-const IncorrectCard = ({ question }: IIncorrectCardProps) => {
+const IncorrectCard = ({ question, shareWidth }: IIncorrectCardProps) => {
   if (question) {
     const youAnsweredMessage = question.studentAnswer ? `You answered ${question.studentAnswer}` : 'You didn\'t answer this question'
 
     return (
-      <Card className="IncorrectCard">
+      <Card className={`IncorrectCard${shareWidth ? ' share-width' : ''}`}>
         <div className="header">
           <h3>This Gave You Some Trouble.</h3>
         </div>
@@ -59,93 +61,38 @@ const IncorrectCard = ({ question }: IIncorrectCardProps) => {
   }
 }
 
-
-
-const GET_TEST_ID = gql`
-  {
-    test @client
-  }
-`
-
-const GET_TEST = gql`
-  query Test($id: ObjID!) {
-    test(id: $id) {
-      id
-      number
-      operator
-      student {
-        id
-      }
-      course {
-        id
-      }
-      testResults {
-        id
-        total
-        needed
-        correct
-        incorrect {
-          start
-          end
-          question
-          correctAnswer
-        }
-        quickest {
-          start
-          end
-          question
-          correctAnswer
-        }
-      }
-    }
-  }
-`
-
-export const TestResultsContainer = (props: any) => (
-  <Query query={GET_TEST_ID}>
-    {({ data: { testId }, loading: firstLoading, error: firstError }) => (
-      <Query query={GET_TEST} variables={{ testId }}>
-        {({ data: { test }, client, loading: secondLoading, error: secondError }) => {
-          if (firstLoading || secondLoading) {
-            return (
-              <div className="TestResults">
-                <Loading className="loading" />
-              </div>
-            )
-          }
-          if (firstError || secondError) {
-            return (
-              <div className="TestResults">
-                <h3 className="error">{firstError ? firstError.message : secondError ? secondError.message : ''}</h3>
-              </div>
-            )
-          }
-          return <TestResults
-            {...props}
-            client={client}
-            test={test}
-          />
-        }}
-      </Query>
-    )}
-  </Query>
-)
-
 interface IProps extends RouteComponentProps<{}> {
-  test: ITest
+  data: {
+    loading: boolean
+    error: Error
+    test: ITest
+    noTest: boolean
+  }
   client: ApolloClient<any>
 }
 
-const TestResults = ({ history, test, client }: IProps) => {
-  const { student, course, operator, number: num, testResults } = test
-
-  if (testResults === undefined) {
-    history.goBack()
-    return null
+const TestResults = ({ history, data, client }: IProps) => {
+  if (data.loading) {
+    return (
+      <div className="TestResults">
+        <Loading className="loading" />
+      </div>
+    )
+  }
+  if (data.error) {
+    return (
+      <div className="TestResults">
+        <h3 className="error">{data.error.message}</h3>
+      </div>
+    )
+  }
+  if (data.noTest || data.test.testResults === undefined) {
+    return <Redirect to="/fact-fluency" />
   }
   
+  const { student, course, operator, number: num, testResults } = data.test
   const { total, needed, correct, incorrect, quickest } = testResults
-
+  
   return (
     <Mutation
       mutation={CREATE_TEST}
@@ -171,6 +118,8 @@ const TestResults = ({ history, test, client }: IProps) => {
           )
         }
 
+        console.log(data.test)
+
         return (
           <div className="TestResults">
             <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
@@ -181,9 +130,9 @@ const TestResults = ({ history, test, client }: IProps) => {
 
             <p className="detail">Remember you need {needed}/{total} to pass.</p>
 
-            <QuickestCard question={quickest} />
+            <QuickestCard question={quickest} shareWidth={incorrect !== undefined && incorrect !== null} />
 
-            <IncorrectCard question={incorrect} />
+            <IncorrectCard question={incorrect} shareWidth={quickest !== undefined && quickest !== null} />
 
             <hr />
 
@@ -218,3 +167,76 @@ const TestResults = ({ history, test, client }: IProps) => {
     </Mutation>
   )
 }
+
+const GET_TEST_ID = gql`
+  {
+    testId @client
+  }
+`
+
+const GET_TEST = gql`
+  query test($id: ObjID!) {
+    test(id: $id) {
+      id
+      number
+      operator
+      student {
+        id
+      }
+      course {
+        id
+      }
+      testResults {
+        id
+        total
+        needed
+        correct
+        incorrect {
+          start
+          end
+          question
+          correctAnswer
+        }
+        quickest {
+          start
+          end
+          question
+          correctAnswer
+        }
+      }
+    }
+  }
+`
+
+export const TestResultsWithData = compose(
+  graphql(
+    GET_TEST_ID,
+    {
+      props: (props: any) => {
+        if (props.data.testId === null || props.data.testId === undefined) {
+          return {
+            data: {
+              ...props.data,
+              noTest: true,
+            }
+          }
+        }
+        return {
+          data: {
+            ...props.data,
+            noTest: false,
+          }
+        }
+      }
+    }
+  ),
+  graphql(
+    GET_TEST,
+    {
+      options: ({ data }: any) => ({
+        variables: { id: data.testId }
+      }),
+      skip: ({ data: { noTest } }) => noTest === true,
+    }
+  )
+)(withApollo(TestResults))
