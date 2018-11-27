@@ -63,12 +63,14 @@
       .error {
         color: $red;
         font-weight: bold;
+        text-align: center;
         justify-self: center;
         margin: 0;
       }
 
       .success-message {
         margin: 0;
+        text-align: center;
         justify-self: center;
       }
     }

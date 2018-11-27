@@ -48,6 +48,10 @@ export const GET_COURSE = gql`
         student {
           id
           name
+          user {
+            id
+            email
+          }
         }
         course {
           id
