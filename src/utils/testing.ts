@@ -24,17 +24,18 @@ export const sortQuestions = (questions: IQuestion[]): IQuestion[] => {
   });
 }
 
-export const startQuestion = (question: IQuestion): IDisplayQuestion => {
-  const flippedQuestion = randomlyFlipQuestion(question);
-  flippedQuestion.start = new Date().getTime();
-  return flippedQuestion;
+export const startQuestion = (question: IQuestion): IQuestion => {
+  question.start = new Date().getTime();
+  return question
 }
 
-export const randomlyFlipQuestion = (question: IQuestion): IDisplayQuestion => {
+export const randomlyFlipQuestion = (question: IQuestion, seed: number): IDisplayQuestion => {
+  const randomNumber = ((seed * 9301 + 49297) % 233280) / 233280
+
   let bottom;
   let top;
   const [firstNum, operator, secondNum] = question.question.split(' ');
-  if (operator !== '/' && operator !== '-' && Math.random() > 0.5) {
+  if (operator !== '/' && operator !== '-' && randomNumber > 0.5) {
     bottom = firstNum;
     top = secondNum;
   } else {
