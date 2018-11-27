@@ -3,7 +3,7 @@ import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
 import {
   ConnectedClassDetail,
   ClassesGrid,
-  EditClassModal,
+  EditClassModalWithData,
   Navbar,
   NewClassModal,
   TestParameters,
@@ -47,7 +47,7 @@ export class TeacherHome extends React.Component<IProps> {
 
         <Route
           path={`${match.path}/classes/edit/:id`}
-          component={EditClassModal}
+          component={EditClassModalWithData}
         />
 
         <Route
@@ -62,7 +62,7 @@ export class TeacherHome extends React.Component<IProps> {
         
         <Route
           path={`${match.path}/class-detail/:id/class-settings`}
-          component={EditClassModal}
+          component={EditClassModalWithData}
         />
 
         <Route

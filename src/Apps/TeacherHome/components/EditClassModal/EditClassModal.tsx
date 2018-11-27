@@ -1,40 +1,115 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
 import { RouteComponentProps } from 'react-router-dom'
+import { Query, Mutation } from 'react-apollo'
+
 import { IClass } from 'src/utils'
-import { handleRemoveClass, handleUpdateClass } from 'src/handlers/courses'
 import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { Button } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'
+import { GET_COURSES } from '..';
 
 const DEFAULT_DELETE_TEXT = 'Delete Class'
 const CONFIRM_DELETE_TEXT = 'Confirm'
 
+const GET_COURSE = gql`
+  query course($id: ObjID!) {
+    course(id: $id) {
+      id
+      name
+      grade
+    }
+  }
+`
+
+const UPDATE_COURSE = gql`
+  mutation updateCourse($id: ObjID!, $input: UpdateCourseInput!) {
+    updateCourse(id: $id, input: $input) {
+      id
+      code
+      grade
+      name
+    }
+  }
+`
+
+const REMOVE_COURSE = gql`
+  mutation removeCourse($id: ObjID!) {
+    removeCourse(id: $id)
+  }
+`
+
+export const EditClassModalWithData = (props: RouteComponentProps<{ id: string }>) => (
+  <Query
+    query={GET_COURSE}
+    variables={{ id: props.match.params.id }}
+  >
+    {({ error: getCourseError, loading: getCourseLoading, data: getCourseData }) => {
+      if (getCourseLoading) {
+        return (
+          <Modal
+            overlay={true}
+            closeTo="GO_BACK"
+            className="EditClassModal"
+          >
+            <Loading className="loading" />
+          </Modal>
+        )
+      }
+      if (getCourseError) {
+        return (
+          <Modal
+            overlay={true}
+            closeTo="GO_BACK"
+            className="EditClassModal"
+          >
+            <h3 className="error">{getCourseError.message}</h3>
+          </Modal>
+        )
+      }
+
+      return (
+        <Mutation mutation={UPDATE_COURSE}>
+          {updateCourse => (
+            <Mutation
+              mutation={REMOVE_COURSE}
+              refetchQueries={() => [GET_COURSES]}
+              variables={{ id: props.match.params.id }}
+            >
+              {removeCourse => (
+                <EditClassModal
+                  {...props}
+                  course={getCourseData.course}
+                  removeCourse={removeCourse}
+                  updateCourse={updateCourse}
+                />
+              )}
+            </Mutation>
+          )}
+        </Mutation>
+      )
+    }}
+  </Query>
+)
+
+
 interface IProps extends RouteComponentProps<{ id: string }> {
-  dispatch: any
-  selectedCourse?: IClass
-  token?: string
+  course: IClass
+  removeCourse: () => void
+  updateCourse: ({ variables: { name, grade }}: any) => void
 }
 
 interface IState {
   deleteText: string
-  error: string
-  loading: boolean
   name?: string
   grade?: string
 }
 
-export class DisconnectedEditClassModal extends React.Component<IProps, IState> {
+class EditClassModal extends React.Component<IProps, IState> {
   public state: IState = {
     deleteText: DEFAULT_DELETE_TEXT,
-    error: '',
-    loading: false,
-    grade: this.props.selectedCourse
-      ? this.props.selectedCourse.grade
-      : undefined,
-    name: this.props.selectedCourse
-      ? this.props.selectedCourse.name
-      : undefined,
+    grade: this.props.course.grade,
+    name: this.props.course.name,
   }
 
   private deleteConfirmationTimeout: any
@@ -44,20 +119,8 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
 
   public render() {
-    const { selectedCourse, token } = this.props
-    const { deleteText, error, loading, name, grade } = this.state
-
-    if (token === undefined || selectedCourse === undefined || loading) {
-      return (
-        <Modal
-          overlay={true}
-          closeTo="GO_BACK"
-          className="EditClassModal"
-        >
-          <Loading className="loading" />
-        </Modal>
-      )
-    }
+    const { course } = this.props
+    const { deleteText, name, grade } = this.state
 
     return (
       <Modal
@@ -94,12 +157,10 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
             <Input
               name="name"
               className="class-name"
-              placeholder={selectedCourse.name}
+              placeholder={course.name}
               value={name}
               onChange={this.handleChange}
             />
-            
-            {error !== '' && <p className="error">{error}</p>}
 
           </div>
 
@@ -137,12 +198,7 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
   }
   
   private handleDeleteClick = () => {
-    const { dispatch, token, history, selectedCourse } = this.props
-
-    if (token === undefined || selectedCourse === undefined) {
-      return
-    }
-
+    const { history, removeCourse } = this.props
     if (this.state.deleteText !== CONFIRM_DELETE_TEXT) {
       this.setState({ deleteText: CONFIRM_DELETE_TEXT })
       
@@ -152,60 +208,27 @@ export class DisconnectedEditClassModal extends React.Component<IProps, IState> 
 
       return
     }
-
-    this.setState({ loading: true }, () => {
-      try {
-        dispatch(handleRemoveClass(token, selectedCourse.id))
-        history.push('/teacher')
-  
-      } catch (error) {
-        console.warn(error)
-        this.setState({
-          error: 'An unexpected error ocurred. Please try again later',
-          loading: false,
-        })
-      }
-    })
+    history.push('/teacher')
+    removeCourse()
   }
 
   private handleSaveChangesClick = async () => {
-    const { dispatch, token, history, selectedCourse } = this.props
-    const { grade, name } = this.state
-    if (token === undefined || selectedCourse === undefined || grade === undefined || name === undefined) {
-      return
-    }
-    const { id } = selectedCourse
-
-    this.setState({ loading: true }, async () => {
-      try {
-        await dispatch(handleUpdateClass(token, id, { grade, name }))
-        history.goBack()
-
-      } catch (error) {
-        console.warn(error)
-        this.setState({
-          error: error.message,
-          loading: false,
-        })
+    const { history, updateCourse, match } = this.props
+    const { name, grade } = this.state
+    history.goBack()
+    updateCourse({ variables: {
+      id: match.params.id,
+      input: {
+        name,
+        grade,
       }
-    })
+    }})
   }
   
   private handleChange = (e: any) => {
     const { value, name } = e.target
-
-    const state = { error: '' }
+    const state = {}
     state[name] = value
-
     this.setState(state)
   }
 }
-
-const mapStateToProps = ({ user, courses }: any, { match }: any) => ({
-  token: user.token,
-  selectedCourse: courses
-    ? courses[match.params.id]
-    : undefined,
-})
-
-export const EditClassModal = connect(mapStateToProps)(DisconnectedEditClassModal)

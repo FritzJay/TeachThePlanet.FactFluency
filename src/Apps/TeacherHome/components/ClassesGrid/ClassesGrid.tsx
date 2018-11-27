@@ -8,7 +8,7 @@ import { ClassCard } from '../ClassCard/ClassCard'
 import { IClass } from 'src/utils'
 import './ClassesGrid.css'
 
-const GET_COURSES = gql`
+export const GET_COURSES = gql`
   query teacher {
     teacher {
       id
