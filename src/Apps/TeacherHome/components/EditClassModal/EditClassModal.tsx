@@ -73,7 +73,7 @@ export const EditClassModalWithData = (props: RouteComponentProps<{ id: string }
           {updateCourse => (
             <Mutation
               mutation={REMOVE_COURSE}
-              refetchQueries={() => [GET_COURSES]}
+              refetchQueries={() => [{ query: GET_COURSES }]}
               variables={{ id: props.match.params.id }}
             >
               {removeCourse => (
