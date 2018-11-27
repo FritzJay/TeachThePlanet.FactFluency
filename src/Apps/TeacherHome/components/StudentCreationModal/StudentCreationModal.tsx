@@ -1,36 +1,51 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
+import { graphql, compose } from 'react-apollo'
 import { RouteComponentProps } from 'react-router'
 
-import { Modal, ModalHeader, ModalContent, Input, Button, ConfirmButton } from 'src/sharedComponents'
-import { IClass } from 'src/utils'
-import { handleCreateStudent } from 'src/handlers/students'
+import { Modal, ModalHeader, ModalContent, Input, Button, ConfirmButton, Loading } from 'src/sharedComponents'
 import { StudentCreationCard } from './StudentCreationCard'
+import { IClass } from 'src/utils'
 import './StudentCreationModal.css'
 
 interface IProps extends RouteComponentProps<{ id: string }> {
-  token: string
-  dispatch: any
-  selectedCourse: IClass
+  data: {
+    loading: boolean
+    error: Error
+    course: IClass
+  }
+  mutate: any
 }
 
 interface IState {
-  error: string
   students: {
     [id: string]: string
   }
   name: string
+  error: string
 }
 
 class StudentCreationModal extends React.Component<IProps, IState> {
   public state: IState = {
-    error: '',
     name: '',
+    error: '',
     students: {}
   }
 
   public render() {
-    const { error, name, students } = this.state
+    const { name, students } = this.state
+    const { data: { error, loading } } = this.props
+
+    if (loading) {
+      return (
+        <Modal
+          overlay={true}
+          className="StudentCreationModal"
+        >
+          <Loading className="loading" />
+        </Modal>
+      )
+    }
 
     return (
       <Modal
@@ -47,8 +62,8 @@ class StudentCreationModal extends React.Component<IProps, IState> {
 
         <ModalContent className="content">
           <h3 className="sub-header">Type in your students' names.</h3>
-          {error !== ''
-            ? <p className="error">{error}</p>
+          {error || this.state.error
+            ? <p className="error">{this.state.error || (error && error.message)}</p>
             : null
           }
           <label className="label" htmlFor="studentInput">
@@ -137,7 +152,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
     }
 
     this.setState(prevState => ({
-      students: { ...prevState.students, [displayName]: this.props.selectedCourse.code },
+      students: { ...prevState.students, [displayName]: this.props.data.course.code },
       name: '',
       error: '',
     }))
@@ -176,22 +191,23 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       return
     }
 
-    const { token, match, history } = this.props
+    const { match, history } = this.props
     
     await Promise.all(Object.keys(students).map(async (student) => {
-      try {
-        await this.props.dispatch(handleCreateStudent(token, match.params.id, {
-          name: this.getDisplayName(student),
-          user: {
-            email: this.getUsername(student),
-            password: students[student],
-            firstName: this.getFirstName(student),
-            lastName: this.getLastInitial(student),
+      this.props.mutate({
+        variables: {
+          input: {
+            courseId: match.params.id,
+            name: this.getDisplayName(student),
+            user: {
+              email: this.getUsername(student),
+              password: students[student],
+              firstName: this.getFirstName(student),
+              lastName: this.getLastInitial(student),
+            }
           }
-        }))
-      } catch (error) {
-        console.warn(error)
-      }
+        }
+      })
     }))
 
     history.push(`/teacher/class-detail/${this.props.match.params.id}`)
@@ -206,7 +222,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 
   private getUsername = (name: string): string => {
-    return name.replace(' ', '') + '@' + this.props.selectedCourse.name
+    return name.replace(' ', '') + '@' + this.props.data.course.name
   }
 
   private getFirstName = (name: string): string => {
@@ -223,13 +239,76 @@ class StudentCreationModal extends React.Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = ({ courses, user }: any, { match }: IProps) => ({
-  token: user
-    ? user.token
-    : undefined,
-  selectedCourse: courses
-    ? courses[match.params.id]
-    : undefined,
-})
+const GET_COURSE = gql`
+  query course($id: ObjID!) {
+    course(id: $id) {
+      id
+      code
+      name
+      students {
+        id
+      }
+    }
+  }
+`
 
-export const ConnectedStudentCreationModal = connect(mapStateToProps)(StudentCreationModal)
+const CREATE_PENDING_STUDENT = gql`
+  mutation createAccountForStudent($input: CreateAccountForStudentInput!) {
+    createAccountForStudent(input: $input) {
+      id
+      name
+      createdAt
+      updatedAt
+      changePasswordRequired
+      tests {
+        id
+        number
+        operator
+        start
+        end
+        testResults {
+          id
+          total
+          needed
+          correct
+          createdAt
+        }
+      },
+      user {
+        email
+      }
+      courses {
+        id
+      }
+    }
+  }
+`
+
+export const StudentCreationModalWithData = compose(
+  graphql(CREATE_PENDING_STUDENT, {
+    options: {
+      update: async (cache, { data: { createAccountForStudent } }: any) => {
+        const { course }: any = await cache.readQuery({
+          query: GET_COURSE,
+          variables: { id: createAccountForStudent.courses[0].id }
+        })
+        cache.writeQuery({
+          query: GET_COURSE,
+          data: {
+            course: {
+              ...course,
+              students: course.students.concat([createAccountForStudent])
+            }
+          }
+        })
+      }
+    }
+  }),
+  graphql(GET_COURSE, {
+    options: ({ match }: any) => ({
+      variables: {
+        id: match.params.id
+      }
+    })
+  }),
+)(StudentCreationModal)
