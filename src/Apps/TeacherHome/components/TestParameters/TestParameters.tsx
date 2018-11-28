@@ -14,6 +14,7 @@ interface IState {
   error: string
   minute?: number
   numbers?: number[]
+  passing?: number
   operators?: string[]
   questions?: number
   randomQuestions?: number
@@ -37,6 +38,7 @@ class TestParameters extends React.Component<IProps, IState> {
   private minute = React.createRef()
   private second = React.createRef()
   private questions = React.createRef()
+  private passing = React.createRef()
   private randomQuestions = React.createRef()
   
   public async componentDidMount() {
@@ -103,6 +105,7 @@ class TestParameters extends React.Component<IProps, IState> {
     }
 
     const testParameters = course.testParameters
+    console.log(testParameters)
     const { operators, numbers } = this.state
 
     return (
@@ -167,6 +170,16 @@ class TestParameters extends React.Component<IProps, IState> {
               name="questions"
               defaultValue={testParameters.questions}
               createRef={this.questions}
+              onChange={this.handleChange}
+              type="number"
+            />
+            
+            <h3 className="passing-header">Number of Correct Answers Needed to Pass</h3>
+            <Input
+              className="passing"
+              name="passing"
+              defaultValue={testParameters.passing}
+              createRef={this.passing}
               onChange={this.handleChange}
               type="number"
             />
@@ -278,6 +291,7 @@ class TestParameters extends React.Component<IProps, IState> {
       numbers,
       operators,
       questions: this.getNumberValue('questions'),
+      passing: this.getNumberValue('passing'),
       randomQuestions: this.getNumberValue('randomQuestions'),
     }
     await this.props.mutate({
@@ -304,6 +318,7 @@ const GET_COURSE = gql`
         numbers
         operators
         questions
+        passing
         randomQuestions
       }
     }
@@ -316,6 +331,7 @@ const UPDATE_TEST_PARAMETERS = gql`
       id
       duration
       questions
+      passing
       randomQuestions
       numbers
       operators

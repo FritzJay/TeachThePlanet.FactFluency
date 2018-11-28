@@ -51,7 +51,7 @@ export interface ITestParameters {
   numbers: number[]
   questions: number
   randomQuestions: number
-  padding: number
+  passing: number
 }
 
 export interface ICourseInvitation {

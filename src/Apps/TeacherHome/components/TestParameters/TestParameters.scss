@@ -35,6 +35,8 @@
             "numbers          numbers          numbers          numbers          numbers"
             "questionsheader questionsheader questionsheader questionsheader questionsheader"
             "questions        questions        questions        questions        questions"
+            "passingheader   passingheader   passingheader   passingheader   passingheader"
+            "passing         passing         passing         passing         passing"
             "randomheader    randomheader    randomheader    randomheader    randomheader"
             "randomtext      randomtext      randomtext      randomtext      randomtext"
             "random           random           random           random           random"
@@ -120,6 +122,16 @@
             
             .questions {
                 grid-area: questions;
+            }
+
+            .passing-header {
+                grid-area: passingheader;
+                
+                margin: 1.5em 0 0.25em 0;
+            }
+
+            .passing {
+                grid-area: passing;
             }
             
             .random-header {
