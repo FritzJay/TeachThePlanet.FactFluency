@@ -275,8 +275,8 @@ class TestParameters extends React.Component<IProps, IState> {
     const duration = (this.getNumberValue('minute') * 60) + this.getNumberValue('second')
     const input = {
       duration,
-      numbers,
-      operators,
+      numbers: numbers ? numbers : testParameters.numbers,
+      operators: operators ? operators : testParameters.operators,
       questions: this.getNumberValue('questions'),
       passing: this.getNumberValue('passing'),
       randomQuestions: this.getNumberValue('randomQuestions'),
