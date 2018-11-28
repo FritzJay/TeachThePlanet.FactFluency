@@ -5,12 +5,9 @@ import { Query, Mutation } from 'react-apollo'
 
 import { IClass } from 'src/utils'
 import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
-import { Button } from 'src/sharedComponents/Button/Button'
+import { ConfirmButton } from 'src/sharedComponents/Button/Button'
 import './EditClassModal.css'
 import { GET_COURSES } from '..';
-
-const DEFAULT_DELETE_TEXT = 'Delete Class'
-const CONFIRM_DELETE_TEXT = 'Confirm'
 
 const GET_COURSE = gql`
   query course($id: ObjID!) {
@@ -100,27 +97,19 @@ interface IProps extends RouteComponentProps<{ id: string }> {
 }
 
 interface IState {
-  deleteText: string
   name?: string
   grade?: string
 }
 
 class EditClassModal extends React.Component<IProps, IState> {
   public state: IState = {
-    deleteText: DEFAULT_DELETE_TEXT,
     grade: this.props.course.grade,
     name: this.props.course.name,
   }
 
-  private deleteConfirmationTimeout: any
-
-  public componentWillUnmount() {
-    window.clearTimeout(this.deleteConfirmationTimeout)
-  }
-
   public render() {
     const { course } = this.props
-    const { deleteText, name, grade } = this.state
+    const { name, grade } = this.state
 
     return (
       <Modal
@@ -164,52 +153,36 @@ class EditClassModal extends React.Component<IProps, IState> {
 
           </div>
 
-            {deleteText === DEFAULT_DELETE_TEXT
-              ? (
-                <div className="btn-row">
-                  <Button
-                    className="red delete-class"
-                    onClick={this.handleDeleteClick}
-                  >
-                    {deleteText}
-                  </Button>
+          <div className="btn-row">
+            <ConfirmButton
+              className="red delete-class"
+              confirmClassName="confirm"
+              disableTimeout={2000}
+              onClick={this.handleDeleteClick}
+            >
+              <span className="default">Delete Class</span>
+              <span className="confirmation">Are you sure?</span>
+            </ConfirmButton>
 
-                  <Button
-                    className="green save-changes"
-                    onClick={this.handleSaveChangesClick}
-                  >
-                    Save Changes
-                  </Button>
-                </div>
-              ) : (
-                <div className="btn-row">
-                  <Button
-                    className="red delete-class confirm"
-                    onClick={this.handleDeleteClick}
-                  >
-                    {deleteText}
-                  </Button>
-                </div>
-              )}
-
+            <ConfirmButton
+              className="green save-changes"
+              confirmClassName="confirm"
+              disableTimeout={2000}
+              onClick={this.handleSaveChangesClick}
+            >
+              <span className="default">Save Changes</span>
+              <span className="confirmation">Are you sure?</span>
+            </ConfirmButton>
+          </div>
+          
         </ModalContent>
       </Modal>
     )
   }
   
   private handleDeleteClick = () => {
-    const { history, removeCourse } = this.props
-    if (this.state.deleteText !== CONFIRM_DELETE_TEXT) {
-      this.setState({ deleteText: CONFIRM_DELETE_TEXT })
-      
-      this.deleteConfirmationTimeout = window.setTimeout(() => {
-        this.setState({ deleteText: DEFAULT_DELETE_TEXT })
-      }, 3000)
-
-      return
-    }
-    history.push('/teacher')
-    removeCourse()
+    this.props.history.push('/teacher')
+    this.props.removeCourse()
   }
 
   private handleSaveChangesClick = async () => {

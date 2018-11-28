@@ -62,30 +62,38 @@
         
         .delete-class {
             grid-column: 1 / 1;
+
+            .confirmation {
+                display: none
+            }
             
             &.confirm {
-                grid-column: 1 / -1;
-                padding: 1em 0;
-            }
-        }
-        
-        .cancel {
-            grid-column: 1 / -1;
-            grid-row: 2 / 2;
+                .default {
+                    display: none;
+                }
 
-            background-color: transparent;
-            border: none;
-            color: $light-gray;
-            font-weight: 700;
-            font-size: 1em;
-
-            &:hover {
-                color: $gray;
+                .confirmation {
+                    display: inline;
+                }
             }
         }
         
         .save-changes { 
             grid-column: 2 / 2;
+
+            .confirmation {
+                display: none
+            }
+            
+            &.confirm {
+                .default {
+                    display: none;
+                }
+
+                .confirmation {
+                    display: inline;
+                }
+            }
         }
 
     }
