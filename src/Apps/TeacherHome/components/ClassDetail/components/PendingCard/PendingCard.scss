@@ -10,18 +10,21 @@
   .student-name {
     grid-area: studentname;
 
+    width: 125px;
     color: $black;
   }
 
   .email {
     grid-area: email;
 
+    width: 125px;
     color: $gray;
   }
 
   .date {
     grid-area: date;
 
+    width: 100px;
     color: $gray;
   }
     
