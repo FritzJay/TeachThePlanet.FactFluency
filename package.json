@@ -23,14 +23,10 @@
     "react-apollo": "^2.3.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.6.0",
-    "react-redux": "^5.1.0",
-    "react-redux-loading-bar": "^4.1.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^1.1.5",
     "react-scripts-ts": "2.16.0",
     "react-scroll": "^1.7.10",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
     "tinycolor2": "^1.4.1",
     "typescript": "^2.9.2",
     "webfontloader": "^1.6.28"
@@ -46,9 +42,5 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "postinstall": "npm-run-all build-css build-js"
-  },
-  "devDependencies": {
-    "@types/redux-devtools-extension": "^2.13.2",
-    "redux-devtools-extension": "^2.13.5"
   }
 }
