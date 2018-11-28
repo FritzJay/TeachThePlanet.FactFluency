@@ -1,6 +1,5 @@
 export * from './Button/Button'
 export * from './Card/Card'
-export * from './CacheStore/CacheStore'
 export * from './ClassListDropdown/ClassListDropdown'
 export * from './CopyToClipboard/CopyToClipboard'
 export * from './Dropdown/Dropdown'

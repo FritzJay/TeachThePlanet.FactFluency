@@ -5,7 +5,6 @@ import {
   Redirect,
 } from 'react-router-dom'
 
-import LoadingBar from 'react-redux-loading-bar'
 import Login from 'src/Apps/Login/Login'
 import { PageNotFound } from 'src/sharedComponents'
 import { TeacherHome } from './TeacherHome/TeacherHome'
@@ -17,8 +16,6 @@ export default class App extends React.Component<any> {
   public render() {
     return (
       <div className="App">
-        <LoadingBar className="LoadingBar" />
-        
         <Switch>
           <Route
             path="/"

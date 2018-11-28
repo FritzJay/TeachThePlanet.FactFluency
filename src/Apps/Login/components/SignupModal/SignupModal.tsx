@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import { ApolloClient } from 'apollo-boost'
+import { withApollo } from 'react-apollo'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { Button, Modal, ModalContent, ModalHeader, Input } from 'src/sharedComponents'
 import { UserTypes } from '..'
-import { handleSignUpTeacher } from 'src/handlers/teacherHome'
-import { handleSignUpStudent } from 'src/handlers/factFluency'
 import { USER_TYPES } from '../../Login'
 import './SignupModal.css'
+import { saveSignUpStudent, saveSignInStudent, saveSignUpTeacher, saveSignInTeacher } from 'src/api';
 
 interface IProps extends RouteComponentProps<any> {
-  dispatch: any
+  client: ApolloClient<any>
   email: string
   password: string
   secondPassword: string
@@ -24,7 +24,7 @@ interface IState {
   loading: boolean
 }
 
-class DisconnectedSignupModal extends React.Component<IProps, IState> {
+class SignupModal extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
     loading: false,
@@ -94,7 +94,7 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
   }
 
   private handleSignupClick = async () => {
-    const { dispatch, email, history, password, secondPassword, userType } = this.props
+    const { client, email, history, password, secondPassword, userType } = this.props
 
     if (email === '' || password === '') {
       this.setState({ error: 'Please enter an email and password' })
@@ -113,14 +113,22 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
 
     try {
       switch (userType) {
-        case USER_TYPES.student:
-          await dispatch(handleSignUpStudent(email, password))
+        case USER_TYPES.student: {
+          await client.resetStore()
+          await saveSignUpStudent(email, password)
+          const token = await saveSignInStudent(email, password)
+          await localStorage.setItem('token', token)
           history.push('/fact-fluency')
           return
-        case USER_TYPES.teacher:
-          await dispatch(handleSignUpTeacher(email, password))
+        }
+        case USER_TYPES.teacher: {
+          await client.resetStore()
+          await saveSignUpTeacher(email, password)
+          const token = await saveSignInTeacher(email, password)
+          await localStorage.setItem('token', token)
           history.push('/teacher')
           return
+        }
         default:
           throw new Error('Invalid user type')
       }
@@ -134,4 +142,4 @@ class DisconnectedSignupModal extends React.Component<IProps, IState> {
   }
 }
 
-export const SignupModal = connect()(DisconnectedSignupModal)
+export const SignupModalWithData = withApollo(SignupModal)

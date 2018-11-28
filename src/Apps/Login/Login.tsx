@@ -3,9 +3,9 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import {
   LoginModalWithData,
   PageNotFound,
-  SignupModal,
+  SignupModalWithData,
   TitleModal,
-  ConnectedUpdateStudentModal
+  UpdateStudentModal
 } from './components'
 import './Login.css'
 
@@ -90,7 +90,7 @@ export default class Login extends React.Component<IProps, IState> {
     const { email, password, secondPassword, userType } = this.state
 
     return (
-      <SignupModal
+      <SignupModalWithData
         {...props}
         email={email}
         password={password}
@@ -124,7 +124,7 @@ export default class Login extends React.Component<IProps, IState> {
     const { email, password, secondPassword } = this.state
 
     return (
-      <ConnectedUpdateStudentModal
+      <UpdateStudentModal
         {...props}
         email={email}
         password={password}

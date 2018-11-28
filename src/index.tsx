@@ -4,14 +4,10 @@ import * as ReactDOM from 'react-dom'
 
 import { ApolloProvider } from 'react-apollo'
 import ApolloClient, { InMemoryCache, Operation } from 'apollo-boost'
-import { Provider as ReduxProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { createStore } from 'redux'
 import * as WebFont from 'webfontloader'
 
 import App from './Apps/App'
-import middleware from './middleware'
-import reducer from './reducers'
 import { factFluencyDefaults, factFluencyResolvers } from './Apps/FactFluency/clientState'
 
 WebFont.load({
@@ -23,8 +19,6 @@ WebFont.load({
     ],
   },
 })
-
-const store = createStore(reducer, middleware)
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -47,11 +41,9 @@ const client = new ApolloClient({
 
 ReactDOM.render((
   <ApolloProvider client={client}>
-    <ReduxProvider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </ReduxProvider>
   </ApolloProvider>),
   document.getElementById('root') as HTMLElement
 )

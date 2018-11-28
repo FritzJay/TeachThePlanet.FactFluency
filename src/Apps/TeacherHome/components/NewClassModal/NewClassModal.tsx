@@ -1,105 +1,133 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
-import { handleAddClass } from 'src/handlers/courses';
+
 import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import './NewClassModal.css'
 
-interface IProps extends RouteComponentProps<{}> {
-  dispatch: any
-  token: string
+const CREATE_COURSE = gql`
+mutation createCourse($input: CreateCourseInput!) {
+  createCourse(input: $input) {
+    id
+    code
+    grade
+    name
+    testParameters {
+      id
+      duration
+      numbers
+      operators
+      questions
+      randomQuestions
+    }
+    students {
+      id
+    }
+    courseInvitations {
+      id
+    }
+  }
 }
+`
+
+interface IProps extends RouteComponentProps<{}> {}
 
 interface IState {
-  error: string
-  loading: boolean
   grade: string
+  error: string
   name: string
 }
 
-export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
+export class NewClassModal extends React.Component<IProps, IState> {
   public state = {
-    error: '',
-    loading: false,
     grade: 'kindergarten',
     name: '',
+    error: '',
   }
 
   public render() {
-    const { error, loading, name, grade } = this.state
-
-    if (this.props.token === undefined || loading) {
-      return (
-        <Modal
-          overlay={true}
-          closeTo="/teacher"
-          className="NewClassModal"
-        >
-          <Loading className="loading" />
-        </Modal>
-      )
-    }
-
     return (
-      <Modal
-        overlay={true}
-        closeTo="/teacher"
-        className="NewClassModal"
+      <Mutation
+        mutation={CREATE_COURSE}
       >
+        {(mutate, { loading, error }: any) => {
+          if (loading) {
+            return (
+              <Modal
+                overlay={true}
+                closeTo="/teacher"
+                className="NewClassModal"
+              >
+                <Loading className="loading" />
+              </Modal>
+            )
+          }
+          const { name, grade } = this.state
 
-        <ModalHeader className="modal-header">
-          <h2>New Class</h2>
-        </ModalHeader>
-
-        <ModalContent>
-          <div className="input-fields"> 
-
-            <label className="label">Change Grade Level</label>
-            <select
-              name="grade"
-              onChange={this.handleChange}
-              value={grade}
+          return (
+            <Modal
+              overlay={true}
+              closeTo="/teacher"
+              className="NewClassModal"
             >
-              <option value="kindergarten">Kindergarten</option>
-              <option value="first">1st Grade</option>
-              <option value="second">2nd Grade</option>
-              <option value="third">3rd Grade</option>
-              <option value="fourth">4th Grade</option>
-              <option value="fifth">5th Grade</option>
-              <option value="middle">Middle School (6-8)</option>
-              <option value="high">High School (9-12)</option>
-              <option value="beyond">College or Beyond</option>
-            </select>
 
-            <label className="label">Class Name</label>
+              <ModalHeader className="modal-header">
+                <h2>New Class</h2>
+              </ModalHeader>
 
-            <Input
-              name="name"
-              className="class-name"
-              placeholder="e.g. Homeroom"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </div>
+              <ModalContent>
+                <div className="input-fields"> 
 
-          {error !== '' && <p className="error">{error}</p>}
+                  <label className="label">Change Grade Level</label>
+                  <select
+                    name="grade"
+                    onChange={this.handleChange}
+                    value={grade}
+                  >
+                    <option value="kindergarten">Kindergarten</option>
+                    <option value="first">1st Grade</option>
+                    <option value="second">2nd Grade</option>
+                    <option value="third">3rd Grade</option>
+                    <option value="fourth">4th Grade</option>
+                    <option value="fifth">5th Grade</option>
+                    <option value="middle">Middle School (6-8)</option>
+                    <option value="high">High School (9-12)</option>
+                    <option value="beyond">College or Beyond</option>
+                  </select>
 
-          <div className="buttons">
-            <Button
-              className="create-class green"
-              onClick={this.handleCreateClassClick}
-            >
-              Create Class
-            </Button>
-          </div>
+                  <label className="label">Class Name</label>
 
-        </ModalContent>
-      </Modal>
+                  <Input
+                    name="name"
+                    className="class-name"
+                    placeholder="e.g. Homeroom"
+                    value={name}
+                    onChange={this.handleChange}
+                  />
+                </div>
+
+                {error || this.state.error !== '' && <p className="error">{error ? error.message : this.state.error}</p>}
+
+                <div className="buttons">
+                  <Button
+                    className="create-class green"
+                    onClick={() => this.handleCreateClassClick(mutate)}
+                  >
+                    Create Class
+                  </Button>
+                </div>
+
+              </ModalContent>
+            </Modal>
+          )
+        }}
+      </Mutation>
     )
   }
 
-  private handleCreateClassClick = async () => {
-    const { dispatch, token, history } = this.props
+  private handleCreateClassClick = async (mutate: any) => {
+    const { history } = this.props
     const { grade, name } = this.state
     
     if (grade === '' || name === '') {
@@ -107,17 +135,11 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
       return
     }
 
-    this.setState({ loading: true }, async () => {
-      try {
-        await dispatch(handleAddClass(token, { grade, name }))
-        history.push('/teacher')
-  
-      } catch (error) {
-        console.warn(error)
-        this.setState({
-          error: error.message,
-          loading: false,
-        })
+    history.push('/teacher')
+    mutate({
+      variables: {
+        grade,
+        name
       }
     })
   }
@@ -131,7 +153,3 @@ export class DisconnectedNewClassModal extends React.Component<IProps, IState> {
     this.setState(state)
   }
 }
-
-const mapStateToProps = ({ user }: any) => ({ token: user.token })
-
-export const NewClassModal = connect(mapStateToProps)(DisconnectedNewClassModal)
