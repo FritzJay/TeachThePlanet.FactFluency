@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 import { Button, StudentCard, NewCard } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
-import { LinkList } from '../LinkList/LinkList'
 import { IStudentUser } from 'src/utils'
 import './StudentReports.css'
 
@@ -45,12 +44,6 @@ export class StudentReports extends React.Component<IProps> {
         {activeDescription
           ? <StudentsDescription />
           : null
-        }
-
-        {students.length > 0
-          ? <LinkList
-            links={students.map(({ id, name }) => ({ id, text: name }))}
-          /> : null
         }
 
         {students.length > 0
