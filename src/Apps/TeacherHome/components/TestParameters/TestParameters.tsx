@@ -7,7 +7,7 @@ import {
   IClass,
   themeColors,
 } from 'src/utils'
-import { Button, Input, Loading, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
+import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, ConfirmButton } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
@@ -118,7 +118,7 @@ class TestParameters extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent className="parameter-content">
-          <form className="form" onSubmit={this.handleSubmit}>
+          <div className="form">
 
             <h3 className="operators-header">Operators</h3>
             <p className="operators-text">Select available operators for students</p>
@@ -203,14 +203,16 @@ class TestParameters extends React.Component<IProps, IState> {
               type="number"
             />
 
-            <Button
+            <ConfirmButton
               className="save green"
-              type="submit"
+              confirmClassName="confirm-button"
+              onClick={this.handleSubmit}
             >
-              Save
-            </Button>
+              <span className="default">Save</span>
+              <span className="confirmation">Are you sure?</span>
+            </ConfirmButton>
 
-          </form>
+          </div>
         </ModalContent>
       </Modal>
     )

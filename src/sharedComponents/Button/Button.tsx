@@ -77,7 +77,9 @@ export class ConfirmButton extends React.Component<IConfirmButtonProps | any, IS
   private handleClick = async (e: any) => {
     e.persist() // Force the synthetic event to persist so we can pass it to props.onClick
 
-    if (this.state.disabled) { return }
+    if (this.state.disabled) {
+      return
+    }
     
     if (this.state.confirm) {
       await this.props.onClick(e)

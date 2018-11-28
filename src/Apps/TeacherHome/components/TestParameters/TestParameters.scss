@@ -171,6 +171,20 @@
                 justify-self: center;
                 padding-right: 5em;
                 padding-left: 5em;
+
+                .confirmation {
+                  display: none;
+                }
+
+                &.confirm-button {
+                    .default {
+                        display: none;
+                    }
+
+                    .confirmation {
+                        display: inline;
+                    }
+                }
             }
         }
     }
