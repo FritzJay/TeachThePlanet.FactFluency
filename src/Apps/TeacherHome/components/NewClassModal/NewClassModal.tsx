@@ -17,6 +17,7 @@ mutation createCourse($input: CreateCourseInput!) {
       id
       duration
       numbers
+      passing
       operators
       questions
       randomQuestions

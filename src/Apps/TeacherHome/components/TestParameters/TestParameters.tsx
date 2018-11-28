@@ -12,13 +12,8 @@ import './TestParameters.css'
 
 interface IState {
   error: string
-  minute?: number
   numbers?: number[]
-  passing?: number
   operators?: string[]
-  questions?: number
-  randomQuestions?: number
-  second?: number
 }
 
 interface IProps extends RouteComponentProps<{ id: string }> {
@@ -47,18 +42,11 @@ class TestParameters extends React.Component<IProps, IState> {
       return
     }
 
-    const { duration, operators, numbers, questions, randomQuestions } = course.testParameters
-    
-    const minute = Math.floor(duration / 60.0)
-    const second = duration % 60
+    const { operators, numbers } = course.testParameters
     
     this.setState({
-      minute,
       numbers,
       operators,
-      questions,
-      randomQuestions,
-      second,
     })
   }
 
@@ -105,7 +93,6 @@ class TestParameters extends React.Component<IProps, IState> {
     }
 
     const testParameters = course.testParameters
-    console.log(testParameters)
     const { operators, numbers } = this.state
 
     return (

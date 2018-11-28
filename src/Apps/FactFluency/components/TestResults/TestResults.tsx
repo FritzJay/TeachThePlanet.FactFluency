@@ -118,8 +118,6 @@ const TestResults = ({ history, data, client }: IProps) => {
           )
         }
 
-        console.log(data.test)
-
         return (
           <div className="TestResults">
             <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
