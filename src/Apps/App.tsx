@@ -2,6 +2,7 @@ import * as React from 'react'
 import {
   Route,
   Switch,
+  Redirect,
 } from 'react-router-dom'
 
 import LoadingBar from 'react-redux-loading-bar'
@@ -19,6 +20,12 @@ export default class App extends React.Component<any> {
         <LoadingBar className="LoadingBar" />
         
         <Switch>
+          <Route
+            path="/"
+            exact={true}
+            render={() => <Redirect to="/index" />}
+          />
+
           <Route
             path="/index"
             component={Login}
