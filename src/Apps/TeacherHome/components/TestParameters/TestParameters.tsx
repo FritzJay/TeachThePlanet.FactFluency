@@ -1,53 +1,51 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import gql from 'graphql-tag'
 import { RouteComponentProps } from 'react-router-dom'
+import { compose, graphql } from 'react-apollo'
+
 import {
-  ITestParameters,
+  IClass,
   themeColors,
 } from 'src/utils'
-import { handleUpdateTestParameters } from 'src/handlers/testParameters'
 import { Button, Input, Loading, Modal, ModalContent, ModalHeader, Operator } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
   error: string
-  loading: boolean
-  minute: number
-  numbers: number[]
-  operators: string[]
-  questions: number
-  randomQuestions: number
-  second: number
-  testParametersID: string
+  minute?: number
+  numbers?: number[]
+  operators?: string[]
+  questions?: number
+  randomQuestions?: number
+  second?: number
 }
 
 interface IProps extends RouteComponentProps<{ id: string }> {
-  dispatch: any
-  token: string
-  testParameters: ITestParameters
+  data: {
+    loading: boolean
+    error: Error
+    course: IClass
+  }
+  mutate: any
 }
 
-class DisconnectedTestParameters extends React.Component<IProps, IState> {
+class TestParameters extends React.Component<IProps, IState> {
   public state: IState = {
     error: '',
-    loading: false,
-    minute: 0,
-    numbers: [],
-    operators: [],
-    questions: 0,
-    randomQuestions: 0,
-    second: 0,
-    testParametersID: ''
   }
 
+  private minute = React.createRef()
+  private second = React.createRef()
+  private questions = React.createRef()
+  private randomQuestions = React.createRef()
+  
   public async componentDidMount() {
-    const { testParameters } = this.props
-
-    if (testParameters === undefined) {
+    const { loading, error, course } = this.props.data
+    if (loading || error) {
       return
     }
 
-    const { id, duration, operators, numbers, questions, randomQuestions } = testParameters
+    const { duration, operators, numbers, questions, randomQuestions } = course.testParameters
     
     const minute = Math.floor(duration / 60.0)
     const second = duration % 60
@@ -59,40 +57,18 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
       questions,
       randomQuestions,
       second,
-      testParametersID: id,
     })
   }
 
   public render() {
-    const { testParameters } = this.props
-    const { error, loading, minute, second, questions, randomQuestions, operators, numbers } = this.state
-
-    if (error !== '') {
+    const { error, loading, course } = this.props.data
+    
+    if (loading) {
       return (
         <Modal
-          overlay={true}
-          closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
-          className="test-parameters-modal"
-        >
-
-          <ModalHeader className="parameters-header">
-            <h1>Test Parameters</h1>
-          </ModalHeader>
-
-          <ModalContent className="parameter-content">
-            <h1>{error}</h1>
-            <h2>Please Try Again Later</h2>
-          </ModalContent>
-        </Modal>
-      )
-    }
-
-    if ((testParameters === undefined || testParameters === null) || loading) {
-      return (
-        <Modal
-          overlay={true}
-          closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
-          className="test-parameters-modal"
+        overlay={true}
+        closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
+        className="test-parameters-modal"
         >
 
           <ModalHeader className="parameters-header">
@@ -105,6 +81,29 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
         </Modal>
       )
     }
+    
+    if (error || this.state.error !== '') {
+      return (
+        <Modal
+        overlay={true}
+        closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
+        className="test-parameters-modal"
+        >
+
+          <ModalHeader className="parameters-header">
+            <h1>Test Parameters</h1>
+          </ModalHeader>
+
+          <ModalContent className="parameter-content">
+            <h1>{error.message || (this.state && this.state.error)}</h1>
+            <h2>Please Try Again Later</h2>
+          </ModalContent>
+        </Modal>
+      )
+    }
+
+    const testParameters = course.testParameters
+    const { operators, numbers } = this.state
 
     return (
       <Modal
@@ -119,7 +118,7 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent className="parameter-content">
-          <form className="form">
+          <form className="form" onSubmit={this.handleSubmit}>
 
             <h3 className="operators-header">Operators</h3>
             <p className="operators-text">Select available operators for students</p>
@@ -131,7 +130,9 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
                   <Operator
                     key={symbol}
                     active={true}
-                    selected={operators.includes(symbol)}
+                    selected={operators
+                      ? operators.includes(symbol)
+                      : this.props.data.course.testParameters.operators.includes(symbol)}
                     operator={symbol}
                     color={color}
                     onClick={this.handleOperatorClick}
@@ -147,7 +148,11 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
                 return (
                   <button
                   key={num}
-                  className={`select-multiples${numbers.includes(num) ? ' active' : ''}`}
+                  className={`select-multiples${(numbers
+                    ? numbers.includes(num)
+                    : this.props.data.course.testParameters.numbers.includes(num))
+                      ? ' active' : ''
+                  }`}
                   onClick={this.handleNumberClick}
                   >
                     {num}
@@ -160,7 +165,8 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
             <Input
               className="questions"
               name="questions"
-              value={questions}
+              defaultValue={testParameters.questions}
+              createRef={this.questions}
               onChange={this.handleChange}
               type="number"
             />
@@ -170,7 +176,8 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
             <Input
               className="random"
               name="randomQuestions"
-              value={randomQuestions}
+              defaultValue={testParameters.randomQuestions}
+              createRef={this.randomQuestions}
               onChange={this.handleChange}
               type="number"
             />
@@ -180,7 +187,8 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
             <Input
               className="minutes"
               name="minute"
-              value={minute}
+              defaultValue={Math.floor(testParameters.duration / 60)}
+              createRef={this.minute}
               onChange={this.handleChange}
               type="number"
             />
@@ -189,7 +197,8 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
             <Input
               className="seconds"
               name="second"
-              value={second}
+              defaultValue={testParameters.duration % 60}
+              createRef={this.second}
               onChange={this.handleChange}
               type="number"
             />
@@ -197,7 +206,6 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
             <Button
               className="save green"
               type="submit"
-              onClick={this.handleSaveClick}
             >
               Save
             </Button>
@@ -217,13 +225,24 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
     this.setState(state)
   }
 
+  private getNumberValue = (name: any): number => {
+    return parseInt(this[name].current.value.toString(), 10)
+  }
+
   private handleOperatorClick = (operator: string) => {
     const { operators } = this.state
+    const testParameters = this.props.data.course.testParameters
 
-    if (operators.includes(operator)) {
-      this.setState({ operators: operators.filter((o) => o !== operator) })
+    if (operators ? operators.includes(operator) : testParameters.operators.includes(operator)) {
+      this.setState({ operators: operators
+        ? operators.filter((o) => o !== operator)
+        : testParameters.operators.filter((o) => o !== operator)
+      })
     } else {
-      this.setState({ operators: operators.concat([operator]) })
+      this.setState({ operators: operators
+        ? operators.concat([operator])
+        : testParameters.operators.concat([operator])
+      })
     }
   }
 
@@ -232,48 +251,101 @@ class DisconnectedTestParameters extends React.Component<IProps, IState> {
 
     const num = parseInt(e.target.innerText, 10)
     const { numbers } = this.state
+    const testParameters = this.props.data.course.testParameters
 
-    if (numbers.includes(num)) {
-      this.setState({ numbers: numbers.filter((n) => n !== num) })
+    if (numbers ? numbers.includes(num) : testParameters.numbers.includes(num)) {
+      this.setState({ numbers: numbers
+        ? numbers.filter((n) => n !== num)
+        : testParameters.numbers.filter((n) => n !== num)
+      })
     } else {
-      this.setState({ numbers: numbers.concat([num]) })
-    }
-  }
-
-  private handleSaveClick = async (e: any) => {
-    e.preventDefault()
-
-    const { dispatch, token, history, match } = this.props
-    const { testParametersID, minute, numbers, operators, questions, randomQuestions, second } = this.state
-
-    const duration = (parseInt(minute.toString(), 10) * 60) + parseInt(second.toString(), 10)
-    const updates = {
-      id: testParametersID,
-      duration,
-      numbers,
-      operators,
-      questions: parseInt(questions.toString(), 10),
-      randomQuestions: parseInt(randomQuestions.toString(), 10),
-    }
-
-    try {
-      dispatch(handleUpdateTestParameters(token, match.params.id, updates))
-      history.goBack()
-    } catch (error) {
-      console.warn(error)
-      this.setState({
-        loading: false,
-        error: error.message,
+      this.setState({ numbers: numbers
+        ? numbers.concat([num])
+        : testParameters.numbers.concat([num])
       })
     }
   }
+
+  private handleSubmit = async (e: any) => {
+    e.preventDefault()
+    const testParameters = this.props.data.course.testParameters
+    const { numbers, operators } = this.state
+    const duration = (this.getNumberValue('minute') * 60) + this.getNumberValue('second')
+    const input = {
+      duration,
+      numbers,
+      operators,
+      questions: this.getNumberValue('questions'),
+      randomQuestions: this.getNumberValue('randomQuestions'),
+    }
+    await this.props.mutate({
+      variables: { id: testParameters.id, input },
+      optimisticResponse: {
+        updateTestParameters: {
+          __typename: 'TestParameters',
+          id: testParameters.id,
+          ...input,
+        },
+      },
+    })
+    this.props.history.push(`/teacher/class-detail/${this.props.match.params.id}`)
+  }
 }
 
-const mapStateToProps = ({ user, courses }: any, { match }: any) => ({
-  token: user.token,
-  testParameters: courses && courses[match.params.id]
-    ? courses[match.params.id].testParameters
-    : undefined
-})
+const GET_COURSE = gql`
+  query course($id: ObjID!) {
+    course(id: $id) {
+      id
+      testParameters {
+        id
+        duration
+        numbers
+        operators
+        questions
+        randomQuestions
+      }
+    }
+  }
+`
 
-export const TestParameters = connect(mapStateToProps)(DisconnectedTestParameters)
+const UPDATE_TEST_PARAMETERS = gql`
+  mutation updateTestParameters($id: ObjID!, $input: UpdateTestParametersInput!) {
+    updateTestParameters(id: $id, input: $input) {
+      id
+      duration
+      questions
+      randomQuestions
+      numbers
+      operators
+    }
+  }
+`
+
+export const TestParametersWithData = compose(
+  graphql(GET_COURSE, {
+    options: ({ match }: any) => ({
+      variables: {
+        id: match.params.id,
+      },
+    })
+  }),
+  graphql(UPDATE_TEST_PARAMETERS, {
+    options: ({ match }: any ) => ({
+      update: (cache, { data: { updateTestParameters } }: any) => {
+        const data: any = cache.readQuery({
+          query: GET_COURSE,
+          variables: { id: match.params.id }
+        })
+        cache.writeQuery({
+          query: GET_COURSE,
+          data: {
+            course: {
+              ...data.course,
+              testParameters: updateTestParameters,
+            },
+          },
+        })
+      }
+    })
+  })
+)(TestParameters)

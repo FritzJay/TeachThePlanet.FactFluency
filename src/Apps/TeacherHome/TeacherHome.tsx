@@ -6,7 +6,7 @@ import {
   EditClassModalWithData,
   Navbar,
   NewClassModal,
-  TestParameters,
+  TestParametersWithData,
   ParentInvite,
   AddStudentModal,
   StudentInvitationModal,
@@ -57,7 +57,7 @@ export class TeacherHome extends React.Component<IProps> {
 
         <Route
           path={`${match.path}/class-detail/:id/test-parameters`}
-          component={TestParameters}
+          component={TestParametersWithData}
         />
         
         <Route
