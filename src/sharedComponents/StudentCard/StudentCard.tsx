@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 import { GET_COURSE } from 'src/Apps/TeacherHome/components'
 import { ITest, getOperatorSymbol, IStudentUser } from 'src/utils'
 import { Card, ConfirmButton } from '..'
-import { NewTestsIndicator } from './NewTestsIndicator/NewTestsIndicator'
+/*import { NewTestsIndicator } from './NewTestsIndicator/NewTestsIndicator'*/
 import './StudentCard.css'
 
 interface IStudentNumberProps {
@@ -140,7 +140,7 @@ export const StudentCard = ({ courseId, student: { id, name, tests, user } }: IS
             }
           </h3>
 
-          <NewTestsIndicator tests={tests} />
+          {/*<NewTestsIndicator tests={tests} />*/}
 
           <ConfirmButton
             className="delete"
