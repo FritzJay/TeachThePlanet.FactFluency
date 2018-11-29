@@ -274,9 +274,6 @@ const GRADE_TEST = gql`
   }
 `
 
-// Queries/mutations are executed in order.
-// GET_TEST_ID must be the first argument in `compose`
-// for `testId` to be accessible to GET_TEST.
 export const TakeTestWithData = compose(
   graphql(
     GET_TEST_ID,
