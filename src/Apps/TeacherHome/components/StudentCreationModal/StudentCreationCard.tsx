@@ -1,21 +1,32 @@
 import * as React from 'react'
-import { Card, Button, Input } from 'src/sharedComponents';
+import { Card, Button, Input, Loading } from 'src/sharedComponents';
 
 interface IProps {
   name: string
-  username: string
   password: string
+  username: () => Promise<string>
   onPasswordChange: (name: string, password: string) => void
   onDelete: (name: string) => void
 }
 
 export class StudentCreationCard extends React.Component<IProps> {
+  public state = {
+    username: null
+  }
+
+  public async componentDidMount() {
+    const username = await this.props.username()
+    this.setState({ username })
+  }
+
   public render() {
-    const { username, password } = this.props
+    const { password } = this.props
 
     return (
       <Card className="student-card">
-        <h4 className="username">{username}</h4>
+        <h4 className="username">{this.state.username !== ''
+          ? this.state.username
+          : <Loading />}</h4>
         <Input
           className="password"
           name="password"

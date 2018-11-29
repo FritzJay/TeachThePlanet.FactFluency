@@ -85,7 +85,7 @@ export const ClassDetail = ({ match }: IProps) => (
   <Query
     query={GET_COURSE}
     variables={{ id: match.params.id }}
-    pollInterval={15000}
+    pollInterval={10000}
   >
     {({ error, loading, data }) => {
       if (loading) {
