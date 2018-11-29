@@ -113,7 +113,18 @@ class LoginModal extends React.Component<IProps, IState> {
     )
   }
   
-  private handlePracticeClick = async () => this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, 'password', USER_TYPES.student)
+  private handlePracticeClick = async () => {
+    if (process.env.REACT_APP_DEFAULT_STUDENT_LOGIN === undefined) {
+      throw new Error(
+        'There was an error logging in with the default student. ' +
+        'Make sure you setup a REACT_APP_DEFAULT_STUDENT_LOGIN ' +
+        'environment variable and a student document that corresponds ' +
+        'to the environment variable. The student also needs to be a part ' +
+        'of a class with default test parameters.'
+      )
+    }
+    this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, 'password', USER_TYPES.student)
+  }
 
   private handleLoginClick = async () => {
     const { email, password, userType } = this.props
@@ -126,13 +137,11 @@ class LoginModal extends React.Component<IProps, IState> {
     await this.loginRequest(email, password, userType)
   }
 
-  private loginRequest = async (email?: string, password?: string, userType?: string) => {
-    if (email !== undefined && password !== undefined && userType !== undefined) {
+  private loginRequest = async (email: string, password: string, userType: string) => {
+    if (email !== '' && password !== '') {
       this.setState({ loading: true }, async () => {
         await this.loginForUserType(email, password, userType)
       })
-    } else {
-      throw new Error('There was an error logging in with the default student. You probably need to setup a REACT_APP_DEFAULT_STUDENT_LOGIN environment variable')
     }
   }
 
@@ -143,17 +152,10 @@ class LoginModal extends React.Component<IProps, IState> {
       switch (userType) {
         case USER_TYPES.student: {
           await client.resetStore()
-          try {
-            const token = await saveSignInStudent(email, password)
-            await localStorage.setItem('token', token)
-            history.push('/fact-fluency')
-            return
-          } catch (error) {
-            if (error.name === 'ChangePasswordRequiredError') {
-              history.push('/index/first-time-sign-in')
-              return
-            }
-          }
+          const token = await saveSignInStudent(email, password)
+          await localStorage.setItem('token', token)
+          history.push('/fact-fluency')
+          return
         }
         case USER_TYPES.teacher: {
           await client.resetStore()
@@ -167,6 +169,10 @@ class LoginModal extends React.Component<IProps, IState> {
       }
     } catch(error) {
       console.warn(error)
+      if (error.name === 'ChangePasswordRequiredError') {
+        history.push('/index/first-time-sign-in')
+        return
+      }
       this.setState({
         error: error.toString(),
         loading: false,

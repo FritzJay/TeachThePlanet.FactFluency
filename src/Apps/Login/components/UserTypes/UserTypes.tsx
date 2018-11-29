@@ -34,13 +34,14 @@ export const UserTypes = ({ currentType, onSelect }: IProps) => {
         Student
       </Button>
 
-      <Button
+      {/*<Button
         name={USER_TYPES.parent}
         className={getClassName(USER_TYPES.parent)}
         onClick={onSelect}
       >
         Parent
       </Button>
+      */ null}
     </div>
   )
 }
