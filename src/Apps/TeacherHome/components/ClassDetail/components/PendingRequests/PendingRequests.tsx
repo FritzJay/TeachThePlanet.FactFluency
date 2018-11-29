@@ -24,27 +24,27 @@ const CourseRequestCard = ({ date, student, onDelete, onAccept }: ICourseRequest
         : student.name}
     </h3>
 
-      <span className="email">{student.user.email}</span>
+    <span className="email">{student.user.email}</span>
 
-      <h4 className="date">{date.getMonth()}/{date.getDate()}/{date.getFullYear()}</h4>
+    <h4 className="date">{date.getMonth()}/{date.getDate()}/{date.getFullYear()}</h4>
 
-      <ConfirmButton
-        className="delete"
-        confirmClassName="confirm"
-        onClick={onDelete}
-      >
-        <span className="confirmation">Delete?</span>
-        <i className="material-icons">delete</i>
-      </ConfirmButton>
-      
-      <ConfirmButton
-        className="accept green"
-        confirmClassName="confirm"
-        onClick={onAccept}
-      >
-        <span className="default">Accept</span>
-        <span className="confirmation">Accept?</span>
-      </ConfirmButton>
+    <ConfirmButton
+      className="delete"
+      confirmClassName="confirm"
+      onClick={onDelete}
+    >
+      <span className="confirmation">Delete?</span>
+      <i className="material-icons">delete</i>
+    </ConfirmButton>
+    
+    <ConfirmButton
+      className="accept green"
+      confirmClassName="confirm"
+      onClick={onAccept}
+    >
+      <span className="default">Accept</span>
+      <span className="confirmation">Accept?</span>
+    </ConfirmButton>
   </Card>
 )
 
@@ -106,7 +106,7 @@ export class PendingRequests extends React.Component<IProps, IState> {
     return (
       <div className="PendingRequests">
         <div className="section-header">
-            <h2>Student Have Requested To Join This Class</h2>
+            <h2>Class Requests</h2>
             <Button
               name="activeDescription"
               className="blue description-button"

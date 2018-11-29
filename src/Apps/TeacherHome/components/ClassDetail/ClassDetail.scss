@@ -109,7 +109,7 @@
     }
 
     // SHARED
-    .StudentsDescription, .PendingInvitationsDescription {
+    .StudentsDescription, .PendingInvitationsDescription, .PendingRequestsDescription {
         width: 725px; // Match the size of the student cards
         color: $gray;
         font-weight: bold;
