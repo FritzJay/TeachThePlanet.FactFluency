@@ -1,0 +1,100 @@
+@import 'src/Stylesheets/all';
+
+.PendingRequests {
+  width: 757px; // Match the size of the student cards
+
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 2em;
+  justify-content: stretch;
+
+  .new-request-card {
+    height: 69px;
+
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+
+    .text {
+      margin: 0 1em 0 0;
+      align-self: center;
+    }
+  }
+
+  .CourseRequestCard {
+    display: grid;
+    grid-template-areas: 'studentname studentname studentname email email email date delete accept';
+  
+    align-items: center;
+    justify-items: center;
+    padding: 0.25em 1em;
+  
+    .student-name {
+      grid-area: studentname;
+  
+      width: 125px;
+      color: $black;
+    }
+  
+    .email {
+      grid-area: email;
+  
+      width: 125px;
+      color: $gray;
+    }
+  
+    .date {
+      grid-area: date;
+  
+      width: 100px;
+      color: $gray;
+    }
+    
+    .delete {
+      grid-area: delete;
+      
+      text-align: end;
+      border: none;
+      background-color: transparent;
+      justify-self: flex-end;    
+      margin: 0;
+      
+      &:hover {
+        cursor: pointer;
+      }
+
+      .confirmation {
+        visibility: hidden;
+      }
+      
+      &.confirm {
+        color: $red;
+        
+        .confirmation {
+          visibility: visible;
+        }
+      }
+    }
+    
+    .accept {
+      grid-area: accept;
+
+      justify-self: center;
+
+      .confirmation {
+        display: none;
+      }
+
+      &.confirm {
+        .default {
+          display: none;
+        }
+
+        .confirmation {
+          display: inline
+        }
+      }
+    }
+  }
+}

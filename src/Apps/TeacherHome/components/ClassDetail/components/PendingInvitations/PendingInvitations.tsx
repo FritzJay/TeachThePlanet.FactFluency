@@ -84,6 +84,10 @@ export class PendingInvitations extends React.Component<IProps, IState> {
           <Mutation
             key={student.id}
             mutation={REMOVE_PENDING_STUDENT}
+            variables={{
+              studentId: student.id,
+              courseId: match.params.id,
+            }}
             optimisticResponse={{
               __typename: 'Mutation',
               removePendingStudent: true
@@ -111,7 +115,7 @@ export class PendingInvitations extends React.Component<IProps, IState> {
                 date={new Date(student.createdAt)}
                 student={student}
                 invitationType={INVITATION_TYPES.pendingStudent}
-                onDelete={() => removePendingStudent({ variables: { id: student.id } })}
+                onDelete={removePendingStudent}
               />
             )}
           </Mutation>

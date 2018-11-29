@@ -9,6 +9,7 @@
         'classes         classes         classes       filler          filler'
         'classcode       classcode       classcode       classcode       classcode'
         'links           links           links           links           links'
+        'pendingrequests pendingrequests pendingrequests pendingrequests pendingrequests'
         'students        students        students        students        students'
         'pendinginvitations pendinginvitations pendinginvitations pendinginvitations pendinginvitations';
     align-content: flex-start;
@@ -75,6 +76,10 @@
     
     .StudentReports {
         grid-area: students;
+    }
+
+    .PendingRequests {
+        grid-area: pendingrequests;
     }
 
     .PendingInvitations {

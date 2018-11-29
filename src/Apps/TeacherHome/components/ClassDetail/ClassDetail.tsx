@@ -10,6 +10,7 @@ import { StudentReports } from './components/StudentReports/StudentReports'
 import { Header } from './components/Header/Header'
 import { CopyToClipboard } from 'src/sharedComponents'
 import { PendingInvitations } from './components/PendingInvitations/PendingInvitations'
+import { PendingRequests } from './components/PendingRequests/PendingRequests'
 import './ClassDetail.css'
 
 
@@ -58,6 +59,22 @@ export const GET_COURSE = gql`
           name
         }
       }
+      courseRequests {
+        id
+        createdAt
+        student {
+          id
+          name
+          user {
+            id
+            email
+          }
+        }
+        course {
+          id
+          name
+        }
+      }
     }
   }
 `
@@ -87,8 +104,8 @@ export const ClassDetail = ({ match }: IProps) => (
         )
       }
 
-      const { code, name, id, students, courseInvitations } = data.course
-
+      const { code, name, id, students, courseInvitations, courseRequests } = data.course
+      
       return (
         <>
           <div className="ClassDetail">
@@ -114,6 +131,14 @@ export const ClassDetail = ({ match }: IProps) => (
               match={match}
               onParentInvitesClick={window.print}
             />
+
+            {courseRequests.length > 0
+              ? (
+                <PendingRequests
+                  courseRequests={courseRequests}
+                  courseId={match.params.id}
+                />
+              ): null}
 
             <StudentReports
               courseId={id}
