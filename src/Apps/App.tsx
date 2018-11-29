@@ -9,6 +9,7 @@ import Login from 'src/Apps/Login/Login'
 import { PageNotFound } from 'src/sharedComponents'
 import { TeacherHome } from './TeacherHome/TeacherHome'
 import { FactFluency } from './FactFluency/FactFluency'
+import { ErrorBoundary } from 'src/sharedComponents/ErrorBoundary/ErrorBoundary'
 import './App.css'
 
 
@@ -16,30 +17,32 @@ export default class App extends React.Component<any> {
   public render() {
     return (
       <div className="App">
-        <Switch>
-          <Route
-            path="/"
-            exact={true}
-            render={() => <Redirect to="/index" />}
-          />
+        <ErrorBoundary>
+          <Switch>
+            <Route
+              path="/"
+              exact={true}
+              render={() => <Redirect to="/index" />}
+            />
 
-          <Route
-            path="/index"
-            component={Login}
-          />
+            <Route
+              path="/index"
+              component={Login}
+            />
 
-          <Route
-            path="/fact-fluency"
-            component={FactFluency}
-          />
+            <Route
+              path="/fact-fluency"
+              component={FactFluency}
+            />
 
-          <Route
-            path="/teacher"
-            component={TeacherHome}
-          />
+            <Route
+              path="/teacher"
+              component={TeacherHome}
+            />
 
-          <Route component={PageNotFound} />
-        </Switch>
+            <Route component={PageNotFound} />
+          </Switch>
+        </ErrorBoundary>
       </div>
     )
   }

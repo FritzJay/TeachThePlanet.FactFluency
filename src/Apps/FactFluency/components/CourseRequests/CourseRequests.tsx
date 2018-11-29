@@ -117,6 +117,7 @@ export class CourseRequests extends React.Component<any, IState> {
               <ModalContent>
               <Mutation
                   mutation={CREATE_REQUEST}
+                  onError={() => this.setState({ error: 'Invalid class code' })}
                   update={(cache, { data: { createCourseRequest } }) => {
                     const { student }: any = cache.readQuery({ query: GET_COURSE_REQUESTS })
                     cache.writeQuery({
@@ -130,12 +131,12 @@ export class CourseRequests extends React.Component<any, IState> {
                     })
                   }}
                 >
-                  {(createRequest, { error: createRequestError }: any) => {
+                  {createRequest => {
                     return (
                       <div className="new-request-container">
                         <h3 className="card-header">Enter a class code to request an invitation</h3>
-                        {this.state.error !== '' || createRequestError
-                          ? <p className="error">{this.state.error || createRequestError.message}</p>
+                        {this.state.error !== ''
+                          ? <p className="error">{this.state.error}</p>
                           : null
                         }
                         <Input
@@ -147,7 +148,7 @@ export class CourseRequests extends React.Component<any, IState> {
                         <ConfirmButton
                             className="green accept"
                             confirmClassName="confirm-button"
-                            disableOnClick={false}
+                            disableTimeout={2000}
                             onClick={(e: any) => {
                               e.preventDefault()
                               if (this.state.code === '') {
@@ -181,6 +182,7 @@ export class CourseRequests extends React.Component<any, IState> {
                       key={id}
                       mutation={REMOVE_REQUEST}
                       variables={{ id }}
+                      onError={() => this.setState({ error: 'There was an unexpected server error. Please try again later.' })}
                       update={(cache) => {
                         const { student }: any = cache.readQuery({ query: GET_COURSE_REQUESTS })
                         cache.writeQuery({

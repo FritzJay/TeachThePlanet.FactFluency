@@ -174,7 +174,7 @@ class LoginModal extends React.Component<IProps, IState> {
         return
       }
       this.setState({
-        error: error.toString(),
+        error: 'There was an unexpected error. Please try again later.',
         loading: false,
       })
     }
