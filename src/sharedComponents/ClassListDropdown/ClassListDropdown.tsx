@@ -182,12 +182,12 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
   }
 
   private handleJoinClassClick = () => {
-    this.props.history.push('/fact-fluency/join-class')
+    this.props.history.push('/fact-fluency/select-test/course-requests')
     this.toggleDropdown()
   }
   
   private handleInvitationsClick = () => {
-    this.props.history.push('/fact-fluency/join-class')
+    this.props.history.push('/fact-fluency/select-test/course-invitations')
     this.toggleDropdown()
   }
 }

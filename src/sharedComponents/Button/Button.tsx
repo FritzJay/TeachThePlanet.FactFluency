@@ -27,6 +27,7 @@ interface IConfirmButtonProps {
   confirmClassName?: string
   children?: any
   disableTimeout?: number
+  disableOnClick?: boolean
   onClick?: (event: any) => void
 }
 
@@ -56,7 +57,7 @@ export class ConfirmButton extends React.Component<IConfirmButtonProps | any, IS
   }
 
   public render() {
-    const { className, children, confirmClassName, disableTimeout, onClick, ...rest } = this.props
+    const { className, children, confirmClassName, disableOnClick, disableTimeout, onClick, ...rest } = this.props
     const { confirm, disabled } = this.state
 
     return (
@@ -85,7 +86,9 @@ export class ConfirmButton extends React.Component<IConfirmButtonProps | any, IS
       await this.props.onClick(e)
       if (this._isMounted) {
           this.setState({
-          disabled: true,
+          disabled: this.props.disableOnClick !== undefined
+            ? this.props.disableOnClick
+            : true,
           confirm: false,
         }, () => {
           this.disabledTimeout = this.props.disableTimeout && window.setTimeout(() => {

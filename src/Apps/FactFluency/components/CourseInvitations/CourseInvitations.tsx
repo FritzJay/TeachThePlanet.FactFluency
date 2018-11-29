@@ -3,7 +3,7 @@ import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import { ICourseInvitation } from 'src/utils'
-import { Card, ConfirmButton, Loading } from 'src/sharedComponents'
+import { Card, ConfirmButton, Loading, Modal, ModalHeader, ModalContent } from 'src/sharedComponents'
 import './CourseInvitations.css'
 
 const GET_COURSE_INVITATIONS = gql`
@@ -76,12 +76,17 @@ export const CourseInvitations = () => (
       const { student: { courseInvitations } } = data
 
       return (
-        <div className="CourseInvitations">
-          <h2 className="header">Select an invitation to join the classroom!</h2>
-          {courseInvitations.length > 0
-            ? (
-            <div className="courseInvitations-container">
-              {courseInvitations.map(({ id, course }: ICourseInvitation) => (
+        <Modal
+          className="CourseInvitations"
+          overlay={true}
+          closeTo="/fact-fluency"
+        >
+          <ModalHeader>
+            <h2 className="header">Select an invitation to join the classroom!</h2>
+          </ModalHeader>
+          <ModalContent>
+            {courseInvitations.length > 0
+              ? courseInvitations.map(({ id, course }: ICourseInvitation) => (
                 <Mutation
                   key={id}
                   mutation={ACCEPT_INVITATION}
@@ -121,12 +126,11 @@ export const CourseInvitations = () => (
                     >
                       {removeCourseInvitation => (
                         <Card className="invitation-card">
-                          <h3 className="card-header">{course.name}</h3>
-                          <h4 className="teacher">{course.teacher.name}</h4>
+                          <h3 className="card-header">{course.teacher.name} invited you to join the class {course.name}</h3>
                           <ConfirmButton
                             value={id}
                             onClick={() => removeCourseInvitation()}
-                            className="yellow decline"
+                            className="red decline"
                             confirmClassName="confirm-button"
                           >
                             <span className="default">Decline</span>
@@ -146,11 +150,10 @@ export const CourseInvitations = () => (
                     </Mutation>
                   )}
                 </Mutation>
-              ))}
-            </div>
-            ) : <p>You don't have any courseInvitations. Ask your teacher to create an invitation for "student2@email.com"!</p>
-          }
-        </div>
+              )) : <p>You don't have any class invitations. Ask your teacher to create an invitation for "student2@email.com"!</p>
+            }
+          </ModalContent>
+        </Modal>
       )
     }}
   </Query>

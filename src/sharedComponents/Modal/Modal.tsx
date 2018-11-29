@@ -19,6 +19,11 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
   private wrapperRef: any
   private timeout: any
 
+  public constructor(props: IModalProps) {
+    super(props)
+    this.wrapperRef = null
+  }
+
   public componentDidMount() {
     const { closeTo, overlay, onClose } = this.props
     if ((closeTo && overlay) || (onClose && overlay)) {
@@ -48,9 +53,9 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
       </div>
     )
   }
-  
-  private setWrapperRef = (node: any) => {
-    this.wrapperRef = node
+
+  private setWrapperRef = (element: any) => {
+    this.wrapperRef = element
   }
 
   private handleClickOutside = (event: any) => {
@@ -71,6 +76,7 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
     const { history, location, closeTo, overlay } = this.props
 
     if (closeTo && overlay && location.pathname !== closeTo) {
+      console.log('CLOSING FROM MODAL')
       if (closeTo === 'GO_BACK') {
         history.goBack()
       } else {

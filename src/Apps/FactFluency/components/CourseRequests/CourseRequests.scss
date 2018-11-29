@@ -1,0 +1,95 @@
+@import 'src/Stylesheets/all';
+
+.CourseRequests {
+  grid-column: 2 / -2;
+  text-align: center;
+
+  .header {
+    background-color: $blue;
+    color: $white;
+  }
+
+  .content {
+    grid-gap: 1em;
+  }
+  
+  .request-card {
+    display: grid;
+    grid-template-areas:
+    'header  header'
+    'decline decline';
+    
+    padding: 1em;
+    width: 90%;
+    
+    .card-header {
+      grid-area: header;
+      margin-top: 0;
+    }
+  }
+  
+    .no-requests-text {
+      margin-top: 0;
+    }
+  
+  .new-request-container {
+    display: grid;
+    grid-template-areas:
+      'header header header header'
+      'error  error  error  error'
+      'code   code   code   button';
+
+    .card-header {
+      grid-area: header;
+
+      margin: 0;
+    }
+
+    .error {
+      grid-area: error;
+
+      color: $red;
+      font-weight: bold;
+    }
+
+    .class-code-input {
+      grid-area: code;
+      margin: 1em;
+    }
+
+    .accept {
+      grid-area: button;
+      justify-self: center;
+      align-self: center;
+    }
+  }
+
+  .accept {
+    grid-area: decline;
+    margin-right: 0.5em;
+
+    .confirmation {
+      display: none;
+    }
+  }
+    
+  .decline {
+    grid-area: decline;
+    margin-right: 0.5em;
+    justify-self: center;
+    
+    .confirmation {
+      display: none;
+    }
+  }
+
+  .confirm-button {
+    .default {
+      display: none;
+    }
+
+    .confirmation {
+      display: inline;
+    }
+  }
+}

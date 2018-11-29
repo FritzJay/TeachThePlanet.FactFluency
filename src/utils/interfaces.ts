@@ -62,6 +62,14 @@ export interface ICourseInvitation {
   updatedAt: number
 }
 
+export interface ICourseRequest {
+  id: string
+  student: IStudentUser
+  course: IClass
+  createdAt: number
+  updatedAt: number
+}
+
 
 /* API Update Interfaces */
 
@@ -115,6 +123,13 @@ export interface IQuestion {
   correctAnswer?: number
   start?: number
   end?: number
+}
+
+export interface IDisplayQuestion {
+  bottom: string
+  operator: string
+  start?: number
+  top: string
 }
 
 export interface ITestResults {

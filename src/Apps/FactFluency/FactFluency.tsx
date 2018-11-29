@@ -6,7 +6,8 @@ import {
   SelectTest,
   StartTest,
   TakeTestWithData,
-  TestResultsWithData
+  TestResultsWithData,
+  CourseRequests,
 } from './components'
 import './FactFluency.css'
 
@@ -52,8 +53,13 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
         />
         
         <Route
-          path={`${match.path}/join-class`}
+          path={`${match.path}/select-test/course-invitations`}
           component={CourseInvitations}
+        />
+        
+        <Route
+          path={`${match.path}/select-test/course-requests`}
+          component={CourseRequests}
         />
       </div>
     </div>

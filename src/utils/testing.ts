@@ -1,5 +1,4 @@
-import { IQuestion } from './interfaces'
-import { IDisplayQuestion } from './tempInterfaces'
+import { IQuestion, IDisplayQuestion } from './interfaces'
 
 export const initializeQuestions = (questions: IQuestion[]): IQuestion[] => {
   return questions.map((q: any) => {
