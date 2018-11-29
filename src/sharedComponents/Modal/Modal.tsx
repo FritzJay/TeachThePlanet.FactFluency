@@ -76,7 +76,6 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
     const { history, location, closeTo, overlay } = this.props
 
     if (closeTo && overlay && location.pathname !== closeTo) {
-      console.log('CLOSING FROM MODAL')
       if (closeTo === 'GO_BACK') {
         history.goBack()
       } else {
