@@ -108,6 +108,7 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
                     <Button
                       className={`ClassListDropdown-button${active ? ' active' : ''}`}
                       onClick={this.toggleDropdown}
+                      title={`You have ${numberOfInvitations} class invitation${numberOfInvitations > 1 ? 's' : ''}`}
                     >
                       <i className="material-icons">school</i>
                       <ClassListNotification numberOfNotifications={numberOfInvitations} />
