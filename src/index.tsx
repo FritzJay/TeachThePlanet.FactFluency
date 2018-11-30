@@ -36,7 +36,7 @@ const client = new ApolloClient({
     resolvers: {
       ...factFluencyResolvers(),
     }
-  }
+  },
 })
 
 ReactDOM.render((

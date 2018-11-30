@@ -1,12 +1,16 @@
 import * as React from 'react'
+import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { clearCached } from 'src/utils'
-import { Button, Dropdown } from 'src/sharedComponents'
+import { Button, Dropdown, DeleteAccountLink } from 'src/sharedComponents'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
-import { Query } from 'react-apollo';
+
+export * from './components/ClassListDropdown/ClassListDropdown'
+export * from './components/DeleteAccountLink/DeleteAccountLink'
+export * from './components/Dropdown/Dropdown'
 
 interface ILogoutLinkProps {
   active: boolean
@@ -16,7 +20,7 @@ interface ILogoutLinkProps {
 
 const LogoutLink = ({ active, onLogout }: ILogoutLinkProps) => {
   if (active) {
-    return <a className="LogoutLink" onClick={onLogout}>Logout</a>
+    return <a className="LogoutLink navbar-link" onClick={onLogout}>Logout</a>
   } else {
     return null
   }
@@ -138,6 +142,8 @@ export class Navbar extends React.Component<IProps, IState> {
                   await clearCached()
                 }}
               />
+              
+              <DeleteAccountLink />
             </Dropdown>
           </div>
         )}

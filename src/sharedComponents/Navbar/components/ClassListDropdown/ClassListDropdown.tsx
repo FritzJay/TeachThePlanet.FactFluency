@@ -4,9 +4,11 @@ import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Query } from 'react-apollo'
 
 import { ClassListNotification } from './components/ClassListNotification/ClassListNotification'
-import { Button, Modal, ModalHeader, ModalContent, Loading } from '..'
+import { Button, Modal, ModalHeader, ModalContent, Loading } from '../../..'
 import { IClass } from 'src/utils'
 import './ClassListDropdown.css'
+
+export * from './components/ClassListNotification/ClassListNotification'
 
 export const GET_ACTIVE_COURSE_ID = gql`
   {
