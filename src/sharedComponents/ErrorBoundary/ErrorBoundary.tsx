@@ -19,12 +19,14 @@ export class ErrorBoundary extends React.Component<IProps, IState> {
   private redirectTimeout: any;
 
   public componentDidCatch(error: Error, info: any) {
+    /* TODO: UNCOMMENT FOR PRODUCTION
     this.redirectTimeout = window.setTimeout(() => {
       this.setState({ redirect: true })
     }, 3000)
+    */
 
     this.setState({ hasError: true })
-    console.log(error, info)
+    console.warn(error, info)
   }
 
   public componentWillUnmount() {

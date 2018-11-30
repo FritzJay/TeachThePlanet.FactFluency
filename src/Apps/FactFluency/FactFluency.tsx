@@ -1,67 +1,131 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
+import { Query } from 'react-apollo'
 import { Route, RouteComponentProps, Redirect } from 'react-router-dom'
-import { Navbar, ConnectedClassListDropdown } from 'src/sharedComponents'
+
+import { Navbar, ConnectedClassListDropdown, Loading } from 'src/sharedComponents'
 import {
   CourseInvitations,
   SelectTest,
+  SelectTestQueryFragment,
+  SelectTestCacheFragment,
   StartTest,
-  TakeTestWithData,
+  TakeTest,
+  TakeTestQueryFragment,
+  TakeTestCacheFragment,
   TestResultsWithData,
   CourseRequests,
 } from './components'
 import './FactFluency.css'
 
+export const QUERY = gql`
+  query student($testId: ObjID) {
+    student {
+      id
+      courses {
+        ...SelectTestQueryFragment
+      }
+      test(testId: $testId) {
+        ...TakeTestQueryFragment
+      }
+    }
+  }
+  ${SelectTestQueryFragment}
+  ${TakeTestQueryFragment}
+`
+
+export const CACHE = gql`
+  {
+    ${SelectTestCacheFragment}
+    ${TakeTestCacheFragment}
+  }
+`
+
 export const FactFluency = ({ match }: RouteComponentProps) => {
-  const renderRedirect = () => <Redirect to={`${match.url}/select-test`} />
-
   return (
-    <div>
-      <Route
-        render={(props) => (
-          <Navbar {...props} logoLink={match.url}>
-            <ConnectedClassListDropdown />
-          </Navbar>
-        )}
-      />
+    <Query query={CACHE}>
+      {({ data: { activeCourseId, testId } }) => (
+        <Query query={QUERY} variables={{ testId }}>
+          {({ data: { student }, loading }) => {
+            if (loading) {
+              return (
+                <div>
+                  <Route
+                    render={(props) => (
+                      <Navbar {...props} logoLink={match.url}>
+                        <ConnectedClassListDropdown />
+                      </Navbar>
+                    )}
+                  />
+                  <div className="FactFluency">
+                      <Loading className="loading" />
+                  </div>
+                </div>
+              )
+            }
 
-      <div className="FactFluency">
+            return (
+              <div>
+                <Route
+                  render={(props) => (
+                    <Navbar {...props} logoLink={match.url}>
+                      <ConnectedClassListDropdown />
+                    </Navbar>
+                  )}
+                />
 
-        <Route
-          exact={true}
-          path={match.path}
-          render={renderRedirect}
-        />
+                <div className="FactFluency">
 
-        <Route
-          path={`${match.path}/select-test`}
-          component={SelectTest}
-        />
+                  <Route
+                    exact={true}
+                    path={match.path}
+                    render={() => <Redirect to={`${match.url}/select-test`} />}
+                  />
 
-        <Route
-          path={`${match.path}/start-test`}
-          component={StartTest}
-        />
+                  <Route
+                    path={`${match.path}/select-test`}
+                    render={(props) => (
+                      <SelectTest
+                        {...props}
+                        activeCourseId={activeCourseId}
+                        studentId={student.id}
+                        courses={student.courses}
+                      />
+                    )}
+                  />
 
-        <Route
-          path={`${match.path}/take-test`}
-          component={TakeTestWithData}
-        />
+                  <Route
+                    path={`${match.path}/start-test`}
+                    component={StartTest}
+                  />
 
-        <Route
-          path={`${match.path}/test-results`}
-          component={TestResultsWithData}
-        />
-        
-        <Route
-          path={`${match.path}/select-test/course-invitations`}
-          component={CourseInvitations}
-        />
-        
-        <Route
-          path={`${match.path}/select-test/course-requests`}
-          component={CourseRequests}
-        />
-      </div>
-    </div>
+                  <Route
+                    path={`${match.path}/take-test`}
+                    render={() => (
+                      <TakeTest test={student.test} />
+                    )}
+                  />
+
+                  <Route
+                    path={`${match.path}/test-results`}
+                    component={TestResultsWithData}
+                  />
+                  
+                  <Route
+                    path={`${match.path}/select-test/course-invitations`}
+                    component={CourseInvitations}
+                  />
+                  
+                  <Route
+                    path={`${match.path}/select-test/course-requests`}
+                    component={CourseRequests}
+                  />
+                </div>
+              </div>
+            )
+          }}
+        </Query>
+      )}
+    </Query>
   )
 }

@@ -1,7 +1,7 @@
 import * as React from "react"
 import gql from 'graphql-tag'
-import { compose, graphql } from "react-apollo"
-import { RouteComponentProps } from "react-router-dom"
+import { Mutation } from "react-apollo"
+import { Redirect } from "react-router-dom"
 
 import {
   initializeQuestions,
@@ -10,20 +10,64 @@ import {
   startQuestion,
   randomlyFlipQuestion,
   IQuestion,
+  ITest,
 } from 'src/utils'
 import { getOperatorSymbol } from "src/utils"
 import { Button, Card, Input, Loading } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
 import './TakeTest.css'
 
-interface IProps extends RouteComponentProps<{}> {
-  data: {
-    noTest: boolean
-    test: any
-    loading: boolean
-    error: Error
+export const TakeTestQueryFragment = gql`
+  fragment TakeTestQueryFragment on Test {
+    id
+    duration
+    number
+    operator
+    randomQuestions
+    start
+    end
+    questions {
+      id
+      question
+      start
+      end
+    }
   }
-  mutate: any
+`
+
+export const TakeTestCacheFragment = `
+  testId @client
+`
+
+const GRADE_TEST = gql`
+  mutation gradeTest($id: ObjID!, $input: GradeTestInput!) {
+    gradeTest(id: $id, input: $input) {
+      id,
+      testResults {
+        total,
+        needed,
+        correct,
+        incorrect {
+          question,
+          studentAnswer,
+          correctAnswer,
+          start,
+          end
+        },
+        quickest {
+          question,
+          studentAnswer,
+          correctAnswer,
+          start,
+          end
+        },
+      }
+    }
+  }
+`
+
+interface IProps {
+  test: ITest
 }
 
 interface IState {
@@ -32,23 +76,25 @@ interface IState {
   questionIndex: number
   questionStarted?: number
   questions: IQuestion[]
+  redirectToTestResults: boolean
 }
 
-class TakeTest extends React.Component<IProps, IState> {
+export class TakeTest extends React.Component<IProps, IState> {
   public state: IState = {
     answer: '',
     keyboard: false,
     questionIndex: 0,
-    questions: [],
+    questions: randomizeQuestions(
+      initializeQuestions(this.props.test.questions)
+    ),
+    redirectToTestResults: false,
   }
 
   private submitTestOnTimeout: any
+  private gradeTest: any
 
   public componentDidMount() {
-    if (this.props.data.noTest === true) {
-      this.props.history.replace('/fact-fluency')
-      return
-    } 
+    this.setState({ questions: [startQuestion(this.props.test.questions[0])] })
     window.addEventListener('keydown', this.handleKeyDown)
   }
 
@@ -60,54 +106,47 @@ class TakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { loading, error, noTest } = this.props.data
-
-    if (loading || noTest) {
-      return (
-        <div className="TakeTest">
-          <Loading className="loading" />
-        </div>
-      )
-    }
-
-    if (error) {
-      return (
-        <div className="TakeTest">
-          <h3 className="error">{error.message}</h3>
-        </div>
-      )
+    if (this.state.redirectToTestResults) {
+      return <Redirect to="fact-fluency/test-results" />
     }
 
     const { answer, keyboard } = this.state
-    const question = this.props.data.test.questions[this.state.questionIndex]
+    const question = this.props.test.questions[this.state.questionIndex]
 
     if (question) {
       const { operator, top, bottom } = randomlyFlipQuestion(question, this.state.questions.length)
       const displayOperator = getOperatorSymbol(operator)
       return (
-        <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
-          <div className="question-problem">
-            <p className="number-top">{top}</p>
-            <p className="operator">{displayOperator}</p>
-            <p className="number-bottom">{bottom}</p>
-            <p className="equals">=</p>
-            <Input type="text" dir="rtl" className="input-answer" value={answer} readOnly={true} />
-          </div>
-          <div className="button-container">
-              <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
-          </div>
-          <Keyboard
-            onDeleteClick={this.handleDeleteClick}
-            onSubmitClick={this.handleSubmitClick}
-            onNumberClick={this.handleNumberClick}
-            onToggle={this.handleKeyboardToggle}
-          />
-        </Card>
+        <Mutation mutation={GRADE_TEST}>
+          {gradeTest => {
+            this.gradeTest = gradeTest
+            return (
+              <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
+                <div className="question-problem">
+                  <p className="number-top">{top}</p>
+                  <p className="operator">{displayOperator}</p>
+                  <p className="number-bottom">{bottom}</p>
+                  <p className="equals">=</p>
+                  <Input type="text" dir="rtl" className="input-answer" value={answer} readOnly={true} />
+                </div>
+                <div className="button-container">
+                    <Button className="green submit-button" onClick={this.handleSubmitClick}>Submit</Button>
+                </div>
+                <Keyboard
+                  onDeleteClick={this.handleDeleteClick}
+                  onSubmitClick={this.handleSubmitClick}
+                  onNumberClick={this.handleNumberClick}
+                  onToggle={this.handleKeyboardToggle}
+                />
+              </Card>
+            )
+          }}
+        </Mutation>
       )
     } else {
       return (
         <div className="TakeTest">
-        <Loading className="loading" />
+          <Loading className="loading" />
         </div>
       )
     }
@@ -160,7 +199,7 @@ class TakeTest extends React.Component<IProps, IState> {
     const { questionIndex, questions } = this.state
     const answeredQuestion = this.answerCurrentQuestion()
     const nextQuestionIndex = questionIndex + 1
-    if (nextQuestionIndex < this.props.data.test.questions.length) {
+    if (nextQuestionIndex < this.props.test.questions.length && answeredQuestion !== undefined) {
       this.setState({
         answer: '',
         questionStarted: new Date().getTime(),
@@ -175,7 +214,7 @@ class TakeTest extends React.Component<IProps, IState> {
   private answerCurrentQuestion = () => {
     const { questionIndex, answer, questionStarted } = this.state
     const question = {
-      ...this.props.data.test.questions[questionIndex]
+      ...this.props.test.questions[questionIndex]
     }
     if (question === undefined) {
       return
@@ -200,137 +239,16 @@ class TakeTest extends React.Component<IProps, IState> {
         start,
         end
       }))
-    await this.props.mutate({
+    await this.gradeTest({
       variables: { 
-        id: this.props.data.test.id,
+        id: this.props.test.id,
         input: {
-          start: this.props.data.test.start,
+          start: this.props.test.start,
           end: new Date().getTime(),
           questions: sortedQuestions,
         }
       }
     })
-    this.props.history.push('/fact-fluency/test-results')
+    this.setState({ redirectToTestResults: true })
   }
 }
-
-const GET_TEST_ID = gql`
-  {
-    testId @client
-  }
-`
-
-const GET_TEST = gql`
-  query test($id: ObjID!) {
-    test(id: $id) {
-      id
-      duration
-      number
-      operator
-      randomQuestions
-      start
-      end
-      student {
-        id
-      }
-      course {
-        id
-      }
-      questions {
-        id
-        question
-        studentAnswer
-        start
-        end
-      }
-    }
-  }
-`
-
-const GRADE_TEST = gql`
-  mutation gradeTest($id: ObjID!, $input: GradeTestInput!) {
-    gradeTest(id: $id, input: $input) {
-      id,
-      testResults {
-        total,
-        needed,
-        correct,
-        incorrect {
-          question,
-          studentAnswer,
-          correctAnswer,
-          start,
-          end
-        },
-        quickest {
-          question,
-          studentAnswer,
-          correctAnswer,
-          start,
-          end
-        },
-      }
-    }
-  }
-`
-
-export const TakeTestWithData = compose(
-  graphql(
-    GET_TEST_ID,
-    {
-      props: (props: any) => {
-        if (props.data.testId === null) {
-          return {
-            data: {
-              noTest: true
-            }
-          }
-        }
-        return {
-          data: {
-            ...props.data,
-            noTest: false,
-          }
-        }
-      }
-    }
-  ),
-  graphql(
-    GET_TEST,
-    {
-      options: ({ data }: any) => ({
-        variables: { id: data.testId }
-      }),
-      skip: ({ data: { noTest } }) => noTest === true,
-      props: (props: any) => {
-        const { data, ownProps } = props
-        if (data.loading || data.error || ownProps.loading || ownProps.error) {
-          return { data }
-        }
-        const questions = randomizeQuestions(
-          initializeQuestions(data.test.questions)
-        )
-        startQuestion(questions[0])
-        return ({
-          data: {
-            ...ownProps.data,
-            test: {
-              ...data.test,
-              start: new Date().getTime(),
-              questions: [
-                {
-                  ...questions[0],
-                  start: new Date().getTime()
-                },
-                ...questions.slice(1, questions.length)
-              ]
-            }
-          }
-        })
-      }
-    }
-  ),
-  graphql(
-    GRADE_TEST
-  ),
-)(TakeTest)
