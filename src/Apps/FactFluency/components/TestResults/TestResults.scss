@@ -30,12 +30,20 @@
   .subheader {
     grid-column: 1 / -1;
     grid-row: 2 / 2;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
     text-align: center;
     
+    display: flex;
+    flex-direction: row;
     line-height: 1.5em;
     font-size: 1.25em;
     
     .pass {
+      display: block;
+      width: 2ch;
+      margin: 0 0.5ch;
       padding: 0.25em;
       background-color: $green;
       color: $white;
@@ -43,6 +51,9 @@
     }
 
     .fail {
+      display: block;
+      width: 2ch;
+      margin: 0 0.5ch;
       padding: 0.25em;
       background-color: $yellow;
       color: $white;
