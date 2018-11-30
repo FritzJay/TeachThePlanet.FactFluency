@@ -52,7 +52,13 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
 
     return (
       <Query query={GET_ACTIVE_COURSE_ID}>
-        {({ data: { activeCourseId }, loading: firstLoading, error: firstError }) => {
+        {({
+          startPolling: startPollingForActiveClass,
+          stopPolling: stopPollingForActiveClass,
+          data: { activeCourseId },
+          loading: firstLoading,
+          error: firstError
+        }) => {
           if (firstLoading) {
             return active ? (
               <div className="ClassListDropdown">
@@ -70,11 +76,15 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
           }
 
           return (
-            <Query
-              query={GET_STUDENT}
-              pollInterval={10000}
-            >
-              {({ client, error, loading, data }) => {
+            <Query query={GET_STUDENT} >
+              {({
+                startPolling: startPollingForStudent,
+                stopPolling: stopPollingForStudent,
+                client,
+                error,
+                loading,
+                data
+              }) => {
                 if (loading) {
                   return active ? (
                     <div className="ClassListDropdown">
@@ -134,7 +144,15 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
                                       if (activeCourseId !== id) {
                                         client.writeData({ data: { activeCourseId: id } })
                                       } else {
-                                        this.toggleDropdown()
+                                        this.toggleDropdown(undefined, (isActive: boolean) => {
+                                          if (isActive) {
+                                            startPollingForActiveClass(10000)
+                                            startPollingForStudent(10000)
+                                          } else {
+                                            stopPollingForActiveClass()
+                                            stopPollingForStudent()
+                                          }
+                                        })
                                       }
                                     }}
                                   >
@@ -178,8 +196,14 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
     )
   }
 
-  private toggleDropdown = () => {
-    this.setState(prevState => ({ active: !prevState.active }))
+
+  private toggleDropdown = (e?: any, cb?: (isActive: boolean) => void) => {
+    this.setState(prevState => {
+      if (cb !== undefined) {
+        cb(!prevState.active)
+      }
+      return { active: !prevState.active }
+    })
   }
 
   private handleJoinClassClick = () => {
