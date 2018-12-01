@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
 import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { QUERY } from '../../TeacherHome'
 import './NewClassModal.css'
 
 const CREATE_COURSE = gql`
@@ -51,6 +52,18 @@ export class NewClassModal extends React.Component<IProps, IState> {
     return (
       <Mutation
         mutation={CREATE_COURSE}
+        update={(cache, { data: { createCourse } }) => {
+          const { teacher }: any = cache.readQuery({ query: QUERY })
+          cache.writeQuery({
+            query: QUERY,
+            data: {
+              teacher: {
+                ...teacher,
+                courses: teacher.courses.concat([createCourse])
+              }
+            }
+          })
+        }}
       >
         {(mutate, { loading, error }: any) => {
           if (loading) {
@@ -136,11 +149,13 @@ export class NewClassModal extends React.Component<IProps, IState> {
       return
     }
 
-    history.push('/teacher')
+    history.push('/teacher/classes')
     mutate({
       variables: {
-        grade,
-        name
+        input: {
+          grade,
+          name,
+        }
       }
     })
   }

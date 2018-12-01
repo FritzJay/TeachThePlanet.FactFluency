@@ -69,12 +69,12 @@ export class TeacherHome extends React.Component<IProps> {
 
               <Route
                 path={`${match.path}/classes`}
-                render={(props) => <ClassesGrid {...props} courses={teacher.courses} />}
+                render={props => <ClassesGrid {...props} courses={teacher.courses} />}
               />
 
               <Route
                 path={`${match.path}/classes/new`}
-                component={NewClassModal}
+                component={(props: any) => <NewClassModal {...props}  />}
               />
 
               <Route
