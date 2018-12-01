@@ -4,4 +4,9 @@
   @extend %app-grid;
 
   padding-top: 115px;
+
+  .loading {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
 }

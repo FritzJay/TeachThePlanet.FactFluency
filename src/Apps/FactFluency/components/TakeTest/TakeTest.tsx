@@ -13,6 +13,7 @@ import {
 import { getOperatorSymbol } from "src/utils"
 import { Button, Card, Input, Loading } from "src/sharedComponents"
 import { Keyboard } from './Keyboard/Keyboard'
+import { TestResultsQueryFragment } from "../TestResults/TestResults"
 import './TakeTest.css'
 
 export const TakeTestQueryFragment = gql`
@@ -40,28 +41,10 @@ export const TakeTestCacheFragment = `
 const GRADE_TEST = gql`
   mutation gradeTest($id: ObjID!, $input: GradeTestInput!) {
     gradeTest(id: $id, input: $input) {
-      id,
-      testResults {
-        total,
-        needed,
-        correct,
-        incorrect {
-          question,
-          studentAnswer,
-          correctAnswer,
-          start,
-          end
-        },
-        quickest {
-          question,
-          studentAnswer,
-          correctAnswer,
-          start,
-          end
-        },
-      }
+      ...TestResultsQueryFragment
     }
   }
+  ${TestResultsQueryFragment}
 `
 
 interface IProps {
@@ -223,7 +206,7 @@ export class TakeTest extends React.Component<IProps, IState> {
       questionIndex: nextQuestionIndex,
       answeredQuestions: answeredQuestions.concat([answeredQuestion]),
     }, () => {
-      if (nextQuestionIndex >= originalQuestions.length) {
+      if (nextQuestionIndex === originalQuestions.length) {
         this.submitTest()
       }
     })

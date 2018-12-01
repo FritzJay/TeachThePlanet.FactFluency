@@ -13,7 +13,8 @@ import {
   TakeTest,
   TakeTestQueryFragment,
   TakeTestCacheFragment,
-  TestResultsWithData,
+  TestResults,
+  TestResultsQueryFragment,
   CourseRequests,
 } from './components'
 import './FactFluency.css'
@@ -27,11 +28,13 @@ export const QUERY = gql`
       }
       test(testId: $testId) {
         ...TakeTestQueryFragment
+        ...TestResultsQueryFragment
       }
     }
   }
   ${SelectTestQueryFragment}
   ${TakeTestQueryFragment}
+  ${TestResultsQueryFragment}
 `
 
 export const CACHE = gql`
@@ -108,7 +111,7 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
 
                   <Route
                     path={`${match.path}/test-results`}
-                    component={TestResultsWithData}
+                    render={(props) => <TestResults {...props} test={student.test} />}
                   />
                   
                   <Route
