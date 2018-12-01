@@ -1,8 +1,21 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
 
 import { Card, ConfirmButton } from 'src/sharedComponents'
 import { IStudentUser } from 'src/utils'
 import './PendingCard.css'
+
+export const PendingCardQueryFragment = gql`
+  fragment PendingCardQueryFragment on Student {
+    id
+    name
+    createdAt
+    user {
+      id
+      email
+    }
+  }
+`
 
 interface IInvitationType {
   alt: string

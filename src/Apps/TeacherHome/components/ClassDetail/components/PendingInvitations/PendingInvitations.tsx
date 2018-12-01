@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { GET_COURSE } from '../../ClassDetail'
 import { Button, NewCard } from 'src/sharedComponents'
 import { PendingInvitationsDescription } from '../PendingInvitationsDescription/PendingInvitationsDescription'
-import { PendingCard } from '../PendingCard/PendingCard'
+import { PendingCard, PendingCardQueryFragment } from '../PendingCard/PendingCard'
 import { ICourseInvitation, IStudentUser } from 'src/utils'
 
 import PendingStudent from 'src/images/pending-student-icon.svg'
@@ -27,6 +27,23 @@ export const INVITATION_TYPES = {
     title: 'This pre-existing student has been invited to join the class and can accept the invitation at any time.',
   },
 }
+
+export const PendingInvitationsQueryFragment = gql`
+  fragment PendingInvitationsQueryFragment on Course {
+    id
+    students {
+      ...PendingCardQueryFragment
+    }
+    courseInvitations {
+      id
+      createdAt
+      student {
+        ...PendingCardQueryFragment
+      }
+    }
+  }
+  ${PendingCardQueryFragment}
+`
 
 const REMOVE_COURSE_INVITATION = gql`
   mutation removeCourseInvitation($id: ObjID!) {

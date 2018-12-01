@@ -7,6 +7,7 @@ import { GET_COURSE } from '../../ClassDetail'
 import { ICourseRequest, IStudentUser } from 'src/utils'
 import { Button, Card, ConfirmButton } from 'src/sharedComponents'
 import { PendingRequestsDescription } from '../PendingRequestsDescription/PendingRequestsDescription'
+import { PendingCardQueryFragment } from '../PendingCard/PendingCard'
 import './PendingRequests.css'
 
 interface ICourseRequestCardProps {
@@ -54,14 +55,11 @@ export const PendingRequestsQueryFragment = gql`
     createdAt
     student {
       id
-      name
       changePasswordRequired
-      user {
-        id
-        email
-      }
+      ...PendingCardQueryFragment
     }
   }
+  ${PendingCardQueryFragment}
 `
 
 const REMOVE_COURSE_REQUEST = gql`

@@ -9,8 +9,9 @@ import { ParentInvite } from '../ParentInvite/ParentInvite'
 import { StudentReports } from './components/StudentReports/StudentReports'
 import { Header } from './components/Header/Header'
 import { CopyToClipboard } from 'src/sharedComponents'
-import { PendingInvitations } from './components/PendingInvitations/PendingInvitations'
+import { PendingInvitations, PendingInvitationsQueryFragment } from './components/PendingInvitations/PendingInvitations'
 import { PendingRequests, PendingRequestsQueryFragment } from './components/PendingRequests/PendingRequests'
+import { PendingCardQueryFragment } from './components/PendingCard/PendingCard'
 import './ClassDetail.css'
 
 
@@ -23,9 +24,7 @@ export const GET_COURSE = gql`
       name
       students {
         id
-        name
         changePasswordRequired
-        createdAt
         tests {
           id
           number
@@ -38,33 +37,17 @@ export const GET_COURSE = gql`
             needed
           }
         }
-        user {
-          id
-          email
-        }
-      }
-      courseInvitations {
-        id
-        createdAt
-        student {
-          id
-          name
-          user {
-            id
-            email
-          }
-        }
-        course {
-          id
-          name
-        }
+        ...PendingCardQueryFragment
       }
       courseRequests {
         ...PendingRequestsQueryFragment
       }
+      ...PendingInvitationsQueryFragment
     }
   }
   ${PendingRequestsQueryFragment}
+  ${PendingInvitationsQueryFragment}
+  ${PendingCardQueryFragment}
 `
 
 interface IProps extends RouteComponentProps<{ id: string }> {}
