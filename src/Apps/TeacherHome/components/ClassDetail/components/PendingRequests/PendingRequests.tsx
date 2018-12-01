@@ -48,6 +48,21 @@ const CourseRequestCard = ({ date, student, onDelete, onAccept }: ICourseRequest
   </Card>
 )
 
+export const PendingRequestsQueryFragment = gql`
+  fragment PendingRequestsQueryFragment on CourseRequest {
+    id
+    createdAt
+    student {
+      id
+      name
+      changePasswordRequired
+      user {
+        id
+        email
+      }
+    }
+  }
+`
 
 const REMOVE_COURSE_REQUEST = gql`
   mutation removeCourseRequest($id: ObjID!) {
@@ -59,30 +74,12 @@ const ACCEPT_COURSE_REQUEST = gql`
   mutation acceptCourseRequest($id: ObjID!) {
     acceptCourseRequest(id: $id) {
       id
-      students {
-        id
-        name
-        changePasswordRequired
-        createdAt
-        tests {
-          id
-          number
-          operator
-          start
-          end
-          testResults {
-            id
-            total
-            needed
-          }
-        }
-        user {
-          id
-          email
-        }
+      courseRequests {
+        ...PendingRequestsQueryFragment
       }
     }
   }
+  ${PendingRequestsQueryFragment}
 `
 
 interface IProps {

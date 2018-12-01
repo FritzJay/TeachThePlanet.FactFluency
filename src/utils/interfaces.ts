@@ -42,6 +42,7 @@ export interface IClass {
   teacher: ITeacher
   students: IStudentUser[]
   courseInvitations: ICourseInvitation[]
+  courseRequests: ICourseRequest[]
 }
 
 export interface ITestParameters {

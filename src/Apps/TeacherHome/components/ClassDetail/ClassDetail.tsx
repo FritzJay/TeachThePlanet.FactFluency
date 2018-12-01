@@ -10,7 +10,7 @@ import { StudentReports } from './components/StudentReports/StudentReports'
 import { Header } from './components/Header/Header'
 import { CopyToClipboard } from 'src/sharedComponents'
 import { PendingInvitations } from './components/PendingInvitations/PendingInvitations'
-import { PendingRequests } from './components/PendingRequests/PendingRequests'
+import { PendingRequests, PendingRequestsQueryFragment } from './components/PendingRequests/PendingRequests'
 import './ClassDetail.css'
 
 
@@ -60,23 +60,11 @@ export const GET_COURSE = gql`
         }
       }
       courseRequests {
-        id
-        createdAt
-        student {
-          id
-          name
-          user {
-            id
-            email
-          }
-        }
-        course {
-          id
-          name
-        }
+        ...PendingRequestsQueryFragment
       }
     }
   }
+  ${PendingRequestsQueryFragment}
 `
 
 interface IProps extends RouteComponentProps<{ id: string }> {}
