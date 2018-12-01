@@ -37,9 +37,9 @@ const client = new ApolloClient({
 export default class App extends React.Component<any> {
   public render() {
     return (
-      <ApolloProvider client={client}>
-        <div className="App">
-          <ErrorBoundary>
+      <div className="App">
+        <ErrorBoundary>
+          <ApolloProvider client={client}>
             <Switch>
               <Route
                 path="/"
@@ -64,9 +64,9 @@ export default class App extends React.Component<any> {
 
               <Route component={PageNotFound} />
             </Switch>
-          </ErrorBoundary>
-        </div>
-      </ApolloProvider>
+          </ApolloProvider>
+        </ErrorBoundary>
+      </div>
     )
   }
 }
