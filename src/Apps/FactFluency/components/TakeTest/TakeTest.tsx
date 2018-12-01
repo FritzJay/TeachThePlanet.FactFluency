@@ -6,8 +6,6 @@ import { Redirect } from "react-router-dom"
 import {
   initializeQuestions,
   randomizeQuestions,
-  sortQuestions,
-  startQuestion,
   randomlyFlipQuestion,
   IQuestion,
   ITest,
@@ -74,9 +72,11 @@ interface IState {
   answer: string
   keyboard: boolean
   questionIndex: number
-  questionStarted?: number
-  questions: IQuestion[]
+  questionStarted: number
+  answeredQuestions: IQuestion[]
+  originalQuestions: IQuestion[]
   redirectToTestResults: boolean
+  redirectToFactFluency: boolean
 }
 
 export class TakeTest extends React.Component<IProps, IState> {
@@ -84,17 +84,30 @@ export class TakeTest extends React.Component<IProps, IState> {
     answer: '',
     keyboard: false,
     questionIndex: 0,
-    questions: randomizeQuestions(
-      initializeQuestions(this.props.test.questions)
-    ),
     redirectToTestResults: false,
+    redirectToFactFluency: false,
+    originalQuestions: [],
+    answeredQuestions: [],
+    questionStarted: new Date().getTime(),
   }
 
   private submitTestOnTimeout: any
   private gradeTest: any
 
   public componentDidMount() {
-    this.setState({ questions: [startQuestion(this.props.test.questions[0])] })
+    const { test } = this.props
+
+    if (test === null) {
+      console.warn('Test was not found')
+      this.setState({ redirectToFactFluency: true })
+      return
+    }
+
+    const initializedQuestions = initializeQuestions(test.questions)
+    this.setState({
+      questionStarted: new Date().getTime(),
+      originalQuestions: randomizeQuestions(initializedQuestions),
+    })
     window.addEventListener('keydown', this.handleKeyDown)
   }
 
@@ -106,15 +119,20 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   public render() {
-    if (this.state.redirectToTestResults) {
-      return <Redirect to="fact-fluency/test-results" />
+    const { answer, keyboard, redirectToTestResults, redirectToFactFluency, answeredQuestions, originalQuestions, questionIndex } = this.state
+
+    if (redirectToTestResults) {
+      return <Redirect to="/fact-fluency/test-results" />
     }
 
-    const { answer, keyboard } = this.state
-    const question = this.props.test.questions[this.state.questionIndex]
+    if (redirectToFactFluency) {
+      return <Redirect to="/fact-fluency" />
+    }
+
+    const question = originalQuestions[questionIndex]
 
     if (question) {
-      const { operator, top, bottom } = randomlyFlipQuestion(question, this.state.questions.length)
+      const { operator, top, bottom } = randomlyFlipQuestion(question, answeredQuestions.length)
       const displayOperator = getOperatorSymbol(operator)
       return (
         <Mutation mutation={GRADE_TEST}>
@@ -196,56 +214,49 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private handleSubmitClick = () => {
-    const { questionIndex, questions } = this.state
+    const { questionIndex, originalQuestions, answeredQuestions } = this.state
     const answeredQuestion = this.answerCurrentQuestion()
     const nextQuestionIndex = questionIndex + 1
-    if (nextQuestionIndex < this.props.test.questions.length && answeredQuestion !== undefined) {
-      this.setState({
-        answer: '',
-        questionStarted: new Date().getTime(),
-        questionIndex: nextQuestionIndex,
-        questions: questions.concat([answeredQuestion]),
-      })
-    } else {
-      this.submitTest()
-    }
+    this.setState({
+      answer: '',
+      questionStarted: new Date().getTime(),
+      questionIndex: nextQuestionIndex,
+      answeredQuestions: answeredQuestions.concat([answeredQuestion]),
+    }, () => {
+      if (nextQuestionIndex >= originalQuestions.length) {
+        this.submitTest()
+      }
+    })
   }
 
   private answerCurrentQuestion = () => {
     const { questionIndex, answer, questionStarted } = this.state
     const question = {
-      ...this.props.test.questions[questionIndex]
+      ...this.state.originalQuestions[questionIndex]
     }
-    if (question === undefined) {
-      return
-    }
-    return {
+    const answeredQuestion = {
       ...question,
       studentAnswer: parseInt(answer, 10),
-      start: question.start || questionStarted,
+      start: questionStarted,
       end: new Date().getTime()
     }
+    return answeredQuestion
   }
 
   private submitTest = async () => {
-    const { questions } = this.state
-    if (questions === undefined) {
-      return
-    }
-    const sortedQuestions = sortQuestions(questions)
-      .map(({ id, studentAnswer, start, end }) => ({
-        id,
-        studentAnswer,
-        start,
-        end
-      }))
+    const { answeredQuestions } = this.state
     await this.gradeTest({
       variables: { 
         id: this.props.test.id,
         input: {
-          start: this.props.test.start,
+          start: answeredQuestions[0].start,
           end: new Date().getTime(),
-          questions: sortedQuestions,
+          questions: answeredQuestions.map(({ id, studentAnswer, start, end }) => ({
+            id,
+            studentAnswer,
+            start,
+            end,
+          })),
         }
       }
     })

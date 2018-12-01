@@ -27,7 +27,6 @@ export const SelectTestCacheFragment = `
 export const CREATE_TEST = gql`
   mutation createTest($input: CreateTestInput!) {
     createTest(input: $input) {
-      __typename
       id
       ...TakeTestQueryFragment
     }

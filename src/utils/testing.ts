@@ -9,11 +9,7 @@ export const initializeQuestions = (questions: IQuestion[]): IQuestion[] => {
 }
 
 export const randomizeQuestions = (questions: IQuestion[]): IQuestion[] => {
-  return questions.map((question: any, i: number) => {
-    question.index = i;
-    return question;
-  })
-  .sort(() => 0.5 - Math.random())
+  return questions.sort(() => 0.5 - Math.random())
 }
 
 export const sortQuestions = (questions: IQuestion[]): IQuestion[] => {
