@@ -1,5 +1,5 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
+import { gql } from 'apollo-boost'
 
 import { IClass } from 'src/utils'
 import { Card, CopyToClipboard } from 'src/sharedComponents'

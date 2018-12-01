@@ -1,7 +1,19 @@
 import * as React from 'react'
+import { gql } from 'apollo-boost'
 
 import { ITest } from 'src/utils'
 import './NewTestsIndicator.css'
+
+export const NewTestsIndicatorQueryFragment = gql`
+  fragment NewTestsIndicatorQueryFragment on Test {
+    id
+    end
+  }
+`
+
+export const NewTestsIndicatorCacheFragment = `
+  newTestsCheckedAt @client
+`
 
 interface IProps {
   tests: ITest[]

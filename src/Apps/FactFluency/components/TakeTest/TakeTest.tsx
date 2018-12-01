@@ -1,5 +1,5 @@
 import * as React from "react"
-import gql from 'graphql-tag'
+import { gql } from 'apollo-boost'
 import { Mutation } from "react-apollo"
 import { Redirect } from "react-router-dom"
 

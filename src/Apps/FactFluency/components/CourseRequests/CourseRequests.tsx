@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Query, Mutation } from 'react-apollo' 
-import gql from 'graphql-tag'
+import { gql } from 'apollo-boost'
 
 import { ICourseRequest } from 'src/utils'
 import { Card, ConfirmButton, Loading, Modal, ModalHeader, ModalContent, Input } from 'src/sharedComponents'

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
+import { gql } from 'apollo-boost'
 
 import { Card, ConfirmButton } from 'src/sharedComponents'
 import { IStudentUser } from 'src/utils'

@@ -1,10 +1,19 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
+import { gql } from 'apollo-boost'
 
-import { Button, StudentCard, NewCard } from 'src/sharedComponents'
+import { Button, StudentCard, NewCard, StudentCardQueryFragment } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
 import { IStudentUser } from 'src/utils'
 import './StudentReports.css'
+
+export const StudentReportsQueryFragment = gql`
+  fragment StudentReportsQueryFragment on Student {
+    id
+    ...StudentCardQueryFragment
+  }
+  ${StudentCardQueryFragment}
+`
 
 interface IState {
   activeDescription: boolean

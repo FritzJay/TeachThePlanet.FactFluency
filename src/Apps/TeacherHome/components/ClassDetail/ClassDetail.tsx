@@ -1,12 +1,12 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
+import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { IStudentUser } from 'src/utils'
 import { Loading } from 'src/sharedComponents'
 import { ParentInvite } from '../ParentInvite/ParentInvite'
-import { StudentReports } from './components/StudentReports/StudentReports'
+import { StudentReports, StudentReportsQueryFragment } from './components/StudentReports/StudentReports'
 import { Header } from './components/Header/Header'
 import { CopyToClipboard } from 'src/sharedComponents'
 import { PendingInvitations, PendingInvitationsQueryFragment } from './components/PendingInvitations/PendingInvitations'
@@ -25,18 +25,7 @@ export const GET_COURSE = gql`
       students {
         id
         changePasswordRequired
-        tests {
-          id
-          number
-          operator
-          start
-          end
-          testResults {
-            id
-            total
-            needed
-          }
-        }
+        ...StudentReportsQueryFragment
         ...PendingCardQueryFragment
       }
       courseRequests {
@@ -48,6 +37,7 @@ export const GET_COURSE = gql`
   ${PendingRequestsQueryFragment}
   ${PendingInvitationsQueryFragment}
   ${PendingCardQueryFragment}
+  ${StudentReportsQueryFragment}
 `
 
 interface IProps extends RouteComponentProps<{ id: string }> {}

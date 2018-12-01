@@ -27,66 +27,6 @@
         justify-self: center;
     }
 
-    .OperatorRow {
-        display: flex;
-        justify-content: center;
-
-        border-bottom: 1px solid rgba($color: #000000, $alpha: .25);
-        padding-bottom: .5em;
-
-        &.addition {
-            grid-area: addition;
-        }
-
-        &.subtraction {
-            grid-area: subtraction;
-        }
-
-        &.multiplication {
-            grid-area: multiplication;
-        }
-
-        &.division {
-            grid-area: division;
-        }
-
-        .operator {
-            margin: 0 1em 0 0;
-
-            color: $white;
-            border: none;
-            font-size: 30px;
-            font-weight: 500;
-
-            width: 42px;
-            height: 42px;
-
-            border-radius: 12px;
-
-            outline: none;
-
-            &.red {
-                background-color: $red;
-            }
-
-            &.blue {
-                background-color: $blue;
-            }
-
-            &.green {
-                background-color: $green;
-            }
-
-            &.yellow {
-                background-color: $yellow;
-            }
-        }
-
-        &:last-child {
-            border-bottom: none;
-        }
-    }
-
     .number {
         margin: 0 0.5em 0.5em 0;
 

@@ -1,66 +1,35 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
+import { gql } from 'apollo-boost'
 import { Mutation } from 'react-apollo'
 
 import { GET_COURSE } from 'src/Apps/TeacherHome/components'
-import { ITest, getOperatorSymbol, IStudentUser } from 'src/utils'
+import { IStudentUser } from 'src/utils'
+import { StudentNumberQueryFragment } from './StudentNumber/StudentNumber'
+import { OperatorRowQueryFragment, OperatorRow } from './OperatorRow/OperatorRow'
 import { Card, ConfirmButton } from '..'
 /*import { NewTestsIndicator } from './NewTestsIndicator/NewTestsIndicator'*/
+import { NewTestsIndicatorQueryFragment } from './NewTestsIndicator/NewTestsIndicator'
 import './StudentCard.css'
 
-interface IStudentNumberProps {
-  num: number
-  tests: ITest[]
-}
-
-const StudentNumber = ({ num, tests }: IStudentNumberProps) => {
-  const passing = tests.filter((test) => test.testResults && test.testResults.correct >= test.testResults.needed).length
-  let className
-  if (tests.length === 0) {
-    className = ' not-taken'
-  } else if (passing === 0) {
-    className = ' in-progress'
-  } else if (passing === 1) {
-    className = ' passed-once'
-  } else if (passing === 2) {
-    className = ' passed-twice'
-  } else if (passing === 3) {
-    className = ' passed'
+export const StudentCardQueryFragment = gql`
+  fragment StudentCardQueryFragment on Student {
+    id
+    name
+    tests {
+      id
+      ...OperatorRowQueryFragment
+      ...NewTestsIndicatorQueryFragment
+    }
+    user {
+      id
+      email
+    }
+    ...StudentNumberQueryFragment
   }
-
-  return (
-    <button 
-      key={num}
-      className={`number${className}`}
-    >
-      {num}
-    </button>
-  )
-}
-
-
-interface IOperatorRowProps {
-  operator: string
-  symbol: string
-  color: string
-  tests: ITest[]
-}
-
-const OperatorRow = ({ operator, symbol, color, tests }: IOperatorRowProps) => {
-  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-
-  return (
-    <div className={`OperatorRow ${operator}`}>
-      <button className={`operator ${color}`}>{getOperatorSymbol(symbol)}</button>
-      {numbers.map((num) => (
-        <StudentNumber
-          key={num}
-          num={num}
-          tests={tests.filter((test) => test.number === num)}
-      />))}
-    </div>
-  )
-}
+  ${StudentNumberQueryFragment}
+  ${OperatorRowQueryFragment}
+  ${NewTestsIndicatorQueryFragment}
+`
 
 const REMOVE_STUDENT_FROM_COURSE = gql`
   mutation removeStudentFromCourse($studentId: ObjID!, $courseId: ObjID!) {
