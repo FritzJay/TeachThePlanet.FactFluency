@@ -1,8 +1,12 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
+import { Query } from 'react-apollo'
 import { Redirect, Route, RouteComponentProps } from 'react-router-dom'
+
 import {
   ClassDetail,
   ClassesGrid,
+  ClassCardQueryFragment,
   EditClassModalWithData,
   Navbar,
   NewClassModal,
@@ -11,8 +15,21 @@ import {
   AddStudentModal,
   StudentInvitationModalWithData,
   StudentCreationModalWithData,
+  Loading,
 } from './components'
 import './TeacherHome.css'
+
+export const QUERY = gql`
+  query teacher {
+    teacher {
+      id
+      courses {
+        ...ClassCardQueryFragment
+      }
+    }
+  }
+  ${ClassCardQueryFragment}
+`
 
 interface IProps extends RouteComponentProps<{}> {}
 
@@ -21,71 +38,89 @@ export class TeacherHome extends React.Component<IProps> {
     const { match } = this.props
 
     return (
-      <div className="TeacherHome">
-        
-        <Route
-          render={(props) => (
-            <Navbar {...props} logoLink={match.url} />
-          )}
-        />
+      <Query query={QUERY}>
+        {({ data: { teacher }, loading }) => {
+          if (loading) {
+            return (
+              <div className="TeacherHome">
+                <Route
+                  render={(props) => (
+                    <Navbar {...props} logoLink={match.url} />
+                  )}
+                />
+                <Loading className="loading" />
+              </div>
+            )
+          }
 
-        <Route
-          exact={true}
-          path={match.path}
-          render={this.renderRedirect}
-        />
+          return (
+            <div className="TeacherHome">
+              <Route
+                render={(props) => (
+                  <Navbar {...props} logoLink={match.url} />
+                )}
+              />
 
-        <Route
-          path={`${match.path}/classes`}
-          component={ClassesGrid}
-        />
+              <Route
+                exact={true}
+                path={match.path}
+                render={this.renderRedirect}
+              />
 
-        <Route
-          path={`${match.path}/classes/new`}
-          component={NewClassModal}
-        />
+              <Route
+                path={`${match.path}/classes`}
+                render={(props) => <ClassesGrid {...props} courses={teacher.courses} />}
+              />
 
-        <Route
-          path={`${match.path}/classes/edit/:id`}
-          component={EditClassModalWithData}
-        />
+              <Route
+                path={`${match.path}/classes/new`}
+                component={NewClassModal}
+              />
 
-        <Route
-          path={`${match.path}/class-detail/:id`}
-          component={ClassDetail}
-        />
+              <Route
+                path={`${match.path}/classes/edit/:id`}
+                component={EditClassModalWithData}
+              />
 
-        <Route
-          path={`${match.path}/class-detail/:id/test-parameters`}
-          component={TestParametersWithData}
-        />
-        
-        <Route
-          path={`${match.path}/class-detail/:id/class-settings`}
-          component={EditClassModalWithData}
-        />
+              <Route
+                path={`${match.path}/class-detail/:id`}
+                component={ClassDetail}
+              />
 
-        <Route
-          exact={true}
-          path={`${match.path}/class-detail/:id/add-students`}
-          component={AddStudentModal}
-        />
+              <Route
+                path={`${match.path}/class-detail/:id/test-parameters`}
+                component={TestParametersWithData}
+              />
+              
+              <Route
+                path={`${match.path}/class-detail/:id/class-settings`}
+                component={EditClassModalWithData}
+              />
 
-        <Route
-          path={`${match.url}/class-detail/:id/add-students/existing`}
-          component={StudentInvitationModalWithData}
-        />
+              <Route
+                exact={true}
+                path={`${match.path}/class-detail/:id/add-students`}
+                component={AddStudentModal}
+              />
 
-        <Route
-          path={`${match.url}/class-detail/:id/add-students/new`}
-          component={StudentCreationModalWithData}
-        />
+              <Route
+                path={`${match.url}/class-detail/:id/add-students/existing`}
+                component={StudentInvitationModalWithData}
+              />
 
-        <Route
-          path={`${match.path}/parent-invitation/:id`}
-          component={ParentInvite}
-        />
-      </div>
+              <Route
+                path={`${match.url}/class-detail/:id/add-students/new`}
+                component={StudentCreationModalWithData}
+              />
+
+              <Route
+                path={`${match.path}/parent-invitation/:id`}
+                component={ParentInvite}
+              />
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 

@@ -1,24 +1,35 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
+
 import { IClass } from 'src/utils'
 import { Card, CopyToClipboard } from 'src/sharedComponents'
-import './ClassCard.css'
 import SchoolIcon from './school-icon.svg'
+import './ClassCard.css'
+
+export const ClassCardQueryFragment = gql`
+  fragment ClassCardQueryFragment on Course {
+    id
+    name
+    grade
+    code
+  }
+`
 
 interface IProps {
-  cls: IClass
+  course: IClass
   onCardClick: (id: string) => void
   onSettingsClick: (id: string) => void
 }
 
-export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
+export const ClassCard = ({ course, onCardClick, onSettingsClick }: IProps) => {
   const handleCardClick = () => {
-    onCardClick(cls.id)
+    onCardClick(course.id)
   }
 
   const handleSettingsClick = (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    onSettingsClick(cls.id)
+    onSettingsClick(course.id)
   }
 
   return (
@@ -36,13 +47,13 @@ export const ClassCard = ({ cls, onCardClick, onSettingsClick }: IProps) => {
 
       <img src={SchoolIcon} className="school-icon" alt="school icon" />
 
-      <h3 className="class-name">{cls.name}</h3>
+      <h3 className="class-name">{course.name}</h3>
       
       <CopyToClipboard
-        text={cls.code}
+        text={course.code}
         className="class-code"
       >
-        <h4>Class Code: {cls.code}</h4>
+        <h4>Class Code: {course.code}</h4>
 
         <i className="material-icons">assignment</i>
       </CopyToClipboard>

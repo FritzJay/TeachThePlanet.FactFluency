@@ -6,8 +6,8 @@ import { Query, Mutation } from 'react-apollo'
 import { IClass } from 'src/utils'
 import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { ConfirmButton } from 'src/sharedComponents/Button/Button'
+import { QUERY } from '../../TeacherHome'
 import './EditClassModal.css'
-import { GET_COURSES } from '..';
 
 const GET_COURSE = gql`
   query course($id: ObjID!) {
@@ -70,7 +70,7 @@ export const EditClassModalWithData = (props: RouteComponentProps<{ id: string }
           {updateCourse => (
             <Mutation
               mutation={REMOVE_COURSE}
-              refetchQueries={() => [{ query: GET_COURSES }]}
+              refetchQueries={() => [{ query: QUERY }]}
               variables={{ id: props.match.params.id }}
             >
               {removeCourse => (
