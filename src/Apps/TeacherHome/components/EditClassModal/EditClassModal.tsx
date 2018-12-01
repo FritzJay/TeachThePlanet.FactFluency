@@ -1,21 +1,19 @@
 import * as React from 'react'
 import gql from 'graphql-tag'
-import { RouteComponentProps } from 'react-router-dom'
-import { Query, Mutation } from 'react-apollo'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { Mutation } from 'react-apollo'
 
 import { IClass } from 'src/utils'
-import { Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
 import { ConfirmButton } from 'src/sharedComponents/Button/Button'
 import { QUERY } from '../../TeacherHome'
 import './EditClassModal.css'
 
-const GET_COURSE = gql`
-  query course($id: ObjID!) {
-    course(id: $id) {
-      id
-      name
-      grade
-    }
+export const EditClassModalQueryFragment = gql`
+  fragment EditClassModalQueryFragment on Course {
+    id
+    name
+    grade
   }
 `
 
@@ -36,64 +34,8 @@ const REMOVE_COURSE = gql`
   }
 `
 
-export const EditClassModalWithData = (props: RouteComponentProps<{ id: string }>) => (
-  <Query
-    query={GET_COURSE}
-    variables={{ id: props.match.params.id }}
-  >
-    {({ error: getCourseError, loading: getCourseLoading, data: getCourseData }) => {
-      if (getCourseLoading) {
-        return (
-          <Modal
-            overlay={true}
-            closeTo="GO_BACK"
-            className="EditClassModal"
-          >
-            <Loading className="loading" />
-          </Modal>
-        )
-      }
-      if (getCourseError) {
-        return (
-          <Modal
-            overlay={true}
-            closeTo="GO_BACK"
-            className="EditClassModal"
-          >
-            <h3 className="error">{getCourseError.message}</h3>
-          </Modal>
-        )
-      }
-
-      return (
-        <Mutation mutation={UPDATE_COURSE}>
-          {updateCourse => (
-            <Mutation
-              mutation={REMOVE_COURSE}
-              refetchQueries={() => [{ query: QUERY }]}
-              variables={{ id: props.match.params.id }}
-            >
-              {removeCourse => (
-                <EditClassModal
-                  {...props}
-                  course={getCourseData.course}
-                  removeCourse={removeCourse}
-                  updateCourse={updateCourse}
-                />
-              )}
-            </Mutation>
-          )}
-        </Mutation>
-      )
-    }}
-  </Query>
-)
-
-
 interface IProps extends RouteComponentProps<{ id: string }> {
-  course: IClass
-  removeCourse: () => void
-  updateCourse: ({ variables: { name, grade }}: any) => void
+  courses: IClass[]
 }
 
 interface IState {
@@ -101,101 +43,130 @@ interface IState {
   grade?: string
 }
 
-class EditClassModal extends React.Component<IProps, IState> {
+export class EditClassModal extends React.Component<IProps, IState> {
   public state: IState = {
-    grade: this.props.course.grade,
-    name: this.props.course.name,
+    grade: '',
+    name: '',
+  }
+
+  public componentDidMount() {
+    const course = this.props.courses.find((c) => c.id === this.props.match.params.id)
+    this.setState({
+      grade: course && course.grade,
+      name: course && course.name,
+    })
   }
 
   public render() {
-    const { course } = this.props
+    const { history } = this.props
     const { name, grade } = this.state
+    const course = this.props.courses.find((c) => c.id === this.props.match.params.id)
+
+    if (!course) {
+      return <Redirect to="/teacher/classes" />
+    }
 
     return (
-      <Modal
-        overlay={true}
-        closeTo="GO_BACK"
-        className="EditClassModal"
-      >
+      <Mutation mutation={UPDATE_COURSE}>
+        {updateCourse => (
+          <Mutation
+            mutation={REMOVE_COURSE}
+            variables={{ id: course.id }}
+            update={cache => {
+              const { teacher }: any = cache.readQuery({ query: QUERY })
+              cache.writeQuery({
+                query: QUERY,
+                data: {
+                  teacher: {
+                    ...teacher,
+                    courses: teacher.courses.filter((c: IClass) => c.id !== course.id)
+                  }
+                }
+              })
+            }}
+          >
+            {removeCourse => (
+              <Modal
+                overlay={true}
+                closeTo="GO_BACK"
+                className="EditClassModal"
+              >
 
-        <ModalHeader className="modal-header">
-          <h2>Edit Class</h2>
-        </ModalHeader>
+                <ModalHeader className="modal-header">
+                  <h2>Edit Class</h2>
+                </ModalHeader>
 
-        <ModalContent>
-          <div className="input-fields">
+                <ModalContent>
+                  <div className="input-fields">
 
-            <label className="label">Change Grade Level</label>
-            <select
-              name="grade"
-              onChange={this.handleChange}
-              value={grade}
-            >
-              <option value="kindergarten">Kindergarten</option>
-              <option value="first">1st Grade</option>
-              <option value="second">2nd Grade</option>
-              <option value="third">3rd Grade</option>
-              <option value="fourth">4th Grade</option>
-              <option value="fifth">5th Grade</option>
-              <option value="middle">Middle School (6-8)</option>
-              <option value="high">High School (9-12)</option>
-              <option value="beyond">College or Beyond</option>
-            </select>
+                    <label className="label">Change Grade Level</label>
+                    <select
+                      name="grade"
+                      onChange={this.handleChange}
+                      value={grade}
+                    >
+                      <option value="kindergarten">Kindergarten</option>
+                      <option value="first">1st Grade</option>
+                      <option value="second">2nd Grade</option>
+                      <option value="third">3rd Grade</option>
+                      <option value="fourth">4th Grade</option>
+                      <option value="fifth">5th Grade</option>
+                      <option value="middle">Middle School (6-8)</option>
+                      <option value="high">High School (9-12)</option>
+                      <option value="beyond">College or Beyond</option>
+                    </select>
 
-            <label className="label">Change Class Name</label>
-            <Input
-              name="name"
-              className="class-name"
-              placeholder={course.name}
-              value={name}
-              onChange={this.handleChange}
-            />
+                    <label className="label">Change Class Name</label>
+                    <Input
+                      name="name"
+                      className="class-name"
+                      placeholder={course.name}
+                      value={name}
+                      onChange={this.handleChange}
+                    />
 
-          </div>
+                  </div>
 
-          <div className="btn-row">
-            <ConfirmButton
-              className="red delete-class"
-              confirmClassName="confirm"
-              disableTimeout={2000}
-              onClick={this.handleDeleteClick}
-            >
-              <span className="default">Delete Class</span>
-              <span className="confirmation">Are you sure?</span>
-            </ConfirmButton>
+                  <div className="btn-row">
+                    <ConfirmButton
+                      className="red delete-class"
+                      confirmClassName="confirm"
+                      disableTimeout={2000}
+                      onClick={() => {
+                        history.push('/teacher')
+                        removeCourse()
+                      }}
+                    >
+                      <span className="default">Delete Class</span>
+                      <span className="confirmation">Are you sure?</span>
+                    </ConfirmButton>
 
-            <ConfirmButton
-              className="green save-changes"
-              confirmClassName="confirm"
-              disableTimeout={2000}
-              onClick={this.handleSaveChangesClick}
-            >
-              <span className="default">Save Changes</span>
-              <span className="confirmation">Are you sure?</span>
-            </ConfirmButton>
-          </div>
-          
-        </ModalContent>
-      </Modal>
+                    <ConfirmButton
+                      className="green save-changes"
+                      confirmClassName="confirm"
+                      disableTimeout={2000}
+                      onClick={() => {
+                        history.goBack()
+                        updateCourse({ variables: {
+                          id: course.id,
+                          input: {
+                            name,
+                            grade,
+                          }
+                        }})
+                      }}
+                    >
+                      <span className="default">Save Changes</span>
+                      <span className="confirmation">Are you sure?</span>
+                    </ConfirmButton>
+                  </div>
+                </ModalContent>
+              </Modal>
+            )}
+          </Mutation>
+        )}
+      </Mutation>
     )
-  }
-  
-  private handleDeleteClick = () => {
-    this.props.history.push('/teacher')
-    this.props.removeCourse()
-  }
-
-  private handleSaveChangesClick = async () => {
-    const { history, updateCourse, match } = this.props
-    const { name, grade } = this.state
-    history.goBack()
-    updateCourse({ variables: {
-      id: match.params.id,
-      input: {
-        name,
-        grade,
-      }
-    }})
   }
   
   private handleChange = (e: any) => {

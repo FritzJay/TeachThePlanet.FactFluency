@@ -7,7 +7,7 @@ import {
   ClassDetail,
   ClassesGrid,
   ClassCardQueryFragment,
-  EditClassModalWithData,
+  EditClassModal,
   Navbar,
   NewClassModal,
   TestParametersWithData,
@@ -79,7 +79,7 @@ export class TeacherHome extends React.Component<IProps> {
 
               <Route
                 path={`${match.path}/classes/edit/:id`}
-                component={EditClassModalWithData}
+                render={(props) => <EditClassModal {...props} courses={teacher.courses} />}
               />
 
               <Route
@@ -94,7 +94,7 @@ export class TeacherHome extends React.Component<IProps> {
               
               <Route
                 path={`${match.path}/class-detail/:id/class-settings`}
-                component={EditClassModalWithData}
+                component={EditClassModal}
               />
 
               <Route
