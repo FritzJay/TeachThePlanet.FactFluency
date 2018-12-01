@@ -90,7 +90,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
                   ? (
                     <div className="student-card example">
                       <h4 className="username">Username</h4>
-                      <h4 className="password">Temporary Password</h4>
+                      <h4 className="password">Password</h4>
                       <h4 className="remove">Remove</h4>
                     </div>
                   ) : null}
