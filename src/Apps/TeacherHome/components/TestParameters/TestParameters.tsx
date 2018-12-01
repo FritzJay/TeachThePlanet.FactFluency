@@ -7,7 +7,7 @@ import {
   IClass,
   themeColors,
 } from 'src/utils'
-import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, ConfirmButton } from 'src/sharedComponents'
+import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, ConfirmButton, Card } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
@@ -108,100 +108,109 @@ class TestParameters extends React.Component<IProps, IState> {
         </ModalHeader>
 
         <ModalContent className="parameter-content">
-          <div className="form">
+            <Card className="numbers-card">
+              <h3 className="numbers-header">Multiples Available</h3>
+              <p className="numbers-text">Select available numbers for students</p>
+              <div className="numbers">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => {
+                  return (
+                    <button
+                    key={num}
+                    className={`select-multiples${(numbers
+                      ? numbers.includes(num)
+                      : this.props.data.course.testParameters.numbers.includes(num))
+                        ? ' active' : ''
+                    }`}
+                    onClick={this.handleNumberClick}
+                    >
+                      {num}
+                    </button>
+                  )
+                })}
+              </div>
+            </Card>
 
-            <h3 className="operators-header">Operators</h3>
-            <p className="operators-text">Select available operators for students</p>
-            <div className="operators">
-              {['+', '-', '*', '/'].map((symbol, i) => {
-                const color = themeColors[i % themeColors.length]
-                
-                return (
-                  <Operator
-                    key={symbol}
-                    active={true}
-                    selected={operators
-                      ? operators.includes(symbol)
-                      : this.props.data.course.testParameters.operators.includes(symbol)}
-                    operator={symbol}
-                    color={color}
-                    onClick={this.handleOperatorClick}
-                  />
-                )
-              })}
-            </div>
+            <Card className="operators-card">
+              <h3 className="operators-header">Operators</h3>
+              <p className="operators-text">Select available operators for students</p>
+              <div className="operators">
+                {['+', '-', '*', '/'].map((symbol, i) => {
+                  const color = themeColors[i % themeColors.length]
+                  
+                  return (
+                    <Operator
+                      key={symbol}
+                      active={true}
+                      selected={operators
+                        ? operators.includes(symbol)
+                        : this.props.data.course.testParameters.operators.includes(symbol)}
+                      operator={symbol}
+                      color={color}
+                      onClick={this.handleOperatorClick}
+                    />
+                  )
+                })}
+              </div>
+            </Card>
             
-            <h3 className="numbers-header">Multiples Available</h3>
-            <p className="numbers-text">Select available numbers for students</p>
-            <div className="numbers">
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((num) => {
-                return (
-                  <button
-                  key={num}
-                  className={`select-multiples${(numbers
-                    ? numbers.includes(num)
-                    : this.props.data.course.testParameters.numbers.includes(num))
-                      ? ' active' : ''
-                  }`}
-                  onClick={this.handleNumberClick}
-                  >
-                    {num}
-                  </button>
-                )
-              })}
-            </div>
-            
-            <h3 className="questions-header">Number of Questions</h3>
-            <Input
-              className="questions"
-              name="questions"
-              defaultValue={testParameters.questions}
-              createRef={this.questions}
-              onChange={this.handleChange}
-              type="number"
-            />
-            
-            <h3 className="passing-header">Number of Correct Answers Needed to Pass</h3>
-            <Input
-              className="passing"
-              name="passing"
-              defaultValue={testParameters.passing}
-              createRef={this.passing}
-              onChange={this.handleChange}
-              type="number"
-            />
-            
-            <h3 className="random-header">Number of Random Questions</h3>
-            <p className="random-text">Number of questions from other multiples</p>
-            <Input
-              className="random"
-              name="randomQuestions"
-              defaultValue={testParameters.randomQuestions}
-              createRef={this.randomQuestions}
-              onChange={this.handleChange}
-              type="number"
-            />
+            <Card className="questions-card">
+              <h3 className="questions-header">Number of Questions</h3>
+              <Input
+                className="questions"
+                name="questions"
+                defaultValue={testParameters.questions}
+                createRef={this.questions}
+                onChange={this.handleChange}
+                type="number"
+              />  
+            </Card>
 
-            <h3 className="duration-header">Duration</h3>
-            <label className="minutes-label" htmlFor="minute">Minutes</label>
-            <Input
-              className="minutes"
-              name="minute"
-              defaultValue={Math.floor(testParameters.duration / 60)}
-              createRef={this.minute}
-              onChange={this.handleChange}
-              type="number"
-            />
-            <h3 className="separator">:</h3>
-            <label className="seconds-label" htmlFor="second">Seconds</label>
-            <Input
-              className="seconds"
-              name="second"
-              defaultValue={testParameters.duration % 60}
-              createRef={this.second}
-              onChange={this.handleChange}
-              type="number"
-            />
+            <Card className="passing-card">
+              <h3 className="passing-header">Number Needed to Pass</h3>
+              <Input
+                className="passing"
+                name="passing"
+                defaultValue={testParameters.passing}
+                createRef={this.passing}
+                onChange={this.handleChange}
+                type="number"
+              />
+            </Card>
+            
+            <Card className="random-card">
+              <h3 className="random-header">Number of Random Questions</h3>
+              <Input
+                className="random"
+                name="randomQuestions"
+                defaultValue={testParameters.randomQuestions}
+                createRef={this.randomQuestions}
+                onChange={this.handleChange}
+                type="number"
+              />
+            </Card>
+
+            <Card className="duration-card">
+              <h3 className="duration-header">Duration</h3>
+              <label className="minutes-label" htmlFor="minute">Minutes</label>
+              <Input
+                className="minutes"
+                name="minute"
+                defaultValue={Math.floor(testParameters.duration / 60)}
+                createRef={this.minute}
+                onChange={this.handleChange}
+                type="number"
+              />
+
+              <label className="seconds-label" htmlFor="second">Seconds</label>
+              <Input
+                className="seconds"
+                name="second"
+                defaultValue={testParameters.duration % 60}
+                createRef={this.second}
+                onChange={this.handleChange}
+                type="number"
+              />
+            </Card>
 
             <ConfirmButton
               className="save green"
@@ -211,8 +220,6 @@ class TestParameters extends React.Component<IProps, IState> {
               <span className="default">Save</span>
               <span className="confirmation">Are you sure?</span>
             </ConfirmButton>
-
-          </div>
         </ModalContent>
       </Modal>
     )
