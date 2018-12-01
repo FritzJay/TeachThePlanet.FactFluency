@@ -100,7 +100,12 @@ export class TeacherHome extends React.Component<IProps> {
               
               <Route
                 path={`${match.path}/class-detail/:id/class-settings`}
-                component={EditClassModal}
+                render={(props) => (
+                  <EditClassModal
+                    {...props}
+                    course={teacher.courses.find((course: IClass) => course.id === props.match.params.id)}
+                  />
+                )}
               />
 
               <Route
