@@ -17,6 +17,7 @@ import {
   StudentCreationModalWithData,
   Loading,
 } from './components'
+import { IClass } from 'src/utils'
 import './TeacherHome.css'
 
 export const QUERY = gql`
@@ -74,12 +75,17 @@ export class TeacherHome extends React.Component<IProps> {
 
               <Route
                 path={`${match.path}/classes/new`}
-                component={(props: any) => <NewClassModal {...props}  />}
+                component={(props: any) => <NewClassModal {...props} />}
               />
 
               <Route
                 path={`${match.path}/classes/edit/:id`}
-                render={(props) => <EditClassModal {...props} courses={teacher.courses} />}
+                render={(props) => (
+                  <EditClassModal
+                    {...props}
+                    course={teacher.courses.find((course: IClass) => course.id === props.match.params.id)}
+                  />
+                )}
               />
 
               <Route

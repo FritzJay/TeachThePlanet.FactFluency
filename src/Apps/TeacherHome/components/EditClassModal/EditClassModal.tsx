@@ -20,12 +20,10 @@ export const EditClassModalQueryFragment = gql`
 const UPDATE_COURSE = gql`
   mutation updateCourse($id: ObjID!, $input: UpdateCourseInput!) {
     updateCourse(id: $id, input: $input) {
-      id
-      code
-      grade
-      name
+      ...EditClassModalQueryFragment
     }
   }
+  ${EditClassModalQueryFragment}
 `
 
 const REMOVE_COURSE = gql`
@@ -35,7 +33,7 @@ const REMOVE_COURSE = gql`
 `
 
 interface IProps extends RouteComponentProps<{ id: string }> {
-  courses: IClass[]
+  course: IClass
 }
 
 interface IState {
@@ -45,22 +43,13 @@ interface IState {
 
 export class EditClassModal extends React.Component<IProps, IState> {
   public state: IState = {
-    grade: '',
-    name: '',
-  }
-
-  public componentDidMount() {
-    const course = this.props.courses.find((c) => c.id === this.props.match.params.id)
-    this.setState({
-      grade: course && course.grade,
-      name: course && course.name,
-    })
+    grade: this.props.course.grade,
+    name: this.props.course.name,
   }
 
   public render() {
-    const { history } = this.props
+    const { history, course } = this.props
     const { name, grade } = this.state
-    const course = this.props.courses.find((c) => c.id === this.props.match.params.id)
 
     if (!course) {
       return <Redirect to="/teacher/classes" />
