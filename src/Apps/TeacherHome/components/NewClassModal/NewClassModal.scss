@@ -2,6 +2,7 @@
 
 .NewClassModal {
     min-width: 200px;
+    max-width: 400px;
     min-height: 200px;
 
     .modal-header {
@@ -28,6 +29,7 @@
         input {
             margin: .5em 0 1em 0;
             font-weight: 500;
+            width: 100%;
         }
         
         select {
