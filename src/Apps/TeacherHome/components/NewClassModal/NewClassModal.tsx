@@ -4,33 +4,17 @@ import { Mutation } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
 import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { ClassCardQueryFragment } from '..'
 import { QUERY } from '../../TeacherHome'
 import './NewClassModal.css'
 
 const CREATE_COURSE = gql`
-mutation createCourse($input: CreateCourseInput!) {
-  createCourse(input: $input) {
-    id
-    code
-    grade
-    name
-    testParameters {
-      id
-      duration
-      numbers
-      passing
-      operators
-      questions
-      randomQuestions
-    }
-    students {
-      id
-    }
-    courseInvitations {
-      id
+  mutation createCourse($input: CreateCourseInput!) {
+    createCourse(input: $input) {
+      ...ClassCardQueryFragment
     }
   }
-}
+  ${ClassCardQueryFragment}
 `
 
 interface IProps extends RouteComponentProps<{}> {}
