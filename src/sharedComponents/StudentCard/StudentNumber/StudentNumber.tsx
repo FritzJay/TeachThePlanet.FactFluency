@@ -37,7 +37,7 @@ if (tests.length === 0) {
 return (
   <button 
     key={num}
-    className={`number${className}`}
+    className={`StudentNumber${className}`}
   >
     {num}
   </button>

@@ -14,7 +14,6 @@ import { PendingRequests, PendingRequestsQueryFragment } from './components/Pend
 import { PendingCardQueryFragment } from './components/PendingCard/PendingCard'
 import './ClassDetail.css'
 
-
 export const GET_COURSE = gql`
   query course($id: ObjID!) {
     course(id: $id) {

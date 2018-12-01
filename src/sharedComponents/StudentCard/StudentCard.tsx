@@ -17,6 +17,7 @@ export const StudentCardQueryFragment = gql`
     name
     tests {
       id
+      ...StudentNumberQueryFragment
       ...OperatorRowQueryFragment
       ...NewTestsIndicatorQueryFragment
     }
@@ -24,7 +25,6 @@ export const StudentCardQueryFragment = gql`
       id
       email
     }
-    ...StudentNumberQueryFragment
   }
   ${StudentNumberQueryFragment}
   ${OperatorRowQueryFragment}

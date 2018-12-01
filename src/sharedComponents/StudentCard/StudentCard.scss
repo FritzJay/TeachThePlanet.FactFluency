@@ -27,50 +27,6 @@
         justify-self: center;
     }
 
-    .number {
-        margin: 0 0.5em 0.5em 0;
-
-        display: flex;
-        align-content: center;
-        justify-content: center;
-
-        border: none;
-        font-size: 24px;
-        font-weight: 500;
-
-        width: 36px;
-        height: 36px;
-
-        border-radius: 50%;
-
-        outline: none;
-
-        &.not-taken {
-            background-color: $very-light-gray;
-            color: $white;
-        }
-
-        &.in-progress {
-            background-color: $light-red;
-            color: $white;
-        }
-
-        &.passed-once {
-            background-color: $light-yellow;
-            color: $white;
-        }
-
-        &.passed-twice {
-            background-color: $light-yellow;
-            color: $white;
-        }
-
-        &.passed {
-            background-color: $green;
-            color: $white;
-        }
-    }
-
     .delete {
         grid-area: delete;
 
@@ -98,6 +54,24 @@
 
         &:hover {
             cursor: pointer;
+        }
+    }
+
+    .OperatorRow {
+        &.addition {
+            grid-area: addition;
+        }
+
+        &.subtraction {
+            grid-area: subtraction;
+        }
+
+        &.multiplication {
+            grid-area: multiplication;
+        }
+
+        &.division {
+            grid-area: division;
         }
     }
 }

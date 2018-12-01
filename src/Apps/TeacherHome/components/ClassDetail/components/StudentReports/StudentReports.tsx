@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
 import { gql } from 'apollo-boost'
+import { Link } from 'react-router-dom'
 
 import { Button, StudentCard, NewCard, StudentCardQueryFragment } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
