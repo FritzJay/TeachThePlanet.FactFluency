@@ -2,8 +2,11 @@ import * as React from 'react'
 import { gql } from 'apollo-boost'
 import { Link } from 'react-router-dom'
 
-import { Button, StudentCard, NewCard, StudentCardQueryFragment } from 'src/sharedComponents'
+import { Button, StudentCard, NewCard } from 'src/sharedComponents'
 import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
+import { StudentNumberQueryFragment } from 'src/sharedComponents/StudentCard/StudentNumber/StudentNumber'
+import { OperatorRowQueryFragment } from 'src/sharedComponents/StudentCard/OperatorRow/OperatorRow'
+import { NewTestsIndicatorQueryFragment } from 'src/sharedComponents/StudentCard/NewTestsIndicator/NewTestsIndicator'
 import { IStudentUser } from 'src/utils'
 import './StudentReports.css'
 
@@ -12,7 +15,23 @@ export const StudentReportsQueryFragment = gql`
     id
     ...StudentCardQueryFragment
   }
-  ${StudentCardQueryFragment}
+  fragment StudentCardQueryFragment on Student {
+    id
+    name
+    tests {
+      id
+      ...StudentNumberQueryFragment
+      ...OperatorRowQueryFragment
+      ...NewTestsIndicatorQueryFragment
+    }
+    user {
+      id
+      email
+    }
+  }
+  ${StudentNumberQueryFragment}
+  ${OperatorRowQueryFragment}
+  ${NewTestsIndicatorQueryFragment}
 `
 
 interface IState {
