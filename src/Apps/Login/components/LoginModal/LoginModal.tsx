@@ -113,7 +113,7 @@ class LoginModal extends React.Component<IProps, IState> {
   }
   
   private handlePracticeClick = async () => {
-    if (process.env.REACT_APP_DEFAULT_STUDENT_LOGIN === undefined) {
+    if (process.env.REACT_APP_DEFAULT_STUDENT_LOGIN === undefined || process.env.REACT_APP_DEFAULT_PASSWORD === undefined) {
       throw new Error(
         'There was an error logging in with the default student. ' +
         'Make sure you setup a REACT_APP_DEFAULT_STUDENT_LOGIN ' +
@@ -122,7 +122,7 @@ class LoginModal extends React.Component<IProps, IState> {
         'of a class with default test parameters.'
       )
     }
-    this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, 'password', USER_TYPES.student)
+    this.loginRequest(process.env.REACT_APP_DEFAULT_STUDENT_LOGIN, process.env.REACT_APP_DEFAULT_PASSWORD, USER_TYPES.student)
   }
 
   private handleLoginClick = async () => {
