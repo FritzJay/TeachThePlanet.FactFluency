@@ -23,10 +23,15 @@
 
       text-align: center;
 
-      &:hover {
+      &:hover:enabled {
           background-color: $blue;
           color: $white;
           border-color: $blue;
+      }
+
+      &:disabled {
+          color: $very-light-gray;
+          border-color: $very-light-gray;
       }
   }
 }
