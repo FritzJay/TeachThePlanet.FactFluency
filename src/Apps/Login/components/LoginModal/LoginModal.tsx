@@ -3,8 +3,7 @@ import { RouteComponentProps, Link } from 'react-router-dom'
 import { withApollo } from 'react-apollo'
 import { ApolloClient } from 'apollo-boost'
 
-import { saveSignInStudent } from 'src/api/students'
-import { saveSignInTeacher } from 'src/api'
+import { saveSignInTeacher, saveSignInStudent } from 'src/api'
 
 import { Button, Loading, Modal, ModalContent, ModalHeader, Input } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
