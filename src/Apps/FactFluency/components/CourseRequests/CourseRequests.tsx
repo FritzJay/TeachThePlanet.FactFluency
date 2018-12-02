@@ -111,8 +111,8 @@ export class CourseRequests extends React.Component<any, IState> {
               overlay={true}
               closeTo="/fact-fluency"
             >
-              <ModalHeader>
-                <h2 className="header">Request to join a classroom!</h2>
+              <ModalHeader className="header">
+                <h2>Request to join a classroom!</h2>
               </ModalHeader>
               <ModalContent>
               <Mutation

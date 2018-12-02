@@ -81,8 +81,8 @@ export const CourseInvitations = () => (
           overlay={true}
           closeTo="/fact-fluency"
         >
-          <ModalHeader>
-            <h2 className="header">Select an invitation to join the classroom!</h2>
+          <ModalHeader className="header">
+            <h2>Select an invitation to join the classroom!</h2>
           </ModalHeader>
           <ModalContent>
             {courseInvitations.length > 0

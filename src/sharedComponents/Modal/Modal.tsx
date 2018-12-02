@@ -41,7 +41,7 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
     return (
       <div
         ref={this.setWrapperRef}
-        className={`modal${className ? ' ' + className : ''}${overlay ? ' overlay' : ''}`}
+        className={`Modal${className ? ' ' + className : ''}${overlay ? ' overlay' : ''}`}
       >
         {closeTo || onClose
           ? (
@@ -100,7 +100,7 @@ interface IModalContentProps {
 
 export const ModalHeader = (props: IModalContentProps) => {
   return (
-    <div className={`header${props.className ? ' ' + props.className : ''}`}>
+    <div className={`ModalHeader${props.className ? ' ' + props.className : ''}`}>
       {props.children}
     </div>
   );
@@ -108,7 +108,7 @@ export const ModalHeader = (props: IModalContentProps) => {
 
 export const ModalContent = (props: IModalContentProps) => {
   return (
-    <div className={`content ${props.className ? ' ' + props.className : ''}`}>
+    <div className={`ModalContent${props.className ? ' ' + props.className : ''}`}>
       {props.children}
     </div>
   );

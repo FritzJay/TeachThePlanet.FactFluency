@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 import { compose, graphql } from 'react-apollo'
 import { RouteComponentProps } from 'react-router'
 
-import { Button, CopyToClipboard, Input, Modal, ModalContent, ModalHeader, Loading, Card } from 'src/sharedComponents'
+import { Button, Input, Modal, ModalContent, ModalHeader, Loading, Card } from 'src/sharedComponents'
 import { IClass } from 'src/utils'
 import './StudentInvitationModal.css'
 
@@ -43,16 +43,8 @@ class StudentInvitationModal extends React.Component<IProps, IState> {
 
         <ModalContent className="content">
           <Card className="option-card top">
-            <CopyToClipboard
-              text={course.code}
-              className="copy-to-clipboard"
-            >
-              <h3 className="header">Let your students join your class using your class code:</h3>
-              <div className="class-code">
-                <i className="material-icons">assignment</i>
-                <p>{course.code}</p>
-              </div>
-            </CopyToClipboard>
+            <h3 className="header">Let your students join your class using your class code:</h3>
+            <h3 className="class-code">{course && course.code}</h3>
           </Card>
       
           <Card className="option-card">

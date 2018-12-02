@@ -172,11 +172,17 @@ class LoginModal extends React.Component<IProps, IState> {
       if (error.name === 'ChangePasswordRequiredError') {
         history.push('/index/first-time-sign-in')
         return
+      } else if (error === 'Invalid email or password') {
+        this.setState({
+          error,
+          loading: false,
+        })
+      } else {
+        this.setState({
+          error: 'There was an unexpected error. Please try again later.',
+          loading: false,
+        })
       }
-      this.setState({
-        error: 'There was an unexpected error. Please try again later.',
-        loading: false,
-      })
     }
   }
 }

@@ -76,8 +76,6 @@ export class CopyToClipboard extends React.Component<IProps, IState> {
 
         this.setState({
           notification: false,
-          x: 0,
-          y: 0
         })
 
       }, 700)

@@ -11,11 +11,11 @@ export const PendingInvitationsDescription = () => (
     </p>
     <p>The pending invitation cards consist of five sections:</p>
     <ol>
-      <li>Student Name - The student's name</li>
+      <li>Student Name</li>
       <li>Username - The username the student uses to sign in</li>
       <li>Send Date - The date the invitation was sent</li>
       <li className="invitation-type">
-        Invitation Type - There are multiple types of invitations indicated by the following icons:
+        Invitation Type - There are two types of invitations indicated by the following icons:
         <ul className="description-list">
           {Object.keys(INVITATION_TYPES).map((t) => (
             <li key={t} className="invitation-type-item">
@@ -30,7 +30,7 @@ export const PendingInvitationsDescription = () => (
           ))}
         </ul>
       </li>
-      <li>Delete - A button used to delete the invitation</li>
+      <li>Delete - A button to permanently remove the invitation</li>
     </ol>
     <Card className="PendingCard">
       <h3 className="student-name">Student Name</h3>

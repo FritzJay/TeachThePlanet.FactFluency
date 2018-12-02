@@ -31,7 +31,7 @@ export const DeleteAccountLink = () => (
       >
         {(deleteAccount, { called }) => {
           if (email === 'TTPStudent') {
-            // return null
+            return null
           }
 
           if (loading) {

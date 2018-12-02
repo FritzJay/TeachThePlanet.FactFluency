@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import { clearCached } from 'src/utils'
-import { Button, Dropdown, DeleteAccountLink } from 'src/sharedComponents'
+import { Button, Dropdown } from 'src/sharedComponents'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
@@ -142,8 +142,6 @@ export class Navbar extends React.Component<IProps, IState> {
                   await clearCached()
                 }}
               />
-              
-              <DeleteAccountLink />
             </Dropdown>
           </div>
         )}
