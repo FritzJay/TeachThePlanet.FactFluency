@@ -36,7 +36,10 @@ export const PendingInvitationsDescription = () => (
       <h3 className="student-name">Student Name</h3>
       <span className="email">Username</span>
       <h4 className="date">Send Date</h4>
-      <span className="delete">Delete</span>
+      <span className="delete">
+        Delete
+        <i className="material-icons">delete</i>
+      </span>
       <h4>Invitation Type</h4>
     </Card>
   </Card>
