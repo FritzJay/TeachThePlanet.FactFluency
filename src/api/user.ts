@@ -36,6 +36,8 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
     mutation createStudent($input: CreateStudentInput!) {
       createStudent(input: $input) {
         id
+      }
+    }
   `
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/graphql`, {
@@ -74,6 +76,7 @@ export const saveSignUpTeacher = async (email: string, password: string): Promis
     mutation createTeacher($input: CreateTeacherInput!) {
       createTeacher(input: $input) {
         id
+      }
     }
   `
   try {
