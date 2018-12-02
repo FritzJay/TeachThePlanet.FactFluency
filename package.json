@@ -2,6 +2,10 @@
   "name": "react_fact_fluency",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.14.0",
+    "npm": "6.4.1"
+  },
   "dependencies": {
     "@types/deep-equal": "^1.0.1",
     "@types/graphql": "^14.0.3",
