@@ -18,13 +18,13 @@ export const INVITATION_TYPES = {
     alt: 'Pending student',
     color: 'yellow',
     icon: PendingStudent,
-    title: 'You have created an account for this student and they still need to sign in for the first time using the username displayed on the card. They must use the password that you designated. If you did not designate a password for the student, they must use this class code.',
+    title: 'You have created an account for this student and they still need to sign in for the first time using the username displayed on the card. They must use the password that you designated. If you did not designate a password for the student, they must use the class code.',
   },
   existingStudent: {
     alt: 'Existing student',
     color: 'green',
     icon: ExistingStudent,
-    title: 'This pre-existing student has been invited to join the class and can accept the invitation at any time.',
+    title: 'A pre-existing student has been invited to join the class and can accept the invitation at any time.',
   },
 }
 

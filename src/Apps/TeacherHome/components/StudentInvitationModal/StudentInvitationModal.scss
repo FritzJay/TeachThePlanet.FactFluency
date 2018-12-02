@@ -3,8 +3,11 @@
 .StudentInvitationModal {
   .header {
     background-color: $blue;
-    color: $white;
     padding: 2em 3em;
+
+    h1 {
+      color: $white;
+    }
   }
 
   .content {
@@ -26,7 +29,6 @@
         padding: 1em;
         background-color: $white;
         text-align: start;
-        color: $gray;
       }
 
       .class-code {
