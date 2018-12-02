@@ -57,11 +57,7 @@ export const ClassDetail = ({ match }: IProps) => (
       }
 
       if (error) {
-        return (
-          <div className="ClassDetail">
-            <h3 className="error">{error.message}</h3>
-          </div>
-        )
+        throw error
       }
 
       const { code, name, id, students, courseInvitations, courseRequests } = data.course

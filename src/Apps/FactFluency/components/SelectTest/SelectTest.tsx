@@ -78,11 +78,7 @@ export class SelectTest extends React.Component<IProps, IState> {
               }
               
               if (mutationError) {
-                return (
-                  <div className="SelectTest">
-                    <h3 className="error">Error! {mutationError.message}</h3>
-                  </div>
-                )
+                throw mutationError
               }
 
               const activeCourse = activeCourseId

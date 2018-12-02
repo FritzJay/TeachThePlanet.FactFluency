@@ -96,11 +96,7 @@ export class CourseRequests extends React.Component<any, IState> {
           }
           
           if (error) {
-            return (
-              <div className="CourseRequests">
-                <h3 className="error">{error.message}</h3>
-              </div>
-            )
+            throw error
           }
           
           const { student: { courseRequests } } = data

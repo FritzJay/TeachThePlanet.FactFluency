@@ -66,11 +66,7 @@ export const CourseInvitations = () => (
       }
       
       if (error) {
-        return (
-          <div className="CourseInvitations">
-            <h3 className="error">{error.message}</h3>
-          </div>
-        )
+        throw error
       }
       
       const { student: { courseInvitations } } = data

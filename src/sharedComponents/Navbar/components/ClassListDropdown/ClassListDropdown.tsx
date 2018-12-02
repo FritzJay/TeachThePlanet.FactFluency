@@ -59,7 +59,7 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
           stopPolling: stopPollingForActiveClass,
           data: { activeCourseId },
           loading: firstLoading,
-          error: firstError
+          error: activeCourseError
         }) => {
           if (firstLoading) {
             return active ? (
@@ -69,12 +69,8 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
             ) : null
           }
 
-          if (firstError) {
-            return active ? (
-              <div className="ClassListDropdown">
-                <h3 className="error">{firstError.message}</h3>
-              </div>
-            ) : null
+          if (activeCourseError) {
+            throw activeCourseError
           }
 
           return (
@@ -83,7 +79,7 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
                 startPolling: startPollingForStudent,
                 stopPolling: stopPollingForStudent,
                 client,
-                error,
+                error: studentError,
                 loading,
                 data
               }) => {
@@ -95,12 +91,8 @@ class ClassListDropdown extends React.Component<RouteComponentProps, IState> {
                   ) : null
                 }
 
-                if (error) {
-                  return active ? (
-                    <div className="ClassListDropdown">
-                      <h3 className="error">{error.message}</h3>
-                    </div>
-                  ) : null
+                if (studentError) {
+                  throw studentError
                 }
 
                 const { user, courses, courseInvitations } = data.student

@@ -94,46 +94,19 @@ export class Navbar extends React.Component<IProps, IState> {
         query={GET_USER}
         pollInterval={60000}
       >
-        {({ client, data: { user } }) => (
-          <div
-            ref={this.setWrapperRef}
-            className="Navbar"
-          >
-    
-            <LogoutLink
-              active={user !== undefined && user.email !== undefined}
-              onLogout={async () => {
-                this.props.history.push('/index')
-                await client.clearStore()
-                await clearCached()
-              }}
-            />
-    
-            <div className="second-half-of-children">
-              {secondHalf}
-            </div>
-    
-            <Link className="logo" to={logoLink}>
-              <img src={Logo} className="logo-img" alt="logo" />
-            </Link>
-    
-            <div className="first-half-of-children">
-              {firstHalf}
-            </div>
-    
-            <UserIcon
-              email={user && user.email}
-              onClick={this.handleToggleButtonClick}
-            />
-    
-            <button
-              className="toggle-btn"
-              onClick={this.handleToggleButtonClick}
+        {({ client, error, data }) => {
+          if (error) {
+            throw error
+          }
+
+          const { user } = data
+
+          return (
+            <div
+              ref={this.setWrapperRef}
+              className="Navbar"
             >
-              <i className="material-icons">menu</i>
-            </button>
-    
-            <Dropdown active={activeDropdown}>
+      
               <LogoutLink
                 active={user !== undefined && user.email !== undefined}
                 onLogout={async () => {
@@ -142,9 +115,44 @@ export class Navbar extends React.Component<IProps, IState> {
                   await clearCached()
                 }}
               />
-            </Dropdown>
-          </div>
-        )}
+      
+              <div className="second-half-of-children">
+                {secondHalf}
+              </div>
+      
+              <Link className="logo" to={logoLink}>
+                <img src={Logo} className="logo-img" alt="logo" />
+              </Link>
+      
+              <div className="first-half-of-children">
+                {firstHalf}
+              </div>
+      
+              <UserIcon
+                email={user && user.email}
+                onClick={this.handleToggleButtonClick}
+              />
+      
+              <button
+                className="toggle-btn"
+                onClick={this.handleToggleButtonClick}
+              >
+                <i className="material-icons">menu</i>
+              </button>
+      
+              <Dropdown active={activeDropdown}>
+                <LogoutLink
+                  active={user !== undefined && user.email !== undefined}
+                  onLogout={async () => {
+                    this.props.history.push('/index')
+                    await client.clearStore()
+                    await clearCached()
+                  }}
+                />
+              </Dropdown>
+            </div>
+          )
+        }}
       </Query>
     )
   }

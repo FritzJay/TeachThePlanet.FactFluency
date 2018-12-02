@@ -71,8 +71,12 @@ class TestParameters extends React.Component<IProps, IState> {
         </Modal>
       )
     }
+
+    if (error) {
+      throw error
+    }
     
-    if (error || this.state.error !== '') {
+    if (this.state.error !== '') {
       return (
         <Modal
         overlay={true}
@@ -85,7 +89,7 @@ class TestParameters extends React.Component<IProps, IState> {
           </ModalHeader>
 
           <ModalContent className="parameter-content">
-            <h1>{error.message || (this.state && this.state.error)}</h1>
+            <h1>{this.state.error}</h1>
             <h2>Please Try Again Later</h2>
           </ModalContent>
         </Modal>

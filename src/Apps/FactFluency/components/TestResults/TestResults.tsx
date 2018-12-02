@@ -129,11 +129,7 @@ export const TestResults = ({ test, history }: IProps) => {
             }
     
             if (error) {
-              return (
-                <div className="TestResults">
-                  <h3 className="error">{error}</h3>
-                </div>
-              )
+              throw error
             }
     
             return (
