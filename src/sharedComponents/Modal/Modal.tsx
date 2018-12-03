@@ -29,11 +29,17 @@ class ModalWithoutRouter extends React.Component<IModalProps> {
     if ((closeTo && overlay) || (onClose && overlay)) {
       this.timeout = window.setTimeout(() => window.addEventListener('click', this.handleClickOutside), 200)
     }
+    if (overlay) {
+      window.document.body.classList.add('modal-open')
+    }
   }
   
   public componentWillUnmount() {
     window.clearTimeout(this.timeout)
     window.removeEventListener('click', this.handleClickOutside)
+    if (this.props.overlay) {
+      window.document.body.classList.remove('modal-open')
+    }
   }
 
   public render() {

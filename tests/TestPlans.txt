@@ -1,3 +1,8 @@
+Loggin in:
+  Log in with a teacher
+  Log in with a student via email
+  Log in with a student via username
+
 Student:
   Accounts:
     Create a student
