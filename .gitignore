@@ -26,6 +26,3 @@ src/**/*.css
 
 # VSCode Live Share
 */**/slnx.*
-
-# Heroku config
-static.json
