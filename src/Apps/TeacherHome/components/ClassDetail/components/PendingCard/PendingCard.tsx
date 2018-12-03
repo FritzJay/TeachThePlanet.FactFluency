@@ -13,6 +13,7 @@ export const PendingCardQueryFragment = gql`
     user {
       id
       email
+      username
     }
   }
 `
@@ -40,7 +41,7 @@ export const PendingCard = ({ date, student, onDelete, invitationType }: IProps)
           : student.name}
       </h3>
 
-      <span className="email">{student.user.email}</span>
+      <span className="email">{student.user.username || student.user.email}</span>
 
       <h4 className="date">{date.getMonth()}/{date.getDate()}/{date.getFullYear()}</h4>
 

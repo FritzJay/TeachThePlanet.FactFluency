@@ -29,11 +29,12 @@ const LogoutLink = ({ active, onLogout }: ILogoutLinkProps) => {
 
 interface IUserIconProps {
   email?: string
+  username?: string
   onClick: () => void
 }
 
-const UserIcon = ({ email, onClick }: IUserIconProps) => {
-  if (email !== undefined) {
+const UserIcon = ({ email, username, onClick }: IUserIconProps) => {
+  if (email !== undefined || username !== undefined) {
     return (
       <Button
         onClick={onClick}
@@ -42,7 +43,7 @@ const UserIcon = ({ email, onClick }: IUserIconProps) => {
         <i className="user-icon material-icons">
           account_circle
         </i>
-        {email}
+        {username || email}
       </Button>
     )
   } else {
@@ -58,6 +59,7 @@ const GET_USER = gql`
       lastName
       firstName
       email
+      username
     }
 }
 `
@@ -108,7 +110,7 @@ export class Navbar extends React.Component<IProps, IState> {
             >
       
               <LogoutLink
-                active={user !== undefined && user.email !== undefined}
+                active={user !== undefined && (user.email !== undefined || user.username !== undefined)}
                 onLogout={async () => {
                   this.props.history.push('/index')
                   await client.clearStore()
@@ -130,6 +132,7 @@ export class Navbar extends React.Component<IProps, IState> {
       
               <UserIcon
                 email={user && user.email}
+                username={user && user.username}
                 onClick={this.handleToggleButtonClick}
               />
       

@@ -129,7 +129,7 @@ class LoginModal extends React.Component<IProps, IState> {
     const { email, password, userType } = this.props
 
     if (email === '') {
-      this.setState({ error: 'Please enter an email and password' })
+      this.setState({ error: 'Please enter an email/username and password' })
       return
     }
     

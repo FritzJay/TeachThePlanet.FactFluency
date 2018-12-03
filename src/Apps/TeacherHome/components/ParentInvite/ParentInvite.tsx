@@ -39,7 +39,7 @@ export class ParentInvite extends React.Component<any> {
           </thead>
           <tbody>
             <tr>
-              <td>dynamic email</td>
+              <td>dynamic email/username</td>
               <td>dynamic password</td>
             </tr>
           </tbody>

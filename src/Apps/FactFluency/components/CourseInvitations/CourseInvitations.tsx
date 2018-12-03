@@ -69,7 +69,7 @@ export const CourseInvitations = () => (
         throw error
       }
       
-      const { student: { courseInvitations } } = data
+      const { student: { courseInvitations, email, username } } = data
 
       return (
         <Modal
@@ -146,7 +146,7 @@ export const CourseInvitations = () => (
                     </Mutation>
                   )}
                 </Mutation>
-              )) : <p>You don't have any class invitations. Ask your teacher to create an invitation for "student2@email.com"!</p>
+              )) : <p>You don't have any class invitations. Ask your teacher to create an invitation for "{username || email}"!</p>
             }
           </ModalContent>
         </Modal>

@@ -23,6 +23,7 @@ const GET_STUDENT = gql`
       user {
         id
         email
+        username
       }
       courses {
         id

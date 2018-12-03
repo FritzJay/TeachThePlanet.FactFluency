@@ -211,7 +211,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
             courseId: match.params.id,
             name: this.getDisplayName(student),
             user: {
-              email: await this.getUsername(student, client),
+              username: await this.getUsername(student, client),
               password: students[student],
               firstName: this.getFirstName(student),
               lastName: this.getLastInitial(student),
@@ -304,6 +304,7 @@ const CREATE_PENDING_STUDENT = gql`
       user {
         id
         email
+        username
       }
       courses {
         id

@@ -27,6 +27,7 @@ export const StudentReportsQueryFragment = gql`
     user {
       id
       email
+      username
     }
   }
   ${StudentNumberQueryFragment}

@@ -27,6 +27,7 @@ const GET_COURSE_REQUESTS = gql`
           user {
             id
             email
+            username
           }
         }
       }
@@ -48,6 +49,7 @@ const CREATE_REQUEST = gql`
           name
           user {
             email
+            username
           }
         }
       }
@@ -57,6 +59,7 @@ const CREATE_REQUEST = gql`
         user {
           id
           email
+          username
         }
       }
     }

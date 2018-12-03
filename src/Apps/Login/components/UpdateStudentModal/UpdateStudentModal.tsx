@@ -29,6 +29,7 @@ const UPDATE_NEW_STUDENT = gql`
       },
       user {
         email
+        username
       }
     }
   }

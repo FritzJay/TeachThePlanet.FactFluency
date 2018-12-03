@@ -10,7 +10,7 @@ export const saveSignInStudent = async (email: string, password: string): Promis
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({ email, password, role: 'student' })
+      body: JSON.stringify({ email, username: email, password, role: 'student' })
     })
     const { error, token, changePasswordRequired } = await response.json()
 
@@ -50,7 +50,7 @@ export const saveSignUpStudent = async (email: string, password: string): Promis
         query,
         variables: {
           input: {
-            user: { email, password },
+            user: { email, username: email, password },
           },
         },
         operationName: 'createStudent',
