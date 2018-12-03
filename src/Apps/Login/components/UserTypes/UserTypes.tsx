@@ -35,6 +35,8 @@ export const UserTypes = ({ currentType, onSelect }: IProps) => {
       </Button>
 
       <Button
+        title='Coming soon!'
+        disabled={true}
         name={USER_TYPES.parent}
         className={getClassName(USER_TYPES.parent)}
         onClick={onSelect}

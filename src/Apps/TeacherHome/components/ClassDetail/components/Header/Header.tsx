@@ -6,7 +6,12 @@ import './Header.css'
 
 export const Header = ({ match, onParentInvitesClick }: any) => (
   <div className="Header">
-    <Button onClick={onParentInvitesClick} className="detail-btn">
+    <Button
+      disabled={true}
+      title="Coming soon!"
+      onClick={onParentInvitesClick}
+      className="detail-btn"
+    >
       Parent Invites
     </Button>
     <Link
