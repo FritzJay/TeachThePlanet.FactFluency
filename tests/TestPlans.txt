@@ -1,0 +1,47 @@
+Student:
+  Accounts:
+    Create a student
+    Login with a student
+    Login with the practice with account button. Verify email, logout link and class list dropdown does not display
+  Testing:
+    Take a test with all correct answers
+    Take a test with all incorrect answers
+    Take a test with no answered questions
+    Take a test and let it timeout without answering any questions
+  Courses:
+    Join a class using a course request
+    Join a class using a course invitation
+  Test Parameters:
+    Select a class with all numbers and operators, very the number cards
+    Select a class with limited numbers and operators, verify the number card
+
+Teacher:
+  Accounts:
+    Create a teacher
+    Login with a teacher
+  Courses Grid:
+    Create a class, verify the name on the class card
+    Edit a class, verify the name on the class card
+    Delete a class
+  Course Detail:
+    Create a class, verify the class name displays correctly
+    Create a class, verify there are no students, requests or invitations
+  Test Parameters:
+    Create a class, verify the test parameters are set to the proper default values
+    Update test parameters
+  Adding Students:
+    Invite a student to join the class, verify a pending card is created
+    Remove a pending invitation
+    Create a request to join the class (through the database), verify a pending card is created
+    Decline a pending request
+    Add a student to the class (through the database), verify a student report card is created
+    Remove a student from the class
+  Student Report Cards:
+    Add a student without any tests, verify all the numbers are gray
+    Add a student with tests, verify numbers that haven't been attempted are gray
+    Add a student with tests, verify numbers that have been attempted but have not been passed are red
+    Add a student with tests, verify numbers that have been passed a single time are yellow
+    Add a student with tests, verify numbers that have been passed three times are green
+  
+
+  
