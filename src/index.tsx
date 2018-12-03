@@ -21,7 +21,7 @@ WebFont.load({
 })
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  uri: `${process.env.REACT_APP_API_URL}/graphql`,
   cache: new InMemoryCache(),
   request: async (operation: Operation) => {
     const token = localStorage.getItem('token')
