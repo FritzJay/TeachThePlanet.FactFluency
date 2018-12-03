@@ -51,7 +51,7 @@
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
                 grid-template-rows: minmax(auto, auto);
-                grid-row-gap: 0.25em;
+                grid-row-gap: 0.1em;
                 justify-items: center;
                 
                 .select-multiples {
@@ -94,10 +94,11 @@
             }
             
             .operators {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: space-evenly;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+                grid-template-rows: minmax(auto, auto);
+                grid-row-gap: 0.1em;
+                justify-items: center;
                 
                 font-size: 2.75rem;
             }
