@@ -101,7 +101,6 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 export const TestResults = ({ test, history }: IProps) => {
-  console.log(test)
   if (test === undefined || test === null || test.testResults === undefined) {
     return <Redirect to="/fact-fluency" />
   }
