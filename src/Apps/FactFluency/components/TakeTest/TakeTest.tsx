@@ -86,11 +86,17 @@ export class TakeTest extends React.Component<IProps, IState> {
       return
     }
 
+    this.submitTestOnTimeout = window.setTimeout(() => {
+      this.submitTest()
+    }, test.duration * 1000)
+
     const initializedQuestions = initializeQuestions(test.questions)
+
     this.setState({
       questionStarted: new Date().getTime(),
       originalQuestions: randomizeQuestions(initializedQuestions),
     })
+
     window.addEventListener('keydown', this.handleKeyDown)
   }
 
@@ -227,19 +233,30 @@ export class TakeTest extends React.Component<IProps, IState> {
   }
 
   private submitTest = async () => {
-    const { answeredQuestions } = this.state
+    const { answeredQuestions, originalQuestions, questionStarted } = this.state
+    const formattedQuestion = answeredQuestions.map(({ id, studentAnswer, start, end }) => ({
+      id,
+      studentAnswer,
+      start,
+      end,
+    }))
+    .concat(originalQuestions
+      .slice(answeredQuestions.length, originalQuestions.length)
+        .map(({ id }) => ({
+          id,
+          studentAnswer: undefined,
+          start: undefined,
+          end: undefined,
+        })
+      )
+    )
     await this.gradeTest({
       variables: { 
         id: this.props.test.id,
         input: {
-          start: answeredQuestions[0].start,
+          start: answeredQuestions[0] ? answeredQuestions[0].start : questionStarted,
           end: new Date().getTime(),
-          questions: answeredQuestions.map(({ id, studentAnswer, start, end }) => ({
-            id,
-            studentAnswer,
-            start,
-            end,
-          })),
+          questions: formattedQuestion,
         }
       }
     })

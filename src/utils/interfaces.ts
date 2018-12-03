@@ -106,7 +106,7 @@ export interface ICreateAccountForStudentInput {
 
 export interface ITest {
   id: string
-  duration?: number
+  duration: number
   start?: number
   end?: number
   questions: IQuestion[]
