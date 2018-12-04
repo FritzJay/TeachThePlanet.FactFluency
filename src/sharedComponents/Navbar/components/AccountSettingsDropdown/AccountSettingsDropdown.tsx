@@ -85,22 +85,26 @@ export class AccountSettingsDropdown extends React.Component<IProps, IState> {
                       overlay={true}
                       onClose={this.toggleDropdown}
                     >
-                    <ModalHeader className="header">
-                      <h2>Account Settings</h2>
-                    </ModalHeader>
-                    <ModalContent className="content">
-                      <ul>
-                        <li>
-                          <Button
-                            className="DeleteAccountLink navbar-link"
-                            onClick={() => deleteAccount({ variables: { id }})}
-                            >
-                            Delete Account
-                          </Button>
-                        </li>
-                      </ul>
-                    </ModalContent>
-                  </Modal>
+                      <ModalHeader className="header">
+                        <h2>Account Settings</h2>
+                      </ModalHeader>
+                      <ModalContent className="content">
+                        <ul>
+                          <li>
+                            <Button onClick={() => this.handleLogout(client)}>
+                              Logout
+                            </Button>
+                          </li>
+                          <li>
+                            <Button
+                              onClick={() => deleteAccount({ variables: { id }})}
+                              >
+                              Delete Account
+                            </Button>
+                          </li>
+                        </ul>
+                      </ModalContent>
+                    </Modal>
                   : null}
                 </>
               )

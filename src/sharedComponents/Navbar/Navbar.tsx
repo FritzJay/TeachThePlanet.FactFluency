@@ -53,8 +53,6 @@ export class Navbar extends React.Component<IProps, IState> {
           {firstHalf}
         </div>
 
-        <AccountSettingsDropdown history={this.props.history} />
-
         <button
           className="toggle-btn"
           onClick={this.handleToggleButtonClick}

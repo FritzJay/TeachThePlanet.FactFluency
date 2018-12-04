@@ -17,9 +17,10 @@
 
 .AccountSettingsDropdown {
   /* Marked as important to override the default overlay styling */
-  top: 178px !important;
-  transform: translate(0, -50%) !important;
+  top: 0 !important;
+  transform: translate(0, 0) !important;
   min-width: 300px;
+  margin-top: 100px !important;
 
   .header {
     background-color: $blue;
@@ -62,6 +63,6 @@
 
 @media only screen and (max-width: 625px) {
   .AccountSettingsDropdown {
-    transform: translate(-50%, -50%) !important;
+    transform: translate(-50%, 0) !important;
   }
 }
