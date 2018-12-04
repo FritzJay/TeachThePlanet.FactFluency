@@ -31,7 +31,7 @@ export const INVITATION_TYPES = {
 export const PendingInvitationsQueryFragment = gql`
   fragment PendingInvitationsQueryFragment on Course {
     id
-    students {
+    students(limit: 0) {
       ...PendingCardQueryFragment
     }
     courseInvitations {
