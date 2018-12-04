@@ -22,7 +22,7 @@ tests: ITest[]
 export const StudentNumber = ({ num, tests }: IProps) => {
 const passing = tests.filter((test) => test.testResults && test.testResults.correct >= test.testResults.needed).length
 let className
-if (tests.length === 0) {
+if (tests.length === undefined || tests.length === null || tests.length === 0) {
   className = ' not-taken'
 } else if (passing === 0) {
   className = ' in-progress'
