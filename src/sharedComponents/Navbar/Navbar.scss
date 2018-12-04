@@ -17,44 +17,48 @@
   align-items: center;
   background-color: $white;
   box-shadow: $dp-six;
+}
 
-  .second-half-of-children {
-    display: flex;
-    justify-content: flex-start;
-
-    width: 100%;
-    grid-column: 1 / 4;
-    justify-self: center;
-  }
+@media only screen and (min-width: 500px) {
+  .Navbar {
+    .second-half-of-children {
+      display: flex;
+      justify-content: flex-start;
   
-  .logo {
-    grid-column: 4 / 4;
-    justify-self: center;
-
-    .logo-img {
-      height: 45px;
+      width: 100%;
+      grid-column: 1 / 4;
+      justify-self: center;
     }
-  }
-
-  .first-half-of-children {
-    display: flex;
-    justify-content: flex-end;
-
-    width: 100%;
-    grid-column: 5 / 8;
-    justify-self: center;
-  }
+    
+    .logo {
+      grid-column: 4 / 4;
+      justify-self: center;
   
-  .toggle-btn {
-    display: none;
-  }
-
-  .small-screen-dropdown {
-    display: none;
+      .logo-img {
+        height: 45px;
+      }
+    }
+  
+    .first-half-of-children {
+      display: flex;
+      justify-content: flex-end;
+  
+      width: 100%;
+      grid-column: 5 / 8;
+      justify-self: center;
+    }
+    
+    .toggle-btn {
+      display: none;
+    }
+  
+    .small-screen-dropdown {
+      display: none;
+    }
   }
 }
 
-@media (max-width: 499px) {
+@media only screen and (max-width: 499px) {
   .Navbar {
     padding: 1em;
 

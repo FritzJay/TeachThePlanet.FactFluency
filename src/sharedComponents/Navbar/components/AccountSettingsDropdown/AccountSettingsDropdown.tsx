@@ -6,6 +6,7 @@ import { Redirect, withRouter, RouteComponentProps } from 'react-router'
 import { clearCached } from 'src/utils'
 import { Loading, Button, Modal, ModalHeader, ModalContent, ConfirmButton } from 'src/sharedComponents'
 import './AccountSettingsDropdown.css'
+import { NavbarDropdownTrigger, NavbarDropdownMenu } from 'src/Apps/Login/components';
 
 const GET_USER = gql`
   query user {
@@ -65,16 +66,38 @@ export class AccountSettingsDropdownWithoutRouter extends React.Component<IProps
 
               return (
                 <>
-                  <Button
-                    className={`AccountSettingsDropdown-button${active ? ' active' : ''}`}
-                    onClick={this.toggleDropdown}
-                    title='Account Settings'
-                  >
-                    {username || email}
-                    <i className="icon material-icons">
-                      account_circle
-                    </i>
-                  </Button>
+                  <NavbarDropdownTrigger dropdownMenuId="AccountSettingsDropdown">
+                    <Button
+                      className={`AccountSettingsDropdown-button${active ? ' active' : ''}`}
+                      onClick={this.toggleDropdown}
+                      title='Account Settings'
+                    >
+                      {username || email}
+                      <i className="icon material-icons">
+                        account_circle
+                      </i>
+                    </Button>
+                  </NavbarDropdownTrigger>
+
+                  <NavbarDropdownMenu className="AccountSettingsDropdownMenu" id="AccountSettingsDropdown">
+                    <ul>
+                      <li>
+                        <Button onClick={() => this.handleLogout(client)}>
+                          Logout
+                        </Button>
+                      </li>
+                      <li>
+                        <ConfirmButton
+                          onClick={() => deleteAccount({ variables: { id }})}
+                          className="delete-button"
+                          confirmClassName="confirm"
+                        >
+                          <span className="default">Delete Account</span>
+                          <span className="confirmation">Are you sure?</span>
+                        </ConfirmButton>
+                      </li>
+                    </ul>
+                  </NavbarDropdownMenu>
 
                   {active ?
                     <Modal

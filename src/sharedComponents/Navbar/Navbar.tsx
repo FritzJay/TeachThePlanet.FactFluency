@@ -9,7 +9,8 @@ import './Navbar.css'
 
 export * from './components/ClassListDropdown/ClassListDropdown'
 export * from './components/AccountSettingsDropdown/AccountSettingsDropdown'
-export * from './components/Dropdown/Dropdown'
+export * from './components/NavbarDropdownProvider/NavbarDropdownTrigger'
+export * from './components/NavbarDropdownProvider/NavbarDropdownMenu'
 
 interface IProps extends RouteComponentProps<{}> {
   logoLink: string
