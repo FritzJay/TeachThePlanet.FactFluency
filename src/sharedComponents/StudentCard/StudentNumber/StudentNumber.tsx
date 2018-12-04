@@ -30,7 +30,7 @@ if (tests.length === undefined || tests.length === null || tests.length === 0) {
   className = ' passed-once'
 } else if (passing === 2) {
   className = ' passed-twice'
-} else if (passing === 3) {
+} else if (passing >= 3) {
   className = ' passed'
 }
 
