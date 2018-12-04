@@ -21,7 +21,7 @@ export const GET_COURSE = gql`
       code
       grade
       name
-      students {
+      students(limit: 0) {
         id
         changePasswordRequired
         ...StudentReportsQueryFragment
