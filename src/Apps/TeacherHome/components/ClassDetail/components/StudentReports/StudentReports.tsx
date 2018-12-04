@@ -18,7 +18,7 @@ export const StudentReportsQueryFragment = gql`
   fragment StudentCardQueryFragment on Student {
     id
     name
-    tests {
+    tests(limit: 0) {
       id
       ...StudentNumberQueryFragment
       ...OperatorRowQueryFragment
