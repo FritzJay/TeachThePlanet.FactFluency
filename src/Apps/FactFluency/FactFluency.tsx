@@ -56,6 +56,7 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
                   <Route
                     render={(props) => (
                       <Navbar {...props} logoLink={match.url}>
+                        <AccountSettingsDropdown />
                         <ConnectedClassListDropdown />
                       </Navbar>
                     )}
@@ -72,8 +73,8 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
                 <Route
                   render={(props) => (
                     <Navbar {...props} logoLink={match.url}>
+                      <AccountSettingsDropdown />
                       <ConnectedClassListDropdown />
-                      <AccountSettingsDropdown history={history} />
                     </Navbar>
                   )}
                 />

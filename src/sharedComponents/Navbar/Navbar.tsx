@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { Dropdown, AccountSettingsDropdown } from 'src/sharedComponents'
+import { Dropdown } from 'src/sharedComponents'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
@@ -62,7 +62,6 @@ export class Navbar extends React.Component<IProps, IState> {
 
         <Dropdown active={activeDropdown}>
           {firstHalf}
-          <AccountSettingsDropdown history={this.props.history} />
           {secondHalf}
         </Dropdown>
       </div>

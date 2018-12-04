@@ -20,6 +20,7 @@
 
 .ClassListDropdown {
   /* Marked as important to override the default overlay styling */
+  left: 2em !important;
   top: 0 !important;
   transform: translate(0, 0) !important;
   min-width: 300px;
@@ -118,11 +119,5 @@
         }
       }
     }
-  }
-}
-
-@media only screen and (max-width: 625px) {
-  .ClassListDropdown {
-    transform: translate(-50%, 0) !important;
   }
 }

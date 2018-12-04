@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { gql, ApolloClient } from 'apollo-boost'
 import { Mutation, Query } from 'react-apollo'
-import { Redirect } from 'react-router'
+import { Redirect, withRouter, RouteComponentProps } from 'react-router'
 
 import { clearCached } from 'src/utils'
-import { Loading, Button, Modal, ModalHeader } from 'src/sharedComponents'
+import { Loading, Button, Modal, ModalHeader, ModalContent } from 'src/sharedComponents'
 import './AccountSettingsDropdown.css'
-import { ModalContent } from 'src/Apps/Login/components';
 
 const GET_USER = gql`
   query user {
@@ -24,15 +23,13 @@ const DELETE_ACCOUNT = gql`
   }
 `
 
-interface IProps {
-  history: any
-}
+interface IProps extends RouteComponentProps<{}> {}
 
 interface IState {
   active: boolean
 }
 
-export class AccountSettingsDropdown extends React.Component<IProps, IState> {
+export class AccountSettingsDropdownWithoutRouter extends React.Component<IProps, IState> {
   public state: IState = {
     active: false,
   }
@@ -127,3 +124,5 @@ export class AccountSettingsDropdown extends React.Component<IProps, IState> {
     await clearCached()
   }
 }
+
+export const AccountSettingsDropdown = withRouter(AccountSettingsDropdownWithoutRouter)
