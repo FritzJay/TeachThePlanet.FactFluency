@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import { Button } from 'src/sharedComponents'
 import { NavbarDropdownContext, INavbarDropdownContext } from './NavbarDropdownProvider'
 
 interface IProps {
@@ -13,17 +12,12 @@ interface IProps {
 export const NavbarDropdownTrigger = ({ children, className, dropdownMenuId, onClick }: IProps) => (
   <NavbarDropdownContext.Consumer>
     {({ toggleDropdownMenu }: INavbarDropdownContext) => (
-      <Button
+      <div
         className={`${className ? className : ''}`}
-        onClick={() => {
-          if (onClick) {
-            onClick()
-          }
-          toggleDropdownMenu(dropdownMenuId)
-        }}
+        onClick={() => toggleDropdownMenu(dropdownMenuId)}
       >
         {children}
-      </Button>
+      </div>
     )}
   </NavbarDropdownContext.Consumer>
 )
