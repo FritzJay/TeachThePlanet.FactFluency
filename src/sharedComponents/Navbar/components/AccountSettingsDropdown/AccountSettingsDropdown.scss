@@ -1,0 +1,67 @@
+@import 'src/Stylesheets/all';
+
+.AccountSettingsDropdown-button {
+  font-weight: 700;
+  color: $gray;
+  padding: 0.5em;
+
+  &.active {
+    background-color: $very-light-blue;
+  }
+  
+  .icon {
+    vertical-align: middle;
+    margin-left: 0.25em;
+  }
+}
+
+.AccountSettingsDropdown {
+  /* Marked as important to override the default overlay styling */
+  top: 178px !important;
+  transform: translate(0, -50%) !important;
+  min-width: 300px;
+
+  .header {
+    background-color: $blue;
+    color: $white;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  .content {
+    ul {
+      width: 100%;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      
+      li {
+        padding: 0 0 0.25em 0;
+        border-bottom: 2px solid $very-light-gray;
+        margin-top: 0.25em;
+        
+        button {
+          color: $gray;
+          opacity: 1;
+        }
+
+        &:first-child {
+          margin: 0;
+        }
+
+        .active {
+          background-color: $very-light-blue;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 625px) {
+  .AccountSettingsDropdown {
+    transform: translate(-50%, -50%) !important;
+  }
+}

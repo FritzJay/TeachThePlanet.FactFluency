@@ -4,7 +4,7 @@ import './Dropdown.css';
 interface IProps {
   active: boolean;
   className?: string;
-  children?: JSX.Element | JSX.Element[]
+  children?: any
 }
 
 export const Dropdown = ({ active, className, children }: IProps) => {

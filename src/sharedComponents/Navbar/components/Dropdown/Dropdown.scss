@@ -1,19 +1,31 @@
 @import 'src/Stylesheets/all';
 
-@media (max-width: 399px) {
-  .dropdown {
+/* Mobile */ 
+@media only screen and (max-width: 499px) {
+  .Dropdown {
+    grid-column: 1 / -1;
+    grid-row: 3 / 3;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    background-color: $white;
+    border-top: 2px solid rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Tablet */ 
+@media only screen and (min-width: 500px) {
+  .Dropdown {
     display: none;
+  }
+}
 
-    &.active {
-      grid-column: 1 / -1;
-      width: 100%;
-
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: auto;
-      grid-row-gap: 1em;
-
-      background-color: $white;
-    }
+/* Desktop */ 
+@media only screen and (min-width: 1200px) {
+  .Dropdown {
+    display: none;
   }
 }

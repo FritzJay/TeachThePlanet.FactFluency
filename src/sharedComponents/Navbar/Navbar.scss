@@ -36,38 +36,10 @@
     justify-self: center;
   }
 
-  .navbar-link {
-    grid-column: 1 / 1;
-    justify-self: flex-start;
-    margin-right: 1em;
-
-    cursor: pointer;
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.5);
-
-    &:hover {
-      color: $blue;
-    }
-  }
-
-  .Dropdown {
-    display: none;
-  }
-
-  .UserIcon {
+  .AccountSettingsDropdown-button {
     grid-column: 5 / 5;
     justify-self: flex-end;
     margin-left: 1em;
-    
-    font-weight: 700;
-    color: rgba(0, 0, 0, 0.5);
-    
-    .user-icon {
-      vertical-align: middle;
-      color: rgba(0, 0, 0, 0.5);
-      
-      cursor: pointer;
-    }
   }
 
   .logo {
@@ -96,35 +68,6 @@
       grid-column: 3 / 5;
     }
 
-    .LogoutLink {
-      display: none;
-    }
-
-    .UserIcon {
-      display: none;
-    }
-
-    .Dropdown {
-      grid-row: 3 / 3;
-      grid-column: 1 / -1;
-
-      display: grid;
-      grid-auto-flow: row;
-      grid-gap: 1em;
-
-      margin-top: 1em;
-      padding-top: 1em;
-
-      border-top: 2px solid rgba(0, 0, 0, 0.25);
-
-      .navbar-link {
-        justify-self: flex-end;
-        display: block;
-        text-align: right;
-        margin-right: 0;
-      }
-    }
-
     .logo {
       grid-column: 1 / 1;
       justify-self: flex-start;
@@ -145,6 +88,24 @@
       &:hover {
         background-color: rgba(0, 0, 0, 0.15);
         border-radius: 50%;
+      }
+    }
+
+    .ClassListDropdown-button {
+      display: none;
+    }
+    
+    .AccountSettingsDropdown-button {
+      display: none;
+    }
+
+    .Dropdown {
+      .ClassListDropdown-button {
+        display: inherit;
+      }
+      
+      .AccountSettingsDropdown-button {
+        display: inherit;
       }
     }
   }

@@ -1,68 +1,13 @@
 import * as React from 'react'
-import { Query } from 'react-apollo'
-import { gql } from 'apollo-boost'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { clearCached } from 'src/utils'
-import { Button, Dropdown } from 'src/sharedComponents'
+import { Dropdown, AccountSettingsDropdown } from 'src/sharedComponents'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
 export * from './components/ClassListDropdown/ClassListDropdown'
-export * from './components/DeleteAccountLink/DeleteAccountLink'
+export * from './components/AccountSettingsDropdown/AccountSettingsDropdown'
 export * from './components/Dropdown/Dropdown'
-
-interface ILogoutLinkProps {
-  active: boolean
-  onLogout: () => void
-  children?: any
-}
-
-const LogoutLink = ({ active, onLogout }: ILogoutLinkProps) => {
-  if (active) {
-    return <a className="LogoutLink navbar-link" onClick={onLogout}>Logout</a>
-  } else {
-    return null
-  }
-}
-
-
-interface IUserIconProps {
-  email?: string
-  username?: string
-  onClick: () => void
-}
-
-const UserIcon = ({ email, username, onClick }: IUserIconProps) => {
-  if (email !== undefined || username !== undefined) {
-    return (
-      <Button
-        onClick={onClick}
-        className="UserIcon"
-      >
-        <i className="user-icon material-icons">
-          account_circle
-        </i>
-        {username || email}
-      </Button>
-    )
-  } else {
-    return null
-  }
-}
-
-
-const GET_USER = gql`
-  query user {
-    user {
-      id
-      lastName
-      firstName
-      email
-      username
-    }
-}
-`
 
 interface IProps extends RouteComponentProps<{}> {
   logoLink: string
@@ -92,71 +37,37 @@ export class Navbar extends React.Component<IProps, IState> {
     const secondHalf = childrenArray.slice(Math.ceil(childrenArray.length / 2), childrenArray.length)
 
     return (
-      <Query
-        query={GET_USER}
-        pollInterval={60000}
+      <div
+        ref={this.setWrapperRef}
+        className="Navbar"
       >
-        {({ client, error, data }) => {
-          if (error) {
-            throw error
-          }
+        <div className="second-half-of-children">
+          {secondHalf}
+        </div>
 
-          const { user } = data
+        <Link className="logo" to={logoLink}>
+          <img src={Logo} className="logo-img" alt="logo" />
+        </Link>
 
-          return (
-            <div
-              ref={this.setWrapperRef}
-              className="Navbar"
-            >
-      
-              <LogoutLink
-                active={user !== undefined && (user.email !== undefined || user.username !== undefined)}
-                onLogout={async () => {
-                  this.props.history.push('/index')
-                  await client.clearStore()
-                  await clearCached()
-                }}
-              />
-      
-              <div className="second-half-of-children">
-                {secondHalf}
-              </div>
-      
-              <Link className="logo" to={logoLink}>
-                <img src={Logo} className="logo-img" alt="logo" />
-              </Link>
-      
-              <div className="first-half-of-children">
-                {firstHalf}
-              </div>
-      
-              <UserIcon
-                email={user && user.email}
-                username={user && user.username}
-                onClick={this.handleToggleButtonClick}
-              />
-      
-              <button
-                className="toggle-btn"
-                onClick={this.handleToggleButtonClick}
-              >
-                <i className="material-icons">menu</i>
-              </button>
-      
-              <Dropdown active={activeDropdown}>
-                <LogoutLink
-                  active={user !== undefined && user.email !== undefined}
-                  onLogout={async () => {
-                    this.props.history.push('/index')
-                    await client.clearStore()
-                    await clearCached()
-                  }}
-                />
-              </Dropdown>
-            </div>
-          )
-        }}
-      </Query>
+        <div className="first-half-of-children">
+          {firstHalf}
+        </div>
+
+        <AccountSettingsDropdown history={this.props.history} />
+
+        <button
+          className="toggle-btn"
+          onClick={this.handleToggleButtonClick}
+        >
+          <i className="material-icons">menu</i>
+        </button>
+
+        <Dropdown active={activeDropdown}>
+          {firstHalf}
+          <AccountSettingsDropdown history={this.props.history} />
+          {secondHalf}
+        </Dropdown>
+      </div>
     )
   }
 
