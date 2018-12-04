@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { Dropdown } from 'src/sharedComponents'
+import NavbarDropdownProvider from './components/NavbarDropdownProvider/NavbarDropdownProvider'
+import { NavbarDropdownTrigger } from './components/NavbarDropdownProvider/NavbarDropdownTrigger'
+import { NavbarDropdownMenu } from './components/NavbarDropdownProvider/NavbarDropdownMenu'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
@@ -30,41 +32,42 @@ export class Navbar extends React.Component<IProps, IState> {
 
   public render() {
     const { logoLink, children } = this.props
-    const { activeDropdown } = this.state
 
     const childrenArray = React.Children.toArray(children)
     const firstHalf = childrenArray.slice(0, Math.ceil(childrenArray.length / 2))
     const secondHalf = childrenArray.slice(Math.ceil(childrenArray.length / 2), childrenArray.length)
 
     return (
-      <div
-        ref={this.setWrapperRef}
-        className="Navbar"
-      >
-        <div className="second-half-of-children">
-          {secondHalf}
-        </div>
-
-        <Link className="logo" to={logoLink}>
-          <img src={Logo} className="logo-img" alt="logo" />
-        </Link>
-
-        <div className="first-half-of-children">
-          {firstHalf}
-        </div>
-
-        <button
-          className="toggle-btn"
-          onClick={this.handleToggleButtonClick}
+      <NavbarDropdownProvider>
+        <div
+          ref={this.setWrapperRef}
+          className="Navbar"
         >
-          <i className="material-icons">menu</i>
-        </button>
+          <div className="second-half-of-children">
+            {secondHalf}
+          </div>
 
-        <Dropdown active={activeDropdown}>
-          {firstHalf}
-          {secondHalf}
-        </Dropdown>
-      </div>
+          <Link className="logo" to={logoLink}>
+            <img src={Logo} className="logo-img" alt="logo" />
+          </Link>
+
+          <div className="first-half-of-children">
+            {firstHalf}
+          </div>
+
+          <NavbarDropdownTrigger
+            className="toggle-btn"
+            dropdownMenuId='smallScreenDropdown'
+          >
+            <i className="material-icons">menu</i>
+          </NavbarDropdownTrigger>
+
+          <NavbarDropdownMenu className="small-screen-dropdown" id="smallScreenDropdown">
+            {firstHalf}
+            {secondHalf}
+          </NavbarDropdownMenu>
+        </div>
+      </NavbarDropdownProvider>
     )
   }
 

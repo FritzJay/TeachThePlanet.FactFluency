@@ -1,0 +1,44 @@
+@import 'src/Stylesheets/all';
+
+.NavbarDropdownMenu {
+  -webkit-transition:
+    max-height 0.5s,
+    opacity 0.5s;
+  transition:
+    max-height 0.5s,
+    opacity 0.5s;
+  max-height: 1000px;
+  opacity: 1;
+
+  &.hidden {
+    opacity: 0;
+    max-height: 0px;
+  }
+
+}
+
+@keyframes slideInDown {
+  from {
+    -webkit-transform: height 0;
+    transform: height 0;
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: height 100%;
+    transform: height 100%;
+  }
+}
+
+@-webkit-keyframes slideInDown {
+  from {
+    -webkit-transform: height 0;
+    transform: height 0;
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: height 100%;
+    transform: height 100%;
+  }
+}

@@ -10,7 +10,7 @@
   padding: 1em 2em;
   
   display: grid;
-  grid-gap: 0.5em;
+  grid-column-gap: 0.5em;
   grid-auto-flow: row;
   grid-template-columns: repeat(7, 1fr);
 
@@ -48,6 +48,10 @@
   .toggle-btn {
     display: none;
   }
+
+  .small-screen-dropdown {
+    display: none;
+  }
 }
 
 @media (max-width: 499px) {
@@ -58,18 +62,18 @@
       display: none;
     }
 
-    .first-half-of-children {
-      display: none;
-    }
-
     .logo {
       grid-column: 1 / 1;
       justify-self: flex-start;
     }
 
+    .first-half-of-children {
+      display: none;
+    }
+
     .toggle-btn {
       display: block;
-      grid-column: -1 / -1;
+      grid-column: 7 / -1;
       justify-self: flex-end;      
 
       outline: none;
@@ -85,13 +89,20 @@
       }
     }
 
-    .Dropdown {
+    .small-screen-dropdown {
+      grid-column: 1 / 8;
+      grid-row: 2 / 2;
+
+      display: grid;
+      justify-items: flex-end;
+      text-align: right;
+
       .ClassListDropdown-button {
-        display: inherit;
+        display: flex;
       }
       
       .AccountSettingsDropdown-button {
-        display: inherit;
+        display: flex;
       }
     }
   }
