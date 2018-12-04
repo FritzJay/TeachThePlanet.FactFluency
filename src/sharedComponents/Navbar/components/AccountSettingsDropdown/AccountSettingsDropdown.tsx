@@ -4,7 +4,7 @@ import { Mutation, Query } from 'react-apollo'
 import { Redirect, withRouter, RouteComponentProps } from 'react-router'
 
 import { clearCached } from 'src/utils'
-import { Loading, Button, Modal, ModalHeader, ModalContent } from 'src/sharedComponents'
+import { Loading, Button, Modal, ModalHeader, ModalContent, ConfirmButton } from 'src/sharedComponents'
 import './AccountSettingsDropdown.css'
 
 const GET_USER = gql`
@@ -93,11 +93,14 @@ export class AccountSettingsDropdownWithoutRouter extends React.Component<IProps
                             </Button>
                           </li>
                           <li>
-                            <Button
+                            <ConfirmButton
                               onClick={() => deleteAccount({ variables: { id }})}
-                              >
-                              Delete Account
-                            </Button>
+                              className="delete-button"
+                              confirmClassName="confirm"
+                            >
+                              <span className="default">Delete Account</span>
+                              <span className="confirmation">Are you sure?</span>
+                            </ConfirmButton>
                           </li>
                         </ul>
                       </ModalContent>

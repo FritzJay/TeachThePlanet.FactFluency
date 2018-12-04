@@ -48,6 +48,27 @@
         button {
           color: $gray;
           opacity: 1;
+
+          &.delete-button {
+            .default {
+              display: inherit;
+            }
+
+            .confirmation {
+              display: none;
+            }
+
+            &.confirm {
+              .default {
+                display: none;
+              }
+
+              .confirmation {
+                display: inherit;
+                color: $red;
+              }
+            }
+          }
         }
 
         &:first-child {
