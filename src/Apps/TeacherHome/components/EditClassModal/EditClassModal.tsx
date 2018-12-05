@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 
 import { IClass } from 'src/utils'
 import { Input, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
-import { ConfirmButton, Button } from 'src/sharedComponents/Button/Button'
+import { ConfirmButton, DisableButton } from 'src/sharedComponents/Button/Button'
 import { QUERY } from '../../TeacherHome'
 import './EditClassModal.css'
 
@@ -130,7 +130,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
                       <span className="confirmation">Are you sure?</span>
                     </ConfirmButton>
 
-                    <Button
+                    <DisableButton
                       className="green save-changes"
                       onClick={() => {
                         history.goBack()
@@ -144,7 +144,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
                       }}
                     >
                       Save Changes
-                    </Button>
+                    </DisableButton>
                   </div>
                 </ModalContent>
               </Modal>

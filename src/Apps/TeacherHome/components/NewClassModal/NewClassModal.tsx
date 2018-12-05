@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 import { Mutation } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { Button, Input, Loading, Modal, ModalContent, ModalHeader } from 'src/sharedComponents'
+import { Input, Loading, Modal, ModalContent, ModalHeader, DisableButton } from 'src/sharedComponents'
 import { ClassCardQueryFragment } from '..'
 import { QUERY } from '../../TeacherHome'
 import './NewClassModal.css'
@@ -108,12 +108,12 @@ export class NewClassModal extends React.Component<IProps, IState> {
                 {error || this.state.error !== '' && <p className="error">{error ? error.message : this.state.error}</p>}
 
                 <div className="buttons">
-                  <Button
+                  <DisableButton
                     className="create-class green"
                     onClick={() => this.handleCreateClassClick(mutate)}
                   >
                     Create Class
-                  </Button>
+                  </DisableButton>
                 </div>
 
               </ModalContent>

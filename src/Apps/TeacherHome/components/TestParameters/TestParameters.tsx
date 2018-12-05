@@ -7,7 +7,7 @@ import {
   IClass,
   themeColors,
 } from 'src/utils'
-import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, Card, Button } from 'src/sharedComponents'
+import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, Card, DisableButton } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
@@ -216,12 +216,12 @@ class TestParameters extends React.Component<IProps, IState> {
               />
             </Card>
 
-            <Button
+            <DisableButton
               className="save green"
               onClick={this.handleSubmit}
             >
               Save Changes
-            </Button>
+            </DisableButton>
         </ModalContent>
       </Modal>
     )

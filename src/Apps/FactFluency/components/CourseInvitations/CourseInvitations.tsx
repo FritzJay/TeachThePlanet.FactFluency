@@ -3,7 +3,7 @@ import { Query, Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 
 import { ICourseInvitation } from 'src/utils'
-import { Card, ConfirmButton, Loading, Modal, ModalHeader, ModalContent } from 'src/sharedComponents'
+import { Card, ConfirmButton, Loading, Modal, ModalHeader, ModalContent, DisableButton } from 'src/sharedComponents'
 import './CourseInvitations.css'
 
 const GET_COURSE_INVITATIONS = gql`
@@ -132,15 +132,13 @@ export const CourseInvitations = () => (
                             <span className="default">Decline</span>
                             <span className="confirmation">Are you sure?</span>
                           </ConfirmButton>
-                          <ConfirmButton
+                          <DisableButton
                             value={id}
                             onClick={() => acceptCourseInvitation()}
                             className="green accept"
-                            confirmClassName="confirm-button"
                           >
-                            <span className="default">Accept</span>
-                            <span className="confirmation">Are you sure?</span>
-                          </ConfirmButton>
+                            Accept
+                          </DisableButton>
                         </Card>
                       )}
                     </Mutation>

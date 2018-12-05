@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 import { graphql, compose, ApolloConsumer } from 'react-apollo'
 import { RouteComponentProps } from 'react-router'
 
-import { Modal, ModalHeader, ModalContent, Input, Button, Loading } from 'src/sharedComponents'
+import { Modal, ModalHeader, ModalContent, Input, Button, Loading, DisableButton } from 'src/sharedComponents'
 import { StudentCreationCard } from './StudentCreationCard'
 import { IClass } from 'src/utils'
 import { GET_COURSE as GET_FULL_COURSE } from '../ClassDetail/ClassDetail'
@@ -111,12 +111,12 @@ class StudentCreationModal extends React.Component<IProps, IState> {
               >
                 Back
               </Button>
-              <Button
+              <DisableButton
                 className="green create-button"
                 onClick={() => this.handleCreateAccounts(client)}
               >
                 Create Accounts
-              </Button>
+              </DisableButton>
             </ModalContent>
           </Modal>
         )}
