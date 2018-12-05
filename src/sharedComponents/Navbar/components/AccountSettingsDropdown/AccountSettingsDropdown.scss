@@ -1,13 +1,11 @@
 @import 'src/Stylesheets/all';
 
 .AccountSettingsDropdown-button {
+  display: flex;
+  align-items: center;
   font-weight: 700;
   color: $gray;
   padding: 0.5em;
-
-  &.active {
-    background-color: $very-light-blue;
-  }
   
   .icon {
     vertical-align: middle;
@@ -15,70 +13,27 @@
   }
 }
 
-.AccountSettingsDropdown {
-  /* Marked as important to override the default overlay styling */
-  left: inherit !important;
-  right: 2em !important;
-  top: 0 !important;
-  transform: translate(0, 0) !important;
-  min-width: 300px;
-  margin-top: 100px !important;
+.AccountSettingsDropdownMenu {
+  display: grid;
+  justify-content: flex-start;
+  justify-items: flex-start;
 
-  .header {
-    background-color: $blue;
-    color: $white;
-
-    h2 {
-      margin: 0;
+  .delete-button {
+    .default {
+      display: block;
     }
-  }
 
-  .content {
-    ul {
-      width: 100%;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      
-      li {
-        padding: 0 0 0.25em 0;
-        border-bottom: 2px solid $very-light-gray;
-        margin-top: 0.25em;
-        
-        button {
-          color: $gray;
-          opacity: 1;
+    .confirmation {
+      display: none;
+    }
 
-          &.delete-button {
-            .default {
-              display: inherit;
-            }
+    &.confirm {
+      .default {
+        display: none;
+      }
 
-            .confirmation {
-              display: none;
-            }
-
-            &.confirm {
-              .default {
-                display: none;
-              }
-
-              .confirmation {
-                display: inherit;
-                color: $red;
-              }
-            }
-          }
-        }
-
-        &:first-child {
-          margin: 0;
-        }
-
-        .active {
-          background-color: $very-light-blue;
-          border-radius: 5px;
-        }
+      .confirmation {
+        display: block;
       }
     }
   }

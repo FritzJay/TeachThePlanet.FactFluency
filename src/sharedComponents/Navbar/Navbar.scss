@@ -14,45 +14,48 @@
   grid-auto-flow: row;
   grid-template-columns: repeat(7, 1fr);
 
+  align-content: center;
   align-items: center;
   background-color: $white;
   box-shadow: $dp-six;
+  
+  
+  .logo-img {
+    height: 45px;
+  }
+  
+  .dropdown {
+    grid-column: 1 / 8;
+    grid-row: 3 / 3;
+
+    & > * {
+      color: $gray;
+    }
+  }
 }
 
 @media only screen and (min-width: 500px) {
   .Navbar {
-    .second-half-of-children {
-      display: flex;
-      justify-content: flex-start;
-  
-      width: 100%;
+    .AccountSettingsDropdownContainer {
       grid-column: 1 / 4;
-      justify-self: center;
     }
     
     .logo {
       grid-column: 4 / 4;
       justify-self: center;
-  
-      .logo-img {
-        height: 45px;
-      }
+      align-self: flex-start;
     }
   
-    .first-half-of-children {
-      display: flex;
-      justify-content: flex-end;
-  
-      width: 100%;
+    .ClassListDropdown {
       grid-column: 5 / 8;
-      justify-self: center;
+      justify-self: flex-end;
     }
     
     .toggle-btn {
       display: none;
     }
   
-    .small-screen-dropdown {
+    .small-screen {
       display: none;
     }
   }
@@ -61,51 +64,48 @@
 @media only screen and (max-width: 499px) {
   .Navbar {
     padding: 1em;
-
-    .second-half-of-children {
-      display: none;
-    }
-
+    
     .logo {
       grid-column: 1 / 1;
       justify-self: flex-start;
     }
+    
+    .ClassListDropdown-button {
+      display: none;
+    }
 
-    .first-half-of-children {
+    .AccountSettingsDropdownTrigger {
       display: none;
     }
 
     .toggle-btn {
       display: block;
       grid-column: 7 / -1;
-      justify-self: flex-end;      
+      justify-self: flex-end;
+    }
 
-      outline: none;
-      background-color: transparent;
-      border: none;
+    .AccountSettingsDropdownContainer {
+      grid-column: 1 / -1;
+      grid-row: 3 / 3;
 
-      padding: .5em;
-      margin-left: 1em;
-
-      &:hover {
-        background-color: $very-light-gray;
-        border-radius: 50%;
+      .AccountSettingsDropdownMenu {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
       }
     }
 
-    .small-screen-dropdown {
-      grid-column: 1 / 8;
-      grid-row: 2 / 2;
+    .small-dropdown {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
 
-      display: grid;
-      justify-items: flex-end;
-      text-align: right;
-
-      .ClassListDropdown-button {
+      .AccountSettingsDropdownTrigger {
         display: flex;
       }
-      
-      .AccountSettingsDropdown-button {
+
+      .ClassListDropdown-button {
         display: flex;
       }
     }

@@ -1,9 +1,13 @@
 import * as React from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Query } from 'react-apollo'
+import { gql } from 'apollo-boost'
+import { Link, RouteComponentProps, Route } from 'react-router-dom'
 
 import NavbarDropdownProvider from './components/NavbarDropdownProvider/NavbarDropdownProvider'
 import { NavbarDropdownTrigger } from './components/NavbarDropdownProvider/NavbarDropdownTrigger'
 import { NavbarDropdownMenu } from './components/NavbarDropdownProvider/NavbarDropdownMenu'
+import { AccountSettingsDropdown } from './components/AccountSettingsDropdown/AccountSettingsDropdown'
+import { ConnectedClassListDropdown, Button } from 'src/Apps/Login/components'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
@@ -11,6 +15,16 @@ export * from './components/ClassListDropdown/ClassListDropdown'
 export * from './components/AccountSettingsDropdown/AccountSettingsDropdown'
 export * from './components/NavbarDropdownProvider/NavbarDropdownTrigger'
 export * from './components/NavbarDropdownProvider/NavbarDropdownMenu'
+
+const GET_USER = gql`
+  query user {
+    user {
+      id
+      email
+      username
+    }
+  }
+`
 
 interface IProps extends RouteComponentProps<{}> {
   logoLink: string
@@ -32,43 +46,77 @@ export class Navbar extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { logoLink, children } = this.props
-
-    const childrenArray = React.Children.toArray(children)
-    const firstHalf = childrenArray.slice(0, Math.ceil(childrenArray.length / 2))
-    const secondHalf = childrenArray.slice(Math.ceil(childrenArray.length / 2), childrenArray.length)
+    const { logoLink } = this.props
 
     return (
-      <NavbarDropdownProvider>
-        <div
-          ref={this.setWrapperRef}
-          className="Navbar"
-        >
-          <div className="second-half-of-children">
-            {secondHalf}
-          </div>
+      <Query query={GET_USER}>
+        {({ loading, data }) => {
+          if (loading) {
+            return null
+          }
+          
+          const { email, username } = data.user
 
-          <Link className="logo" to={logoLink}>
-            <img src={Logo} className="logo-img" alt="logo" />
-          </Link>
+          return (
+            <NavbarDropdownProvider>
+              <div
+                ref={this.setWrapperRef}
+                className="Navbar"
+              >
+                {email === 'TTPStudent'
+                  ? null
+                  : (
+                    <Route
+                      path="/"
+                      render={() => <AccountSettingsDropdown name={username || email} />}
+                    />
+                )}
 
-          <div className="first-half-of-children">
-            {firstHalf}
-          </div>
+                <Link className="logo" to={logoLink}>
+                  <img src={Logo} className="logo-img" alt="logo" />
+                </Link>
 
-          <NavbarDropdownTrigger
-            className="toggle-btn"
-            dropdownMenuId='smallScreenDropdown'
-          >
-            <i className="material-icons">menu</i>
-          </NavbarDropdownTrigger>
+                {email === 'TTPStudent'
+                  ? null
+                  : (
+                    <Route
+                      path="/teacher"
+                      component={ConnectedClassListDropdown}
+                    />
+                )}
 
-          <NavbarDropdownMenu className="small-screen-dropdown" id="smallScreenDropdown">
-            {firstHalf}
-            {secondHalf}
-          </NavbarDropdownMenu>
-        </div>
-      </NavbarDropdownProvider>
+                <NavbarDropdownTrigger
+                  className="toggle-btn"
+                  dropdownMenuId='smallScreenDropdown'
+                >
+                  <Button>
+                    <i className="material-icons">menu</i>
+                  </Button>
+                </NavbarDropdownTrigger>
+
+                <NavbarDropdownMenu className="small-dropdown" id="smallScreenDropdown">
+                  {email === 'TTPStudent'
+                    ? null
+                    : (
+                      <Route
+                        path="/"
+                        render={() => <AccountSettingsDropdown name={username || email} />}
+                      />
+                  )}
+                  {email === 'TTPStudent'
+                    ? null
+                    : (
+                      <Route
+                        path="/teacher"
+                        component={ConnectedClassListDropdown}
+                      />
+                  )}
+                </NavbarDropdownMenu>
+              </div>
+            </NavbarDropdownProvider>
+          )
+        }}
+      </Query>
     )
   }
 

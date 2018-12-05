@@ -16,7 +16,6 @@ import {
   StudentInvitationModalWithData,
   StudentCreationModalWithData,
   Loading,
-  AccountSettingsDropdown,
 } from './components'
 import { IClass } from 'src/utils'
 import './TeacherHome.css'
@@ -47,9 +46,7 @@ export class TeacherHome extends React.Component<IProps> {
               <div className="TeacherHome">
                 <Route
                   render={(props) => (
-                    <Navbar {...props} logoLink={match.url}>
-                      <AccountSettingsDropdown />
-                    </Navbar>
+                    <Navbar {...props} logoLink={match.url} />
                   )}
                 />
                 <Loading className="loading" />
@@ -61,9 +58,7 @@ export class TeacherHome extends React.Component<IProps> {
             <div className="TeacherHome">
               <Route
                 render={(props) => (
-                  <Navbar {...props} logoLink={match.url}>
-                    <AccountSettingsDropdown />
-                  </Navbar>
+                  <Navbar {...props} logoLink={match.url} />
                 )}
               />
 

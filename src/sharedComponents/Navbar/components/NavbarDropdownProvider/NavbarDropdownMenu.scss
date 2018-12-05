@@ -12,6 +12,7 @@
 
   &.hidden {
     opacity: 0;
+    z-index: -500;
     max-height: 0px;
   }
 
