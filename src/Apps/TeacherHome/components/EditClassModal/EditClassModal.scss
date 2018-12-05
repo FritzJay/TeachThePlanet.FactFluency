@@ -81,20 +81,6 @@
         
         .save-changes { 
             grid-column: 2 / 2;
-
-            .confirmation {
-                display: none
-            }
-            
-            &.confirm {
-                .default {
-                    display: none;
-                }
-
-                .confirmation {
-                    display: inline;
-                }
-            }
         }
 
     }

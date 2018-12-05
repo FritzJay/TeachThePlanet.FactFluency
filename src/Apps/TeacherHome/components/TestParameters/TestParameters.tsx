@@ -7,7 +7,7 @@ import {
   IClass,
   themeColors,
 } from 'src/utils'
-import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, ConfirmButton, Card } from 'src/sharedComponents'
+import { Input, Loading, Modal, ModalContent, ModalHeader, Operator, Card, Button } from 'src/sharedComponents'
 import './TestParameters.css'
 
 interface IState {
@@ -216,14 +216,12 @@ class TestParameters extends React.Component<IProps, IState> {
               />
             </Card>
 
-            <ConfirmButton
+            <Button
               className="save green"
-              confirmClassName="confirm-button"
               onClick={this.handleSubmit}
             >
-              <span className="default">Save</span>
-              <span className="confirmation">Are you sure?</span>
-            </ConfirmButton>
+              Save Changes
+            </Button>
         </ModalContent>
       </Modal>
     )
