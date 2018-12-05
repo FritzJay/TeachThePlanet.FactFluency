@@ -3,10 +3,13 @@
 import * as React from 'react';
 import './Button.css';
 
-interface IButtonProps {
+export * from './DisableButton'
+
+export interface IButtonProps {
   className?: string
   children?: any
   onClick?: (event: any) => void
+  value?: string
 }
 
 export const Button = (props: IButtonProps | any) => {

@@ -118,20 +118,6 @@
 
     .create-button {
       grid-area: create;
-
-      .confirmation {
-        display: none;
-      }
-
-      &.confirm {
-        .default {
-          display: none;
-        }
-
-        .confirmation {
-          display: inline;
-        }
-      }
     }
   }
 }

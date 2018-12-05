@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 import { graphql, compose, ApolloConsumer } from 'react-apollo'
 import { RouteComponentProps } from 'react-router'
 
-import { Modal, ModalHeader, ModalContent, Input, Button, ConfirmButton, Loading } from 'src/sharedComponents'
+import { Modal, ModalHeader, ModalContent, Input, Button, Loading, DisableButton } from 'src/sharedComponents'
 import { StudentCreationCard } from './StudentCreationCard'
 import { IClass } from 'src/utils'
 import { GET_COURSE as GET_FULL_COURSE } from '../ClassDetail/ClassDetail'
@@ -111,15 +111,12 @@ class StudentCreationModal extends React.Component<IProps, IState> {
               >
                 Back
               </Button>
-              <ConfirmButton
+              <DisableButton
                 className="green create-button"
-                confirmClassName="confirm"
-                disableTimeout={2000}
                 onClick={() => this.handleCreateAccounts(client)}
               >
-                <span className="default">Create Accounts</span>
-                <span className="confirmation">Are you sure?</span>
-              </ConfirmButton>
+                Create Accounts
+              </DisableButton>
             </ModalContent>
           </Modal>
         )}

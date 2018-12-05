@@ -2,6 +2,7 @@
 
 .TestParametersModal {
     grid-column: 2 / 2;
+    min-width: 700px;
     
     .parameters-header {
         background-color: $blue;
@@ -211,20 +212,6 @@
             margin-top: 1em;
             padding-left: 5em;
             padding-right: 5em;
-
-            .confirmation {
-                display: none;
-            }
-
-            &.confirm-button {
-                .default {
-                    display: none;
-                }
-
-                .confirmation {
-                    display: inline;
-                }
-            }
         }
     }
 }

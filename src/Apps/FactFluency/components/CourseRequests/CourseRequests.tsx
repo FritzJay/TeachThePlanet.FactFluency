@@ -3,7 +3,7 @@ import { Query, Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 
 import { ICourseRequest } from 'src/utils'
-import { Card, ConfirmButton, Loading, Modal, ModalHeader, ModalContent, Input } from 'src/sharedComponents'
+import { Card, ConfirmButton, Loading, Modal, ModalHeader, ModalContent, Input, Button } from 'src/sharedComponents'
 import './CourseRequests.css'
 
 const GET_COURSE_REQUESTS = gql`
@@ -144,10 +144,8 @@ export class CourseRequests extends React.Component<any, IState> {
                           value={this.state.code}
                           onChange={(e: any) => this.setState({ code: e.target.value })}
                         />
-                        <ConfirmButton
+                        <Button
                             className="green accept"
-                            confirmClassName="confirm-button"
-                            disableTimeout={2000}
                             onClick={(e: any) => {
                               e.preventDefault()
                               if (this.state.code === '') {
@@ -167,9 +165,8 @@ export class CourseRequests extends React.Component<any, IState> {
                               })}
                             }
                           >
-                            <span className="default">Send</span>
-                            <span className="confirmation">Are you sure?</span>
-                          </ConfirmButton>
+                            Send
+                          </Button>
                       </div>
                     )
                   }}

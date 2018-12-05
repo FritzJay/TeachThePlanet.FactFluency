@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 import { GET_COURSE } from '../../ClassDetail'
 
 import { ICourseRequest, IStudentUser } from 'src/utils'
-import { Button, Card, ConfirmButton } from 'src/sharedComponents'
+import { Button, Card, ConfirmButton, DisableButton } from 'src/sharedComponents'
 import { PendingRequestsDescription } from '../PendingRequestsDescription/PendingRequestsDescription'
 import { PendingCardQueryFragment } from '../PendingCard/PendingCard'
 import './PendingRequests.css'
@@ -38,14 +38,12 @@ const CourseRequestCard = ({ date, student, onDelete, onAccept }: ICourseRequest
       <i className="material-icons">delete</i>
     </ConfirmButton>
     
-    <ConfirmButton
+    <DisableButton
       className="accept green"
-      confirmClassName="confirm"
       onClick={onAccept}
     >
-      <span className="default">Accept</span>
-      <span className="confirmation">Accept?</span>
-    </ConfirmButton>
+      Accept
+    </DisableButton>
   </Card>
 )
 
