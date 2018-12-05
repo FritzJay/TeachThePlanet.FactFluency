@@ -40,11 +40,9 @@ const CourseRequestCard = ({ date, student, onDelete, onAccept }: ICourseRequest
     
     <ConfirmButton
       className="accept green"
-      confirmClassName="confirm"
       onClick={onAccept}
     >
-      <span className="default">Accept</span>
-      <span className="confirmation">Accept?</span>
+      Accept
     </ConfirmButton>
   </Card>
 )

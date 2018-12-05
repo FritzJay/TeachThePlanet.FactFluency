@@ -81,20 +81,6 @@
       grid-area: accept;
 
       justify-self: center;
-
-      .confirmation {
-        display: none;
-      }
-
-      &.confirm {
-        .default {
-          display: none;
-        }
-
-        .confirmation {
-          display: inline
-        }
-      }
     }
   }
 }
