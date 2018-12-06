@@ -45,7 +45,7 @@ export class StudentInvitationModal extends React.Component<IProps, IState> {
 
           return (
             <Mutation mutation={CREATE_COURSE_INVITATION}>
-              {(createClass, { error: mutationError }) => (
+              {(createCourseInvitation, { error: mutationError }) => (
                 <Modal
                   overlay={true}
                   closeTo={`/teacher/class-detail/${this.props.match.params.id}`}
@@ -90,11 +90,12 @@ export class StudentInvitationModal extends React.Component<IProps, IState> {
                       <Button
                         className="green send-button"
                         onClick={async () => {
-                          await createClass({
+                          await createCourseInvitation({
                             variables: {
                               input: {
                                 courseId: this.props.match.params.id,
                                 email: student,
+                                username: student,
                               }
                             }
                           })
