@@ -6,106 +6,137 @@
   left: 0px;
   right: 0px;
   z-index: $navbar;
-
-  padding: 1em 2em;
   
   display: grid;
-  grid-gap: 0.5em;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(5, 1fr);
-
-  align-items: center;
-  background-color: #FFFFFF;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  
+  padding: 1em 2em;
+  background-color: $white;
   box-shadow: $dp-six;
+  
+  .navbar-container {
+    grid-column: 1 / -1;
+    grid-row: 1 / 1;
+    
+    display: grid;
+    grid-column-gap: 0.5em;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, 1fr);
+    align-content: center;
+    align-items: center;
 
-  .second-half-of-children {
-    display: flex;
-    justify-content: flex-end;
+    -webkit-transition: border-bottom 0.5s;
+    transition: border-bottom 0.5s;
+    border-bottom: 2px solid transparent;
 
-    width: 100%;
-    grid-column: 2 / 2;
-    justify-self: center;
-  }
-
-  .first-half-of-children {
-    display: flex;
-    justify-content: flex-end;
-
-    width: 100%;
-    grid-column: 4 / 4;
-    justify-self: center;
-  }
-
-  .AccountSettingsDropdown-button {
-    grid-column: 5 / 5;
-    justify-self: flex-end;
-    margin-left: 1em;
-  }
-
-  .logo {
-    grid-column: 3 / 3;
-    justify-self: center;
-
+    &.dropdown-is-active {
+      border-bottom: 2px solid $very-light-gray;
+    }
+    
     .logo-img {
       height: 45px;
     }
   }
+
+  .dropdown-menu-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    grid-column: 1 / -1;
+    grid-row: 2 / 2;
+
+    .AccountSettingsDropdownMenu, .ClassListDropdownMenu, .small-screen-dropdown {
+      padding-top: 0.25em;
   
-  .toggle-btn {
-    display: none;
+      & > * {
+        color: $gray;
+  
+        &:last-child {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+  
+@media only screen and (min-width: 500px) {
+  .Navbar {
+    .navbar-container {
+      .AccountSettingsDropdownTrigger {
+        grid-column: 1 / 4;
+      }
+
+      .logo {
+        grid-column: 4 / 4;
+        justify-self: center;
+        align-self: flex-start;
+      }
+
+      .ClassListDropdownTrigger {
+        grid-column: 5 / 8;
+      }
+      
+      .toggle-btn {
+        display: none;
+      }
+    }
+    
+    .dropdown-menu-container {
+      .small-screen-dropdown {
+        display: none;
+      }
+
+      .AccountSettingsDropdownMenu {
+        grid-column: 1 / 1;
+      }
+  
+      .ClassListDropdownMenu {
+        grid-column: 2 / 2;
+      }
+    }
   }
 }
 
-@media (max-width: 499px) {
+@media only screen and (max-width: 499px) {
   .Navbar {
     padding: 1em;
-
-    .second-half-of-children {
-      grid-column: 2 / 2;
-    }
-
-    .first-half-of-children {
-      grid-column: 3 / 5;
-    }
-
-    .logo {
-      grid-column: 1 / 1;
-      justify-self: flex-start;
-    }
-
-    .toggle-btn {
-      display: block;
-      grid-column: 5 / 5;
-      justify-self: flex-end;      
-
-      outline: none;
-      background-color: transparent;
-      border: none;
-
-      padding: .5em;
-      margin-left: 1em;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.15);
-        border-radius: 50%;
-      }
-    }
-
-    .ClassListDropdown-button {
-      display: none;
-    }
     
-    .AccountSettingsDropdown-button {
-      display: none;
+    .navbar-container {
+      .logo {
+        grid-column: 1 / 1;
+        justify-self: flex-start;
+      }
+
+      .AccountSettingsDropdownTrigger, .ClassListDropdownTrigger {
+        display: none;
+      }
+
+      .toggle-btn {
+        display: block;
+        grid-column: 7 / -1;
+        justify-self: flex-end;
+      }
+
     }
 
-    .Dropdown {
-      .ClassListDropdown-button {
-        display: inherit;
+    .dropdown-menu-container {
+      .small-screen-dropdown {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        align-content: stretch;
+        align-items: flex-end;
+
+        .AccountSettingsDropdownTrigger, .ClassListDropdownTrigger {
+          display: flex;
+        }
       }
-      
-      .AccountSettingsDropdown-button {
-        display: inherit;
+
+      .AccountSettingsDropdownMenu, .ClassListDropdownMenu {
+        grid-column: 1 / -1;
+        grid-row: 1 / 1;
+        justify-self: center;
       }
     }
   }

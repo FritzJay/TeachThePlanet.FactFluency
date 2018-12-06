@@ -1,6 +1,5 @@
 export * from './Button/Button'
 export * from './Card/Card'
-export * from './Navbar/components/ClassListDropdown/ClassListDropdown'
 export * from './CopyToClipboard/CopyToClipboard'
 export * from './Input/Input'
 export * from './Loading/Loading'

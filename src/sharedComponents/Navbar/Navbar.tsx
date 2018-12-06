@@ -1,13 +1,29 @@
 import * as React from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Query } from 'react-apollo'
+import { gql } from 'apollo-boost'
+import { Link, RouteComponentProps, Route } from 'react-router-dom'
 
-import { Dropdown, AccountSettingsDropdown } from 'src/sharedComponents'
+import { NavbarDropdownProvider, NavbarDropdownTrigger, NavbarDropdownMenu, NavbarDropdownContext } from './components/NavbarDropdown'
+import { AccountSettingsDropdownTrigger, AccountSettingsDropdownMenu } from './components/AccountSettingsDropdown/AccountSettingsDropdown'
+import { ConnectedClassListDropdownMenu, ClassListDropdownTrigger } from './components/ClassListDropdown'
+import { Button } from 'src/Apps/Login/components'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
-export * from './components/ClassListDropdown/ClassListDropdown'
+export * from './components/ClassListDropdown/ClassListDropdownMenu'
 export * from './components/AccountSettingsDropdown/AccountSettingsDropdown'
-export * from './components/Dropdown/Dropdown'
+export * from './components/ClassListDropdown'
+export * from './components/NavbarDropdown'
+
+const GET_USER = gql`
+  query user {
+    user {
+      id
+      email
+      username
+    }
+  }
+`
 
 interface IProps extends RouteComponentProps<{}> {
   logoLink: string
@@ -22,72 +38,81 @@ export class Navbar extends React.Component<IProps, IState> {
     activeDropdown: false,
   }
 
-  private wrapperRef: any
-
-  public componentWillUnmount() {
-    window.removeEventListener('click', this.handleClickOutside)
-  }
-
   public render() {
-    const { logoLink, children } = this.props
-    const { activeDropdown } = this.state
-
-    const childrenArray = React.Children.toArray(children)
-    const firstHalf = childrenArray.slice(0, Math.ceil(childrenArray.length / 2))
-    const secondHalf = childrenArray.slice(Math.ceil(childrenArray.length / 2), childrenArray.length)
+    const { logoLink } = this.props
 
     return (
-      <div
-        ref={this.setWrapperRef}
-        className="Navbar"
-      >
-        <div className="second-half-of-children">
-          {secondHalf}
-        </div>
+      <Query query={GET_USER}>
+        {({ loading, data }) => {
+          if (loading) {
+            return null
+          }
+          
+          const { email, username, id } = data.user
 
-        <Link className="logo" to={logoLink}>
-          <img src={Logo} className="logo-img" alt="logo" />
-        </Link>
+          return (
+            <NavbarDropdownProvider>
+              <div className="Navbar">
+                <NavbarDropdownContext.Consumer>
+                    {({ activeDropdownMenu }) => (
+                      <div className={`navbar-container${activeDropdownMenu !== null ? ' dropdown-is-active' : ''}`}>
+                        {email === 'TTPStudent'
+                          ? null
+                          : <AccountSettingsDropdownTrigger name={username || email} />
+                        }
 
-        <div className="first-half-of-children">
-          {firstHalf}
-        </div>
+                        <Link className="logo" to={logoLink}>
+                          <img src={Logo} className="logo-img" alt="logo" />
+                        </Link>
 
-        <button
-          className="toggle-btn"
-          onClick={this.handleToggleButtonClick}
-        >
-          <i className="material-icons">menu</i>
-        </button>
+                        {email === 'TTPStudent'
+                          ? null
+                          : (
+                            <Route
+                              path="/fact-fluency"
+                              component={ClassListDropdownTrigger}
+                            />
+                        )}
 
-        <Dropdown active={activeDropdown}>
-          {firstHalf}
-          <AccountSettingsDropdown history={this.props.history} />
-          {secondHalf}
-        </Dropdown>
-      </div>
+                        <NavbarDropdownTrigger
+                          className="toggle-btn"
+                          dropdownMenuId='smallScreenDropdown'
+                        >
+                          <Button>
+                            <i className="material-icons">menu</i>
+                          </Button>
+                        </NavbarDropdownTrigger>
+                      </div>
+                    )}
+                </NavbarDropdownContext.Consumer>                
+
+                <div className="dropdown-menu-container">
+                  <NavbarDropdownMenu className="small-screen-dropdown" id="smallScreenDropdown">
+                    {email === 'TTPStudent'
+                      ? null
+                      : <AccountSettingsDropdownTrigger name={username || email} />
+                    }
+                    {email === 'TTPStudent'
+                      ? null
+                      : (
+                        <Route
+                          path="/fact-fluency"
+                          component={ClassListDropdownTrigger}
+                        />
+                    )}
+                  </NavbarDropdownMenu>
+
+                  <AccountSettingsDropdownMenu userId={id} />
+                  <Route
+                    path="/fact-fluency"
+                    component={ConnectedClassListDropdownMenu}
+                  />
+                </div>
+              </div>
+            </NavbarDropdownProvider>
+          )
+        }}
+      </Query>
     )
-  }
-
-  private setWrapperRef = (node: any) => {
-    this.wrapperRef = node
-  }
-
-  private handleClickOutside = (event: any) => {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.handleToggleButtonClick()
-    }
-  }
-
-  private handleToggleButtonClick = () => {
-    if (!this.state.activeDropdown) {
-      window.addEventListener('click', this.handleClickOutside)
-    } else {
-      window.removeEventListener('click', this.handleClickOutside)
-    }
-
-    this.setState((prevState: IState) => ({
-      activeDropdown: !prevState.activeDropdown
-    }))
   }
 }

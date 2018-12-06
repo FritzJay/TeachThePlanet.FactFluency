@@ -86,7 +86,9 @@ export class ConfirmButton extends React.Component<IConfirmButtonProps | any, IS
     }
     
     if (this.state.confirm) {
-      await this.props.onClick(e)
+      if (this.props.onClick) {
+        await this.props.onClick(e)
+      }
       if (this._isMounted) {
           this.setState({
           disabled: this.props.disableOnClick !== undefined
