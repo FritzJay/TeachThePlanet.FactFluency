@@ -102,6 +102,10 @@ class ClassListDropdownMenu extends React.Component<RouteComponentProps> {
                       </Button>
                     ))}
 
+                    {courses.length < 1
+                      ? <p>You haven't joined any classes yet</p>
+                      : null}
+
                     <hr />
 
                     {numberOfInvitations > 0
