@@ -25,9 +25,7 @@ const GET_USER = gql`
   }
 `
 
-interface IProps extends RouteComponentProps<{}> {
-  logoLink: string
-}
+interface IProps extends RouteComponentProps<{}> {}
 
 interface IState {
   activeDropdown: boolean
@@ -39,8 +37,6 @@ export class Navbar extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { logoLink } = this.props
-
     return (
       <Query query={GET_USER}>
         {({ loading, data }) => {
@@ -61,7 +57,7 @@ export class Navbar extends React.Component<IProps, IState> {
                           : <AccountSettingsDropdownTrigger name={username || email} />
                         }
 
-                        <Link className="logo" to={logoLink}>
+                        <Link className="logo" to="/index">
                           <img src={Logo} className="logo-img" alt="logo" />
                         </Link>
 

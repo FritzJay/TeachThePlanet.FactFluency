@@ -53,10 +53,8 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
             if (loading) {
               return (
                 <div>
-                  <Route
-                    render={(props) => (
-                      <Navbar {...props} logoLink={match.url} />
-                    )}
+                  <Route component={Navbar} />
+
                   />
                   <div className="FactFluency">
                       <Loading className="loading" />
@@ -67,11 +65,7 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
 
             return (
               <div>
-                <Route
-                  render={(props) => (
-                    <Navbar {...props} logoLink={match.url} />
-                  )}
-                />
+                <Route component={Navbar} />
 
                 <div className="FactFluency">
 

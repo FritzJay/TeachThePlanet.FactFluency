@@ -44,11 +44,7 @@ export class TeacherHome extends React.Component<IProps> {
           if (loading) {
             return (
               <div className="TeacherHome">
-                <Route
-                  render={(props) => (
-                    <Navbar {...props} logoLink={match.url} />
-                  )}
-                />
+                <Route component={Navbar} />
                 <Loading className="loading" />
               </div>
             )
@@ -56,11 +52,7 @@ export class TeacherHome extends React.Component<IProps> {
 
           return (
             <div className="TeacherHome">
-              <Route
-                render={(props) => (
-                  <Navbar {...props} logoLink={match.url} />
-                )}
-              />
+              <Route component={Navbar} />
 
               <Route
                 exact={true}
