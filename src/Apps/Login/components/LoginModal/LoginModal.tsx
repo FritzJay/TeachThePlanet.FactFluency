@@ -144,13 +144,14 @@ class LoginModal extends React.Component<IProps, IState> {
     }
   }
 
-  private async loginForUserType(email: string, password: string, userType: string) {
+  private loginForUserType = async (email: string, password: string, userType: string) => {
     const { client, history } = this.props
 
     try {
       switch (userType) {
         case USER_TYPES.student: {
           await client.resetStore()
+          await localStorage.clear()
           const token = await saveSignInStudent(email, password)
           await localStorage.setItem('token', token)
           history.push('/fact-fluency')
@@ -158,6 +159,7 @@ class LoginModal extends React.Component<IProps, IState> {
         }
         case USER_TYPES.teacher: {
           await client.resetStore()
+          await localStorage.clear()
           const token = await saveSignInTeacher(email, password)
           await localStorage.setItem('token', token)
           history.push('/teacher')
