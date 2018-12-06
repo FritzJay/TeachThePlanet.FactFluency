@@ -86,7 +86,7 @@ export class SelectTest extends React.Component<IProps, IState> {
                 : courses && courses[0]
 
               const numbers = activeCourse
-                ? activeCourse.testParameters.numbers
+                ? activeCourse.testParameters.numbers.sort((a, b) => a - b)
                 : new Array(13).fill(0).map((n, i) => i)
 
               const operators = activeCourse
