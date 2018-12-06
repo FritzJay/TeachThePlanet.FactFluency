@@ -10,21 +10,28 @@ const GET_USER = gql`
     user {
       id
       email
+      role
     }
   }
 `
 
-const DELETE_ACCOUNT = gql`
-  mutation removeUser {
-    removeUser
+const DELETE_STUDENT = gql`
+  mutation removeStudent {
+    removeStudent
+  }
+`
+
+const DELETE_TEACHER = gql`
+  mutation removeTeacher {
+    removeTeacher
   }
 `
 
 export const DeleteAccountLink = () => (
   <Query query={GET_USER} >
-    {({ client, loading, data: { user: { email } } }) => (
+    {({ client, loading, data: { user: { email, role } } }) => (
       <Mutation
-        mutation={DELETE_ACCOUNT}
+        mutation={role.toLowerCase() === 'teacher' ? DELETE_TEACHER : DELETE_STUDENT}
         onCompleted={() => {
           client.clearStore()
         }}
