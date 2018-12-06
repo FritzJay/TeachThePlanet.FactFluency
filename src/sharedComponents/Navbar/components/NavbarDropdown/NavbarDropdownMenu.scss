@@ -1,0 +1,36 @@
+@import 'src/Stylesheets/all';
+
+.NavbarDropdownMenu {
+  -webkit-transition:
+    max-height 1s 0s,
+    opacity 1s 0s,
+    transform 0s 0s;
+  transition:
+    max-height 1s 0s,
+    opacity 1s 0s,
+    transform 0s 0s;
+
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0px);
+  
+  &.hidden {
+    -webkit-transition:
+      max-height 1s 0s,
+      opacity 1s 0s,
+      transform 0s 1s;
+    transition:
+      max-height 1s 0s,
+      opacity 1s 0s,
+      transform 0s 1s;
+
+    opacity: 0;
+    max-height: 0px;
+    transform: translateY(-1000px);
+  }
+
+  h2 {
+    justify-self: center;
+    margin-top: 0.5em;
+  }
+}

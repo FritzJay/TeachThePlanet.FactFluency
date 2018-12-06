@@ -28,11 +28,19 @@ interface IState {
   dropdownMenus: string[]
 }
 
-export default class NavbarDropdownProvider extends React.Component<IProps, IState> {
+export class NavbarDropdownProvider extends React.Component<IProps, IState> {
   public state = {
     activeDropdownMenu: null,
     lastActiveDropdownMenu: null,
     dropdownMenus: [],
+  }
+
+  public componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize)
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize)
   }
 
   public render() {
@@ -76,6 +84,13 @@ export default class NavbarDropdownProvider extends React.Component<IProps, ISta
   private removeDropdownMenu = (id: string): void => {
     this.setState((prevState) => ({
       dropdownMenus: prevState.dropdownMenus.filter(dropdownId => dropdownId !== id)
+    }))
+  }
+
+  private handleWindowResize = () => {
+    this.setState((prevState) => ({
+      activeDropdownMenu: null,
+      lastActiveDropdownMenu: prevState.activeDropdownMenu,
     }))
   }
 }

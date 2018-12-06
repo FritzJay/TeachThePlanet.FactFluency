@@ -1,0 +1,18 @@
+@import 'src/Stylesheets/all';
+
+.ClassListDropdownTrigger {
+  justify-self: flex-end;
+
+  button {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: $gray;
+    padding: 0.5em;
+
+    .icon {
+      vertical-align: middle;
+      margin-left: 0.25em;
+    }
+  }
+}

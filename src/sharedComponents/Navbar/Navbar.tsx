@@ -3,18 +3,17 @@ import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { Link, RouteComponentProps, Route } from 'react-router-dom'
 
-import NavbarDropdownProvider from './components/NavbarDropdownProvider/NavbarDropdownProvider'
-import { NavbarDropdownTrigger } from './components/NavbarDropdownProvider/NavbarDropdownTrigger'
-import { NavbarDropdownMenu } from './components/NavbarDropdownProvider/NavbarDropdownMenu'
-import { AccountSettingsDropdown } from './components/AccountSettingsDropdown/AccountSettingsDropdown'
-import { ConnectedClassListDropdown, Button } from 'src/Apps/Login/components'
+import { NavbarDropdownProvider, NavbarDropdownTrigger, NavbarDropdownMenu, NavbarDropdownContext } from './components/NavbarDropdown'
+import { AccountSettingsDropdownTrigger, AccountSettingsDropdownMenu } from './components/AccountSettingsDropdown/AccountSettingsDropdown'
+import { ConnectedClassListDropdownMenu, ClassListDropdownTrigger } from './components/ClassListDropdown'
+import { Button } from 'src/Apps/Login/components'
 import Logo from 'src/images/logo.svg'
 import './Navbar.css'
 
-export * from './components/ClassListDropdown/ClassListDropdown'
+export * from './components/ClassListDropdown/ClassListDropdownMenu'
 export * from './components/AccountSettingsDropdown/AccountSettingsDropdown'
-export * from './components/NavbarDropdownProvider/NavbarDropdownTrigger'
-export * from './components/NavbarDropdownProvider/NavbarDropdownMenu'
+export * from './components/ClassListDropdown'
+export * from './components/NavbarDropdown'
 
 const GET_USER = gql`
   query user {
@@ -39,12 +38,6 @@ export class Navbar extends React.Component<IProps, IState> {
     activeDropdown: false,
   }
 
-  private wrapperRef: any
-
-  public componentWillUnmount() {
-    window.removeEventListener('click', this.handleClickOutside)
-  }
-
   public render() {
     const { logoLink } = this.props
 
@@ -55,90 +48,71 @@ export class Navbar extends React.Component<IProps, IState> {
             return null
           }
           
-          const { email, username } = data.user
+          const { email, username, id } = data.user
 
           return (
             <NavbarDropdownProvider>
-              <div
-                ref={this.setWrapperRef}
-                className="Navbar"
-              >
-                {email === 'TTPStudent'
-                  ? null
-                  : (
-                    <Route
-                      path="/"
-                      render={() => <AccountSettingsDropdown name={username || email} />}
-                    />
-                )}
+              <div className="Navbar">
+                <NavbarDropdownContext.Consumer>
+                    {({ activeDropdownMenu }) => (
+                      <div className={`navbar-container${activeDropdownMenu !== null ? ' dropdown-is-active' : ''}`}>
+                        {email === 'TTPStudent'
+                          ? null
+                          : <AccountSettingsDropdownTrigger name={username || email} />
+                        }
 
-                <Link className="logo" to={logoLink}>
-                  <img src={Logo} className="logo-img" alt="logo" />
-                </Link>
+                        <Link className="logo" to={logoLink}>
+                          <img src={Logo} className="logo-img" alt="logo" />
+                        </Link>
 
-                {email === 'TTPStudent'
-                  ? null
-                  : (
-                    <Route
-                      path="/teacher"
-                      component={ConnectedClassListDropdown}
-                    />
-                )}
+                        {email === 'TTPStudent'
+                          ? null
+                          : (
+                            <Route
+                              path="/fact-fluency"
+                              component={ClassListDropdownTrigger}
+                            />
+                        )}
 
-                <NavbarDropdownTrigger
-                  className="toggle-btn"
-                  dropdownMenuId='smallScreenDropdown'
-                >
-                  <Button>
-                    <i className="material-icons">menu</i>
-                  </Button>
-                </NavbarDropdownTrigger>
+                        <NavbarDropdownTrigger
+                          className="toggle-btn"
+                          dropdownMenuId='smallScreenDropdown'
+                        >
+                          <Button>
+                            <i className="material-icons">menu</i>
+                          </Button>
+                        </NavbarDropdownTrigger>
+                      </div>
+                    )}
+                </NavbarDropdownContext.Consumer>                
 
-                <NavbarDropdownMenu className="small-dropdown" id="smallScreenDropdown">
-                  {email === 'TTPStudent'
-                    ? null
-                    : (
-                      <Route
-                        path="/"
-                        render={() => <AccountSettingsDropdown name={username || email} />}
-                      />
-                  )}
-                  {email === 'TTPStudent'
-                    ? null
-                    : (
-                      <Route
-                        path="/teacher"
-                        component={ConnectedClassListDropdown}
-                      />
-                  )}
-                </NavbarDropdownMenu>
+                <div className="dropdown-menu-container">
+                  <NavbarDropdownMenu className="small-screen-dropdown" id="smallScreenDropdown">
+                    {email === 'TTPStudent'
+                      ? null
+                      : <AccountSettingsDropdownTrigger name={username || email} />
+                    }
+                    {email === 'TTPStudent'
+                      ? null
+                      : (
+                        <Route
+                          path="/fact-fluency"
+                          component={ClassListDropdownTrigger}
+                        />
+                    )}
+                  </NavbarDropdownMenu>
+
+                  <AccountSettingsDropdownMenu userId={id} />
+                  <Route
+                    path="/fact-fluency"
+                    component={ConnectedClassListDropdownMenu}
+                  />
+                </div>
               </div>
             </NavbarDropdownProvider>
           )
         }}
       </Query>
     )
-  }
-
-  private setWrapperRef = (node: any) => {
-    this.wrapperRef = node
-  }
-
-  private handleClickOutside = (event: any) => {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.handleToggleButtonClick()
-    }
-  }
-
-  private handleToggleButtonClick = () => {
-    if (!this.state.activeDropdown) {
-      window.addEventListener('click', this.handleClickOutside)
-    } else {
-      window.removeEventListener('click', this.handleClickOutside)
-    }
-
-    this.setState((prevState: IState) => ({
-      activeDropdown: !prevState.activeDropdown
-    }))
   }
 }

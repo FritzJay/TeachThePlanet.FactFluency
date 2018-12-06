@@ -46,6 +46,7 @@ class NavbarDropdownMenuWithContext extends React.Component<IProps, IState> {
   public render() {
     const { children, className } = this.props
     const { visible } = this.state
+
     return (
       <div className={`NavbarDropdownMenu${className ? ' ' + className : ''}${visible ? '' : ' hidden'}`}>
         {children}

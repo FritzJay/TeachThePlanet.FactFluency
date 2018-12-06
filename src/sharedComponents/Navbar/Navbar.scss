@@ -6,57 +6,94 @@
   left: 0px;
   right: 0px;
   z-index: $navbar;
-
-  padding: 1em 2em;
   
   display: grid;
-  grid-column-gap: 0.5em;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(7, 1fr);
-
-  align-content: center;
-  align-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  
+  padding: 1em 2em;
   background-color: $white;
   box-shadow: $dp-six;
   
-  
-  .logo-img {
-    height: 45px;
-  }
-  
-  .dropdown {
-    grid-column: 1 / 8;
-    grid-row: 3 / 3;
+  .navbar-container {
+    grid-column: 1 / -1;
+    grid-row: 1 / 1;
+    
+    display: grid;
+    grid-column-gap: 0.5em;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, 1fr);
+    align-content: center;
+    align-items: center;
 
-    & > * {
-      color: $gray;
+    -webkit-transition: border-bottom 0.5s;
+    transition: border-bottom 0.5s;
+    border-bottom: 2px solid transparent;
+
+    &.dropdown-is-active {
+      border-bottom: 2px solid $very-light-gray;
+    }
+    
+    .logo-img {
+      height: 45px;
+    }
+  }
+
+  .dropdown-menu-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    grid-column: 1 / -1;
+    grid-row: 2 / 2;
+
+    .AccountSettingsDropdownMenu, .ClassListDropdownMenu, .small-screen-dropdown {
+      padding-top: 0.25em;
+  
+      & > * {
+        color: $gray;
+  
+        &:last-child {
+          padding-bottom: 0;
+        }
+      }
     }
   }
 }
-
+  
 @media only screen and (min-width: 500px) {
   .Navbar {
-    .AccountSettingsDropdownContainer {
-      grid-column: 1 / 4;
+    .navbar-container {
+      .AccountSettingsDropdownTrigger {
+        grid-column: 1 / 4;
+      }
+
+      .logo {
+        grid-column: 4 / 4;
+        justify-self: center;
+        align-self: flex-start;
+      }
+
+      .ClassListDropdownTrigger {
+        grid-column: 5 / 8;
+      }
+      
+      .toggle-btn {
+        display: none;
+      }
     }
     
-    .logo {
-      grid-column: 4 / 4;
-      justify-self: center;
-      align-self: flex-start;
-    }
+    .dropdown-menu-container {
+      .small-screen-dropdown {
+        display: none;
+      }
+
+      .AccountSettingsDropdownMenu {
+        grid-column: 1 / 1;
+      }
   
-    .ClassListDropdown {
-      grid-column: 5 / 8;
-      justify-self: flex-end;
-    }
-    
-    .toggle-btn {
-      display: none;
-    }
-  
-    .small-screen {
-      display: none;
+      .ClassListDropdownMenu {
+        grid-column: 2 / 2;
+      }
     }
   }
 }
@@ -65,48 +102,41 @@
   .Navbar {
     padding: 1em;
     
-    .logo {
-      grid-column: 1 / 1;
-      justify-self: flex-start;
-    }
-    
-    .ClassListDropdown-button {
-      display: none;
+    .navbar-container {
+      .logo {
+        grid-column: 1 / 1;
+        justify-self: flex-start;
+      }
+
+      .AccountSettingsDropdownTrigger, .ClassListDropdownTrigger {
+        display: none;
+      }
+
+      .toggle-btn {
+        display: block;
+        grid-column: 7 / -1;
+        justify-self: flex-end;
+      }
+
     }
 
-    .AccountSettingsDropdownTrigger {
-      display: none;
-    }
-
-    .toggle-btn {
-      display: block;
-      grid-column: 7 / -1;
-      justify-self: flex-end;
-    }
-
-    .AccountSettingsDropdownContainer {
-      grid-column: 1 / -1;
-      grid-row: 3 / 3;
-
-      .AccountSettingsDropdownMenu {
+    .dropdown-menu-container {
+      .small-screen-dropdown {
+        grid-column: 1 / -1;
         display: flex;
         flex-direction: column;
+        align-content: stretch;
         align-items: flex-end;
-      }
-    }
 
-    .small-dropdown {
-      grid-column: 1 / -1;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-
-      .AccountSettingsDropdownTrigger {
-        display: flex;
+        .AccountSettingsDropdownTrigger, .ClassListDropdownTrigger {
+          display: flex;
+        }
       }
 
-      .ClassListDropdown-button {
-        display: flex;
+      .AccountSettingsDropdownMenu, .ClassListDropdownMenu {
+        grid-column: 1 / -1;
+        grid-row: 1 / 1;
+        justify-self: center;
       }
     }
   }
