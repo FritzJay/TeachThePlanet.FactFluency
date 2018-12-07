@@ -6,6 +6,7 @@ import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { IQuestion, getOperatorSymbol, ITest } from 'src/utils'
 import { Button, Card, Loading } from 'src/sharedComponents'
 import { CREATE_TEST } from '../SelectTest/SelectTest'
+import { QUERY } from 'src/Apps/FactFluency/FactFluency'
 import './TestResults.css'
 
 export const TestResultsQueryFragment = gql`
@@ -117,6 +118,7 @@ export const TestResults = ({ test, history }: IProps) => {
             client.writeData({ data: { testId: createTest.id } })
             history.push('/fact-fluency/start-test')
           }}
+          refetchQueries={[{ query: QUERY }]}
         >
           {(createTest, { loading, error }: any ) => {
             if (loading) {
