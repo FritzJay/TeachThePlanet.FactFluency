@@ -66,7 +66,7 @@ export const ClassDetail = ({ match }: IProps) => (
         <>
           <div className="ClassDetail">
             <h2 className="classes">
-              <Link className="classrooms" to="/teacher/classes">
+              <Link className="classes" to="/teacher/classes">
                 <i className="material-icons big">arrow_back_ios</i>Classes
               </Link>
             </h2>
