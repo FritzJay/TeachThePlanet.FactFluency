@@ -7,6 +7,7 @@ import { TestNumber } from './TestNumber/TestNumber'
 import { themeColors, IClass } from "src/utils"
 import { Loading } from "src/sharedComponents"
 import { TakeTestQueryFragment } from "../TakeTest/TakeTest"
+import { QUERY } from "src/Apps/TeacherHome/TeacherHome"
 import './SelectTest.css'
 
 export const SelectTestQueryFragment = gql`
@@ -67,6 +68,7 @@ export class SelectTest extends React.Component<IProps, IState> {
             onCompleted={({ createTest }) => {
               client.writeData({ data: { testId: createTest.id } })
             }}
+            refetchQueries={[{ query: QUERY }]}
           >
             {(createTest, { loading: mutationLoading, error: mutationError }: any ) => {
               if (testId !== undefined && testId !== null) {
