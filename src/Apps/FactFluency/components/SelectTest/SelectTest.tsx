@@ -1,7 +1,7 @@
 import * as React from "react"
 import gql from "graphql-tag"
 import { Mutation, ApolloConsumer } from "react-apollo"
-import { RouteComponentProps } from "react-router"
+import { RouteComponentProps, Redirect } from "react-router"
 
 import { TestNumber } from './TestNumber/TestNumber'
 import { themeColors, IClass } from "src/utils"
@@ -38,6 +38,7 @@ interface IProps extends RouteComponentProps {
   activeCourseId: string
   courses: IClass[]
   studentId?: string
+  testId?: string
 }
 
 interface IState {
@@ -56,7 +57,7 @@ export class SelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const { activeCourseId, courses, studentId } = this.props
+    const { activeCourseId, courses, studentId, testId } = this.props
 
     return (
       <ApolloConsumer>
@@ -65,10 +66,13 @@ export class SelectTest extends React.Component<IProps, IState> {
             mutation={CREATE_TEST}
             onCompleted={({ createTest }) => {
               client.writeData({ data: { testId: createTest.id } })
-              this.props.history.push('/fact-fluency/start-test')
             }}
           >
             {(createTest, { loading: mutationLoading, error: mutationError }: any ) => {
+              if (testId !== undefined && testId !== null) {
+                return <Redirect to="/fact-fluency/start-test" />
+              }
+
               if (mutationLoading) {
                 return (
                   <div className="SelectTest">

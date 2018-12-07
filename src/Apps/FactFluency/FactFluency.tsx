@@ -83,6 +83,7 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
                         activeCourseId={activeCourseId}
                         studentId={student.id}
                         courses={student.courses}
+                        testId={testId}
                       />
                     )}
                   />
