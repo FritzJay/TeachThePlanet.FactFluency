@@ -18,7 +18,9 @@
 
     .name {
         grid-area: name;
+
         margin: 0;
+        align-self: center;
     }
 
     .NewTestsIndicator {
@@ -30,11 +32,7 @@
     .delete {
         grid-area: delete;
 
-        text-align: end;
-        border: none;
-        background-color: transparent;
-        justify-self: flex-end;    
-        margin: 0;
+        display: flex;
         
         &:hover {
             cursor: pointer;
