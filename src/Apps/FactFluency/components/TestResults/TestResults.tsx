@@ -155,7 +155,7 @@ export const TestResults = ({ test, history }: IProps) => {
                       number: num,
                       operator,
                       studentId: student.id,
-                      courseId: course.id,
+                      courseId: course && course.id,
                     }
                   }
                 })}>

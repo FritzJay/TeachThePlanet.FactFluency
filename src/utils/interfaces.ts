@@ -115,7 +115,7 @@ export interface ITest {
   number: number
   operator: string
   student: IStudentUser
-  course: IClass
+  course?: IClass
 }
 
 export interface IQuestion {
