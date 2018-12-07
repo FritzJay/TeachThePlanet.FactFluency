@@ -13,9 +13,9 @@ import './StudentReports.css'
 export const StudentReportsQueryFragment = gql`
   fragment StudentReportsQueryFragment on Student {
     id
-    ...StudentCardQueryFragment
+    ...StudentCardQueryFragmentTEMP
   }
-  fragment StudentCardQueryFragment on Student {
+  fragment StudentCardQueryFragmentTEMP on Student {
     id
     name
     tests(limit: 0) {

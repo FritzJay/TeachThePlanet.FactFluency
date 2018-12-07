@@ -110,6 +110,7 @@ export class NewClassModal extends React.Component<IProps, IState> {
                 <div className="buttons">
                   <DisableButton
                     className="create-class green"
+                    duration={2000}
                     onClick={() => this.handleCreateClassClick(mutate)}
                   >
                     Create Class

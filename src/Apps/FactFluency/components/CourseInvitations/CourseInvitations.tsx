@@ -136,6 +136,7 @@ export const CourseInvitations = () => (
                             value={id}
                             onClick={() => acceptCourseInvitation()}
                             className="green accept"
+                            duration={2000}
                           >
                             Accept
                           </DisableButton>

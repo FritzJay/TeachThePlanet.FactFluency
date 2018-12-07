@@ -40,6 +40,7 @@ const CourseRequestCard = ({ date, student, onDelete, onAccept }: ICourseRequest
     
     <DisableButton
       className="accept green"
+      duration={2000}
       onClick={onAccept}
     >
       Accept

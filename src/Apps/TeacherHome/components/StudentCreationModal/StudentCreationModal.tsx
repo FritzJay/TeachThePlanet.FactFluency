@@ -113,6 +113,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
               </Button>
               <DisableButton
                 className="green create-button"
+                duration={2000}
                 onClick={() => this.handleCreateAccounts(client)}
               >
                 Create Accounts
