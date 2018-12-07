@@ -89,7 +89,9 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
 
                   <Route
                     path={`${match.path}/start-test`}
-                    component={StartTest}
+                    render={() => (
+                      <StartTest testId={student.test.id} />
+                    )}
                   />
 
                   <Route
