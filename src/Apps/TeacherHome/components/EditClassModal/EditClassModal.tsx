@@ -132,6 +132,7 @@ export class EditClassModal extends React.Component<IProps, IState> {
 
                     <DisableButton
                       className="green save-changes"
+                      duration={2000}
                       onClick={() => {
                         history.goBack()
                         updateCourse({ variables: {

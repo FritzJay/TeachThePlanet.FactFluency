@@ -218,6 +218,7 @@ class TestParameters extends React.Component<IProps, IState> {
 
             <DisableButton
               className="save green"
+              duration={2000}
               onClick={this.handleSubmit}
             >
               Save Changes

@@ -2,13 +2,29 @@ import * as React from 'react'
 
 import { IButtonProps, Button } from './Button'
 
+interface IProps extends IButtonProps {
+  duration?: number
+}
+
 interface IState {
   disabled: boolean
 }
 
-export class DisableButton extends React.Component<IButtonProps> {
+export class DisableButton extends React.Component<IProps> {
   public state: IState = {
     disabled: false
+  }
+
+  private disabledTimeout: any
+  private _isMounted: boolean
+
+  public componentDidMount() {
+    this._isMounted = true
+  }
+
+  public componentWillUnmount() {
+    this._isMounted = false
+    window.clearTimeout(this.disabledTimeout)
   }
 
   public render() {
@@ -27,10 +43,20 @@ export class DisableButton extends React.Component<IButtonProps> {
   private handleClick = (e: any) => {
     e.persist() // Force the synthetic event to persist so we can pass it to props.onClick
 
-    this.setState({ disabled: true })
+    const { onClick, duration } = this.props
 
-    if (this.props.onClick) {
-      this.props.onClick(e)
+    if (onClick) {
+      onClick(e)
+    }
+
+    if (this._isMounted) {
+      this.setState({ disabled: true }, () => {
+        this.disabledTimeout = duration && window.setTimeout(() => {
+          if (this._isMounted) {
+            this.setState({ disabled:  false })
+          }
+        }, duration)
+      })
     }
   }
 }
