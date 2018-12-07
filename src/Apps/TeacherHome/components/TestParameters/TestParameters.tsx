@@ -238,7 +238,11 @@ class TestParameters extends React.Component<IProps, IState> {
   }
 
   private getNumberValue = (name: any): number => {
-    return parseInt(this[name].current.value.toString(), 10)
+    const numberValue = parseInt(this[name].current.value.toString(), 10)
+    if (isNaN(numberValue)) {
+      return 0
+    }
+    return numberValue
   }
 
   private handleOperatorClick = (operator: string) => {
@@ -283,6 +287,7 @@ class TestParameters extends React.Component<IProps, IState> {
     const testParameters = this.props.data.course.testParameters
     const { numbers, operators } = this.state
     const duration = (this.getNumberValue('minute') * 60) + this.getNumberValue('second')
+
     const input = {
       duration,
       numbers: numbers ? numbers : testParameters.numbers,
@@ -291,6 +296,7 @@ class TestParameters extends React.Component<IProps, IState> {
       passing: this.getNumberValue('passing'),
       randomQuestions: this.getNumberValue('randomQuestions'),
     }
+
     await this.props.mutate({
       variables: { id: testParameters.id, input },
       optimisticResponse: {
