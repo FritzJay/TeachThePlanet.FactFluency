@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { ApolloConsumer } from 'react-apollo'
+import gql from 'graphql-tag'
+import { ApolloConsumer, Mutation } from 'react-apollo'
 
 import { Button, Card } from 'src/sharedComponents'
 import { Link } from 'react-router-dom'
@@ -7,7 +8,13 @@ import './StartTest.css'
 
 const ENCOURAGING_TEXT = ['We know you got this!', 'Keep calm and rock this test!', 'You can do it!']
 
-export const StartTest = () => (
+const REMOVE_TEST = gql`
+  mutation removeTest($id: ObjID!) {
+    removeTest(id: $id)
+  }
+`
+
+export const StartTest = ({ testId }: { testId: string }) => (
   <ApolloConsumer>
     {client => (
       <Card className="StartTest">
@@ -24,14 +31,23 @@ export const StartTest = () => (
             </Button>
           </Link>
           <Link to="/fact-fluency">
-            <Button
-              className="cancel-button"
-              onClick={() => {
-                client.writeData({ data: { testId: null } })
-              }}
-            >
-              Cancel
-            </Button>
+            <Mutation mutation={REMOVE_TEST}>
+              {removeTest => (
+                <Button
+                  className="cancel-button"
+                  onClick={() => {
+                    removeTest({
+                      variables: {
+                        id: testId
+                      }
+                    })
+                    client.writeData({ data: { testId: null } })
+                  }}
+                >
+                  Cancel
+                </Button>
+              )}
+            </Mutation>
           </Link>
         </div>
       </Card>
