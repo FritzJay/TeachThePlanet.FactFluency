@@ -12,7 +12,10 @@ export const ClassListDropdownTrigger = () => (
     className="ClassListDropdownTrigger"
     dropdownMenuId="ClassListDropdownMenu"
   >
-    <Query query={GET_STUDENT}>
+    <Query
+      query={GET_STUDENT}
+      partialRefetch={true}
+    >
       {({ data, loading }) => {
         if (loading) {
           return <Loading />

@@ -88,6 +88,7 @@ export class CourseRequests extends React.Component<any, IState> {
       <Query
         query={GET_COURSE_REQUESTS}
         pollInterval={120000}
+        partialRefetch={true}
       >
         {({ error, loading, data }: any) => {
           if (loading) {

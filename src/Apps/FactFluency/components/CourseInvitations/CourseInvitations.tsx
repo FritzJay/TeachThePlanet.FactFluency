@@ -55,6 +55,7 @@ export const CourseInvitations = () => (
   <Query
     query={GET_COURSE_INVITATIONS}
     pollInterval={120000}
+    partialRefetch={true}
   >
     {({ error, loading, data }: any) => {
       if (loading) {

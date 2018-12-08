@@ -39,7 +39,10 @@ export class Navbar extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Query query={GET_USER}>
+      <Query
+        query={GET_USER}
+        partialRefetch={true}
+      >
         {({ loading, data }) => {
           if (loading) {
             return null
