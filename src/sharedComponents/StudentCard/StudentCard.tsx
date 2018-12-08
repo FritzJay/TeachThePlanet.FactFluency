@@ -15,7 +15,7 @@ export const StudentCardQueryFragment = gql`
   fragment StudentCardQueryFragment on Student {
     id
     name
-    tests {
+    tests(courseId: $courseId, limit: 0) {
       id
       ...StudentNumberQueryFragment
       ...OperatorRowQueryFragment

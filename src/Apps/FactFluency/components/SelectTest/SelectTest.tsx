@@ -12,7 +12,12 @@ import './SelectTest.css'
 
 export const SelectTestQueryFragment = gql`
   fragment SelectTestQueryFragment on Course {
-    id,
+    id
+    name
+    teacher {
+      id
+      name
+    }
     testParameters {
       id
       operators
@@ -140,7 +145,10 @@ export class SelectTest extends React.Component<IProps, IState> {
                   {student.user.email !== 'TTPStudent'
                     ? (
                       <>
-                        <h2 className="student-card-header">Your score card:</h2>
+                        <hr />
+                        {activeCourse ? (
+                          <h1 className="student-card-header">{activeCourse.name} - {activeCourse.teacher.name}</h1>
+                        ) : null}
                         <StudentCard
                           courseId={activeCourseId}
                           student={student}

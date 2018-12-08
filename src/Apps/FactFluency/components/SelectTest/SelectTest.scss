@@ -1,3 +1,5 @@
+@import 'src/Stylesheets/all';
+
 .SelectTest {
   grid-column: 2 / 2;
   
@@ -17,10 +19,13 @@
 
   .student-card-header {
     text-align: center;
+    color: $gray;
+    margin: 2rem 0 0 0;
   }
 
   .StudentCard {
     margin: auto;
+    margin-top: 2rem;
   }
 }
 

@@ -23,6 +23,10 @@ a {
     text-decoration: none;
 }
 
+hr {
+    border: 1px solid $very-light-gray;
+}
+
 #root {
     height: 100%;
 }
