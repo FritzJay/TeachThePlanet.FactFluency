@@ -4,8 +4,8 @@ import { Mutation, ApolloConsumer } from "react-apollo"
 import { RouteComponentProps, Redirect } from "react-router"
 
 import { TestNumber } from './TestNumber/TestNumber'
-import { themeColors, IClass } from "src/utils"
-import { Loading } from "src/sharedComponents"
+import { themeColors, IClass, IStudentUser } from "src/utils"
+import { Loading, StudentCard } from "src/sharedComponents"
 import { TakeTestQueryFragment } from "../TakeTest/TakeTest"
 import { QUERY } from "src/Apps/TeacherHome/TeacherHome"
 import './SelectTest.css'
@@ -40,6 +40,7 @@ interface IProps extends RouteComponentProps {
   courses: IClass[]
   studentId?: string
   testId?: string
+  student: IStudentUser
 }
 
 interface IState {
@@ -58,7 +59,7 @@ export class SelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const { activeCourseId, courses, studentId, testId } = this.props
+    const { activeCourseId, courses, studentId, testId, student } = this.props
 
     return (
       <ApolloConsumer>
@@ -101,38 +102,53 @@ export class SelectTest extends React.Component<IProps, IState> {
 
               return (
                 <div className="SelectTest">
-                  {numbers.map((num: number, i: number) => (
-                    <TestNumber
-                      active={num === this.state.selectedNumber}
-                      color={themeColors[i % themeColors.length]}
-                      key={num}
-                      num={num}
-                      operators={operators}
-                      onClick={this.handleTestNumberClick}
-                      onSubmit={(operator: string) => {
-                        createTest({
-                          variables: {
-                            input: {
-                              number: num,
-                              operator,
-                              studentId,
-                              courseId: activeCourse && activeCourse.id,
-                            }
-                          },
-                          update: (cache, { data: { createTest: results } }: any) => {
-                            cache.writeFragment({
-                              id: results.id,
-                              fragment: TakeTestQueryFragment,
-                              data: {
-                                ...results,
-                                __typename: 'Test',
+                  <div className="cards">
+                    {numbers.map((num: number, i: number) => (
+                      <TestNumber
+                        active={num === this.state.selectedNumber}
+                        color={themeColors[i % themeColors.length]}
+                        key={num}
+                        num={num}
+                        operators={operators}
+                        onClick={this.handleTestNumberClick}
+                        onSubmit={(operator: string) => {
+                          createTest({
+                            variables: {
+                              input: {
+                                number: num,
+                                operator,
+                                studentId,
+                                courseId: activeCourse && activeCourse.id,
                               }
-                            })
+                            },
+                            update: (cache, { data: { createTest: results } }: any) => {
+                              cache.writeFragment({
+                                id: results.id,
+                                fragment: TakeTestQueryFragment,
+                                data: {
+                                  ...results,
+                                  __typename: 'Test',
+                                }
+                              })
+                            }
                           }
-                        }
-                      )}}
-                    />
-                  ))}
+                        )}}
+                      />
+                    ))}
+                  </div>
+
+                  {student.user.email !== 'TTPStudent'
+                    ? (
+                      <>
+                        <h2 className="student-card-header">Your score card:</h2>
+                        <StudentCard
+                          courseId={activeCourseId}
+                          student={student}
+                          showDeleteButton={false}
+                        />
+                      </>
+                    ) : null
+                  }
                 </div>
               )
             }}
