@@ -20,7 +20,7 @@ import {
 import './FactFluency.css'
 
 export const QUERY = gql`
-  query student($testId: ObjID) {
+  query student($testId: ObjID, $courseId: ObjID) {
     student {
       id
       courses {
@@ -50,7 +50,13 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
   return (
     <Query query={CACHE}>
       {({ data: { activeCourseId, testId } }) => (
-        <Query query={QUERY} variables={{ testId }}>
+        <Query
+          query={QUERY}
+          variables={{
+            testId,
+            courseId: activeCourseId || null,
+          }}
+        >
           {({ data: { student }, loading }) => {
             if (loading) {
               return (

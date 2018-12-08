@@ -44,7 +44,10 @@ interface IProps extends RouteComponentProps<{ id: string }> {}
 export const ClassDetail = ({ match }: IProps) => (
   <Query
     query={GET_COURSE}
-    variables={{ id: match.params.id }}
+    variables={{
+      id: match.params.id,
+      courseId: match.params.id,
+    }}
     pollInterval={10000}
   >
     {({ error, loading, data }) => {
