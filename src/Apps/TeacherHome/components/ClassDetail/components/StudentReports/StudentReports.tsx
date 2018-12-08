@@ -81,6 +81,7 @@ export class StudentReports extends React.Component<IProps> {
               key={student.id}
               student={student}
               courseId={courseId}
+              showDeleteButton={true}
             />
           )) : (
             <Link to={`${match.url}/add-students`}>

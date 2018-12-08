@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 import { Route, RouteComponentProps, Redirect } from 'react-router-dom'
 
-import { Navbar, Loading } from 'src/sharedComponents'
+import { Navbar, Loading, StudentCardQueryFragment } from 'src/sharedComponents'
 import {
   CourseInvitations,
   SelectTest,
@@ -30,11 +30,13 @@ export const QUERY = gql`
         ...TakeTestQueryFragment
         ...TestResultsQueryFragment
       }
+      ...StudentCardQueryFragment
     }
   }
   ${SelectTestQueryFragment}
   ${TakeTestQueryFragment}
   ${TestResultsQueryFragment}
+  ${StudentCardQueryFragment}
 `
 
 export const CACHE = gql`
@@ -44,7 +46,7 @@ export const CACHE = gql`
   }
 `
 
-export const FactFluency = ({ match, history }: RouteComponentProps) => {
+export const FactFluency = ({ match }: RouteComponentProps) => {
   return (
     <Query query={CACHE}>
       {({ data: { activeCourseId, testId } }) => (
@@ -84,6 +86,7 @@ export const FactFluency = ({ match, history }: RouteComponentProps) => {
                         studentId={student.id}
                         courses={student.courses}
                         testId={testId}
+                        student={student}
                       />
                     )}
                   />

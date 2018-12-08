@@ -1,15 +1,26 @@
 .SelectTest {
   grid-column: 2 / 2;
   
-  display: grid;
-  grid-template-rows: minmax(auto, auto);
-  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-  grid-gap: 1em;
-  align-items: center;
-
   .loading {
     grid-column: 1 / -1;
     justify-self: center;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-rows: minmax(auto, auto);
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+    grid-gap: 1em;
+    align-items: center;
+    margin-bottom: 2em;
+  }
+
+  .student-card-header {
+    text-align: center;
+  }
+
+  .StudentCard {
+    margin: auto;
   }
 }
 

@@ -42,4 +42,9 @@
       background-color: $green;
       color: $white;
   }
+
+  transition: box-shadow 0.5s;
+  &:hover {
+      box-shadow: $dp-four;
+  }
 }
