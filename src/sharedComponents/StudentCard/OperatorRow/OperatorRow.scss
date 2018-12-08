@@ -37,6 +37,11 @@
         &.yellow {
             background-color: $yellow;
         }
+
+        transition: box-shadow 0.5s;
+        &:hover {
+            box-shadow: $dp-four;
+        }
     }
 
     &:last-child {

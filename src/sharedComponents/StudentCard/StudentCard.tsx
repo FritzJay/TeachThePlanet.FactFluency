@@ -41,12 +41,10 @@ const REMOVE_STUDENT_FROM_COURSE = gql`
 interface IStudentCardProps {
   courseId: string
   student: IStudentUser
+  showDeleteButton?: boolean
 }
 
-export const StudentCard = ({ courseId, student: { id, name, tests, user } }: IStudentCardProps) => {
-  if (user.email === 'TTPStudent') {
-    return null
-  }
+export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, tests, user } }: IStudentCardProps) => {
   const operators = [
     {
       operator: 'addition',
@@ -115,16 +113,20 @@ export const StudentCard = ({ courseId, student: { id, name, tests, user } }: IS
 
           {/*<NewTestsIndicator tests={tests} />*/}
 
-          <ConfirmButton
-            className="delete"
-            confirmClassName="confirm"
-            onClick={() => removeStudentFromCourse({
-              variables: { studentId: id, courseId }
-            })}
-          >
-            <span className="confirmation">Remove student from this class?</span>
-            <i className="material-icons">delete</i>
-          </ConfirmButton>
+          {showDeleteButton
+            ? (
+              <ConfirmButton
+                className="delete"
+                confirmClassName="confirm"
+                onClick={() => removeStudentFromCourse({
+                  variables: { studentId: id, courseId }
+                })}
+              >
+                <span className="confirmation">Remove student from this class?</span>
+                <i className="material-icons">delete</i>
+              </ConfirmButton>
+            ) : null
+          }
 
           {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
         </Card>

@@ -17,9 +17,10 @@ fragment StudentNumberQueryFragment on Test {
 interface IProps {
 num: number
 tests: ITest[]
+operatorSymbol: string
 }
 
-export const StudentNumber = ({ num, tests }: IProps) => {
+export const StudentNumber = ({ num, tests, operatorSymbol }: IProps) => {
 const passing = tests.filter((test) => test.testResults && test.testResults.correct >= test.testResults.needed).length
 let className
 if (tests.length === undefined || tests.length === null || tests.length === 0) {
@@ -38,6 +39,7 @@ return (
   <button 
     key={num}
     className={`StudentNumber${className}`}
+    title={`${operatorSymbol} ${num}: ${tests.length} attempt${tests.length === 1 ? '' : 's'}. ${passing} pass${passing === 1 ? '' : 'es'}`}
   >
     {num}
   </button>
