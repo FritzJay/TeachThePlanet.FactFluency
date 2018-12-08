@@ -4,8 +4,8 @@ import { Mutation, ApolloConsumer } from "react-apollo"
 import { RouteComponentProps, Redirect } from "react-router"
 
 import { TestNumber } from './TestNumber/TestNumber'
-import { themeColors, IClass } from "src/utils"
-import { Loading } from "src/sharedComponents"
+import { themeColors, IClass, IStudentUser } from "src/utils"
+import { Loading, StudentCard } from "src/sharedComponents"
 import { TakeTestQueryFragment } from "../TakeTest/TakeTest"
 import { QUERY } from "src/Apps/TeacherHome/TeacherHome"
 import './SelectTest.css'
@@ -40,6 +40,7 @@ interface IProps extends RouteComponentProps {
   courses: IClass[]
   studentId?: string
   testId?: string
+  student: IStudentUser
 }
 
 interface IState {
@@ -58,7 +59,7 @@ export class SelectTest extends React.Component<IProps, IState> {
   }
   
   public render() {
-    const { activeCourseId, courses, studentId, testId } = this.props
+    const { activeCourseId, courses, studentId, testId, student } = this.props
 
     return (
       <ApolloConsumer>
@@ -133,6 +134,8 @@ export class SelectTest extends React.Component<IProps, IState> {
                       )}}
                     />
                   ))}
+
+                  <StudentCard courseId={activeCourseId} student={student} />
                 </div>
               )
             }}

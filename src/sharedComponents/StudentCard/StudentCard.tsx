@@ -44,6 +44,9 @@ interface IStudentCardProps {
 }
 
 export const StudentCard = ({ courseId, student: { id, name, tests, user } }: IStudentCardProps) => {
+  if (user.email === 'TTPStudent') {
+    return null
+  }
   const operators = [
     {
       operator: 'addition',
