@@ -1,37 +1,33 @@
 import * as React from 'react'
-import { Card, Button, Input, Loading } from 'src/sharedComponents';
+
+import { Card, Button, Input } from 'src/sharedComponents'
 
 interface IProps {
   name: string
   password: string
-  username: () => Promise<string>
-  onPasswordChange: (name: string, password: string) => void
+  username: string
+  onPasswordChange: (id: string, password: string) => void
+  onUsernameChange: (id: string, username: string) => void
   onDelete: (name: string) => void
 }
 
 export class StudentCreationCard extends React.Component<IProps> {
-  public state = {
-    username: null
-  }
-
-  public async componentDidMount() {
-    const username = await this.props.username()
-    this.setState({ username })
-  }
-
   public render() {
-    const { password } = this.props
+    const { password, username } = this.props
 
     return (
       <Card className="student-card">
-        <h4 className="username">{this.state.username !== ''
-          ? this.state.username
-          : <Loading />}</h4>
+        <Input
+          className="username"
+          name="username"
+          value={username}
+          onChange={this.handleUsernameChange}
+        />
         <Input
           className="password"
           name="password"
           value={password}
-          onChange={this.handleChange}
+          onChange={this.handlePasswordChange}
         />
         <Button
           className="remove"
@@ -43,10 +39,15 @@ export class StudentCreationCard extends React.Component<IProps> {
     )
   }
 
-  
-  private handleChange = (e: any) => {
+  private handlePasswordChange = (e: any) => {
     const password = e.target.value
     this.props.onPasswordChange(this.props.name, password)
+  }
+
+  private handleUsernameChange = (e: any) => {
+    const username = e.target.value
+    this.props.onUsernameChange(this.props.name, username)
+    this.setState({ username })
   }
 
   private handleDelete = () => {

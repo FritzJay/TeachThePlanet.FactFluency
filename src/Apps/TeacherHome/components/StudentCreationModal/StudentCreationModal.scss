@@ -69,7 +69,8 @@
       .student-card {
         display: grid;
         grid-auto-flow: column;
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-column-gap: 1em;
+        grid-template-columns: 4fr 3fr 1fr;
         max-width: 400px;
 
         padding: 0 1em;
@@ -79,7 +80,7 @@
           justify-self: flex-start;
         }
 
-        input.password {
+        input {
           justify-self: center;
           align-self: center;
           padding: 0.25em 0.5em;
@@ -91,6 +92,10 @@
           justify-self: flex-end;
           color: $light-red;
           font-weight: bold;
+          
+          button {
+            padding: 0.5em 0;
+          }
 
           &:hover {
             color: $red;

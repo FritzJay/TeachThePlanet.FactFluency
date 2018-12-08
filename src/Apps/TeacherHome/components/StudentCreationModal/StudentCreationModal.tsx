@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { gql } from 'apollo-boost'
+import { gql, ApolloClient } from 'apollo-boost'
 import { graphql, compose, ApolloConsumer } from 'react-apollo'
 import { RouteComponentProps } from 'react-router'
 
@@ -18,9 +18,14 @@ interface IProps extends RouteComponentProps<{ id: string }> {
   mutate: any
 }
 
+interface INewStudent {
+  username: string,
+  password: string,
+}
+
 interface IState {
   students: {
-    [id: string]: string
+    [id: string]: INewStudent
   }
   name: string
   error: string
@@ -81,7 +86,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
               />
               <Button
                 className="blue add-button"
-                onClick={this.handleAddStudent}
+                onClick={() => this.handleAddStudent(client)}
               >
                 Add
               </Button>
@@ -94,13 +99,14 @@ class StudentCreationModal extends React.Component<IProps, IState> {
                       <h4 className="remove">Remove</h4>
                     </div>
                   ) : null}
-                {Object.keys(students).map((id) => (
+                {Object.keys(students).map(id => (
                   <StudentCreationCard
                     key={id}
                     name={id}
-                    password={students[id]}
-                    username={() => this.getUsername(id, client)}
+                    password={students[id].password}
+                    username={students[id].username}
                     onPasswordChange={this.handlePasswordChange}
+                    onUsernameChange={this.handleUsernameChange}
                     onDelete={this.handleRemoveStudent}
                   />
                 ))}
@@ -114,7 +120,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
               <DisableButton
                 className="green create-button"
                 duration={2000}
-                onClick={() => this.handleCreateAccounts(client)}
+                onClick={this.handleCreateAccounts}
               >
                 Create Accounts
               </DisableButton>
@@ -125,7 +131,7 @@ class StudentCreationModal extends React.Component<IProps, IState> {
     )
   }
 
-  private handleAddStudent = async () => {
+  private handleAddStudent = async (client: ApolloClient<any>) => {
     const { name, students } = this.state
 
     const splitName = name.split(' ')
@@ -160,8 +166,16 @@ class StudentCreationModal extends React.Component<IProps, IState> {
       return
     }
 
+    const username = await this.getUsername(name, client);
+
     this.setState(prevState => ({
-      students: { ...prevState.students, [displayName]: this.props.data.course.code },
+      students: {
+        ...prevState.students,
+        [displayName]: {
+          username,
+          password: this.props.data.course.code,
+        },
+      },
       name: '',
       error: '',
     }))
@@ -183,16 +197,31 @@ class StudentCreationModal extends React.Component<IProps, IState> {
     this.setState({ name: value })
   }
 
-  private handlePasswordChange = (student: string, password: string) => {
+  private handlePasswordChange = (id: string, password: string) => {
     this.setState(prevState => ({
       students: {
         ...prevState.students,
-        [student]: password,
+        [id]: {
+          ...prevState.students[id],
+          password,
+        },
       }
     }))
   }
 
-  private handleCreateAccounts = async (client: any) => {
+  private handleUsernameChange = (id: string, username: string) => {
+    this.setState(prevState => ({
+      students: {
+        ...prevState.students,
+        [id]: {
+          ...prevState.students[id],
+          username,
+        },
+      }
+    }))
+  }
+
+  private handleCreateAccounts = async () => {
     const { students } = this.state
 
     if (Object.keys(students).length === 0) {
@@ -202,22 +231,31 @@ class StudentCreationModal extends React.Component<IProps, IState> {
 
     const { match, history } = this.props
     
-    await Promise.all(Object.keys(students).map(async (student) => {
-      this.props.mutate({
-        variables: {
-          input: {
-            courseId: match.params.id,
-            name: this.getDisplayName(student),
-            user: {
-              username: await this.getUsername(student, client),
-              password: students[student],
-              firstName: this.getFirstName(student),
-              lastName: this.getLastInitial(student),
+    try {
+      await Promise.all(Object.keys(students).map(async (id) => {
+        await this.props.mutate({
+          variables: {
+            input: {
+              courseId: match.params.id,
+              name: this.getDisplayName(id),
+              user: {
+                username: students[id].username,
+                password: students[id].password,
+                firstName: this.getFirstName(id),
+                lastName: this.getLastInitial(id),
+              }
             }
-          } 
-        }
-      })
-    }))
+          }
+        })
+      }))
+    } catch (error) {
+      if (error.message === 'GraphQL error: A user with the username "FritzJ@Homeroom" already exists') {
+        this.setState({ error: 'A user with the username "FritzJ@Homeroom" already exists' })
+        return
+      } else {
+        throw error
+      }
+    }
 
     history.push(`/teacher/class-detail/${this.props.match.params.id}`)
   }
