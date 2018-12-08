@@ -49,6 +49,7 @@ export const ClassDetail = ({ match }: IProps) => (
       courseId: match.params.id,
     }}
     pollInterval={10000}
+    partialRefetch={true}
   >
     {({ error, loading, data }) => {
       if (loading) {

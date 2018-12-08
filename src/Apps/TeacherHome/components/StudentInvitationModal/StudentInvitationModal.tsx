@@ -29,6 +29,7 @@ export class StudentInvitationModal extends React.Component<IProps, IState> {
         variables={{
           id: match.params.id
         }}
+        partialRefetch={true}
       >
         {({ data, loading}) => {
           if (loading) {

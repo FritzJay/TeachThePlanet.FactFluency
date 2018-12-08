@@ -39,7 +39,10 @@ export class TeacherHome extends React.Component<IProps> {
     const { match } = this.props
 
     return (
-      <Query query={QUERY}>
+      <Query
+        query={QUERY}
+        partialRefetch={true}
+      >
         {({ data: { teacher }, loading }) => {
           if (loading) {
             return (
