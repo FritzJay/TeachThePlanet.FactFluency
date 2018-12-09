@@ -56,6 +56,7 @@ export const FactFluency = ({ match }: RouteComponentProps) => {
             testId,
             courseId: activeCourseId || null,
           }}
+          partialRefetch={true}
         >
           {({ data: { student }, loading }) => {
             if (loading) {
