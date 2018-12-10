@@ -117,16 +117,21 @@ export class TakeTest extends React.Component<IProps, IState> {
     if (redirectToFactFluency) {
       return <Redirect to="/fact-fluency" />
     }
+    
+    return (
+      <Mutation
+        mutation={GRADE_TEST}
+        onCompleted={() => {
+          this.setState({ redirectToTestResults: true })
+        }}
+      >
+        {gradeTest => {
+          this.gradeTest = gradeTest
+          const question = originalQuestions[questionIndex]
 
-    const question = originalQuestions[questionIndex]
-
-    if (question) {
-      const { operator, top, bottom } = randomlyFlipQuestion(question, answeredQuestions.length)
-      const displayOperator = getOperatorSymbol(operator)
-      return (
-        <Mutation mutation={GRADE_TEST}>
-          {gradeTest => {
-            this.gradeTest = gradeTest
+          if (question) {
+            const { operator, top, bottom } = randomlyFlipQuestion(question, answeredQuestions.length)
+            const displayOperator = getOperatorSymbol(operator)
             return (
               <Card className={`TakeTest ${keyboard ? 'active-keyboard': ''}`}>
                 <div className="question-problem">
@@ -147,16 +152,17 @@ export class TakeTest extends React.Component<IProps, IState> {
                 />
               </Card>
             )
-          }}
-        </Mutation>
-      )
-    } else {
-      return (
-        <div className="TakeTest">
-          <Loading className="loading" />
-        </div>
-      )
-    }
+          }
+          else {
+            return (
+              <div className="TakeTest">
+                <Loading className="loading" />
+              </div>
+            )
+          }
+        }}
+      </Mutation>
+    )
   }
 
   private handleKeyDown = (event: any) => {
@@ -260,6 +266,5 @@ export class TakeTest extends React.Component<IProps, IState> {
         }
       }
     })
-    this.setState({ redirectToTestResults: true })
   }
 }
