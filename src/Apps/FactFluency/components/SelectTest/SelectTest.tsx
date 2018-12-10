@@ -7,7 +7,7 @@ import { TestNumber } from './TestNumber/TestNumber'
 import { themeColors, IClass, IStudentUser } from "src/utils"
 import { Loading, StudentCard } from "src/sharedComponents"
 import { TakeTestQueryFragment } from "../TakeTest/TakeTest"
-import { QUERY } from "src/Apps/TeacherHome/TeacherHome"
+import { QUERY } from "src/Apps/FactFluency/FactFluency"
 import './SelectTest.css'
 
 export const SelectTestQueryFragment = gql`
@@ -80,7 +80,6 @@ export class SelectTest extends React.Component<IProps, IState> {
               if (testId !== undefined && testId !== null) {
                 return <Redirect to="/fact-fluency/start-test" />
               }
-
               if (mutationLoading) {
                 return (
                   <div className="SelectTest">

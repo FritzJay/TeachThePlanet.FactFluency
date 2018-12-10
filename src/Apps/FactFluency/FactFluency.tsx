@@ -24,9 +24,11 @@ export const QUERY = gql`
     student {
       id
       courses {
+        id
         ...SelectTestQueryFragment
       }
       test(testId: $testId) {
+        id
         ...TakeTestQueryFragment
         ...TestResultsQueryFragment
       }
