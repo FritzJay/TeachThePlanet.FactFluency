@@ -8,6 +8,7 @@ export const StudentNumberQueryFragment = gql`
 fragment StudentNumberQueryFragment on Test {
   id
   testResults {
+    id
     correct
     needed
   }
