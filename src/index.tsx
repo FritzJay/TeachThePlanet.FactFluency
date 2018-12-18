@@ -25,9 +25,11 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   request: async (operation: Operation) => {
     const token = localStorage.getItem('token')
-    operation.setContext({ headers: {
-      authorization: token ? `jwt ${token}` : ''
-    }})
+    if (token) {
+      operation.setContext({ headers: {
+        authorization: `Bearer ${token}`
+      }})
+    }
   },
   clientState: {
     defaults: {
