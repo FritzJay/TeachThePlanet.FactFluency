@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import { withApollo } from 'react-apollo'
-import { ApolloClient } from 'apollo-boost'
-
-import { saveSignInTeacher, saveSignInStudent } from 'src/api'
+import { ApolloClient, gql } from 'apollo-boost'
 
 import { Button, Loading, Modal, ModalContent, ModalHeader, Input } from 'src/sharedComponents'
 import { UserTypes } from '../UserTypes/UserTypes'
@@ -152,7 +150,14 @@ class LoginModal extends React.Component<IProps, IState> {
         case USER_TYPES.student: {
           await client.resetStore()
           await localStorage.clear()
-          const token = await saveSignInStudent(email, password)
+          const { data: { authenticateStudent: token } }: any = await client.query({
+            query: gql`
+              query authenticateStudent($username: String!, $password: String!) {
+                authenticateStudent(username: $username, password: $password)
+              }
+            `,
+            variables: { username: email, password }
+          })
           await localStorage.setItem('token', token)
           history.push('/fact-fluency')
           return
@@ -160,7 +165,14 @@ class LoginModal extends React.Component<IProps, IState> {
         case USER_TYPES.teacher: {
           await client.resetStore()
           await localStorage.clear()
-          const token = await saveSignInTeacher(email, password)
+          const { data: { authenticateTeacher: token } }: any = await client.query({
+            query: gql`
+              query authenticateTeacher($email: String!, $password: String!) {
+                authenticateTeacher(email: $email, password: $password)
+              }
+            `,
+            variables: { email, password }
+          })
           await localStorage.setItem('token', token)
           history.push('/teacher')
           return
