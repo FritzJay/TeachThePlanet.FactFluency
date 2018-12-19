@@ -11,6 +11,31 @@ import { Card, ConfirmButton } from '..'
 import { NewTestsIndicatorQueryFragment } from './NewTestsIndicator/NewTestsIndicator'
 import './StudentCard.css'
 
+export const StudentCardQueryArguments = '$testCondition: TestCondition'
+
+export const StudentCardQueryFragment = gql`
+  fragment StudentCardQueryFragment on Student {
+    nodeId
+    id
+    name
+    testsByStudentIdList(condition: $testCondition) {
+      nodeId
+      id
+      ...StudentNumberQueryFragment
+      ...OperatorRowQueryFragment
+      ...NewTestsIndicatorQueryFragment
+    }
+    userByUserId {
+      nodeId
+      id
+      email
+      username
+    }
+  }
+  ${StudentNumberQueryFragment}
+  ${OperatorRowQueryFragment}
+  ${NewTestsIndicatorQueryFragment}
+`
 
 const REMOVE_STUDENT_FROM_COURSE = gql`
   mutation removeStudentFromCourse($studentId: ObjID!, $courseId: ObjID!) {
@@ -24,7 +49,7 @@ interface IStudentCardProps {
   showDeleteButton?: boolean
 }
 
-export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, tests, userByUserId: user } }: IStudentCardProps) => {
+export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, tests, userByUserId } }: IStudentCardProps) => {
   const operators = [
     {
       operator: 'addition',
@@ -85,8 +110,8 @@ export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, t
         <Card className="StudentCard" id={id}>
           <h3 className="name">
             {name}
-            {user.email !== name
-              ? ` - ${user.email}`
+            {userByUserId.email !== name
+              ? ` - ${userByUserId.email}`
               : ''
             }
           </h3>
