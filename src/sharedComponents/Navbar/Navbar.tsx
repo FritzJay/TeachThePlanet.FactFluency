@@ -16,8 +16,9 @@ export * from './components/ClassListDropdown'
 export * from './components/NavbarDropdown'
 
 const GET_USER = gql`
-  query user {
-    user {
+  query userByToken {
+    userByToken {
+      nodeId
       id
       email
       username
@@ -48,7 +49,7 @@ export class Navbar extends React.Component<IProps, IState> {
             return null
           }
           
-          const { email, username, id, role } = data.user
+          const { email, username, id, role } = data.userByToken
 
           return (
             <NavbarDropdownProvider>

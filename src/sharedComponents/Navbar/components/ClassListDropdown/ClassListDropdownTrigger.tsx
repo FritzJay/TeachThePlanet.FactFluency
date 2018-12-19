@@ -21,7 +21,7 @@ export const ClassListDropdownTrigger = () => (
           return <Loading />
         }
 
-        const numberOfInvitations = data.student.courseInvitations.length
+        const numberOfInvitations = data.studentByToken.courseInvitationsByStudentIdList.length
 
         return (
           <Button title={`You have ${numberOfInvitations} class invitation${numberOfInvitations !== 1 ? 's' : ''}`}>

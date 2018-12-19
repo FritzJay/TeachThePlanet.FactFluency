@@ -14,24 +14,29 @@ export const GET_ACTIVE_COURSE_ID = gql`
 `
 
 export const GET_STUDENT = gql`
-  query student {
-    student {
+  query studentByToken {
+    studentByToken {
+      nodeId
       id
-      user {
+      userByUserId {
+        nodeId
         id
         email
         username
       }
-      courses {
+      coursesList {
+        nodeId
         id
         name
         code
-        teacher {
+        teacherByTeacherId {
+          nodeId
           id
           name
         }
       }
-      courseInvitations {
+      courseInvitationsByStudentIdList {
+        nodeId
         id
       }
     }
@@ -72,22 +77,22 @@ class ClassListDropdownMenu extends React.Component<RouteComponentProps> {
                   )
                 }
 
-                if (data.student.user.email === 'TTPStudent') {
+                if (data.studentByToken.userByUserId.email === 'TTPStudent') {
                   return null
                 }
 
-                const { courses, courseInvitations } = data.student
+                const { coursesList, courseInvitationsByStudentIdList } = data.studentByToken
 
-                activeCourseId = activeCourseId || (courses && courses[0] && courses[0].id)
+                activeCourseId = activeCourseId || (coursesList && coursesList[0] && coursesList[0].id)
 
-                const numberOfInvitations = courseInvitations
-                  ? courseInvitations.length
+                const numberOfInvitations = courseInvitationsByStudentIdList
+                  ? courseInvitationsByStudentIdList.length
                   : 0
 
                 return (
                   <NavbarDropdownMenu className="ClassListDropdownMenu" id="ClassListDropdownMenu">
                     <h2>Class Settings</h2>
-                    {courses.map(({ id, name: courseName, teacher : { name: teacherName } }: IClass) => (
+                    {coursesList.map(({ id, name: courseName, teacher : { name: teacherName } }: IClass) => (
                       <Button
                         key={id}
                         className={activeCourseId === id ? 'active' : ''}
@@ -102,7 +107,7 @@ class ClassListDropdownMenu extends React.Component<RouteComponentProps> {
                       </Button>
                     ))}
 
-                    {courses.length < 1
+                    {coursesList.length < 1
                       ? <p>You haven't joined any classes yet</p>
                       : null}
 
