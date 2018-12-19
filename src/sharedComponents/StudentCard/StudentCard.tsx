@@ -11,26 +11,6 @@ import { Card, ConfirmButton } from '..'
 import { NewTestsIndicatorQueryFragment } from './NewTestsIndicator/NewTestsIndicator'
 import './StudentCard.css'
 
-export const StudentCardQueryFragment = gql`
-  fragment StudentCardQueryFragment on Student {
-    id
-    name
-    tests(courseId: $courseId, limit: 0) {
-      id
-      ...StudentNumberQueryFragment
-      ...OperatorRowQueryFragment
-      ...NewTestsIndicatorQueryFragment
-    }
-    user {
-      id
-      email
-      username
-    }
-  }
-  ${StudentNumberQueryFragment}
-  ${OperatorRowQueryFragment}
-  ${NewTestsIndicatorQueryFragment}
-`
 
 const REMOVE_STUDENT_FROM_COURSE = gql`
   mutation removeStudentFromCourse($studentId: ObjID!, $courseId: ObjID!) {
@@ -40,18 +20,18 @@ const REMOVE_STUDENT_FROM_COURSE = gql`
 
 interface IStudentCardProps {
   courseId: string
-  student: IStudentUser
+  student: any // TODO replace with IStudentUser
   showDeleteButton?: boolean
 }
 
-export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, tests, user } }: IStudentCardProps) => {
+export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, tests, userByUserId: user } }: IStudentCardProps) => {
   const operators = [
     {
       operator: 'addition',
       symbol: '+',
       color: 'red',
       tests: tests
-        ? tests.filter((test) => test.operator === '+')
+        ? tests.filter((test: any) => test.operator === '+')
         : [],
     },
     {
@@ -59,7 +39,7 @@ export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, t
       symbol: '-',
       color: 'blue',
       tests: tests
-        ? tests.filter((test) => test.operator === '-')
+        ? tests.filter((test: any) => test.operator === '-')
         : [],
     },
     {
@@ -67,7 +47,7 @@ export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, t
       symbol: '*',
       color: 'green',
       tests: tests
-        ? tests.filter((test) => test.operator === '*')
+        ? tests.filter((test: any) => test.operator === '*')
         : [],
     },
     {
@@ -75,7 +55,7 @@ export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, t
       symbol: '/',
       color: 'yellow',
       tests: tests
-        ? tests.filter((test) => test.operator === '/')
+        ? tests.filter((test: any) => test.operator === '/')
         : [],
     },
   ]

@@ -11,17 +11,31 @@ import { QUERY } from "src/Apps/FactFluency/FactFluency"
 import './SelectTest.css'
 
 export const SelectTestQueryFragment = gql`
-  fragment SelectTestQueryFragment on Course {
+  fragment SelectTestQueryFragment on Student {
+    nodeId
     id
     name
-    teacher {
+    userByUserId {
+      nodeId
+      id
+      username
+      email
+    }
+    coursesList {
+      nodeId
       id
       name
-    }
-    testParameters {
-      id
-      operators
-      numbers
+      teacherByTeacherId {
+        nodeId
+        id
+        name
+      }
+      testParametersByCourseIdList(first: 1) {
+        nodeId
+        id
+        numbers
+        operators
+      }
     }
   }
 `
@@ -141,7 +155,7 @@ export class SelectTest extends React.Component<IProps, IState> {
                     ))}
                   </div>
 
-                  {student.user.email !== 'TTPStudent'
+                  {student.userByUserId.email !== 'TTPStudent'
                     ? (
                       <>
                         <hr />

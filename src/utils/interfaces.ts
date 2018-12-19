@@ -15,7 +15,7 @@ export interface IStudentUser {
   name: string
   classes: IClass[]
   tests: ITest[]
-  user: IUser
+  userByUserId: IUser
   createdAt: number
   updatedAt: number
   changePasswordRequired?: boolean

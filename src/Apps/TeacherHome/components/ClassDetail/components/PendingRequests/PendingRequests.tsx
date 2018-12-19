@@ -25,7 +25,7 @@ const CourseRequestCard = ({ date, student, onDelete, onAccept }: ICourseRequest
         : student.name}
     </h3>
 
-    <span className="email">{student.user.username || student.user.email}</span>
+    <span className="email">{student.userByUserId.username || student.userByUserId.email}</span>
 
     <h4 className="date">{date.getMonth()}/{date.getDate()}/{date.getFullYear()}</h4>
 
