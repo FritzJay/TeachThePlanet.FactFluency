@@ -145,11 +145,12 @@ class LoginModal extends React.Component<IProps, IState> {
   private loginForUserType = async (email: string, password: string, userType: string) => {
     const { client, history } = this.props
 
+    await client.resetStore()
+    await localStorage.clear()
+
     try {
       switch (userType) {
         case USER_TYPES.student: {
-          await client.resetStore()
-          await localStorage.clear()
           const { data: { authenticateStudent: token } }: any = await client.query({
             query: gql`
               query authenticateStudent($username: String!, $password: String!) {
@@ -158,6 +159,13 @@ class LoginModal extends React.Component<IProps, IState> {
             `,
             variables: { username: email, password }
           })
+          if (!token) {
+            this.setState({
+              error: 'Invalid username/email or password',
+              loading: false,
+            })
+            return
+          }
           await localStorage.setItem('token', token)
           history.push('/fact-fluency')
           return
@@ -173,29 +181,29 @@ class LoginModal extends React.Component<IProps, IState> {
             `,
             variables: { email, password }
           })
+          if (!token) {
+            this.setState({
+              error: 'Invalid username/email or password',
+              loading: false,
+            })
+            return
+          }
           await localStorage.setItem('token', token)
           history.push('/teacher')
           return
         }
         default:
-          throw new Error('Invalid user type!')
+          console.warn('Invalid user type ' + userType)
+          this.setState({
+            error: 'There was an unexpected error. Please try again later.',
+            loading: false,
+          })
       }
-    } catch(error) {
-      console.warn(error)
-      if (error.name === 'ChangePasswordRequiredError') {
-        history.push('/index/first-time-sign-in')
-        return
-      } else if (error === 'Invalid email or password') {
-        this.setState({
-          error,
-          loading: false,
-        })
-      } else {
-        this.setState({
-          error: 'There was an unexpected error. Please try again later.',
-          loading: false,
-        })
-      }
+    } catch (error) {
+      this.setState({
+        error: 'There was an unexpected error. Please try again later.',
+        loading: false,
+      })
     }
   }
 }
