@@ -7,9 +7,16 @@ import './OperatorRow.css'
 
 export const OperatorRowQueryFragment = gql`
   fragment OperatorRowQueryFragment on Test {
+    nodeId
     id
     number
     operator
+    correct
+    testParameterByTestParametersId {
+      nodeId
+      id
+      passing
+    }
   }
 `
 
@@ -22,7 +29,7 @@ interface IProps {
 
 export const OperatorRow = ({ operator, symbol, color, tests }: IProps) => {
   const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  const passing = tests.filter((test) => test.testResults && test.testResults.correct >= test.testResults.needed).length
+  const passing = tests.filter((test) => test && test.correct && test.correct >= test.testParameterByTestParametersId.passing).length
   const operatorSymbol = getOperatorSymbol(symbol)
 
   return (

@@ -6,11 +6,13 @@ import './StudentNumber.css'
 
 export const StudentNumberQueryFragment = gql`
 fragment StudentNumberQueryFragment on Test {
+  nodeId
   id
-  testResults {
+  correct
+  testParameterByTestParametersId {
+    nodeId
     id
-    correct
-    needed
+    passing
   }
 }
 `
@@ -22,7 +24,7 @@ operatorSymbol: string
 }
 
 export const StudentNumber = ({ num, tests, operatorSymbol }: IProps) => {
-const passing = tests.filter((test) => test.testResults && test.testResults.correct >= test.testResults.needed).length
+const passing = tests.filter((test) => test && test.correct && test.correct >= test.testParameterByTestParametersId.passing).length
 let className
 if (tests.length === undefined || tests.length === null || tests.length === 0) {
   className = ' not-taken'

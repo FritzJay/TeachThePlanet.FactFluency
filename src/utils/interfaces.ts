@@ -49,8 +49,8 @@ export interface IClass {
 export interface ITestParameters {
   id: string
   duration: number
-  operators: string[]
   numbers: number[]
+  operators: string[]
   questions: number
   randomQuestions: number
   passing: number
@@ -107,15 +107,19 @@ export interface ICreateAccountForStudentInput {
 
 export interface ITest {
   id: string
-  duration: number
-  start?: number
-  end?: number
-  questions: IQuestion[]
-  testResults?: ITestResults
   number: number
   operator: string
-  student: IStudentUser
-  course?: IClass
+  start?: number
+  end?: number
+  correct?: number
+  duration: number
+  incorrectQuestion?: IQuestion
+  quickestQuestion?: IQuestion
+  total: number
+  testParameterByTestParametersId: ITestParameters
+  questions: IQuestion[]
+  studentByStudentId: IStudentUser
+  courseByCourseId?: IClass
 }
 
 export interface IQuestion {
@@ -132,12 +136,4 @@ export interface IDisplayQuestion {
   operator: string
   start?: number
   top: string
-}
-
-export interface ITestResults {
-  total: number
-  needed: number
-  correct: number
-  incorrect: IQuestion
-  quickest: IQuestion
 }

@@ -11,21 +11,26 @@ import './TestResults.css'
 
 export const TestResultsQueryFragment = gql`
   fragment TestResultsQueryFragment on Test {
+    nodeId
     id
     operator
     number
     student {
+      nodeId
       id
     }
     course {
+      nodeId
       id
     }
     testResults {
+      nodeId
       id
       total
-      needed
+      passing
       correct
       incorrect {
+        nodeId
         id
         question
         correctAnswer
@@ -34,6 +39,7 @@ export const TestResultsQueryFragment = gql`
         end
       }
       quickest {
+        nodeId
         id
         question
         correctAnswer
@@ -102,12 +108,23 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 export const TestResults = ({ test, history }: IProps) => {
-  if (test === undefined || test === null || test.testResults === undefined) {
+  if (test === undefined || test === null) {
     return <Redirect to="/fact-fluency" />
   }
   
-  const { student, course, operator, number: num, testResults } = test
-  const { total, needed, correct, incorrect, quickest } = testResults
+  const {
+    studentByStudentId,
+    courseByCourseId,
+    operator,
+    number: num,
+    total,
+    correct,
+    incorrectQuestion,
+    quickestQuestion,
+    testParameterByTestParametersId: {
+      passing
+    }
+  } = test
   
   return (
     <ApolloConsumer>
@@ -132,20 +149,24 @@ export const TestResults = ({ test, history }: IProps) => {
             if (error) {
               throw error
             }
+
+            if (correct === undefined) {
+              return <Redirect to="/fact-fluency" />
+            }
     
             return (
               <div className="TestResults">
-                <h1 className="header">{`You ${correct >= needed ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
+                <h1 className="header">{`You ${correct >= passing ? 'passed' : 'did not pass'} your ${getOperatorSymbol(operator)} ${num}s`}</h1>
     
                 <h2 className="subheader">
-                  You got <span className={correct >= needed ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
+                  You got <span className={correct >= passing ? 'pass' : 'fail'}>{correct}</span> out of <span className="pass">{total}</span> correct!
                 </h2>
     
-                <p className="detail">Remember you need {needed}/{total} to pass.</p>
+                <p className="detail">Remember you need {passing}/{total} to pass.</p>
     
-                <QuickestCard question={quickest} shareWidth={incorrect !== undefined && incorrect !== null} />
+                <QuickestCard question={quickestQuestion} shareWidth={incorrectQuestion !== undefined && incorrectQuestion !== null} />
     
-                <IncorrectCard question={incorrect} shareWidth={quickest !== undefined && quickest !== null} />
+                <IncorrectCard question={incorrectQuestion} shareWidth={quickestQuestion !== undefined && quickestQuestion !== null} />
     
                 <hr />
     
@@ -154,8 +175,8 @@ export const TestResults = ({ test, history }: IProps) => {
                     input: {
                       number: num,
                       operator,
-                      studentId: student.id,
-                      courseId: course && course.id,
+                      studentId: studentByStudentId.id,
+                      courseId: courseByCourseId && courseByCourseId.id,
                     }
                   }
                 })}>
