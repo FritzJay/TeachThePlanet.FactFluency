@@ -158,11 +158,16 @@ class SignupModal extends React.Component<IProps, IState> {
         case USER_TYPES.student: {
           await client.mutate({
             mutation: gql`
-              mutation registerStudent($input: RegisterTeacherInput!) {
-                registerStudent(input: $input)
+              mutation registerStudent($input: RegisterStudentInput!) {
+                registerStudent(input: $input) {
+                  student {
+                    nodeId
+                    id
+                  }
+                }
               }
             `,
-            variables: { email, username: email, firstName, lastName, password }
+            variables: { input: { email, username: email, firstName, lastName, password } }
           })
           const { data: { authenticateStudent: token } }: any = await client.query({
             query: gql`
@@ -180,10 +185,15 @@ class SignupModal extends React.Component<IProps, IState> {
           await client.mutate({
             mutation: gql`
               mutation registerTeacher($input: RegisterTeacherInput!) {
-                registerTeacher(input: $input)
+                registerTeacher(input: $input) {
+                  teacher {
+                    nodeId
+                    id
+                  }
+                }
               }
             `,
-            variables: { email, firstName, lastName, password, title: title === '' ? null : title }
+            variables: { input: { email, firstName, lastName, password, title: title === '' ? null : title } }
           })
           const { data: { authenticateTeacher: token } }: any = await client.query({
             query: gql`
