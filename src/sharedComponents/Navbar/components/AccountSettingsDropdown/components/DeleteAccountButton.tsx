@@ -6,28 +6,24 @@ import { withRouter, RouteComponentProps } from 'react-router'
 import { clearCached } from 'src/utils'
 import { ConfirmButton } from 'src/sharedComponents'
 
-const DELETE_STUDENT = gql`
-  mutation removeStudent {
-    removeStudent
-  }
-`
-
-const DELETE_TEACHER = gql`
-  mutation removeTeacher {
-    removeTeacher
-  }
-`
-
 interface IProps extends RouteComponentProps<{}> {
   userId: string
-  role: string
 }
 
-const DeleteAccountButtonWithRouter = ({ history, userId, role }: IProps) => (
+const DeleteAccountButtonWithRouter = ({ history, userId }: IProps) => (
   <ApolloConsumer>
     {client => (
       <Mutation
-        mutation={role.toLowerCase() === 'teacher' ? DELETE_TEACHER : DELETE_STUDENT}
+        mutation={gql`
+          mutation deleteUserById($input: DeleteUserByIdInput!) {
+            deleteUserById(input: $input) {
+              user {
+                nodeId
+                id
+              }
+            }
+          }
+        `}
         onCompleted={() => {
           history.push('/index')
           client.clearStore()
@@ -36,7 +32,7 @@ const DeleteAccountButtonWithRouter = ({ history, userId, role }: IProps) => (
       >
         {(deleteAccount) => (
           <ConfirmButton
-            onClick={() => deleteAccount({ variables: { id: userId }})}
+            onClick={() => deleteAccount({ variables: { input: { id: userId } }})}
             className="delete-button"
             confirmClassName="confirm"
           >

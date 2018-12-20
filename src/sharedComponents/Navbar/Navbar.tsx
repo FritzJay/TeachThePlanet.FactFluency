@@ -22,7 +22,6 @@ const GET_USER = gql`
       id
       email
       username
-      role
     }
   }
 `
@@ -49,7 +48,7 @@ export class Navbar extends React.Component<IProps, IState> {
             return null
           }
           
-          const { email, username, id, role } = data.userByToken
+          const { email, username, id } = data.userByToken
 
           return (
             <NavbarDropdownProvider>
@@ -103,7 +102,7 @@ export class Navbar extends React.Component<IProps, IState> {
                     )}
                   </NavbarDropdownMenu>
 
-                  <AccountSettingsDropdownMenu userId={id} role={role} />
+                  <AccountSettingsDropdownMenu userId={id} />
 
                   <Route
                     path="/fact-fluency"

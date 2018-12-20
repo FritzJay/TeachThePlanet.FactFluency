@@ -19,10 +19,10 @@ export const AccountSettingsDropdownTrigger = ({ name }: { name: string }) => (
   </NavbarDropdownTrigger>
 )
 
-export const AccountSettingsDropdownMenu = ({ userId, role }: { userId: string, role: string }) => (
+export const AccountSettingsDropdownMenu = ({ userId }: { userId: string }) => (
   <NavbarDropdownMenu className="AccountSettingsDropdownMenu" id="AccountSettingsDropdown">
     <h2>Account Settings</h2>
     <LogoutButton />
-    <DeleteAccountButton userId={userId} role={role} />
+    <DeleteAccountButton userId={userId} />
   </NavbarDropdownMenu>
 )
