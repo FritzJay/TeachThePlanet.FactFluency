@@ -11,8 +11,6 @@ import { Card, ConfirmButton } from '..'
 import { NewTestsIndicatorQueryFragment } from './NewTestsIndicator/NewTestsIndicator'
 import './StudentCard.css'
 
-export const StudentCardQueryArguments = '$testCondition: TestCondition'
-
 export const StudentCardQueryFragment = gql`
   fragment StudentCardQueryFragment on Student {
     nodeId

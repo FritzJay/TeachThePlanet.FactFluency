@@ -34,3 +34,18 @@ export const getOperatorSymbol = (operator: string): string => {
       return operator
   }
 }
+
+export const getAPIFriendlyOperator = (operator: string): string => {
+  switch(operator) {
+    case '+':
+      return 'PLUS'
+    case '*':
+      return 'ASTERISK'
+    case '/':
+      return 'SLASH'
+     case '-':
+      return 'MINUS'
+    default:
+      throw new Error('Invalid operator ' + operator)
+  }
+}

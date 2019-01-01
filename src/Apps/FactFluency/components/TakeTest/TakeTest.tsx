@@ -18,14 +18,15 @@ import './TakeTest.css'
 
 export const TakeTestQueryFragment = gql`
   fragment TakeTestQueryFragment on Test {
+    nodeId
     id
-    duration
     number
     operator
-    randomQuestions
+    duration
     start
     end
-    questions {
+    questionsByTestIdList {
+      nodeId
       id
       question
       start

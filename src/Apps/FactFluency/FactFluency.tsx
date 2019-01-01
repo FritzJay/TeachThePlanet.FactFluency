@@ -3,26 +3,33 @@ import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 import { Route, RouteComponentProps, Redirect } from 'react-router-dom'
 
-import { Navbar, Loading, StudentCardQueryFragment, StudentCardQueryArguments } from 'src/sharedComponents'
+import { Navbar, Loading, StudentCardQueryFragment } from 'src/sharedComponents'
 import {
   SelectTest,
   SelectTestQueryFragment,
   SelectTestCacheFragment,
   TakeTestCacheFragment,
+  TakeTestQueryFragment,
 } from './components'
 import './FactFluency.css'
 
 export const QUERY = gql`
-  query studentByToken(${StudentCardQueryArguments}) {
+  query studentByToken($testCondition: TestCondition) {
     studentByToken {
       nodeId
       id
       ...SelectTestQueryFragment
       ...StudentCardQueryFragment
+      testsByStudentIdList(condition: $testCondition) {
+        nodeId
+        id
+        ...TakeTestQueryFragment 
+      }
     }
   }
   ${SelectTestQueryFragment}
   ${StudentCardQueryFragment}
+  ${TakeTestQueryFragment}
 `
 
 export const CACHE = gql`

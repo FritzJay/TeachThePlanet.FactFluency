@@ -4,7 +4,7 @@ import { Mutation, ApolloConsumer } from "react-apollo"
 import { RouteComponentProps, Redirect } from "react-router"
 
 import { TestNumber } from './TestNumber/TestNumber'
-import { themeColors, IClass, IStudentUser } from "src/utils"
+import { themeColors, IClass, IStudentUser, getAPIFriendlyOperator } from "src/utils"
 import { Loading, StudentCard } from "src/sharedComponents"
 import { TakeTestQueryFragment } from "../TakeTest/TakeTest"
 import { QUERY } from "src/Apps/FactFluency/FactFluency"
@@ -47,8 +47,11 @@ export const SelectTestCacheFragment = `
 export const CREATE_TEST = gql`
   mutation createTest($input: CreateTestInput!) {
     createTest(input: $input) {
-      id
-      ...TakeTestQueryFragment
+      test {
+        nodeId
+        id
+        ...TakeTestQueryFragment
+      }
     }
   }
   ${TakeTestQueryFragment}
@@ -86,6 +89,7 @@ export class SelectTest extends React.Component<IProps, IState> {
           <Mutation
             mutation={CREATE_TEST}
             onCompleted={({ createTest }) => {
+              console.log(createTest)
               client.writeData({ data: { testId: createTest.id } })
             }}
             refetchQueries={[{ query: QUERY }]}
@@ -134,9 +138,9 @@ export class SelectTest extends React.Component<IProps, IState> {
                             variables: {
                               input: {
                                 number: num,
-                                operator,
-                                studentId,
-                                courseId: activeCourse && activeCourse.id,
+                                testOperator: getAPIFriendlyOperator(operator),
+                                testStudentId: studentId,
+                                testCourseId: activeCourse && activeCourse.id,
                               }
                             },
                             update: (cache, { data: { createTest: results } }: any) => {
