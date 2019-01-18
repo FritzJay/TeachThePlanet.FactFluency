@@ -1,136 +1,178 @@
-import * as React from 'react'
-import { gql } from 'apollo-boost'
-import { Mutation } from 'react-apollo'
+import * as React from "react";
+import { gql } from "apollo-boost";
+import { Mutation, Query } from "react-apollo";
 
-import { GET_COURSE } from 'src/Apps/TeacherHome/components'
-import { IStudentUser } from 'src/utils'
-import { StudentNumberQueryFragment } from './StudentNumber/StudentNumber'
-import { OperatorRowQueryFragment, OperatorRow } from './OperatorRow/OperatorRow'
-import { Card, ConfirmButton } from '..'
+import { GET_COURSE, Loading } from "src/Apps/TeacherHome/components";
+import { IStudentUser, ITest } from "src/utils";
+import { StudentNumberQueryFragment } from "./StudentNumber/StudentNumber";
+import {
+  OperatorRowQueryFragment,
+  OperatorRow
+} from "./OperatorRow/OperatorRow";
+import { Card, ConfirmButton } from "..";
 /*import { NewTestsIndicator } from './NewTestsIndicator/NewTestsIndicator'*/
-import { NewTestsIndicatorQueryFragment } from './NewTestsIndicator/NewTestsIndicator'
-import './StudentCard.css'
+import { NewTestsIndicatorQueryFragment } from "./NewTestsIndicator/NewTestsIndicator";
+import "./StudentCard.css";
 
-export const StudentCardQueryFragment = gql`
-  fragment StudentCardQueryFragment on Student {
-    id
-    name
-    tests(courseId: $courseId, limit: 0) {
+export const StudentCardQuery = gql`
+  query student($id: ObjID, $courseId: ObjID) {
+    student(id: $id) {
       id
-      ...StudentNumberQueryFragment
-      ...OperatorRowQueryFragment
-      ...NewTestsIndicatorQueryFragment
-    }
-    user {
-      id
-      email
-      username
+      name
+      tests(courseId: $courseId, limit: 0) {
+        id
+        ...StudentNumberQueryFragment
+        ...OperatorRowQueryFragment
+        ...NewTestsIndicatorQueryFragment
+      }
+      user {
+        id
+        email
+        username
+      }
     }
   }
   ${StudentNumberQueryFragment}
   ${OperatorRowQueryFragment}
   ${NewTestsIndicatorQueryFragment}
-`
+`;
 
 const REMOVE_STUDENT_FROM_COURSE = gql`
   mutation removeStudentFromCourse($studentId: ObjID!, $courseId: ObjID!) {
     removeStudentFromCourse(studentId: $studentId, courseId: $courseId)
   }
-`
+`;
 
 interface IStudentCardProps {
-  courseId: string
-  student: IStudentUser
-  showDeleteButton?: boolean
+  studentId: string;
+  courseId: string;
+  showDeleteButton?: boolean;
 }
 
-export const StudentCard = ({ courseId, showDeleteButton, student: { id, name, tests, user } }: IStudentCardProps) => {
-  const operators = [
-    {
-      operator: 'addition',
-      symbol: '+',
-      color: 'red',
-      tests: tests
-        ? tests.filter((test) => test.operator === '+')
-        : [],
-    },
-    {
-      operator: 'subtraction',
-      symbol: '-',
-      color: 'blue',
-      tests: tests
-        ? tests.filter((test) => test.operator === '-')
-        : [],
-    },
-    {
-      operator: 'multiplication',
-      symbol: '*',
-      color: 'green',
-      tests: tests
-        ? tests.filter((test) => test.operator === '*')
-        : [],
-    },
-    {
-      operator: 'division',
-      symbol: '/',
-      color: 'yellow',
-      tests: tests
-        ? tests.filter((test) => test.operator === '/')
-        : [],
-    },
-  ]
+export const StudentCard = ({
+  studentId,
+  courseId,
+  showDeleteButton
+}: IStudentCardProps) => {
   return (
-    <Mutation
-      mutation={REMOVE_STUDENT_FROM_COURSE}
-      optimisticResponse={{ removeStudentFromCourse: true }}
-      update={cache => {
-        const { course }: any = cache.readQuery({
-          query: GET_COURSE,
-          variables: { id: courseId },
-        })
-        cache.writeQuery({
-          query: GET_COURSE,
-          data: {
-            course: {
-              ...course,
-              students: course && course.students
-                ? course.students.filter((student: IStudentUser) => student.id !== id)
-                : []
-            }
-          }
-        })
+    <Query
+      query={StudentCardQuery}
+      variables={{
+        id: studentId,
+        courseId
       }}
     >
-      {removeStudentFromCourse => (
-        <Card className="StudentCard" id={id}>
-          <h3 className="name">
-            {name}
-            {user.email !== name
-              ? ` - ${user.email}`
-              : ''
-            }
-          </h3>
+      {({ data, loading }) => {
+        if (loading) {
+          return (
+            <Card className="StudentCard" id={studentId}>
+              <Loading />
+            </Card>
+          );
+        }
 
-          {/*<NewTestsIndicator tests={tests} />*/}
+        return (
+          <Mutation
+            mutation={REMOVE_STUDENT_FROM_COURSE}
+            optimisticResponse={{ removeStudentFromCourse: true }}
+            update={cache => {
+              const { course }: any = cache.readQuery({
+                query: GET_COURSE,
+                variables: { id: courseId }
+              });
+              cache.writeQuery({
+                query: GET_COURSE,
+                data: {
+                  course: {
+                    ...course,
+                    students:
+                      course && course.students
+                        ? course.students.filter(
+                            (student: IStudentUser) => student.id !== studentId
+                          )
+                        : []
+                  }
+                }
+              });
+            }}
+          >
+            {removeStudentFromCourse => (
+              <Card className="StudentCard" id={studentId}>
+                <h3 className="name">
+                  {name}
+                  {data.student.user.email !== name
+                    ? ` - ${data.student.user.email}`
+                    : ""}
+                </h3>
 
-          {showDeleteButton
-            ? (
-              <ConfirmButton
-                className="delete"
-                confirmClassName="confirm"
-                onClick={() => removeStudentFromCourse({
-                  variables: { studentId: id, courseId }
-                })}
-              >
-                <span className="confirmation">Remove student from this class?</span>
-                <i className="material-icons">delete</i>
-              </ConfirmButton>
-            ) : null
-          }
+                {/*<NewTestsIndicator tests={tests} />*/}
 
-          {operators.map((op) => <OperatorRow key={op.operator} {...op} />)}
-        </Card>
-      )}
-    </Mutation>
-  )
-}
+                {showDeleteButton ? (
+                  <ConfirmButton
+                    className="delete"
+                    confirmClassName="confirm"
+                    onClick={() =>
+                      removeStudentFromCourse({
+                        variables: { studentId, courseId }
+                      })
+                    }
+                  >
+                    <span className="confirmation">
+                      Remove student from this class?
+                    </span>
+                    <i className="material-icons">delete</i>
+                  </ConfirmButton>
+                ) : null}
+
+                {[
+                  {
+                    operator: "addition",
+                    symbol: "+",
+                    color: "red",
+                    tests: data.tests
+                      ? data.student.tests.filter(
+                          (test: ITest) => test.operator === "+"
+                        )
+                      : []
+                  },
+                  {
+                    operator: "subtraction",
+                    symbol: "-",
+                    color: "blue",
+                    tests: data.tests
+                      ? data.student.tests.filter(
+                          (test: ITest) => test.operator === "-"
+                        )
+                      : []
+                  },
+                  {
+                    operator: "multiplication",
+                    symbol: "*",
+                    color: "green",
+                    tests: data.student.tests
+                      ? data.student.tests.filter(
+                          (test: ITest) => test.operator === "*"
+                        )
+                      : []
+                  },
+                  {
+                    operator: "division",
+                    symbol: "/",
+                    color: "yellow",
+                    tests: data.student.tests
+                      ? data.student.tests.filter(
+                          (test: ITest) => test.operator === "/"
+                        )
+                      : []
+                  }
+                ].map(op => (
+                  <OperatorRow key={op.operator} {...op} />
+                ))}
+              </Card>
+            )}
+          </Mutation>
+        );
+      }}
+    </Query>
+  );
+};

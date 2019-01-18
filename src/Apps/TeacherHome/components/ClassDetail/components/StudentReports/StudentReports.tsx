@@ -1,58 +1,36 @@
-import * as React from 'react'
-import { gql } from 'apollo-boost'
-import { Link } from 'react-router-dom'
+import * as React from "react";
+import { gql } from "apollo-boost";
+import { Link } from "react-router-dom";
 
-import { Button, StudentCard, NewCard } from 'src/sharedComponents'
-import { StudentsDescription } from '../StudentsDescription/StudentsDescription'
-import { StudentNumberQueryFragment } from 'src/sharedComponents/StudentCard/StudentNumber/StudentNumber'
-import { OperatorRowQueryFragment } from 'src/sharedComponents/StudentCard/OperatorRow/OperatorRow'
-import { NewTestsIndicatorQueryFragment } from 'src/sharedComponents/StudentCard/NewTestsIndicator/NewTestsIndicator'
-import { IStudentUser } from 'src/utils'
-import './StudentReports.css'
+import { Button, StudentCard, NewCard } from "src/sharedComponents";
+import { StudentsDescription } from "../StudentsDescription/StudentsDescription";
+import { IStudentUser } from "src/utils";
+import "./StudentReports.css";
 
 export const StudentReportsQueryFragment = gql`
   fragment StudentReportsQueryFragment on Student {
     id
-    ...StudentCardQueryFragmentTEMP
   }
-  fragment StudentCardQueryFragmentTEMP on Student {
-    id
-    name
-    tests(limit: 0) {
-      id
-      ...StudentNumberQueryFragment
-      ...OperatorRowQueryFragment
-      ...NewTestsIndicatorQueryFragment
-    }
-    user {
-      id
-      email
-      username
-    }
-  }
-  ${StudentNumberQueryFragment}
-  ${OperatorRowQueryFragment}
-  ${NewTestsIndicatorQueryFragment}
-`
+`;
 
 interface IState {
-  activeDescription: boolean
+  activeDescription: boolean;
 }
 
 interface IProps {
-  students: IStudentUser[]
-  courseId: string
-  match: any
+  students: IStudentUser[];
+  courseId: string;
+  match: any;
 }
 
 export class StudentReports extends React.Component<IProps> {
   public state: IState = {
-    activeDescription: false,
-  }
+    activeDescription: false
+  };
 
   public render() {
-    const { students, courseId, match } = this.props
-    const { activeDescription } = this.state
+    const { students, courseId, match } = this.props;
+    const { activeDescription } = this.state;
 
     return (
       <div className="StudentReports">
@@ -62,42 +40,42 @@ export class StudentReports extends React.Component<IProps> {
             name="activeDescription"
             className="blue description-button"
             onClick={this.toggleDescription}
-            >
-            {!activeDescription
-              ? 'More info'
-              : 'Close'
-            }
+          >
+            {!activeDescription ? "More info" : "Close"}
           </Button>
         </div>
-    
-        {activeDescription
-          ? <StudentsDescription />
-          : null
-        }
 
-        {students.length > 0
-          ? students.sort((a, b) => a.name > b.name ? 1 : -1).map((student) => (
-            <StudentCard
-              key={student.id}
-              student={student}
-              courseId={courseId}
-              showDeleteButton={true}
+        {activeDescription ? <StudentsDescription /> : null}
+
+        {students.length > 0 ? (
+          students
+            .sort((a, b) => (a.name > b.name ? 1 : -1))
+            .map(student => (
+              <StudentCard
+                key={student.id}
+                studentId={student.id}
+                courseId={courseId}
+                showDeleteButton={true}
+              />
+            ))
+        ) : (
+          <Link to={`${match.url}/add-students`}>
+            <NewCard
+              className="new-student-card"
+              text="Add your first student!"
             />
-          )) : (
-            <Link to={`${match.url}/add-students`}>
-              <NewCard className="new-student-card" text="Add your first student!" />
-            </Link>
+          </Link>
         )}
       </div>
-    )
+    );
   }
 
   private toggleDescription = (e: any) => {
-    const { name } = e.target
-    this.setState((prevState) => {
-      const state = {}
-      state[name] = !prevState[name]
-      return state
-    })
-  }
+    const { name } = e.target;
+    this.setState(prevState => {
+      const state = {};
+      state[name] = !prevState[name];
+      return state;
+    });
+  };
 }
