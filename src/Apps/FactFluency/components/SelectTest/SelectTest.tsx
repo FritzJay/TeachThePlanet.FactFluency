@@ -1,14 +1,14 @@
-import * as React from "react"
-import gql from "graphql-tag"
-import { Mutation, ApolloConsumer } from "react-apollo"
-import { RouteComponentProps, Redirect } from "react-router"
+import * as React from "react";
+import gql from "graphql-tag";
+import { Mutation, ApolloConsumer } from "react-apollo";
+import { RouteComponentProps, Redirect } from "react-router";
 
-import { TestNumber } from './TestNumber/TestNumber'
-import { themeColors, IClass, IStudentUser } from "src/utils"
-import { Loading, StudentCard } from "src/sharedComponents"
-import { TakeTestQueryFragment } from "../TakeTest/TakeTest"
-import { QUERY } from "src/Apps/FactFluency/FactFluency"
-import './SelectTest.css'
+import { TestNumber } from "./TestNumber/TestNumber";
+import { themeColors, IClass, IStudentUser } from "src/utils";
+import { Loading, StudentCard } from "src/sharedComponents";
+import { TakeTestQueryFragment } from "../TakeTest/TakeTest";
+import { QUERY } from "src/Apps/FactFluency/FactFluency";
+import "./SelectTest.css";
 
 export const SelectTestQueryFragment = gql`
   fragment SelectTestQueryFragment on Course {
@@ -24,11 +24,11 @@ export const SelectTestQueryFragment = gql`
       numbers
     }
   }
-`
+`;
 
 export const SelectTestCacheFragment = `
   activeCourseId @client
-`
+`;
 
 export const CREATE_TEST = gql`
   mutation createTest($input: CreateTestInput!) {
@@ -38,33 +38,33 @@ export const CREATE_TEST = gql`
     }
   }
   ${TakeTestQueryFragment}
-`
+`;
 
 interface IProps extends RouteComponentProps {
-  activeCourseId: string
-  courses: IClass[]
-  studentId?: string
-  testId?: string
-  student: IStudentUser
+  activeCourseId: string;
+  courses: IClass[];
+  studentId?: string;
+  testId?: string;
+  student: IStudentUser;
 }
 
 interface IState {
-  selectedNumber?: number
+  selectedNumber?: number;
 }
 
 export class SelectTest extends React.Component<IProps, IState> {
-  public state: IState = {}
+  public state: IState = {};
 
   public async componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener("scroll", this.handleScroll);
   }
 
   public componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener("scroll", this.handleScroll);
   }
-  
+
   public render() {
-    const { activeCourseId, courses, studentId, testId, student } = this.props
+    const { activeCourseId, courses, studentId, testId, student } = this.props;
 
     return (
       <ApolloConsumer>
@@ -72,37 +72,41 @@ export class SelectTest extends React.Component<IProps, IState> {
           <Mutation
             mutation={CREATE_TEST}
             onCompleted={({ createTest }) => {
-              client.writeData({ data: { testId: createTest.id } })
+              client.writeData({ data: { testId: createTest.id } });
             }}
             refetchQueries={[{ query: QUERY }]}
           >
-            {(createTest, { loading: mutationLoading, error: mutationError }: any ) => {
+            {(
+              createTest,
+              { loading: mutationLoading, error: mutationError }: any
+            ) => {
               if (testId !== undefined && testId !== null) {
-                return <Redirect to="/fact-fluency/start-test" />
+                return <Redirect to="/fact-fluency/start-test" />;
               }
               if (mutationLoading) {
                 return (
                   <div className="SelectTest">
                     <Loading className="loading" />
                   </div>
-                ) 
+                );
               }
-              
+
               if (mutationError) {
-                throw mutationError
+                throw mutationError;
               }
 
               const activeCourse = activeCourseId
-                ? courses && courses.find((course: IClass) => course.id === activeCourseId)
-                : courses && courses[0]
+                ? courses &&
+                  courses.find((course: IClass) => course.id === activeCourseId)
+                : courses && courses[0];
 
               const numbers = activeCourse
                 ? activeCourse.testParameters.numbers.sort((a, b) => a - b)
-                : new Array(13).fill(0).map((n, i) => i)
+                : new Array(13).fill(0).map((n, i) => i);
 
               const operators = activeCourse
                 ? activeCourse.testParameters.operators
-                : ['+', '-', '*', '/']
+                : ["+", "-", "*", "/"];
 
               return (
                 <div className="SelectTest">
@@ -122,56 +126,59 @@ export class SelectTest extends React.Component<IProps, IState> {
                                 number: num,
                                 operator,
                                 studentId,
-                                courseId: activeCourse && activeCourse.id,
+                                courseId: activeCourse && activeCourse.id
                               }
                             },
-                            update: (cache, { data: { createTest: results } }: any) => {
+                            update: (
+                              cache,
+                              { data: { createTest: results } }: any
+                            ) => {
                               cache.writeFragment({
                                 id: results.id,
                                 fragment: TakeTestQueryFragment,
                                 data: {
                                   ...results,
-                                  __typename: 'Test',
+                                  __typename: "Test"
                                 }
-                              })
+                              });
                             }
-                          }
-                        )}}
+                          });
+                        }}
                       />
                     ))}
                   </div>
 
-                  {student.user.email !== 'TTPStudent'
-                    ? (
-                      <>
-                        <hr />
-                        {activeCourse ? (
-                          <h1 className="student-card-header">{activeCourse.name} - {activeCourse.teacher.name}</h1>
-                        ) : null}
-                        <StudentCard
-                          courseId={activeCourseId}
-                          student={student}
-                          showDeleteButton={false}
-                        />
-                      </>
-                    ) : null
-                  }
+                  {student.user.email !== "TTPStudent" ? (
+                    <>
+                      <hr />
+                      {activeCourse ? (
+                        <h1 className="student-card-header">
+                          {activeCourse.name} - {activeCourse.teacher.name}
+                        </h1>
+                      ) : null}
+                      <StudentCard
+                        courseId={activeCourseId}
+                        studentId={student.id}
+                        showDeleteButton={false}
+                      />
+                    </>
+                  ) : null}
                 </div>
-              )
+              );
             }}
           </Mutation>
         )}
       </ApolloConsumer>
-    )
+    );
   }
 
   private handleTestNumberClick = (selectedNumber: number) => {
-    this.setState({ selectedNumber })
-  }
-  
+    this.setState({ selectedNumber });
+  };
+
   private handleScroll = () => {
     if (this.state.selectedNumber !== undefined) {
-      this.setState({ selectedNumber: undefined })
+      this.setState({ selectedNumber: undefined });
     }
-  }
+  };
 }
